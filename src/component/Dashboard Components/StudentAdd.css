@@ -1,0 +1,389 @@
+
+.p-0 {
+    padding: 0 !important;
+}
+.container, .container-fluid, .container-xs, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+   width:100%;
+    padding-right: var(--bs-gutter-x, 1rem);
+    padding-left: var(--bs-gutter-x, 1rem);
+    margin-right: auto;
+    margin-left:auto;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+.row1 {
+    --bs-gutter-x: 2rem !important;
+    --bs-gutter-y: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin-top:1rem !important;
+    margin-right:2rem ;
+    margin-left: 2rem;
+    column-gap:2rem
+}
+section {
+    display: block;
+}
+.card1{
+    width:79%;
+    margin-top: 0rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+    transition: all 0.3s ease-in-out, background 0s, color 0s, border-color 0s;
+    margin-left: 21%;
+}
+.card1{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(34, 41, 47, 0.125);
+    border-radius: 0.428rem;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+user agent stylesheet
+div {
+    display: block;
+}
+.card1 .card-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.card-header:first-child {
+    border-radius: 0.428rem 0.428rem 0 0;
+}
+.card-header {
+    padding: 1.5rem 1.5rem;
+    margin-bottom: 0;
+    background-color: transparent;
+    border-bottom: 0 solid rgba(34, 41, 47, 0.125);
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+.card1 .card-header .card-title {
+    margin-bottom: 0;
+}
+.card1 .card-title {
+    font-weight: 500;
+    font-size: 1.285rem;
+    margin-bottom: 1.53rem;
+}
+.card-title {
+    margin-bottom: 1.5rem;
+    color:#262525;
+}
+h4, .h4 {
+    font-size: calc(1.2536rem + 0.0432vw);
+}
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #5e5873;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+user agent stylesheet
+h4 {
+    display: block;
+    margin-block-start: 1.33em;
+    margin-block-end: 1.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.card1 .card-header + .card-content > .card-body:first-of-type, .card .card-header + .card-body {
+    padding-top: 0px !important;
+}
+.card-body {
+    flex: 1 1 auto !important;
+    padding: 1.5rem 1.5rem;
+    
+}
+
+form {
+    display: block;
+    margin-top: 0em;
+}
+.mb-1 {
+    margin-bottom: 1rem !important;
+}
+.form-label {
+    margin-bottom: 0.2857rem;
+    font-size: 0.857rem;
+    color: #5e5873;
+}
+label {
+    display: inline-block;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+user agent stylesheet
+label {
+    cursor: default;
+}
+
+.form-select1 {
+    display: block;
+    width: 100% ;
+    padding: 0.571rem 5rem 0.571rem 1rem !important;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #6e6b7b;
+    background-color: #fff;
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8d6de' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e);
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 15px 14px;
+    border: 1px solid #d8d6de;
+    border-radius: 0.357rem;
+    appearance: none;
+}
+select {
+    word-wrap: normal;
+
+}
+autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-text-fill-color: #6e6b7b !important;
+}
+.form-control1 {
+    padding: 0.45rem 3rem !important;
+  
+}
+.form-control1 {
+    display: block;
+    width: 100%;
+    padding: 0.571rem 7rem 0.571rem 1rem !important;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #6e6b7b;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d8d6de;
+    appearance: none;
+    border-radius: 0.357rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+input, button, select, optgroup, textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+button, select {
+    text-transform: none;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+user agent stylesheet
+select:not(:-internal-list-box) {
+    overflow: visible !important;
+}
+user agent stylesheet
+select {
+    font-style: ;
+    font-variant-ligatures: ;
+    font-variant-caps: ;
+    font-variant-numeric: ;
+    font-variant-east-asian: ;
+    font-variant-alternates: ;
+    font-variant-position: ;
+    font-weight: ;
+    font-stretch: ;
+    font-size: ;
+    font-family: ;
+    font-optical-sizing: ;
+    font-kerning: ;
+    font-feature-settings: ;
+    font-variation-settings: ;
+    text-rendering: auto;
+    color: fieldtext;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: auto;
+    box-sizing: border-box;
+    align-items: center;
+    -webkit-rtl-ordering: logical;
+    background-color: field;
+    cursor: default;
+    margin: 0em;
+    white-space: pre;
+    border-width: 1px;
+    border-style: solid;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    border-image: initial;
+    border-radius: 0px;
+}
+button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled) {
+    cursor: pointer;
+}
+.btn {
+    padding: 0.6rem 1.5rem;
+}
+.bg-gradient-success, .btn-gradient-success {
+    color: #fff !important;
+    background: linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important;
+    transition: all 0.2s ease;
+    border:4px solid #12b6e9;
+}
+.waves-effect {
+    cursor: inherit;
+}
+.btn {
+    box-shadow: none;
+    font-weight: 500;
+}
+.btn {
+   
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1;
+    color: #6e6b7b;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent !important;
+    padding: 0.786rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.358rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background 0s, border 0s;
+}
+button, [type="button"], [type="reset"], [type="submit"] {
+    -webkit-appearance: button;
+}
+.waves-float {
+    -webkit-mask-image: none;
+    -webkit-box-shadow: 0 1px 1.5px 1px rgba(0,0,0,.12);
+    box-shadow: 0 1px 1.5px 1px rgba(0,0,0,.12);
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+}
+.waves-effect {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    border-radius: 0;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+user agent stylesheet
+button {
+    appearance: auto;
+    font-style: ;
+    font-variant-ligatures: ;
+    font-variant-caps: ;
+    font-variant-numeric: ;
+    font-variant-east-asian: ;
+    font-variant-alternates: ;
+    font-variant-position: ;
+    font-weight: ;
+    font-stretch: ;
+    font-size: ;
+    font-family: ;
+    font-optical-sizing: ;
+    font-kerning: ;
+    font-feature-settings: ;
+    font-variation-settings: ;
+    text-rendering: auto;
+    color: buttontext;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start;
+    cursor: default;
+    box-sizing: border-box;
+    background-color: buttonface;
+    margin: 0em;
+    padding-block: 1px;
+    padding-inline: 6px;
+    border-width: 2px;
+    border-style: outset;
+    border-color: buttonborder;
+    border-image: initial;
+}
+.invalid-feedback {
+    display: none !important;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.857rem;
+    color: #ea5455;
+}
+
+.valid-feedback{
+    display: none !important;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.857rem;
+    color: #ea5455;
+}
+
+
+
+
+
+
+
+
+
+@media (min-width: 768px)
+.col-md-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+.col-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+.row > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) / 2);
+    padding-left: calc(var(--bs-gutter-x) / 2);
+    margin-top: var(--bs-gutter-y);
+}

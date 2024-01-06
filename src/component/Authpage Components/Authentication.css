@@ -1,0 +1,201 @@
+
+.mainpage{
+    /* background-image:url('https://img.freepik.com/premium-vector/e-learning-technology-concept_46706-901.jpg') */
+}
+.section-right {
+    width: 40%;
+    padding: 4% 0% 3% 4%;
+    height: 100%;
+    float: left;
+    display: block;
+    background: #fff;
+}
+
+
+
+    .section-right h2 {
+        font-size: 20px;
+        color: #ffffff;
+        border-radius: 5px;
+        background: linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%);
+        margin-bottom: 0px;
+        text-align: Center;
+        padding: 10px 0;
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+        border-bottom: 1px solid #d9d9d9;
+}
+
+
+.tab {
+    border-bottom: 0px solid #444;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 15px;
+    min-height: auto;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
+
+.tab button.active {
+    color: #fff;
+    background: #002b4f;
+    border-bottom: 0px solid #444;
+}
+
+
+.tab button {
+    display: block;
+    position: relative;
+    background-color: #fff;
+    color: #444;
+    border-radius: 6px;
+    padding: 10px 6px;
+    box-shadow: 0px 3px 6px #00000029;
+    width: 48%;
+    margin: 0 1%;
+    border: none;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+    float: left;
+    border: 1px solid #002b4f;
+}
+
+.tab button {
+    display: block;
+    position: relative;
+    background-color: #fff;
+    color: #444;
+    border-radius: 6px;
+    padding: 7px 6px;
+    box-shadow: 0px 3px 6px #00000029;
+    width: 48%;
+    margin: 0 1%;
+    border: none;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+    float: left;
+    border: 1px solid #002b4f;
+}
+
+form {
+    display: block;
+    margin-top: 0em;
+}
+
+input {
+    outline: none !important;
+}
+
+button, input {
+    overflow: visible;
+}
+
+.tabcontent {
+    float: left;
+    padding: 0px;
+    border: 0px solid #ccc;
+    width: 100%;
+    border-left: none;
+    padding-top: 15px;
+    height: auto;
+}
+
+.login-box {
+    width: 100%;
+    display: block;
+    padding-top: 30px;
+    column-count: 1;
+}
+
+.touch-form {
+    width: 100%;
+    display: block;
+    padding-bottom: 30px;
+    column-count: 1;
+}
+
+.login-box label input {
+    box-sizing: border-box;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 20px 0px;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 17px;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.touch-form2 {
+    width: 100%;
+    display: flex;
+    padding-bottom: 1px;
+    column-count: 1;
+}
+
+.forgot-password {
+    width: 100%;
+    display: block;
+    color: #000;
+    text-align: right;
+    font-size: 16px;
+    padding-bottom: 10px;
+    /* font-family: 'Roboto', sans-serif; */
+    font-weight: 400px;
+}
+
+#vehicle1 {
+    width: 20px;
+    height: 20px;
+    margin-right: 7px;
+    float: left;
+    display: block;
+}
+
+input[type=checkbox], input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+   
+}
+
+.login-box label {
+    position: relative;
+    display: block;
+}
+.remember {
+    width: 300px;
+    line-height: 20px;
+    float: left;
+    display: block;
+    font-size: 16px;
+}
+label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.submit-now {
+    background: linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%);
+    border: 1px solid #002B4F;
+    padding: 8px 16px;
+    color: #fff;
+    /* font-family: 'Roboto', sans-serif; */
+    border-radius: 7px;
+    font-size: 20px;
+    width: 190px;
+    margin: 10px 0;
+    display: flex;
+    transition: .5s ease-out;
+    box-shadow: 0 10px 20px rgb(116 62 27 / 20%), 0 5px 10px rgb(116 62 27 / 10%);
+    justify-content: center;
+    align-items: center;
+}

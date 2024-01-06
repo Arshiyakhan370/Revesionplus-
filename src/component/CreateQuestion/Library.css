@@ -1,0 +1,34 @@
+.form-select1 {
+    
+    display: block;
+    width: 60%;
+    padding: 0.571rem 1rem 0.571rem 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #6e6b7b;
+    background-color: #fff;
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8d6de' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e);
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 15px 14px;
+    border: 1px solid #d8d6de !important;
+    border-radius: 0.357rem;
+    appearance: none;
+}
+.form-control5 {
+    display: block;
+    width: 60%;
+    padding: 0.571rem 5.5rem 0.571rem 1rem !important;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #6e6b7b;
+    text-aling:left;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d8d6de;
+    appearance: none;
+    border-radius: 0.357rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
