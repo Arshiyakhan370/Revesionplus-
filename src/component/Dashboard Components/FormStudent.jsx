@@ -254,7 +254,7 @@ const FormStudent = () => {
                 </div>
               </div>
             </div>
-            {/* /Bootstrap Validation */}
+            
           </div>
         </section>
       </div>

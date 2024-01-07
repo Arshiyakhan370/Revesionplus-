@@ -109,19 +109,19 @@ const ListContainer = () => {
       ];
       
         const handleProfileClick = () => {
-          // Implement logic for profile click
+        
         };
       
         const handleUpdatePasswordClick = () => {
-          // Implement logic for update password click
+        
         };
       
         const handleDeleteClick = () => {
-          // Implement logic for delete click
+       
         };
       
         const handleEditClick = () => {
-          // Implement logic for edit click
+          
         };
     return (
         <Fragment>

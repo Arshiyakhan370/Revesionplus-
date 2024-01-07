@@ -21,7 +21,7 @@ const SimulationComponent = () => {
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
     setFiles([file]);
-    setShowModal(false); // Close the modal after file selection
+    setShowModal(false); 
   };
 
   const handleSubmit = (e) => {

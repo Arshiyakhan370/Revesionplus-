@@ -7,7 +7,7 @@ const CreateAssignment = () => {
           options: ["y = -3", "y = -2 cos x + 5", "y = 1/4 sin(15x)"],
           answerKey: "b"
         },
-        // Add more questions similarly
+        
       ];
     
       const [selectedOptions, setSelectedOptions] = useState(new Array(questions.length).fill(null));
@@ -19,11 +19,11 @@ const CreateAssignment = () => {
       };
     
       const handleBack = () => {
-        // Handle back button logic
+     
       };
     
       const handlePrint = () => {
-        // Handle print button logic
+     
         console.log("Printing...");
       };
     

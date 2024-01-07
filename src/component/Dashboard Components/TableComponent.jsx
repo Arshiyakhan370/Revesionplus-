@@ -7,12 +7,11 @@ const TableComponent = ({ Nameofstudent, assingmentList, UserList }) => {
             {assingmentList &&
                 Arr.map(itm => (
                     <div key={Math.random()} className='flex justify-between px-8 py-2 hover:bg-blue-50'>
-                        {/* for name right side */}
+                      
                         <div className='flex items-center'>
                             {Nameofstudent}
                         </div>
-                        {/* for name end right side */}
-                        {/* for button left side */}
+                       
                         <div className='flex space-x-2 md:space-x-5'>
                             <button class="bg-yellow-500 hover:bg-yellow-700 text-white  py-0 px-2 rounded">
                                 Share
@@ -24,7 +23,7 @@ const TableComponent = ({ Nameofstudent, assingmentList, UserList }) => {
                                 View
                             </button>
                         </div>
-                        {/* for button end left side */}
+                      
                     </div>
                 ))
             }
@@ -51,10 +50,10 @@ const TableComponent = ({ Nameofstudent, assingmentList, UserList }) => {
                     <th className="px-4 py-2 text-sm md:text-base lg:text-lg">8745921532</th>
                     <th className="px-4 py-2 hidden lg:table-cell text-sm md:text-base lg:text-lg">12-11-2023</th>
                     <th className="px-4 py-2 text-sm md:text-base lg:text-lg">
-                         {/* svg for vertical dots */}
+                       
                          <span>dots</span>
                              <span>edit</span>
-                                {/* svg end */}
+                                
                     </th>
                   </tr>
                 ))}

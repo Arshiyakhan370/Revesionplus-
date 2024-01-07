@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../AdminDashboard/Header';
 import { useDropzone } from 'react-dropzone';
 
-// Custom PDF component
+
 const PdfComponent = ({ pdfFile }) => {
   return (
     <object
@@ -46,19 +46,18 @@ const Pdf = () => {
   };
 
   const handlePdfSubmit = () => {
-    // Add your logic to handle PDF submission
-    // You can use the pdfFile state
+   
     handleModalClose();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Your form submission logic
+  
   };
 
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    // Navigate back to the previous page using the browser's history
+   
     window.history.back();
   };
 
@@ -198,7 +197,7 @@ const Pdf = () => {
             </Modal.Footer>
           </Modal>
 
-          {/* ... Remaining form components */}
+         
           <div className="ant-form-item css-14mf4t4">
             <Row className="ant-form-item-row css-14mf4t4">
               <Col xs={12} className="mt-3">

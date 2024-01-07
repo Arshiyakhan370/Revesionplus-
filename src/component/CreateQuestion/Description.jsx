@@ -9,7 +9,7 @@ const Description = () => {
       <div className="ant-spin-nested-loading css-14mf4t4">
         <div className="ant-spin-container">
           <div className="ant-row css-14mf4t4" style={{ marginLeft: '-8px', marginRight: '-8px' }}>
-            {/* Repeat the following block for each button */}
+          
             <div style={{ width: '16.6667%', maxWidth: '16.6667%' }}>
          
               <div className="ant-col css-14mf4t4" style={{ paddingLeft: '8px', paddingBottom:'8px' ,paddingRight: '8px', flex: '1 1 auto' }}>

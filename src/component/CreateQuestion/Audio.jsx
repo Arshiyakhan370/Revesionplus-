@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Col, Row, Modal } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
-// import { ReactMic } from 'react-mic';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,19 +16,14 @@ const Audio = () => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: 'audio/*',
     onDrop: (acceptedFiles) => {
-      // Handle dropped audio files
       const file = acceptedFiles[0];
       if (file) {
-        // Add logic to handle the dropped audio file
       }
     },
   });
 
   const handleImageUpload = (file) => {
     return new Promise((resolve, reject) => {
-      // Add your logic for handling image upload here
-      // You might want to use a library or send a request to your server
-      // For now, let's resolve with a placeholder URL
       const imageUrl = 'https://example.com/placeholder.jpg';
       resolve({ data: { link: imageUrl } });
     });
@@ -44,18 +38,18 @@ const Audio = () => {
   };
 
   const handleUrlSubmit = () => {
-    // Add your logic to handle URL submission
+   
     handleModalClose();
   };
 
   const handleSave = () => {
-    // Add logic to save the form data, including the audioBlob
+   
     console.log('Form submitted:', { title, description, audioBlob });
   };
 
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    // Navigate back to the previous page using the browser's history
+    
     window.history.back();
   };
 
@@ -69,7 +63,6 @@ const Audio = () => {
           className="ant-form ant-form-vertical ant-form-middle css-14mf4t4"
           onSubmit={handleSave}
         >
-          {/* ... Other form components */}
           {/* Audio Recording */}
           <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
             <Row className="css-14mf4t4" style={{ marginLeft: '-12px', marginRight: '-12px' }}>
@@ -133,7 +126,7 @@ const Audio = () => {
               </div>
             </div>
           </Col>
-          {/* Rich Text Editor for Description */}
+          {/* Description */}
           <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
             <div className="ant-form-item css-14mf4t4 border border-gray-500">
               <div className="ant-row ant-form-item-row css-14mf4t4">

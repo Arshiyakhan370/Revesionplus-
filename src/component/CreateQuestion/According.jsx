@@ -8,7 +8,7 @@ import Header from '../AdminDashboard/Header';
 const According = () => {
   const [tabs, setTabs] = useState([
     { key: 'panel1', title: 'Panel 1' },
-    // Add more initial panels as needed
+    
   ]);
 
   const addPanel = () => {
@@ -23,7 +23,7 @@ const According = () => {
   };
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    // Navigate back to the previous page using the browser's history
+    
     window.history.back();
   };
 
@@ -75,10 +75,6 @@ const According = () => {
                 <Button type="submit" variant="primary">
                   Save
                 </Button>
-                
-                {/* <Button type="button" variant="secondary">
-                  Cancel
-                </Button> */}
               </div>
             </Col>
           </Row>

@@ -40,31 +40,29 @@ const NavSideBar = () => {
         });
     
         if (selectedValue) {
-          // Handle the selected value as needed
+         
           switch (selectedValue) {
             case 'profile':
-              // Handle profile link or action
-              break;
+             break;
             case 'inbox':
-              // Handle inbox link or action
+             
               break;
             case 'task':
-              // Handle task link or action
+             
               break;
             case 'chats':
-              // Handle chats link or action
+             
               break;
             case 'settings':
-              // Handle settings link or action
+              
               break;
             case 'pricing':
-              // Handle pricing link or action
-              break;
+         
             case 'faq':
-              // Handle FAQ link or action
+           
               break;
             case 'logout':
-              // Handle logout link or action
+             
               break;
             default:
               break;
@@ -77,7 +75,7 @@ const NavSideBar = () => {
         }
       };
     
-      // Close dropdown when clicking outside
+    
       const handleClickOutside = (event) => {
         if (
           dropdownRef.current &&

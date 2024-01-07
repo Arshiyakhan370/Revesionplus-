@@ -17,7 +17,7 @@ const FormAddUser = () => {
           confirmButtonText: 'Yes, delete it!',
         }).then((result) => {
           if (result.isConfirmed) {
-            // Handle the confirmed delete action here
+            
             Swal.fire('Deleted!', 'Your data has been deleted.', 'success');
           }
         });
@@ -124,19 +124,19 @@ const FormAddUser = () => {
       ];
       
         const handleProfileClick = () => {
-          // Implement logic for profile click
+         
         };
       
         const handleUpdatePasswordClick = () => {
-          // Implement logic for update password click
+          
         };
       
         const handleDeleteClick = () => {
-          // Implement logic for delete click
+          
         };
       
         const handleEditClick = () => {
-          // Implement logic for edit click
+         
         };
     return (
         <Fragment>

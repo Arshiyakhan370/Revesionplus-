@@ -15,45 +15,45 @@ const YourComponent = () => {
 
   const handleBoardChange = (event) => {
     setBoardID(event.target.value);
-    // Add any additional logic needed on board change
+  
   };
 
   const handleSourceChange = (event) => {
     setSourceID(event.target.value);
-    // Add any additional logic needed on source change
+   
   };
 
   const handleSubjectLevelChange = (event) => {
     setSubjectLevelID(event.target.value);
-    // Add any additional logic needed on subject level change
+  
   };
 
   const handlePaperChange = (event) => {
     setPaperID(event.target.value);
-    // Add any additional logic needed on paper change
+   
   };
 
   const handleSubjectChange = (event) => {
     setSubjectIDs(event.target.value);
-    // Add any additional logic needed on subject change
+  
   };
 
   const handleTopicChange = (event) => {
     setTopicID(event.target.value);
-    // Add any additional logic needed on topic change
+  
   };
 
   const handleSubtopicChange = (event) => {
     setSubtopicID(event.target.value);
-    // Add any additional logic needed on subtopic change
+  
   };
 
   const handleReset = () => {
-    // Add logic to reset the form
+   
   };
 
   const handleFilter = () => {
-    // Add logic to handle form submission
+   
   };
  
   const handleGoBack = () => {
@@ -63,7 +63,7 @@ const YourComponent = () => {
     const logo = document.getElementById('pro-sidebar-logo');
 
     gsap.to(logo, {
-      x: '100vw',  // Set to a negative value to move from left to right
+      x: '100vw',  
       duration: 10,
       ease: 'linear',
       repeat: -1,
@@ -149,7 +149,7 @@ const YourComponent = () => {
       onChange={handleSubjectChange}
     >
       <MenuItem value="">Select subject</MenuItem>
-      {/* Add other MenuItem elements as needed */}
+     
     </Select>
   </FormControl>
 </Grid>
@@ -164,7 +164,7 @@ const YourComponent = () => {
       onChange={handleSubjectLevelChange}
     >
       <MenuItem value="">Select Level</MenuItem>
-      {/* Add other MenuItem elements as needed */}
+     
     </Select>
   </FormControl>
 </Grid>
@@ -180,7 +180,7 @@ const YourComponent = () => {
       onChange={handlePaperChange}
     >
       <MenuItem value="">Select Paper</MenuItem>
-      {/* Add other MenuItem elements as needed */}
+    
     </Select>
   </FormControl>
 </Grid>
@@ -196,7 +196,7 @@ const YourComponent = () => {
       onChange={handleTopicChange}
     >
       <MenuItem value="">Select Topic</MenuItem>
-      {/* Add other MenuItem elements as needed */}
+     
     </Select>
   </FormControl>
 </Grid>
@@ -211,15 +211,14 @@ const YourComponent = () => {
       onChange={handlePaperChange}
     >
       <MenuItem value="">Select Subtopic</MenuItem>
-      {/* Add other MenuItem elements as needed */}
+    
     </Select>
   </FormControl>
 </Grid>
 
 
 </Grid>
-              {/* Add other form elements as needed */}
-
+        
               <Button variant="outlined" onClick={handleReset} style={{ marginTop: '25px' }}>
                 Reset
               </Button>

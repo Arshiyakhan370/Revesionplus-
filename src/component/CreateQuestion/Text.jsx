@@ -18,7 +18,7 @@ const Text = () => {
 
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    // Navigate back to the previous page using the browser's history
+  
     window.history.back();
   };
 
@@ -27,8 +27,7 @@ const Text = () => {
       <Header/>
     
     <div className='w-[650px] ml-[500px] mt-44 '>
-      {/* Assuming Header is just a component rendering some UI */}
-      {/* You may need to adjust this part based on your Header component */}
+     
       
 
       <div className="container mt-3">

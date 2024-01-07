@@ -110,7 +110,7 @@ const Library = () => {
                 <option value="itemOption1">Item Option 1</option>
                 <option value="itemOption2">Item Option 2</option>
                 <option value="itemOption3">Item Option 3</option>
-                {/* Add more options as needed */}
+              
               </select>
             </div>
 
@@ -138,7 +138,7 @@ const Library = () => {
                 <option value="itemOption1">Authors</option>
                 <option value="itemOption2">Item Option 2</option>
                 <option value="itemOption3">Item Option 3</option>
-                {/* Add more options as needed */}
+               
               </select>
             </div>
 

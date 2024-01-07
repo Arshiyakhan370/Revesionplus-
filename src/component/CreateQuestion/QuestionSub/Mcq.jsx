@@ -20,24 +20,24 @@ const Mcq = () => {
   };
 
   const handleLinkButtonClick = () => {
-    // Handle link button click
+   
   };
 
   const handleAlignLeftButtonClick = () => {
-    // Handle align left button click
+    
   };
 
   const handleDeleteButtonClick = () => {
-    // Handle delete button click
+   
   };
 
   const handleToggleButtonClick = () => {
-    // Handle toggle button click
+    
     setAnswerOptions([...answerOptions, 'New Option']);
   };
 
   const handleCheckboxChange = (index) => {
-    // Handle checkbox change
+  
     const updatedOptions = [...answerOptions];
     updatedOptions[index] = !updatedOptions[index];
     setAnswerOptions(updatedOptions);
@@ -45,7 +45,7 @@ const Mcq = () => {
 
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    // Navigate back to the previous page using the browser's history
+   
     window.history.back();
   };
 
@@ -67,18 +67,18 @@ const Mcq = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission with editorState and answerOptions
+   
     console.log('Question Description:', convertToRaw(editorState.getCurrentContent()));
     console.log('Answer Options:', answerOptions);
   };
 
   const handleCancelClick = () => {
-    // Handle cancel click
+  
     setShowModal(false);
   };
 
   const handleOkClick = () => {
-    // Handle Ok click
+  
     setShowModal(false);
   };
 
@@ -90,7 +90,7 @@ const Mcq = () => {
     <div>
       <Header />
       <Form onSubmit={handleSubmit} className='ml-[500px] w-[50%] mt-8'>
-        {/* Rich text editor for question description */}
+        {/*  description */}
         <Form.Group controlId="formQuestionDescription">
           <Form.Label>Question Description:</Form.Label>
           <Editor
@@ -168,13 +168,13 @@ const Mcq = () => {
             </div>
           ))}
 
-          {/* Add Option Button */}
+         
           <button className="btn btn-primary mt-3" type="button" onClick={handleToggleButtonClick}>
             {/* Plus icon */}
             Add Option
           </button>
         </div>
-        {/* Input for new answer option */}
+        {/* option */}
         <Form.Group controlId="formNewOption">
           <Row>
             <Col>

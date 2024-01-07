@@ -171,7 +171,7 @@ const StudentAdd = () => {
                 </div>
               </div>
             </div>
-            {/* /Bootstrap Validation */}
+           
           </div>
         </section>
       </div>

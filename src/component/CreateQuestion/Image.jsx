@@ -29,9 +29,6 @@ const Image = () => {
   });
   const handleImageUpload = (file) => {
     return new Promise((resolve, reject) => {
-      // Add your logic for handling image upload here
-      // You might want to use a library or send a request to your server
-      // For now, let's resolve with a placeholder URL
       const imageUrl = 'https://example.com/placeholder.jpg';
       resolve({ data: { link: imageUrl } });
     });
@@ -45,18 +42,13 @@ const Image = () => {
   };
 
   const handleUrlSubmit = () => {
-    // Add your logic to handle URL submission
     handleModalClose();
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const contentState = editorState.getCurrentContent();
-    // const rawContentState = convertToRaw(contentState);
-    // console.log('Form submitted:', rawContentState);
   };
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    // Navigate back to the previous page using the browser's history
     window.history.back();
   };
 
@@ -65,7 +57,7 @@ const Image = () => {
     <Header/>
     <div className="w-[650px] ml-[500px] mt-16">
       <Form id="segments_1" className="ant-form ant-form-vertical ant-form-middle css-14mf4t4" onSubmit={handleSubmit}>
-        {/* ... Other form components */}
+    
         <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
           <Row className="css-14mf4t4" style={{ marginLeft: '-12px', marginRight: '-12px' }}>
             <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
@@ -74,9 +66,9 @@ const Image = () => {
                   <div className="ant-col ant-form-item-control css-14mf4t4">
                     <div className="ant-form-item-control-input">
                       <div className="ant-form-item-control-input-content">
-                        {/* Image component */}
+                    
                         {imageSrc && <img src={imageSrc} alt="Uploaded" className="img-fluid" />}
-                        {/* Dropzone */}
+                        
                         <div {...getRootProps({ className: 'dropzone' })}>
                           <input {...getInputProps()} />
                           <p>Drag 'n' drop an image here, or click to select an image</p>
@@ -136,7 +128,7 @@ const Image = () => {
             </div>
           </div>
         </Col>
-        {/* Rich Text Editor for Description */}
+        {/*  Description */}
         <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
           <div className="ant-form-item css-14mf4t4  border-gray-900">
             <div className="ant-row ant-form-item-row css-14mf4t4">

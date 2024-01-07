@@ -27,7 +27,7 @@ const StudentDash = () => {
     const logo = document.getElementById('pro-sidebar-logo');
 
     gsap.to(logo, {
-      x: '80vw',  // Set to a negative value to move from left to right
+      x: '80vw',  
       duration: 10,
       ease: 'linear',
       repeat: -1,

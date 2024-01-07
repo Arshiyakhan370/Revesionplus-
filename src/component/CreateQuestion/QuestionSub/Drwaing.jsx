@@ -15,14 +15,14 @@ const DrawingApp = () => {
   
     const handleColorChange1 = (color) => {
       setSelectedColor(color.hex);
-      // Implement logic to update canvas color based on selectedColor
+      //
     };
     const handleEditorChange = (editorState) => {
         // const rawContentState = convertToRaw(editorState.getCurrentContent());
         // setDescription(JSON.stringify(rawContentState));
       };
     const handleButtonClick = (tool) => {
-      // Implement logic to handle button click based on the tool
+     
       console.log(`Button ${tool} clicked`);
     };
   

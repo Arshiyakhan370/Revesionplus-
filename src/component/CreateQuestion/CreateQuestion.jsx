@@ -65,11 +65,10 @@ const CreateQuestion = () => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      // Add your form submission logic here
+     
     };
   
     const handleCancel = () => {
-      // Add your cancel logic here
     };
   const handleChange = (value) => {
     setContent(value);

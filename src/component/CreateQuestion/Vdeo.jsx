@@ -6,12 +6,12 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Header from '../AdminDashboard/Header';
 import { useDropzone } from 'react-dropzone';
 
-// Custom Video component
+
 const VideoComponent = ({ videoUrl }) => {
-  // You can use the videoUrl parameter to display the selected video
+ 
   return (
     <div>
-      {/* Your Video component UI */}
+      
       <p>Video Component</p>
       <iframe
         title="Video Player"
@@ -58,14 +58,12 @@ const Vdeo = () => {
   };
 
   const handleVideoSubmit = () => {
-    // Add your logic to handle video submission
-    // You can use the videoUrl state
+   
     handleModalClose();
   };
 
   const handleUrlSubmit = () => {
-    // Add your logic to handle video URL submission
-    // You can use the videoUrl state
+    
     handleModalClose();
   };
   const handleSubmit = (e) => {
@@ -77,7 +75,7 @@ const Vdeo = () => {
 
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    // Navigate back to the previous page using the browser's history
+
     window.history.back();
   };
   return (
@@ -155,7 +153,7 @@ const Vdeo = () => {
             </div>
           </Col>
 
-          {/* Rich Text Editor for Description */}
+          {/*  Description */}
           <Col
             xs={24}
             className="css-14mf4t4"

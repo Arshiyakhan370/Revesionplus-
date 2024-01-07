@@ -75,7 +75,7 @@ const SideBarList = () => {
         <div className="main-menu menu-fixed menu-light menu-accordion menu-shadow menu-native-scroll" data-scroll-to-active="true" style={{ touchAction: "none", userSelect: "none", WebkitUserDrag: "none", WebkitTapHighlightColor: "  #002B4F 0.57%, #12b6e9 100%, #002B4F" }}>
             <div className="navbar-header">
                 <ul className="nav navbar-nav flex-row" >
-                    {/* Placeholder list item, you may need to add content */}
+                  
                     <li className="nav-item hidden lg:block"></li>
 
                     
