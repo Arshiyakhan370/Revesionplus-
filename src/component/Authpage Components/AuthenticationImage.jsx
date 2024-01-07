@@ -13,7 +13,7 @@ const AuthenticationImage = () => {
 
     // Use the selected role to determine the destination route
     const destinationRoute =
-      selectedRole === 'student' ? '/dashboar-Student' : '/dashboard';
+      selectedRole === 'student' ? '/dashboard' :  '/dashboar-Student';
 
     navigate(destinationRoute);
   };
