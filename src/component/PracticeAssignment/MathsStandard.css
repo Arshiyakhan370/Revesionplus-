@@ -1,0 +1,156 @@
+.questionbank-section {
+    padding: 70px 0 40px 0;
+    background: #fff;
+   
+}
+
+user agent stylesheet
+section {
+    display: block;
+}
+.questionbank-section ul {
+    flex-direction: column;
+    
+    width: 90%;
+}
+.questionbank-section ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px;
+    padding: 0px 7px;
+}
+ul {
+    padding: 0;
+    list-style: none;
+}
+mid-inner {
+    margin: 0 auto;
+    max-width: 100%;
+    width: 100%;
+}
+
+.wiki-mk {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.wiki-mk {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.mid-inner {
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 100%;
+}
+.mid-inner1   {
+  transition: transform 0.3s ease;
+}
+
+.mid-inner1:hover {
+  transform: scale(1.1); /* Zoom in by 10% on hover */
+}
+questionbank-section li {
+    width: 90%;
+    padding-top: 50px;
+    margin-bottom: 80px !important;
+}
+.questionbank-section li {
+    width: 30.30%;
+    margin-bottom: 80px !important;
+    list-style: none;
+    border-radius: 20px;
+    column-count: 1;
+    background: #D0E1FF;
+    padding: 15px;
+    margin: 1%;
+    transition: .4s ease-in-out;
+    -webkit-transition: 600ms ease transform;
+    -o-transition: 600ms ease transform;
+    transition: 600ms ease transform;
+    height: 100%;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+}
+user agent stylesheet
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+a {
+    text-decoration: none;
+    -moz-transition: all .2s;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+}
+a {
+    text-decoration: none;
+    outline: none;
+}
+user agent stylesheet
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.questionbank-item {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+user agent stylesheet
+div {
+}
+.questionbank-item img {
+    height: auto;
+    margin: -105px auto;
+}
+.questionbank-item img {
+    width: 80%;
+    height: 200px;
+    margin: -50px auto;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 74 77 / 25%);
+    border-radius: 20px;
+    display: flex;
+    margin-bottom: 20px !important;
+    background: #fff;
+}
+a img {
+    border: none;
+}
+img {
+    border: 0;
+    max-width: 100%;
+    width: 100%;
+}
+user agent stylesheet
+img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+.questionbank-item-head {
+    display: block;
+    padding-top: 4px;
+    height: auto;
+}
+.questionbank-item h2 {
+    font-size: 20px;
+    text-align: center;
+    line-height: 22px;
+    color: #253b80;
+    font-weight: bold;
+    margin: 0px;
+    padding: 5px 0px;
+}
+h1, h2, h3, h4, ul, p {
+    padding: 0px;
+    margin: 0px;
+}
+user agent stylesheet
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}

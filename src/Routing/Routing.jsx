@@ -28,6 +28,15 @@ import Drwaing from '../component/CreateQuestion/QuestionSub/Drwaing'
 import CreateAssignment from '../component/Dashboard Components/createAssignment/CreateAssignment'
 import StudentDash from '../component/StudentDashboard/StudentDash'
 import FilterForm from '../component/Dashboard Components/createAssignment/FilterForm'
+import PracticeQuestion from '../component/PracticeAssignment/PracticeQuestion'
+import SubjectList from '../component/PracticeAssignment/IBMYP'
+import MathsStandard from '../component/PracticeAssignment/MathsStandard'
+import IBPage from '../Pages/IBPage'
+import MathsSectionQuestion from '../component/PracticeAssignment/MathsSectionQuestion'
+import Golink from '../component/PracticeAssignment/Golink.'
+import IbDp from '../component/PracticeAssignment/IbDp'
+import IGcse from '../component/PracticeAssignment/IGcse'
+import Sat from '../component/PracticeAssignment/Sat'
 
 const Routing = () => {
   return (
@@ -60,7 +69,15 @@ const Routing = () => {
           <Route path='/drwing' element={<Drwaing/>} />
           <Route path='/dashboar-Student' element={<StudentDash/>} />
           <Route path='/create-filter' element={<FilterForm/>} />
-        </Routes>
+          <Route path="/practiceQuestion" element={<PracticeQuestion/>}/>
+          <Route path='/ibmyb' element={<SubjectList/>}/>
+          <Route path='/maths-standard' element={<IBPage/>}/>
+          <Route path='/maths-question' element={<MathsSectionQuestion/>}/>
+          <Route path='/go-link' element={<Golink/>}/>
+          <Route path='/ibdp' element={<IbDp/>}/>
+          <Route path='/igcse' element={<IGcse/>}/>
+          <Route path='/sat' element={<Sat/>}/>
+                  </Routes>
       </Suspense>
   )
 }

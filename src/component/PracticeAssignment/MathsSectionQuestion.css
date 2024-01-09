@@ -1,0 +1,98 @@
+.papertype-item {
+    background: #D0E1FF;
+    transition: .4s ease-in-out;
+    padding: 20px 15px 0 15px;
+    -webkit-transition: 600ms ease transform;
+    -o-transition: 600ms ease transform;
+    transition: 600ms ease transform;
+    height: 100%;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+    display: flex;
+    border-radius: 20px;
+    flex-direction: column;
+}
+.headerSecondry {
+    align-items: center;
+    background: none;
+    display: flex;
+    height: 60px;
+    position: relative;
+    background: #fff;
+}
+header-inner {
+    margin: 0 auto;
+    max-width: 100%;
+    width: 100%;
+}
+
+.wiki-mk {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.wiki-mk {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.header-inner {
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 100%;
+}
+{
+    text-decoration: none;
+    -moz-transition: all .2s;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+}
+a {
+    text-decoration: none;
+    outline: none;
+}
+.mid-inner2   {
+    transition: transform 0.3s ease;
+  }
+  
+  .mid-inner2:hover {
+    transform: scale(1.1); /* Zoom in by 10% on hover */
+  }
+user agent stylesheet
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.logo-m > img {
+    display: block;
+    max-width: 70px;
+    left: 8px;
+}
+.logo-m > img {
+    max-width: 130px;
+    transform: translateY(-1px);
+    position: absolute;
+    display: none;
+    left: 20px;
+}
+
+.logo1-d {
+    margin-left: 4px;
+    max-width: 250px !important;
+    transform: translateY(9px) !important;
+}
+.logo1-d {
+    max-width: 320px !important;
+    transform: translateY(0px) !important;
+    position: absolute;
+    transition: transform .3s ease-in-out;
+    padding-bottom: 40px;
+    top: 0;
+    z-index: 999;
+}
+a img {
+    border: none;
+}
+img {
+    border: 0;
+    max-width: 100%;
+    width: 100%;
+}

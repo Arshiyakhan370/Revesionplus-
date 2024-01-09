@@ -68,9 +68,6 @@ const maleAvatarUrl = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA
     };
 
   
-  // const toggleDarkMode = () => {
-  //   setDarkMode(!isDarkMode);
-  // };
 
   const toggleSidebar = () => {
     setSidebarClosed(!isSidebarClosed);
@@ -322,7 +319,7 @@ const maleAvatarUrl = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA
             {isOpen3 && (
             <ul>
                 <li className="nav-link">
-                  <Link to="">
+                  <Link to="/practiceQuestion">
                   <BookOpen className="icons"/> 
                     <span className="text nav-text">Add Category</span>
                   </Link>
