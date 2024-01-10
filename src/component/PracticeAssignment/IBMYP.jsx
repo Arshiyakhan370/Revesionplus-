@@ -5,6 +5,8 @@ import ButtonsSection from './ButtonsSection';
 import Footer from './Footer';
 import Nav from './Nav';
 
+  
+
 const SubjectList = () => {
   const imageUrls = [
     'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon1.png',
@@ -15,12 +17,18 @@ const SubjectList = () => {
 
   const buttonTexts = ['Maths', 'Maths Standard'];
   const MYP = ['MYP', 'MYP 4&5'];
+  
+  
 
+    
+  
+   
   return (
   <div>
   <Nav/>
       <Box style={{ height: 'auto', borderBottom: '1px solid #002b4f' }}>
       <ButtonsSection/>
+     
         <Container>
           <Grid container spacing={2} style={{ paddingBottom: '110px', paddingTop: '130px', paddingLeft: '10px' }}>
             {imageUrls.map((imageUrl, index) => (

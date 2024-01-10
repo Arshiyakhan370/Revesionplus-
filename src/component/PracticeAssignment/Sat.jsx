@@ -7,12 +7,17 @@ import Nav from './Nav';
 
 const Sat = () => {
   const imageUrls = [
-    'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon1.png',
-    'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon2.png',
+    'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon4.png',
     'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon5.png',
     'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon6.png',
+    'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon1.png',
+    'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon2.png',
+    
+    
+    
+    
     'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon3.png',
-    'https://ibgakiosk.com/v2/upload/mainimages/2023/01/icon4.png',
+   
    
    
  
@@ -22,16 +27,16 @@ const Sat = () => {
   const backgroundColors = ['#b7d0f7', '#02CCFE', '#b7d0f7', '#02CCFE', '#b7d0f7', '#02CCFE'];
 
   const buttonTexts = [
-    ['AI SL', ' AI HL', ' AA SL', ' AA HL'],
-    ['Biology SL',' Biology HL'],
+    ['Physics SL ','Physics HLL'],
     [' IB Psych'],
     ['IB Econ'],
+    ['AI SL', ' AI HL', ' AA SL', ' AA HL'],
+    ['Biology SL',' Biology HL'],
     ['  Chemistry SL',' Chemistry HL'],
-    ['Physics SL ','Physics HLL'],
-   
+ 
   ];
 
-  const MYP = ['IB Maths','IB Biology', 'IB Psych','IB Econ','IB Chemistry', 'IB Physics'  ];
+  const MYP = [ 'IB Physics' , 'IB Psych','IB Econ','IB Maths','IB Biology','IB Chemistry', ];
 
   if (!imageUrls || !backgroundColors || !buttonTexts || !MYP) {
     // Handle the case where one of the arrays is undefined or null
@@ -50,7 +55,7 @@ const Sat = () => {
                 <Paper style={{ ...cardStyle, backgroundColor: backgroundColors[index] }}>
                   <div style={cardHeaderStyle}>
                     <img style={cardImageStyle} src={imageUrl} alt={`MYP ${index}`} />
-                    <Typography variant="h6" className="text-center">
+                    <Typography variant="h6" className="text-center ">
                       {MYP[index]}
                     </Typography>
                   </div>
@@ -138,4 +143,4 @@ const buttonStyle = {
 
 
 
-export default Sat
+export default Sat;

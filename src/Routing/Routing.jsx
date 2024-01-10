@@ -37,6 +37,21 @@ import Golink from '../component/PracticeAssignment/Golink.'
 import IbDp from '../component/PracticeAssignment/IbDp'
 import IGcse from '../component/PracticeAssignment/IGcse'
 import Sat from '../component/PracticeAssignment/Sat'
+import Aisl from '../component/PracticeAssignment/Aisl'
+import AislLink from '../component/PracticeAssignment/AislLink'
+import AislLinkGoLink from '../component/PracticeAssignment/aislLinkGoLink'
+import AislQuestionPaper from '../component/PracticeAssignment/AislQuestionPaper'
+import AlhlComponent from '../component/PracticeAssignment/alHl/AlhlComponent'
+import AaslLink from '../component/PracticeAssignment/AASL/AaslLink';
+import PysicsSl from '../component/PracticeAssignment/IbDkPysicsSl/PysicsSl'
+import BussinesSl from '../component/PracticeAssignment/IBDPbUSINESS/BussinesSl'
+import BussinessHl from '../component/PracticeAssignment/IBDPbUSINESS/BussinessHl'
+import ChemistrySl from '../component/PracticeAssignment/IbdpChemistry/ChemistrySl'
+import ChemistryHl from '../component/PracticeAssignment/IbdpChemistry/ChemistryHl'
+import EconomicSl from '../component/PracticeAssignment/IBeconomic/EconomicSl'
+
+
+
 
 const Routing = () => {
   return (
@@ -77,6 +92,18 @@ const Routing = () => {
           <Route path='/ibdp' element={<IbDp/>}/>
           <Route path='/igcse' element={<IGcse/>}/>
           <Route path='/sat' element={<Sat/>}/>
+          <Route path='/aisl' element={<Aisl/>}/>
+          <Route path='/aislLink' element={<AislLink/>}/>
+          <Route path='/aisl-paper-go-link' element={<AislLinkGoLink/>}/>
+          <Route path='/aisl-Header-go-link' element={<AislQuestionPaper/>}/>
+          <Route path='/aihl' element={<AlhlComponent/>}/>
+          <Route path='/aasl' element={<AaslLink/>}/>
+          <Route path='/Pysics' element={<PysicsSl/>}/>
+          <Route path='/Businees-sl' element={<BussinesSl/>}/>
+          <Route path='/Businees-hl' element={<BussinessHl/>}/>
+          <Route path='/Chemistry-sl' element={<ChemistrySl/>}/>
+          <Route path='/Chemistry-hl' element={<ChemistryHl/>}/>
+          <Route path='/eco-sl' element={<EconomicSl/>}/>
                   </Routes>
       </Suspense>
   )

@@ -51,7 +51,13 @@ const ButtonsSection = () => {
         backgroundColor: '#3b5998',
         color: '#fff', 
       };
+      const handleGoBack = () => {
+        window.history.back();
+      };
     
+      const handleGoForward = () => {
+        window.history.forward();
+      };
       return (
         <div>
            
@@ -62,6 +68,25 @@ const ButtonsSection = () => {
     
          
           <div className="tab text-center " style={{paddingLeft:'300px', paddingRight:'100px', marginTop:'-60px'}}>
+          {/* <Button variant="primary" onClick={handleGoBack}  style={{
+                    ...tabButtonStyle}}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-arrow-left"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fillRule="evenodd"
+            d="M7.354 1.646a.5.5 0 0 1 0 .708L2.707 8H13.5a.5.5 0 0 1 0 1H2.707l4.647 4.646a.5.5 0 0 1 0 .708l-.708.707a.5.5 0 0 1-.707 0L.646 8.354a.5.5 0 0 1 0-.708L6.646.646a.5.5 0 0 1 .708 0z"
+          />
+        </svg>{' '}
+     
+      </Button> */}
+
+     
             {[0, 1, 2, 3].map((index) => (
               <Link to={getLinkPath(index)} key={index}>
                 <Button
@@ -78,6 +103,23 @@ const ButtonsSection = () => {
                 </Button>
               </Link>
             ))}
+            {/* <Button variant="primary" onClick={handleGoForward}  style={{
+                    ...tabButtonStyle}}>
+       
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-arrow-right"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fillRule="evenodd"
+            d="M8.646 1.646a.5.5 0 0 1 0 .708L13.293 8l-4.647 4.646a.5.5 0 0 1-.708-.708L11.793 8l-3.147-3.146a.5.5 0 0 1 .708-.708z"
+          />
+        </svg>
+      </Button> */}
           </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch, NavLink } from 'react-router-dom';
 import { Container, Paper, Grid, Typography, Box } from '@mui/material';
 import ButtonsSection from './ButtonsSection';
 import Footer from './Footer';
@@ -17,14 +17,34 @@ const IbDp = () => {
 
   const backgroundColors = ['#b7d0f7', '#02CCFE', '#b7d0f7', '#02CCFE', '#b7d0f7', '#02CCFE'];
 
-  const buttonTexts = [
-    ['AI SL', ' AI HL', ' AA SL', ' AA HL'],
-    [' Physics SL'],
-    [' SL ','HL'],
-    ['  Chemistry SL',' Chemistry HL'],
-    ['SL'],
-    ['Biology SL',' Biology HL']
-  ];
+ const buttonTexts = [
+  [
+    { text: 'AI SL', link: '/aisl' },
+    { text: 'AI HL', link: '/aihl' },
+    { text: 'AA SL', link: '/aasl' },
+    { text: 'AA HL', link: '/aa-hl' },
+  ],
+  [
+    { text: 'Physics SL', link: '/Pysics' },
+  ],
+  [
+    { text: 'SL', link: '/Businees-sl' },
+    { text: 'HL', link: '/Businees-hl' },
+  ],
+  [
+    { text: 'Chemistry SL', link: '/Chemistry-sl' },
+    { text: 'Chemistry HL', link: '/Chemistry-hl' },
+  ],
+  [
+    { text: 'SL', link: '/eco-sl' },
+   
+  ],
+  [
+    { text: 'SL', link: '/biology-sl' },
+    { text: 'HL', link: '/biology-hl' },
+  ],
+];
+
 
   const MYP = ['IB Maths', 'IB Physics', 'Business Management', 'IB Chemistry', 'IB Econ', 'IB Biology'];
 
@@ -51,11 +71,11 @@ const IbDp = () => {
                   </div>
                   <Link to="/maths-standard">
                     <div style={buttonContainerStyle}>
-                      {buttonTexts[index] && buttonTexts[index].map((buttonText, buttonIndex) => (
-                        <div key={buttonIndex} style={{ ...buttonStyle }}>
-                          {buttonText}
-                        </div>
-                      ))}
+                    {buttonTexts[index] && buttonTexts[index].map((button, buttonIndex) => (
+  <Link key={buttonIndex} to={button.link} style={{ ...buttonStyle }}>
+    {button.text}
+  </Link>
+))}
                     </div>
                   </Link>
                   <Typography style={{ textAlign: 'center', marginTop: '10px', color: '#2377b5' }} variant="body2"></Typography>

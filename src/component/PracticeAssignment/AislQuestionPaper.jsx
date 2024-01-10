@@ -1,4 +1,4 @@
-// MathSection.js
+
 
 import React, { useState } from 'react';
 import './Golink.css'; // Assuming Golink.css is in the same directory as this component
@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Nav from './Nav';
 
-const Golink= () => {
+const AislQuestionPaper = () => {
   const [selectedSubtopics, setSelectedSubtopics] = useState([]);
   const [selectedCriteria, setSelectedCriteria] = useState([]);
 
@@ -61,20 +61,23 @@ const Golink= () => {
     <Nav/>
       <ThemeProvider theme={theme}>
       <div className='text-center pt-20 pb-4'>
-        <Button variant="contained" style={{ margin: '5px', height:'40px' }}>
-          B MYP
+      <Button variant="contained" style={{ margin: '5px' }}>
+        IB DP 
+
         </Button>
-        <Button variant="contained" style={{  margin: '5px' , height:'40px'}}>
-          MYP 4&5
+        <Button variant="contained" style={{  margin: '5px' }}>
+         Math AI 
         </Button>
-        <Button variant="contained" style={{  margin: '5px' , height:'40px'}}>
-          Math Standard
+        <Button variant="contained" style={{  margin: '5px' }}>
+         SL
         </Button>
-        <Button variant="contained" style={{ margin: '5px', height:'40px' }}>
-          MYP Questionbank
+        <Button variant="contained" style={{ margin: '5px' }}>
+        Hodder 2019
         </Button>
-        
-       <Link to='/go-link'><Button variant="contained" style={{ height:'40px', width:'120px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', Width:'120px', backgroundColor: 'lightSkyBlue', borderRadius: '30px', margin: '5px' }}>
+        <Button variant="contained" style={{  margin: '5px' }}>
+          Paper
+        </Button>
+       <Link to=''><Button variant="contained" style={{ width:'120px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', Width:'120px', backgroundColor: 'lightSkyBlue', borderRadius: '30px', margin: '5px' }}>
           0
         </Button></Link> 
       </div>
@@ -130,4 +133,6 @@ const Golink= () => {
   );
 };
 
-export default Golink;
+
+
+export default AislQuestionPaper
