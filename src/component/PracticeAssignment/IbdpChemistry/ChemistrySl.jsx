@@ -11,21 +11,21 @@ const questionBankData = [
     title: 'Cambridge second Ed',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#b7d0f7',
-    link:'' 
+    link:'/chemistry-cam-paper1' 
   },
   {
     id: 2,
     title: ' Oxford 2023 Ed',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#FFE5CC',
-    link:'' 
+    link:'/chemistry-oxford-paper1' 
   },
   {
     id: 3,
     title: 'Pearson 23 Ed',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#b7d0f7',
-    link:'' 
+    link:'/chemistry-person' 
   },
 ];
 const theme = createTheme({

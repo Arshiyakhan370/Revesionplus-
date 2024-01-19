@@ -11,7 +11,7 @@ const questionBankData = [
     title: 'Paul Hoang 5th Ed.',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#b7d0f7',
-    link:'/aislLink' 
+    link:'/busniess-paper' 
   },
  
  
@@ -40,7 +40,7 @@ const BussinessHl = () => {
         <Button variant="contained" style={{  margin: '5px' }}>
          HL
         </Button>
-       <Link to='/aisl-paper-go-link'><Button variant="contained" style={{ width:'120px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', Width:'120px', backgroundColor: 'lightSkyBlue', borderRadius: '30px', margin: '5px' }}>
+       <Link to='/busniess-paper'><Button variant="contained" style={{ width:'120px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', Width:'120px', backgroundColor: 'lightSkyBlue', borderRadius: '30px', margin: '5px' }}>
           Go
         </Button></Link> 
       </div>

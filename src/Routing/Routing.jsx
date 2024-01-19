@@ -15,13 +15,13 @@ import Questions from '../component/CreateQuestion/Questions'
 import QuestionPage from '../Pages/QuestionPage'
 import QuestionDescriptionPage from '../Pages/QuestionDescriptionPage'
 import LibraryPage from '../Pages/LibraryPage'
-import Text from '../component/CreateQuestion/Text'
-import According from '../component/CreateQuestion/According'
-import Image from '../component/CreateQuestion/Image'
-import Pdf from '../component/CreateQuestion/Pdf'
-import Vdeo from '../component/CreateQuestion/Vdeo'
-import Audio from '../component/CreateQuestion/Audio'
-import SimulationComponent from '../component/CreateQuestion/Simulation'
+import Text from '../component/CreateQuestion/QuestionDescriptionSection/Text'
+import According from '../component/CreateQuestion/QuestionDescriptionSection/According'
+import Image from '../component/CreateQuestion/QuestionDescriptionSection/Image'
+import Pdf from '../component/CreateQuestion/QuestionDescriptionSection/Pdf'
+import Vdeo from '../component/CreateQuestion/QuestionDescriptionSection/Vdeo'
+import Audio from '../component/CreateQuestion/QuestionDescriptionSection/Audio'
+import SimulationComponent from '../component/CreateQuestion/QuestionDescriptionSection/Simulation'
 import Mcq from '../component/CreateQuestion/QuestionSub/Mcq'
 import Drwaing from '../component/CreateQuestion/QuestionSub/Drwaing'
 
@@ -49,6 +49,33 @@ import BussinessHl from '../component/PracticeAssignment/IBDPbUSINESS/BussinessH
 import ChemistrySl from '../component/PracticeAssignment/IbdpChemistry/ChemistrySl'
 import ChemistryHl from '../component/PracticeAssignment/IbdpChemistry/ChemistryHl'
 import EconomicSl from '../component/PracticeAssignment/IBeconomic/EconomicSl'
+import Paper1Secound from '../component/PracticeAssignment/Paper1Secound'
+import Paper1MarthscoreLink from '../component/PracticeAssignment/paper1MarthscoreLink'
+import SlEconomic from '../component/PracticeAssignment/IBeconomic/SlEconomic'
+import Hase2Mathematics from '../component/PracticeAssignment/Hase2Mathematics'
+import HaseMathsPpaper1 from '../component/PracticeAssignment/HaseMathsPpaper1'
+import HaseMathematicsAlhl from '../component/PracticeAssignment/alHl/HaseMathematicsAlhl'
+import Hase2AlhlPaper2 from '../component/PracticeAssignment/alHl/Hase2AlhlPaper2'
+import PhysicsPaper from '../component/PracticeAssignment/IbDkPysicsSl/PhysicsPaper'
+import Paper1 from '../component/PracticeAssignment/IbDkPysicsSl/Paper1'
+import Oxford from '../component/PracticeAssignment/IbDkPysicsSl/Oxford'
+import OxfordPaper1 from '../component/PracticeAssignment/IbDkPysicsSl/OxfordPaper1'
+import BussSlPaper from '../component/PracticeAssignment/IBDPbUSINESS/BussSlPaper'
+import BussPaper1and2 from '../component/PracticeAssignment/IBDPbUSINESS/BussPaper1and2'
+import ChemistryCombridge from '../component/PracticeAssignment/IbdpChemistry/ChemistryCombridge'
+import ChemistrayPperLink from '../component/PracticeAssignment/IbdpChemistry/ChemistrayPperLink'
+import ChemistryOxford from '../component/PracticeAssignment/IbdpChemistry/ChemistryOxford'
+import ChemistryPerson from '../component/PracticeAssignment/IbdpChemistry/ChemistryPerson'
+import ChemOxfordPaper from '../component/PracticeAssignment/IbdpChemistry/ChemOxfordPaper'
+import EconomicSlPaper from '../component/PracticeAssignment/IBeconomic/EconomicSlPaper'
+import EconimicPpaer2 from '../component/PracticeAssignment/IBeconomic/EconimicPpaer2'
+import OxfordEconimic from '../component/PracticeAssignment/IBeconomic/OxfordEconimic'
+import EconimicBlink from '../component/PracticeAssignment/IBeconomic/EconimicBlink'
+import TeacherDashboard from '../component/TeacherDashboard/TeacherDashboard'
+import OnlineClasses from '../component/TeacherDashboard/OnlineClasses'
+import ScheduleContainer from '../component/TeacherDashboard/ScheduleContainer'
+import PastClass from '../component/TeacherDashboard/PastClass'
+import Navbar1 from '../component/Dashboard Components/Buttons1'
 
 
 
@@ -104,6 +131,35 @@ const Routing = () => {
           <Route path='/Chemistry-sl' element={<ChemistrySl/>}/>
           <Route path='/Chemistry-hl' element={<ChemistryHl/>}/>
           <Route path='/eco-sl' element={<EconomicSl/>}/>
+          <Route path='/core-paper1' element={<Paper1Secound/>}/>
+          <Route path='/maths-core-paper1' element={<Paper1MarthscoreLink/>}/>
+          <Route path='/hase2-maths-paper1' element={<Hase2Mathematics/>}/>
+          <Route path='/hase2-maths-paper1-link' element={<HaseMathsPpaper1/>}/>
+          <Route path='/hase2-maths-paper2-link' element={<HaseMathematicsAlhl/>}/>
+          <Route path='/hase2-maths-paper2-alhl2' element={<Hase2AlhlPaper2/>}/>
+          <Route path='/pysics-paper' element={<PhysicsPaper/>}/>
+          <Route path='/pysics-paper1' element={<Paper1/>}/>
+          <Route path='/Oxford-paper1' element={<Oxford/>}/>
+          <Route path='/Oxford-paper' element={<OxfordPaper1/>}/>
+          <Route path='/busniess-paper' element={<BussSlPaper/>}/>
+          <Route path='/busniess1-paper1and2' element={<BussPaper1and2/>}/>
+          <Route path='/chemistry-cam-paper1' element={<ChemistryCombridge/>}/>
+          <Route path='/chemistry-paper1' element={<ChemistrayPperLink/>}/>
+          <Route path='/chemistry-oxford-paper1' element={<ChemistryOxford/>}/>
+          <Route path='/chemistry-oxford-paper1-link' element={<ChemistrayPperLink/>}/>
+          <Route path='/chemistry-person' element={<ChemistryPerson/>}/>
+          <Route path='/chemistry-person-paper' element={<ChemOxfordPaper/>}/>
+          <Route path='/Economic-paper-sl' element={<EconomicSlPaper/>}/>
+          <Route path='/Economic-paper2' element={<EconimicPpaer2/>}/>
+          <Route path='/Economic-paper2' element={<EconimicPpaer2/>}/>
+          <Route path='/Economic-Blink-paper2' element={<OxfordEconimic/>}/>
+          <Route path='/Economic-Blink-paper-link' element={<EconimicBlink/>}/>
+          <Route path='/TeacherDashboard' element={<TeacherDashboard/>}/>
+          <Route path='/Online-classes' element={<OnlineClasses/>}/>
+          <Route path='/schdule-box' element={<ScheduleContainer/>}/>
+          <Route path='/past-class' element={<PastClass/>}/>
+          <Route path='/nav1' element={<Navbar1/>}/>
+
                   </Routes>
       </Suspense>
   )

@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from '../AdminDashboard/Header';
+import Header from '../../AdminDashboard/Header';
 import { EditorState, convertToRaw } from 'draft-js';
 const Image = () => {
   const [imageSrc, setImageSrc] = useState(null);

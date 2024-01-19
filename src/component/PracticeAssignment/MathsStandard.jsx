@@ -30,7 +30,7 @@ const MathsStandard = () => {
         </Button></Link> 
       </div>
     </ThemeProvider>
-      <div className="mid-inner wiki-mk  pt-20 pb-20 pl-40 pr-40">
+      <div className="mid-inner wiki-mk  pt-30 pb-20 pl-40 pr-40">
 
         <ul className='mid-inner1'>
 

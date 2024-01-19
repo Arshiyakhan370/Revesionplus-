@@ -1,17 +1,21 @@
-import React from 'react'
-import NavSideBar from '../component/Dashboard Components/SideBarComponents/NavSideBar'
-// import CreateQuestion from '../component/CreateQuestion.jsx/CreateQuestion'
-import Sidebar from '../component/Dashboard Components/SideBarComponents/Sidebar'
+import React, { Fragment, useState } from 'react'
 import CreateQuestion from '../component/CreateQuestion/CreateQuestion'
 import Header from '../component/AdminDashboard/Header'
+import Navbar1 from '../component/Dashboard Components/Buttons1';
 
 const CreateQuestionPage = () => {
-  return (
-    <div>
-    <Header/>
-        {/* <NavSideBar/> */}
-        <CreateQuestion   />
-    </div>
+  const [isSidebarClosed, setSidebarClosed] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarClosed(!isSidebarClosed);
+  };
+    return (
+        <Fragment>
+      <Header toggleSidebar={toggleSidebar}/>
+   <Navbar1/>
+      <CreateQuestion   isSidebarClosed={isSidebarClosed}/>
+      
+    </Fragment>
   )
 }
 

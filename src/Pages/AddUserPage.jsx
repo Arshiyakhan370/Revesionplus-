@@ -1,16 +1,19 @@
-import React, { Fragment } from 'react'
-import FormAddUser from '../component/Dashboard Components/FormAddUser'
-import Sidebar from '../component/Dashboard Components/SideBarComponents/Sidebar'
-import NavSideBar from '../component/Dashboard Components/SideBarComponents/NavSideBar'
-import ListContainer from '../component/Dashboard Components/ListContainer'
+import React, { Fragment, useState } from 'react'
 import Header from '../component/AdminDashboard/Header'
+import Navbar1 from '../component/Dashboard Components/Buttons1';
+import ListContainer from '../component/Dashboard Components/userManage/ListContainer';
 
 const AddUserPage = () => {
+  const [isSidebarClosed, setSidebarClosed] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarClosed(!isSidebarClosed);
+  };
     return (
         <Fragment>
-      <Header/>
-      {/* <NavSideBar/> */}
-      <ListContainer/>
+      <Header toggleSidebar={toggleSidebar}/>
+   <Navbar1/>
+      <ListContainer isSidebarClosed={isSidebarClosed}/>
         
         </Fragment>
     )

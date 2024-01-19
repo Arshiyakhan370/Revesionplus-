@@ -11,14 +11,14 @@ const questionBankData = [
     title: 'Haese Mathematics AISL 2',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#b7d0f7',
-    link:'' 
+    link:'/hase2-maths-paper2-link' 
   },
   {
     id: 2,
     title: 'Hodder 2019',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#FFE5CC',
-    link:'' 
+    link:'/aislLink' 
   },
  
 ];

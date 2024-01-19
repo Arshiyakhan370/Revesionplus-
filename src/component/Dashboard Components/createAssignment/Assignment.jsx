@@ -210,6 +210,8 @@ const Assignment = () => {
           <Button
             variant="contained"
             color="primary"
+            style={{  marginRight:'30px',color:'white', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) ',height:'40px'}}
+      
             type="submit"
             enable={selectedQuestions.length !== 0}
           >

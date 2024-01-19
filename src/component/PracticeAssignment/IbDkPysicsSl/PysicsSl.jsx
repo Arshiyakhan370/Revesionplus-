@@ -11,14 +11,14 @@ const questionBankData = [
     title: 'Tsokos 6th Ed.',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#b7d0f7',
-    link:'/aislLink' 
+    link:'/pysics-paper' 
   },
   {
     id: 2,
     title: 'Oxford',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#FFE5CC',
-    link:'/aislLink' 
+    link:'/Oxford-paper1' 
   },
  
 ];

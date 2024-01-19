@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Header.css'
-
 import { ChevronRight, Home, Users ,UserPlus,QuestionMark, BookOpen, Clipboard, HelpCircle, Info, MessageCircle } from 'react-feather';
-import { Avatar } from '@mui/material';
 
-const Header = () => {
+
+const Header = ({toggleSidebar}) => {
   const [isDarkMode, setDarkMode] = useState(false);
   const [isSidebarClosed, setSidebarClosed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -69,12 +68,16 @@ const maleAvatarUrl = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA
 
   
 
-  const toggleSidebar = () => {
+    const handleButtonClick = () => {
+      toggleSidebar();
+      toggleSidebar1();
+    };
+  const toggleSidebar1 = () => {
     setSidebarClosed(!isSidebarClosed);
   };
   
   return (
-    <nav className={`sidebar ${isSidebarClosed ? 'close' : ''} ${isDarkMode ? 'dark' : ''}`}>
+    <nav className={`sidebar  ${isSidebarClosed ? 'close' : ''} ${isDarkMode ? 'dark' : ''}`}>
       <header>
         <div className="image-text">
         <div className="text header-text">
@@ -86,10 +89,8 @@ const maleAvatarUrl = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA
         
           </div>
         </div>
-        <ChevronRight className="toggle"  onClick={toggleSidebar} />
+        <ChevronRight className="toggle mr-4 border border-white"  onClick={handleButtonClick } />
       </header>
-
-      
       <div className="menu-bar">
         <div className="menu">
           <ul className="menu-links">
@@ -344,7 +345,7 @@ const maleAvatarUrl = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA
           </ul>
         </div>
 
-        <div className="bottom-content ml-6">
+        <div className="bottom-content">
           <li className="nav-link">
             <Link to="#">
             <svg xmlns="http://www.w3.org/2000/svg" 
@@ -358,18 +359,7 @@ const maleAvatarUrl = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA
             </Link>
           </li>
 
-        {/* <li className="mode"> */}
-          {/* <div className="moon-sun">
-            <i className={`bx bx-moon icons moon ${isDarkMode ? '' : 'hidden'}`}></i>
-            <i className={`bx bx-sun icons sun ${isDarkMode ? 'hidden' : ''}`}></i>
-          </div>
-          <span className="mode-text text" onClick={toggleDarkMode}>
-            {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-          </span>
-          <div className="toggle-switch" onClick={toggleDarkMode}>
-            <span className="switch"></span>
-          </div> */}
-        {/* </li> */}
+       
       </div>
     </div>
     </nav>

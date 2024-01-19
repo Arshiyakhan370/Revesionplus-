@@ -1,16 +1,21 @@
-import React from 'react'
-import StudentAdd from '../component/Dashboard Components/StudentAdd'
-import Sidebar from '../component/Dashboard Components/SideBarComponents/Sidebar'
-import NavSideBar from '../component/Dashboard Components/SideBarComponents/NavSideBar'
+import React, { Fragment, useState } from 'react'
+
 import Header from '../component/AdminDashboard/Header'
+import Navbar1 from '../component/Dashboard Components/Buttons1'
+import StudentAdd from '../component/Dashboard Components/userManage/StudentAdd';
 
 const StudentPage = () => {
-  return (
-    <div>
-    <Header/>
-    {/* <NavSideBar/> */}
-        <StudentAdd/>
-    </div>
+  const [isSidebarClosed, setSidebarClosed] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarClosed(!isSidebarClosed);
+  };
+    return (
+        <Fragment>
+      <Header toggleSidebar={toggleSidebar}/>
+   <Navbar1/>
+   <StudentAdd isSidebarClosed={isSidebarClosed}/>
+       </Fragment>
   )
 }
 

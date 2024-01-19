@@ -1,5 +1,5 @@
 .questionbank-section {
-    padding: 70px 0 40px 0;
+    padding: 70px 0 0 0;
     background: #fff;
    
 }
@@ -10,8 +10,7 @@ section {
 }
 .questionbank-section ul {
     flex-direction: column;
-    
-    width: 90%;
+    width: 100%;
 }
 .questionbank-section ul {
     display: flex;
@@ -19,11 +18,16 @@ section {
     margin: 0px;
     padding: 0px 7px;
 }
+.questionbank-section ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start; 
+}
 ul {
     padding: 0;
     list-style: none;
 }
-mid-inner {
+.mid-inner {
     margin: 0 auto;
     max-width: 100%;
     width: 100%;
@@ -34,8 +38,8 @@ mid-inner {
     padding-right: 10px;
 }
 .wiki-mk {
-    padding-left: 40px;
-    padding-right: 40px;
+    /* padding-left: 40px;
+    padding-right: 40px; */
 }
 .mid-inner {
     margin: 0 auto;
@@ -49,13 +53,13 @@ mid-inner {
 .mid-inner1:hover {
   transform: scale(1.1); /* Zoom in by 10% on hover */
 }
-questionbank-section li {
-    width: 90%;
+.questionbank-section li {
+    width: 100%;
     padding-top: 50px;
     margin-bottom: 80px !important;
 }
 .questionbank-section li {
-    width: 30.30%;
+    width: 22%;
     margin-bottom: 80px !important;
     list-style: none;
     border-radius: 20px;
@@ -75,7 +79,7 @@ li {
     display: list-item;
     text-align: -webkit-match-parent;
 }
-a {
+LInk {
     text-decoration: none;
     -moz-transition: all .2s;
     -webkit-transition: all .2s;
@@ -104,8 +108,8 @@ div {
     margin: -105px auto;
 }
 .questionbank-item img {
-    width: 80%;
-    height: 200px;
+    width: 70%;
+    height: 180px;
     margin: -50px auto;
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 74 77 / 25%);
     border-radius: 20px;

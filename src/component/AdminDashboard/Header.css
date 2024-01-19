@@ -22,28 +22,13 @@
   --trans-04: all 0.5s ease;
 }
 
-body {
-  height: 100vh;
-  background-color: var(--body-color);
-  transition: var(--trans-02);
-}
 
-body.dark {
-  --body-color: #181914;
-  --sidebar-color: #242526;
-  --primary-color: #34383c;
-  --primary-color-light: #383a3c;
-  --toggle-color: #fff;
-  --text-color: #ccc;
-  --dark-color: #fff;
-}
-/* Reusable CSS */
+
 
 .sidebar .text {
   font-size: 16px;
   font-weight: 500;
   color: var(--text-color);
-  /* transition: var(--trans-04); */
   white-space: unset;
   opacity: 1;
 }
@@ -54,8 +39,9 @@ body.dark {
   align-items: center;
 }
 
-/* Sidebar */
+
 .sidebar {
+  display:block;
   position: fixed;
   top: 0;
   left: 0px;
@@ -110,7 +96,6 @@ body.dark {
   position: absolute;
   top: 50%;
   right: -5px;
-  /* left:90px; */
   transform: translateY(-50%) rotate(180deg);
   height: 30px;
   width: 30px;
@@ -153,12 +138,11 @@ body.dark {
 
 .sidebar li {
   height: 50px;
-  /* background-color: red; */
   margin-top: 10px;
   list-style: none;
   display: flex;
   align-items: center;
-  margin-left:-20px;
+  margin-left:10px;
   
 }
 
@@ -197,16 +181,10 @@ body.dark {
   border-radius: 6px;
   transition: var(--trans-04);
   text-align: left;
-  /* border:2px solid red; */
+ 
 }
 
-.sidebar li a:hover {
-  background-color: #002B4F;
-}
-.sidebar li a:hover .icons,
-.sidebar li a:hover .text {
-  color: var(--dark-color);
-}
+
 
 .sidebar .menu-bar {
   height: 100%;
@@ -236,15 +214,10 @@ body.dark {
 .menu-bar .mode i.sun {
   opacity: 0;
 }
-body.dark .menu-bar .mode i.sun {
-  opacity: 1;
-}
-body.dark .menu-bar .mode i.moon {
-  opacity: 0;
-}
+
 .menu-bar .mode .toggle-switch {
   position: absolute;
-  /* left: 0; */
+  
   right: -10px;
   display: flex;
   height: 100%;
@@ -283,7 +256,7 @@ body.dark .switch::before {
 
 body.dark .sidebar .image img {
   background-color: #fff;
-  /* border-color: 2px solid #000; */
+ 
 }
 .pro-sidebar-logo {
   display: flex;
@@ -304,7 +277,7 @@ body.dark .sidebar .image img {
     background: linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important;
     margin-right: 10px;
   }
-
+ 
    h5 {
     overflow: hidden;
     white-space: nowrap;
@@ -315,9 +288,10 @@ body.dark .sidebar .image img {
     opacity: 1;
     color: #f5f5f5;
   }
-
+  
   
 }
+
 .profile-item {
   display: flex;
   align-items: center;
@@ -338,7 +312,6 @@ body.dark .sidebar .image img {
 }
 
 .name {
-  /* font-weight: bold; */
   font-size:18px;
   color: #f5f5f5;
 }
@@ -367,4 +340,9 @@ body.dark .search-bar input {
 
 .sidebar.close .toggle {
   transform: translateY(-50%);
+}
+@media (max-width: 1024px) {
+  .sidebar {
+    display:none;
+  }
 }

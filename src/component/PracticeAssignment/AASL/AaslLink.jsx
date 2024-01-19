@@ -13,7 +13,7 @@ const questionBankData = [
     title: 'Hodder 2019',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#b7d0f7',
-    link:'' 
+    link:'/aislLink' 
   },
  
  

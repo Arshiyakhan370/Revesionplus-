@@ -3,7 +3,7 @@ import { Form, Button, Col, Row, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import Header from '../AdminDashboard/Header';
+import Header from '../../AdminDashboard/Header';
 import { useDropzone } from 'react-dropzone';
 
 

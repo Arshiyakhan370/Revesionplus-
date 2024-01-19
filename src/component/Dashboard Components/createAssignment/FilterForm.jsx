@@ -59,29 +59,16 @@ const YourComponent = () => {
   const handleGoBack = () => {
     window.history.back();
   };
-  useEffect(() => {
-    const logo = document.getElementById('pro-sidebar-logo');
-
-    gsap.to(logo, {
-      x: '100vw',  
-      duration: 10,
-      ease: 'linear',
-      repeat: -1,
-      onComplete: () => {
-        gsap.set(logo, { x: 0 });
-      },
-    });
-  }, []); 
+ 
   return (
     <div>
-     <div className="text header-text">
-          <span id='pro-sidebar-logo' className="pro-sidebar-logo  mt-4 ml-8">
+     <nav className="navbar navbar-light bg-light  flex flex-row">
+        <span id="" className="pro-sidebar-logo ml-8 ">
           <div>M</div>
-          <h5 className='text-black '>My Revision+</h5>
-           
-          </span>
-        
-          </div>
+          <h5 className='text-black'> My Revision+ </h5>
+        </span> 
+        <Button variant='primary' style={{  marginRight:'30px',color:'white', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) '}}>LogOut</Button>
+      </nav>
           <div className='ml-10 mt-8 text-black w-8 h-8  '>
           <Button onClick={handleGoBack} >
       <ArrowLeft size={24} />

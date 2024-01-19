@@ -5,7 +5,7 @@ import { convertToRaw } from 'draft-js';
 import Dropzone from 'react-dropzone';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from '../AdminDashboard/Header';
+import Header from '../../AdminDashboard/Header';
 
 const SimulationComponent = () => {
   const [description, setDescription] = useState('');

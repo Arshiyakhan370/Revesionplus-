@@ -1,6 +1,5 @@
-
-.mainpage{
-    /* background-image:url('https://img.freepik.com/premium-vector/e-learning-technology-concept_46706-901.jpg') */
+.images{
+    display:block !important;
 }
 .section-right {
     width: 40%;
@@ -8,9 +7,8 @@
     height: 100%;
     float: left;
     display: block;
-    background: #fff;
+    background-color: transparent;
 }
-
 
 
     .section-right h2 {
@@ -148,8 +146,7 @@ button, input {
     color: #000;
     text-align: right;
     font-size: 16px;
-    padding-bottom: 10px;
-    /* font-family: 'Roboto', sans-serif; */
+    padding-bottom: 10px; 
     font-weight: 400px;
 }
 
@@ -188,7 +185,6 @@ label {
     border: 1px solid #002B4F;
     padding: 8px 16px;
     color: #fff;
-    /* font-family: 'Roboto', sans-serif; */
     border-radius: 7px;
     font-size: 20px;
     width: 190px;
@@ -198,4 +194,81 @@ label {
     box-shadow: 0 10px 20px rgb(116 62 27 / 20%), 0 5px 10px rgb(116 62 27 / 10%);
     justify-content: center;
     align-items: center;
+}
+.images {
+    display:block;
+}
+@media (min-width: 1024px) {
+    .section-right {
+        width: 100%;
+        padding: 4% 4% 4% 4%;
+    }
+    .tab button {
+        width: 48%;
+        margin: 0 1%;
+    }
+    .images {
+        display:block;
+    }
+}
+
+@media (min-width: 768px) {
+    .section-right {
+        width: 100%;
+        padding: 4% 4% 4% 4%;
+    }
+
+    .tab button {
+        width: 48%;
+        margin: 0 1%;
+    }
+    .images{
+        display:none;
+    }
+}
+
+@media (max-width: 767px) {
+    
+    .section-right {
+        width: 100%;
+        padding: 4% 4% 4% 4%;
+    }
+
+    .tab button {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+    .images {
+        display:none ;
+    }
+}
+@media (max-width: 420px) {
+    
+    .section-right {
+        width: 100%;
+        padding: 4% 8% 4% 8%;
+    }
+
+    .tab button {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+    .images {
+        display:none !important;;
+    }
+}
+@media (max-width: 365px) {
+    
+    .section-right {
+        width: 100%;
+        padding: 4% 8% 4% 8%;
+    }
+
+    .tab button {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+    .images {
+        display:none ;
+    }
 }

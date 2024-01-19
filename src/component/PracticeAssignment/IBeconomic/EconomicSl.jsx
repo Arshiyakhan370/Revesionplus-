@@ -11,14 +11,14 @@ const questionBankData = [
     title: 'Ellie Tragakes-Third edition',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#b7d0f7',
-    link:'' 
+    link:'/Economic-paper-sl' 
   },
   {
     id: 2,
     title: ' Oxford_2020_Jocelyn Blink,Ian Dorton',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#FFE5CC',
-    link:'' 
+    link:'/Economic-Blink-paper2' 
   },
  
 ];

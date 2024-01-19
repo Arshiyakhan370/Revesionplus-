@@ -18,14 +18,14 @@ const questionBankData = [
     title: 'Haese Mathematics Core 1 AISL & AASL',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#FFE5CC',
-    link:'/aislLink' 
+    link:'/core-paper1' 
   },
   {
     id: 3,
     title: 'Haese Mathematics AISL 2',
     imageSrc: 'https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png',
     backgroundColor: '#b7d0f7',
-    link:'/aislLink'  
+    link:'/hase2-maths-paper1'  
   },
 ];
 const theme = createTheme({

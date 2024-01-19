@@ -1,35 +1,43 @@
 import React, { useState } from 'react';
 import { Form, Button, Col, Row, Modal } from 'react-bootstrap';
-import { useDropzone } from 'react-dropzone';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from '../AdminDashboard/Header';
-import { EditorState, convertToRaw } from 'draft-js';
+import Header from '../../AdminDashboard/Header';
+import { useDropzone } from 'react-dropzone';
 
-const Audio = () => {
+
+const PdfComponent = ({ pdfFile }) => {
+  return (
+    <object
+      data={pdfFile}
+      type="application/pdf"
+      width="100%"
+      height="500px"
+    >
+      <p>PDF cannot be displayed. Please download it.</p>
+    </object>
+  );
+};
+
+const Pdf = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [pdfFile, setPdfFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [audioBlob, setAudioBlob] = useState(null);
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    accept: 'audio/*',
+    accept: '.pdf',
     onDrop: (acceptedFiles) => {
       const file = acceptedFiles[0];
+
       if (file) {
+        setPdfFile(URL.createObjectURL(file));
       }
     },
   });
 
-  const handleImageUpload = (file) => {
-    return new Promise((resolve, reject) => {
-      const imageUrl = 'https://example.com/placeholder.jpg';
-      resolve({ data: { link: imageUrl } });
-    });
-  };
-
-  const handleAddFromUrl = () => {
+  const handleAddPdf = () => {
     setShowModal(true);
   };
 
@@ -37,19 +45,19 @@ const Audio = () => {
     setShowModal(false);
   };
 
-  const handleUrlSubmit = () => {
+  const handlePdfSubmit = () => {
    
     handleModalClose();
   };
 
-  const handleSave = () => {
-   
-    console.log('Form submitted:', { title, description, audioBlob });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
   };
 
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    
+   
     window.history.back();
   };
 
@@ -57,29 +65,17 @@ const Audio = () => {
     <div>
       <Header />
       <div className="w-[650px] ml-[500px] mt-16">
-      <h2 className='text-center mtb-8'>Audio</h2>
+      <h2 className='text-center mb-8'>Pdf</h2>
         <Form
           id="segments_1"
           className="ant-form ant-form-vertical ant-form-middle css-14mf4t4"
-          onSubmit={handleSave}
         >
-          {/* Audio Recording */}
-          <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
-            <Row className="css-14mf4t4" style={{ marginLeft: '-12px', marginRight: '-12px' }}>
-              <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
-                {/* <ReactMic
-                  record={false} // Set to true to start recording
-                  className="sound-wave"
-                  onStop={(blob) => setAudioBlob(blob)}
-                  onData={(data) => console.log('chunk of real-time data', data)}
-                /> */}
-                <button onClick={() => {}}>Start Recording</button>
-                <button onClick={() => {}}>Stop Recording</button>
-              </Col>
-            </Row>
-          </Col>
           {/* Title */}
-          <Col xs={24} className="css-14mf4t4" style={{paddingTop:'10px', paddingLeft: '12px', paddingRight: '12px' }}>
+          <Col
+            xs={24}
+            className="css-14mf4t4"
+            style={{ paddingLeft: '12px', paddingRight: '12px' }}
+          >
             <div className="ant-form-item css-14mf4t4">
               <div className="ant-row ant-form-item-row css-14mf4t4">
                 <div className="ant-col ant-form-item-control css-14mf4t4">
@@ -100,8 +96,13 @@ const Audio = () => {
               </div>
             </div>
           </Col>
+
           {/* Description */}
-          <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+          <Col
+            xs={24}
+            className="css-14mf4t4"
+            style={{ paddingLeft: '12px', paddingRight: '12px' }}
+          >
             <div className="ant-form-item css-14mf4t4">
               <div className="ant-row ant-form-item-row css-14mf4t4">
                 <div className="ant-col ant-form-item-control css-14mf4t4">
@@ -114,11 +115,19 @@ const Audio = () => {
                             className="ant-checkbox-input"
                             type="checkbox"
                             checked={description !== ''}
-                            onChange={() => setDescription(description !== '' ? '' : 'Add description')}
+                            onChange={() =>
+                              setDescription(
+                                description !== '' ? '' : 'Add description'
+                              )
+                            }
                           />
                           <span className="ant-checkbox-inner"></span>
                         </span>
-                        <span>{description !== '' ? 'Add description' : 'Description'}</span>
+                        <span>
+                          {description !== ''
+                            ? 'Add description'
+                            : 'Description'}
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -126,8 +135,13 @@ const Audio = () => {
               </div>
             </div>
           </Col>
-          {/* Description */}
-          <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+
+          {/* Rich Text Editor for Description */}
+          <Col
+            xs={24}
+            className="css-14mf4t4"
+            style={{ paddingLeft: '12px', paddingRight: '12px' }}
+          >
             <div className="ant-form-item css-14mf4t4 border border-gray-500">
               <div className="ant-row ant-form-item-row css-14mf4t4">
                 <div className="ant-col ant-form-item-control css-14mf4t4">
@@ -137,8 +151,7 @@ const Audio = () => {
                         toolbarClassName="toolbarClassName"
                         wrapperClassName="wrapperClassName"
                         editorClassName="editorClassName"
-                        placeholder='Enter your content'
-                        toolbar={{ image: { uploadCallback: handleImageUpload } }}
+                        placeholder='enter your content'
                         onEditorStateChange={(value) => setDescription(value)}
                       />
                     </div>
@@ -147,70 +160,63 @@ const Audio = () => {
               </div>
             </div>
           </Col>
-          {/* Image URL */}
-          <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
-            <div className="ant-form-item css-14mf4t4">
-              <div className="ant-row ant-form-item-row css-14mf4t4">
-                <div className="ant-col ant-form-item-control css-14mf4t4">
-                  <div className="ant-form-item-control-input">
-                    <div className="ant-form-item-control-input-content">
-                      <input
-                        placeholder="Audio URL"
-                        id="segments_1_resource_segment_attributes_image_url"
-                        className="ant-input css-14mf4t4"
-                        type="text"
-                        value={audioBlob} 
-                        onChange={(e) => setAudioBlob(e.target.value)}
-                      />
-                      <Button onClick={handleAddFromUrl} className="ant-btn css-14mf4t4 ant-btn-primary">
-                        Add from URL
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
+          {/* Add PDF Button */}
+          <Col
+            xs={24}
+            className="css-14mf4t4"
+            style={{ paddingLeft: '12px', paddingRight: '12px' }}
+          >
+            <Button
+              onClick={handleAddPdf}
+              className="ant-btn css-14mf4t4 ant-btn-primary  mb-8"
+            >
+              Add PDF
+            </Button>
           </Col>
-          {/* Add from URL Modal */}
+
+          {/* Add PDF Modal */}
           <Modal show={showModal} onHide={handleModalClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Add from URL</Modal.Title>
+              <Modal.Title>Add PDF</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form.Group controlId="formImageUrl">
-                <Form.Label>Image URL:</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter URL"
-                  value={audioBlob}  
-                  onChange={(e) => setAudioBlob(e.target.value)}
-                />
-              </Form.Group>
+              <div {...getRootProps({ className: 'dropzone' })}>
+                <input {...getInputProps()} />
+                <p>Drag 'n' drop a PDF file here, or click to select a PDF file</p>
+              </div>
+              {pdfFile && <PdfComponent pdfFile={pdfFile} />}
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleModalClose}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={handleUrlSubmit}>
+              <Button variant="primary" onClick={handlePdfSubmit}>
                 OK
               </Button>
             </Modal.Footer>
           </Modal>
-          <Col xs={12} className="mt-3">
-            <div className="d-flex justify-content-between">
-            <Button type="button" variant="primary" onClick={handleCancel}>
-                Back
-              </Button>
-              <Button type="submit" variant="primary">
-                Save
-              </Button>
-            
-            </div>
-          </Col>
+
+         
+          <div className="ant-form-item css-14mf4t4">
+            <Row className="ant-form-item-row css-14mf4t4">
+              <Col xs={12} className="mt-3">
+                <div className="d-flex justify-content-between">
+                <Button type="button" variant="primary" onClick={handleCancel}>
+                    Back
+                  </Button>
+                  <Button type="submit" variant="primary">
+                    Save
+                  </Button>
+                
+                </div>
+              </Col>
+            </Row>
+          </div>
         </Form>
       </div>
     </div>
   );
 };
 
-export default Audio;
+export default Pdf;

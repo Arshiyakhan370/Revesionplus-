@@ -153,18 +153,7 @@ label {
     border-radius: 0.357rem;
     appearance: none;
 }
-/* .select2-hidden-accessible {
-    border: 0 !important;
-    clip: rect(0 0 0 0) !important;
-    -webkit-clip-path: inset(50%) !important;
-    clip-path: inset(50%) !important;
-    height: 1px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 1px !important;
-    white-space: nowrap !important;
-} */
+
 select {
     word-wrap: normal;
    
@@ -187,21 +176,7 @@ select:not(:-internal-list-box) {
 }
 user agent stylesheet
 select {
-    font-style: ;
-    font-variant-ligatures: ;
-    font-variant-caps: ;
-    font-variant-numeric: ;
-    font-variant-east-asian: ;
-    font-variant-alternates: ;
-    font-variant-position: ;
-    font-weight: ;
-    font-stretch: ;
-    font-size: ;
-    font-family: ;
-    font-optical-sizing: ;
-    font-kerning: ;
-    font-feature-settings: ;
-    font-variation-settings: ;
+   
     text-rendering: auto;
     color: fieldtext;
     letter-spacing: normal;
