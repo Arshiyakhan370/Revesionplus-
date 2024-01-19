@@ -3,8 +3,9 @@ import { Form, Button, Col, Row, Modal } from 'react-bootstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from '../../AdminDashboard/Header';
 import { useDropzone } from 'react-dropzone';
+import { Card, Container } from '@mui/material';
+import { useMediaQuery } from 'react-responsive';
 
 
 const PdfComponent = ({ pdfFile }) => {
@@ -20,12 +21,12 @@ const PdfComponent = ({ pdfFile }) => {
   );
 };
 
-const Pdf = () => {
+const Pdf = ({isSidebarClosed}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [pdfFile, setPdfFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
+  const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: '.pdf',
     onDrop: (acceptedFiles) => {
@@ -60,17 +61,22 @@ const Pdf = () => {
    
     window.history.back();
   };
-
+  const styles = {
+    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
+    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
+    transition: 'width 0.3s, margin-left 0.3s',
+  };
   return (
-    <div>
-      <Header />
-      <div className="w-[650px] ml-[500px] mt-16">
-      <h2 className='text-center mb-8'>Pdf</h2>
+    <Container maxWidth="xl" mt={16} style={styles}>
+    <Card  mt={16}>
+     
+      
+      <h2 className='text-center mb-8 mt-4'>Pdf</h2>
         <Form
           id="segments_1"
           className="ant-form ant-form-vertical ant-form-middle css-14mf4t4"
         >
-          {/* Title */}
+         
           <Col
             xs={24}
             className="css-14mf4t4"
@@ -97,7 +103,7 @@ const Pdf = () => {
             </div>
           </Col>
 
-          {/* Description */}
+        
           <Col
             xs={24}
             className="css-14mf4t4"
@@ -136,7 +142,7 @@ const Pdf = () => {
             </div>
           </Col>
 
-          {/* Rich Text Editor for Description */}
+  
           <Col
             xs={24}
             className="css-14mf4t4"
@@ -161,7 +167,7 @@ const Pdf = () => {
             </div>
           </Col>
 
-          {/* Add PDF Button */}
+        
           <Col
             xs={24}
             className="css-14mf4t4"
@@ -175,7 +181,7 @@ const Pdf = () => {
             </Button>
           </Col>
 
-          {/* Add PDF Modal */}
+          
           <Modal show={showModal} onHide={handleModalClose}>
             <Modal.Header closeButton>
               <Modal.Title>Add PDF</Modal.Title>
@@ -214,8 +220,11 @@ const Pdf = () => {
             </Row>
           </div>
         </Form>
-      </div>
-    </div>
+    
+
+      </Card>
+     
+    </Container>
   );
 };
 

@@ -4,22 +4,23 @@ import { CompactPicker } from 'react-color';
 import Header from '../../AdminDashboard/Header';
 import {Col} from 'react-bootstrap';
 import { Editor } from 'react-draft-wysiwyg';   
+import { useMediaQuery } from 'react-responsive';
+import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
 
 
-const DrawingApp = () => {
+const DrawingApp = ({isSidebarClosed}) => {
     const [description, setDescription] = useState('');
   const [lines, setLines] = useState([]);
   const [tool, setTool] = useState('pen');
   const [plateColor, setPlateColor] = useState('#fff');
   const [selectedColor, setSelectedColor] = useState('#000000');
-  
+  const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
     const handleColorChange1 = (color) => {
       setSelectedColor(color.hex);
-      //
+     
     };
     const handleEditorChange = (editorState) => {
-        // const rawContentState = convertToRaw(editorState.getCurrentContent());
-        // setDescription(JSON.stringify(rawContentState));
+    
       };
     const handleButtonClick = (tool) => {
      
@@ -52,9 +53,20 @@ const DrawingApp = () => {
 
   const colorPalette = ['#000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
 
+  const styles = {
+    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
+    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
+    transition: 'width 0.3s, margin-left 0.3s',
+  };
   return (
-    <div>
-    <Header/>
+    <Container maxWidth="xl" mt={16}>
+      <Grid container justifyContent="center" spacing={3} style={styles}>
+        <Grid item xs={12}>
+          <Card >
+            <CardContent>
+              <Typography variant="h5" align="center" mb={4}>
+              Drwaing
+   </Typography>
       {/* <div>
         <label>Plate Color:</label>
         <input
@@ -106,10 +118,11 @@ const DrawingApp = () => {
           ))}
         </Layer>
       </Stage> */}
-      <Col xs={24} className="css-14mf4t4 mt-8" style={{ paddingLeft: '12px', paddingRight: '12px' ,marginLeft:'390px' }}>
-            {/* HTML Editor */}
+      
+      <Col xs={24} className="css-14mf4t4 mt-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+            
             <label>Description</label>
-            <div className="ant-form-item css-14mf4t4  ml-[400px] w-[703px] border border-gray-500">
+            <div className="ant-form-item css-14mf4t4  border border-gray-500">
               <Editor
                 toolbarClassName="toolbarClassName"
                 wrapperClassName="wrapperClassName"
@@ -120,8 +133,8 @@ const DrawingApp = () => {
               />
             </div>
           </Col>
-      <div classNameName="canvas-container " style={{marginLeft:'400px',marginTop:'30px'}}>
-     <canvas classNameName="lower-canvas" fill={plateColor}  width="703" height="451" style={{ border: '1px solid' }}></canvas>
+      <div classNameName="canvas-container " style={{marginTop:'30px'}}>
+     <canvas classNameName="lower-canvas" fill={plateColor}  width="auto" height="auto" className='lg:w-[705px] lg:h-[450px] md:w-[605px] md:h-[450px]' style={{ border: '1px solid' }}></canvas>
 
       <div classNameName="fabric-tools  ml-[400px]">
         <button onClick={() => handleButtonClick('tool1')}></button>
@@ -229,7 +242,11 @@ height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d=
         <CompactPicker color={selectedColor} onChange={handleColorChange1} />
       </div>
     </div>
-    </div>
+    </CardContent>
+    </Card>
+    </Grid>
+    </Grid>
+    </Container>
   );
 };
 

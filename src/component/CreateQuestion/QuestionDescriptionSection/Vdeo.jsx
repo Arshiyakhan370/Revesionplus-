@@ -5,6 +5,8 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Header from '../../AdminDashboard/Header';
 import { useDropzone } from 'react-dropzone';
+import { useMediaQuery } from 'react-responsive';
+import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
 
 
 const VideoComponent = ({ videoUrl }) => {
@@ -25,13 +27,13 @@ const VideoComponent = ({ videoUrl }) => {
   );
 };
 
-const Vdeo = () => {
+const Vdeo = ({isSidebarClosed}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [showUrlInput, setShowUrlInput] = useState(false); // Track whether to show the URL input
-
+  const [showUrlInput, setShowUrlInput] = useState(false);
+  const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: 'video/*',
     onDrop: (acceptedFiles) => {
@@ -68,9 +70,7 @@ const Vdeo = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const contentState = editorState.getCurrentContent();
-    // const rawContentState = convertToRaw(contentState);
-    // console.log('Form submitted:', rawContentState);
+    
   };
 
   const handleCancel = () => {
@@ -78,16 +78,25 @@ const Vdeo = () => {
 
     window.history.back();
   };
+  const styles = {
+    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
+    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
+    transition: 'width 0.3s, margin-left 0.3s',
+  };
   return (
-    <div>
-      <Header />
-      <div className="w-[650px] ml-[500px] mt-16">
-      <h2 className='text-center mb-8'>Video</h2>
+    <Container maxWidth="xl" mt={16}>
+      
+    <Grid container justifyContent="center" spacing={3} style={styles}>
+      <Grid item xs={12}>
+        <Card >
+          <CardContent>
+            <Typography variant="h5" align="center" mb={4}>
+                           Video</Typography>
         <Form
           id="segments_1"
           className="ant-form ant-form-vertical ant-form-middle css-14mf4t4"
         >
-          {/* Title */}
+        
           <Col
             xs={24}
             className="css-14mf4t4"
@@ -114,7 +123,7 @@ const Vdeo = () => {
             </div>
           </Col>
 
-          {/* Description */}
+        
           <Col
             xs={24}
             className="css-14mf4t4"
@@ -153,7 +162,7 @@ const Vdeo = () => {
             </div>
           </Col>
 
-          {/*  Description */}
+        
           <Col
             xs={24}
             className="css-14mf4t4"
@@ -192,7 +201,7 @@ const Vdeo = () => {
               />
             </Form.Group>
           </Col>
-          {/* Add Video URL Button */}
+         
           <Col
             xs={24}
             className="css-14mf4t4"
@@ -205,10 +214,7 @@ const Vdeo = () => {
               Add Video URL
             </Button>
            
-            {/* xs={24}
-            className="css-14mf4t4"
-            style={{ paddingLeft: '12px', paddingRight: '12px' }}
-          > */}
+          
             <Button
               onClick={handleAddVideoDrop}
               className="ant-btn css-14mf4t4 ant-btn-primary mb-8 ml-[378px]"
@@ -221,7 +227,7 @@ const Vdeo = () => {
 
          
           
-          {/* Add Video Modal */}
+    
           <Modal show={showModal} onHide={handleModalClose}>
             <Modal.Header closeButton>
               <Modal.Title>Add Video</Modal.Title>
@@ -278,8 +284,12 @@ const Vdeo = () => {
               </div>
             </Col>
         </Form>
-      </div>
-    </div>
+        </CardContent>
+        </Card>
+        </Grid>
+        </Grid>
+        </Container>
+   
   );
 };
 

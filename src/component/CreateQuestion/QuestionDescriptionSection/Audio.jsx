@@ -6,13 +6,15 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../../AdminDashboard/Header';
 import { EditorState, convertToRaw } from 'draft-js';
+import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { useMediaQuery } from 'react-responsive';
 
-const Audio = () => {
+const Audio = ({isSidebarClosed}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
-
+  const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: 'audio/*',
     onDrop: (acceptedFiles) => {
@@ -52,18 +54,27 @@ const Audio = () => {
     
     window.history.back();
   };
-
+  const styles = {
+    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
+    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
+    transition: 'width 0.3s, margin-left 0.3s',
+  };
   return (
-    <div>
-      <Header />
-      <div className="w-[650px] ml-[500px] mt-16">
-      <h2 className='text-center mtb-8'>Audio</h2>
+    <Container maxWidth="xl" mt={16}>
+      
+    <Grid container justifyContent="center" spacing={3} style={styles}>
+      <Grid item xs={12}>
+        <Card >
+          <CardContent>
+            <Typography variant="h5" align="center" mb={4}>
+       Audio
+       </Typography>
         <Form
           id="segments_1"
           className="ant-form ant-form-vertical ant-form-middle css-14mf4t4"
           onSubmit={handleSave}
         >
-          {/* Audio Recording */}
+          
           <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
             <Row className="css-14mf4t4" style={{ marginLeft: '-12px', marginRight: '-12px' }}>
               <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
@@ -100,7 +111,7 @@ const Audio = () => {
               </div>
             </div>
           </Col>
-          {/* Description */}
+         
           <Col xs={24} className="css-14mf4t4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
             <div className="ant-form-item css-14mf4t4">
               <div className="ant-row ant-form-item-row css-14mf4t4">
@@ -171,7 +182,7 @@ const Audio = () => {
               </div>
             </div>
           </Col>
-          {/* Add from URL Modal */}
+        
           <Modal show={showModal} onHide={handleModalClose}>
             <Modal.Header closeButton>
               <Modal.Title>Add from URL</Modal.Title>
@@ -208,8 +219,11 @@ const Audio = () => {
             </div>
           </Col>
         </Form>
-      </div>
-    </div>
+      </CardContent>
+      </Card>
+      </Grid>
+      </Grid>
+      </Container>
   );
 };
 

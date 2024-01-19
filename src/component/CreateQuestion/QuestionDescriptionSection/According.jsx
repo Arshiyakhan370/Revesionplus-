@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, Row, Tab, Tabs, CloseButton } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+  Card,
+  CardContent,
+  IconButton,
+} from '@mui/material';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Header from '../../AdminDashboard/Header';
+import CloseIcon from '@mui/icons-material/Close';
+import { useMediaQuery } from 'react-responsive';
 
-const According = () => {
+const According = ({isSidebarClosed}) => {
   const [tabs, setTabs] = useState([
     { key: 'panel1', title: 'Panel 1' },
-    
   ]);
-
+  const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const addPanel = () => {
     const newKey = `panel${tabs.length + 1}`;
     const newTitle = `Panel ${tabs.length + 1}`;
@@ -21,66 +30,66 @@ const According = () => {
     const updatedTabs = tabs.filter((tab) => tab.key !== keyToRemove);
     setTabs(updatedTabs);
   };
+
   const handleCancel = () => {
     console.log('Cancel button clicked');
-    
     window.history.back();
   };
-
+  const styles = {
+    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
+    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
+    transition: 'width 0.3s, margin-left 0.3s',
+  };
   return (
-    <div className="w-[650px] ml-[500px] mt-16 ">
-      <Header />
-      <div className="container mt-3">
-    
-        <Form>
-          <Row>
-            <Col xs={24} className="px-3">
-              <Form.Group controlId="accordion">
-                <Form.Label>Accordion</Form.Label>
-                <Tabs defaultActiveKey={tabs[0].key} id="accordion-tabs">
-                  {tabs.map((tab, index) => (
-                    <Tab key={tab.key} eventKey={tab.key} title={
-                      <>
-                        {tab.title}
-                        <CloseButton onClick={() => removePanel(tab.key)} />
-                      </>
-                    } className={index > 0 ? 'ml-2' : ''}>
-                      <div style={{ marginBottom: '20px' }}>
-                        <label>Title</label>
-                        <div className="sc-kEYyzF cmwoAr multiline-input-area custom-error">
-                          <Editor placeholder="Write here" />
-                          <div className="error-message"></div>
-                        </div>
-                      </div>
-                      <div>
-                        <label>Content</label>
-                        <div className="sc-kEYyzF cmwoAr multiline-input-area custom-error">
-                          <Editor placeholder="Write here" />
-                          <div className="error-message"></div>
-                        </div>
-                      </div>
-                    </Tab>
-                  ))}
-                </Tabs>
-                <Button type="button" variant="primary" onClick={addPanel}>
-                  Add Panel
-                </Button>
-              </Form.Group>
-            </Col>
-            <Col xs={12} className="mt-3">
-              <div className="d-flex justify-content-between">
-              <Button type="button" variant="primary" onClick={handleCancel}>
-                  Back
-                </Button>
-                <Button type="submit" variant="primary">
-                  Save
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Form>
-      </div>
-    </div>
+    <Container maxWidth="xl" mt={16}>
+      
+      <Grid container justifyContent="center" spacing={3} style={styles}>
+        <Grid item xs={12}>
+          <Card >
+            <CardContent>
+              <Typography variant="h5" align="center" mb={4}>
+                Accordion
+              </Typography>
+              {tabs.map((tab, index) => (
+                <Card key={tab.key} mb={2}>
+                  <CardContent>
+                    <Grid container alignItems="center" >
+                      <Typography variant="h6">{tab.title}</Typography>
+                      <IconButton onClick={() => removePanel(tab.key)}>
+                        <CloseIcon />
+                      </IconButton>
+                    </Grid>
+                    <div style={{ marginBottom: '20px' }}>
+                      <Typography variant="subtitle1">Title</Typography>
+                      <Editor placeholder="Write here" 
+                     
+                      />
+                    </div>
+                    <div>
+                      <Typography variant="subtitle1">Content</Typography>
+                      <Editor placeholder="Write here" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+              <Button type="button" variant="contained" color="primary" onClick={addPanel}>
+                Add Panel
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container justifyContent="space-between">
+            <Button variant="contained" onClick={handleCancel}  style={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+              Back
+            </Button>
+            <Button variant="contained" color="primary" type="submit"  style={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

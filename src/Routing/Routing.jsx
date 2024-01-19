@@ -15,22 +15,13 @@ import Questions from '../component/CreateQuestion/Questions'
 import QuestionPage from '../Pages/QuestionPage'
 import QuestionDescriptionPage from '../Pages/QuestionDescriptionPage'
 import LibraryPage from '../Pages/LibraryPage'
-import Text from '../component/CreateQuestion/QuestionDescriptionSection/Text'
-import According from '../component/CreateQuestion/QuestionDescriptionSection/According'
-import Image from '../component/CreateQuestion/QuestionDescriptionSection/Image'
-import Pdf from '../component/CreateQuestion/QuestionDescriptionSection/Pdf'
-import Vdeo from '../component/CreateQuestion/QuestionDescriptionSection/Vdeo'
-import Audio from '../component/CreateQuestion/QuestionDescriptionSection/Audio'
-import SimulationComponent from '../component/CreateQuestion/QuestionDescriptionSection/Simulation'
 import Mcq from '../component/CreateQuestion/QuestionSub/Mcq'
 import Drwaing from '../component/CreateQuestion/QuestionSub/Drwaing'
-
 import CreateAssignment from '../component/Dashboard Components/createAssignment/CreateAssignment'
 import StudentDash from '../component/StudentDashboard/StudentDash'
 import FilterForm from '../component/Dashboard Components/createAssignment/FilterForm'
 import PracticeQuestion from '../component/PracticeAssignment/PracticeQuestion'
 import SubjectList from '../component/PracticeAssignment/IBMYP'
-import MathsStandard from '../component/PracticeAssignment/MathsStandard'
 import IBPage from '../Pages/IBPage'
 import MathsSectionQuestion from '../component/PracticeAssignment/MathsSectionQuestion'
 import Golink from '../component/PracticeAssignment/Golink.'
@@ -76,6 +67,15 @@ import OnlineClasses from '../component/TeacherDashboard/OnlineClasses'
 import ScheduleContainer from '../component/TeacherDashboard/ScheduleContainer'
 import PastClass from '../component/TeacherDashboard/PastClass'
 import Navbar1 from '../component/Dashboard Components/Buttons1'
+import TextPage from '../Pages/TextPage'
+import AccordionPage from '../Pages/AccordionPage'
+import ImagePage from '../Pages/ImagePage'
+import PdfPage from '../Pages/PdfPage'
+import VdeoPage from '../Pages/VdeoPage'
+import AudioPage from '../Pages/AudioPage'
+import SimulationPage from '../Pages/SimulationPage'
+import McqPage from '../Pages/McqPage'
+import DrwaingPage from '../Pages/DrwaingPage'
 
 
 
@@ -98,17 +98,17 @@ const Routing = () => {
           <Route path='/alert' element={<SweetAlert />} /> 
           <Route path='/createquestion' element={<CreateQuestionPage/>} /> 
        <Route path='/library' element={<LibraryPage/>}/>
-          <Route path='/text' element={<Text/>} /> 
+          <Route path='/text' element={<TextPage/>} /> 
           <Route path='/question' element={<QuestionPage/>} />
           <Route path='/description' element={<QuestionDescriptionPage/>}/>
-          <Route path='/according' element={<According/>} />
-          <Route path='/image' element={<Image/>} />
-          <Route path='/pdf' element={<Pdf/>} />
-          <Route path='/vdo' element={<Vdeo/>} />
-          <Route path='/audio' element={<Audio/>} />
-          <Route path='/simulation' element={<SimulationComponent/>} />
-          <Route path='/mcq' element={<Mcq/>} />
-          <Route path='/drwing' element={<Drwaing/>} />
+          <Route path='/according' element={<AccordionPage/>} />
+          <Route path='/image' element={<ImagePage/>} />
+          <Route path='/pdf' element={<PdfPage/>} />
+          <Route path='/vdo' element={<VdeoPage/>} />
+          <Route path='/audio' element={<AudioPage/>} />
+          <Route path='/simulation' element={<SimulationPage/>} />
+          <Route path='/mcq' element={<McqPage/>} />
+          <Route path='/drwing' element={<DrwaingPage/>} />
           <Route path='/dashboar-Student' element={<StudentDash/>} />
           <Route path='/create-filter' element={<FilterForm/>} />
           <Route path="/practiceQuestion" element={<PracticeQuestion/>}/>

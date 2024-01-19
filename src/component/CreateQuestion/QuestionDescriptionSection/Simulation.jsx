@@ -6,13 +6,15 @@ import Dropzone from 'react-dropzone';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../../AdminDashboard/Header';
+import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { useMediaQuery } from 'react-responsive';
 
-const SimulationComponent = () => {
+const SimulationComponent = ({isSidebarClosed}) => {
   const [description, setDescription] = useState('');
   const [files, setFiles] = useState([]);
   const [title, setTitle] = useState('');
   const [showModal, setShowModal] = useState(false);
-
+  const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const handleEditorChange = (editorState) => {
     const rawContentState = convertToRaw(editorState.getCurrentContent());
     setDescription(JSON.stringify(rawContentState));
@@ -33,11 +35,20 @@ const SimulationComponent = () => {
     window.history.back();
   };
 
+  const styles = {
+    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
+    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
+    transition: 'width 0.3s, margin-left 0.3s',
+  };
   return (
-    <div>
-      <Header />
-      <div className="w-[650px] ml-[500px] mt-16">
-        <h2 className='text-center mb-8'>Simulation</h2>
+    <Container  maxWidth="xl" mt={16}>
+      
+    <Grid container justifyContent="center" spacing={3} style={styles}>
+      <Grid item xs={12}>
+        <Card >
+          <CardContent>
+            <Typography variant="h5" align="center" mb={4}>
+        Simulation</Typography>
         <Form
           id="segments_1"
           className="ant-form ant-form-vertical ant-form-middle css-14mf4t4"
@@ -111,8 +122,11 @@ const SimulationComponent = () => {
             </div>
           </Col>
         </Form>
-      </div>
-    </div>
+        </CardContent>
+        </Card>
+        </Grid>
+        </Grid>
+        </Container>
   );
 };
 
