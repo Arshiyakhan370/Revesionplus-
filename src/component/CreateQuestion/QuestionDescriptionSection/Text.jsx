@@ -27,7 +27,7 @@ const Text = ({ isSidebarClosed }) => {
   return (
     <div>
       <Header />
-      <Container style={contentStyle}>
+      <Container >
         <div className=' mt-44 '>
           <Card>
             <CardContent>
