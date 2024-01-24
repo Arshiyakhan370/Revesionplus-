@@ -39,11 +39,14 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   const[teacherEditor,setTeacherEditor]=useState(false)
     const [studentEditor,setStudentEditor]=useState(false)
     const [isChecked, setIsChecked] = useState(false);
+    const [selectChecked, setSelectChecked] = useState(false);
     const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
    const handleCheckboxChange = () => {
       setIsChecked(!isChecked);
    }
-
+ const handkeSelectedCriteria=()=>{
+  setSelectChecked(!selectChecked)
+ }
    const toggleHandle=()=>{
     setTeacherEditor(!teacherEditor)
    }
@@ -146,7 +149,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
  {editing && (
   <Grid>
   <Typography variant="h5" gutterBottom>
-            Create a Content
+           Long Answer
           </Typography>
   <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -155,7 +158,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={4}>
                 <Select
-                 className='h-14 border border-gray-500'
+                 className='h-14 border border-gray-500 mr-10'
                 placeholder='selectOption'
                 id="select-strands"
                   value={selectedValue}
@@ -168,20 +171,10 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                   <MenuItem value="option3">Option 3</MenuItem>
                 </Select>
               </Grid>
-              {window.innerWidth > 1024 && (
-              <Grid item xs={6}>
+
+         
              
-                {checkboxes.map((checkbox) => (
-                  <React.Fragment key={checkbox.label}>
-                    <Checkbox
-                      checked={checkbox.checked}
-                      onChange={() => handleCheckboxChange(checkbox.label)}
-                    />
-                    {checkbox.label}
-                  </React.Fragment>
-                ))}
-              </Grid>
-              )}
+            
               <Grid item xs={2}>
                 <Button
                   variant="outlined"
@@ -212,8 +205,29 @@ const CreateQuestion = ({ isSidebarClosed }) => {
           control={<Switch color="primary" checked={studentEditor} onChange={toggleHandleStudent} />}
           label="Include Markscheme"
         />
+         <FormControlLabel className='ml-8'
+          control={<Switch color="primary" checked={selectChecked} onChange={handkeSelectedCriteria} />}
+          label="select criteria "
+        />
       </Grid>
-
+      {selectChecked && 
+             <div>
+              {window.innerWidth > 1024 && (
+              <Grid item xs={12}>
+             
+                {checkboxes.map((checkbox) => (
+                  <React.Fragment key={checkbox.label}>
+                    <Checkbox
+                      checked={checkbox.checked}
+                      onChange={() => handleCheckboxChange(checkbox.label)}
+                    />
+                    {checkbox.label}
+                  </React.Fragment>
+                ))}
+              </Grid>
+              )}
+              </div>
+             }
       <Editor
         toolbarClassName="toolbarClassName"
         wrapperClassName="wrapperClassName"
@@ -242,8 +256,8 @@ const CreateQuestion = ({ isSidebarClosed }) => {
           />
         </div>
       )}
-
-
+     
+             
         
     </Grid>
           

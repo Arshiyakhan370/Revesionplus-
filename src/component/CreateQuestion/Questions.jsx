@@ -20,7 +20,7 @@ import { useMediaQuery } from 'react-responsive';
       <h2 className="text-center mb-28">Questions Description</h2>
         <Card>
           <CardContent className='text-center'>
-          <Link to="/text" style={{ textDecoration: 'none', margin:'10px' }}>
+          <Link to="/createquestion" style={{ textDecoration: 'none', margin:'10px' }}>
               <Button
                 type="button"
                 className="segment-type-button"

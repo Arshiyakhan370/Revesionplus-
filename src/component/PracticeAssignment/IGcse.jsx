@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Container, Paper, Grid, Typography, Box } from '@mui/material';
-import ButtonsSection from './ButtonsSection';
+import ButtonsSection from './SourceAssignment/IBMYP/ButtonsSection';
 import Footer from './Footer';
 import Nav from './Nav';
 
@@ -34,8 +34,8 @@ const IGcse = () => {
   const MYP = ['IB Maths','IB Biology', 'IB Psych','IB Econ','IB Chemistry', 'IB Physics'  ];
 
   if (!imageUrls || !backgroundColors || !buttonTexts || !MYP) {
-    // Handle the case where one of the arrays is undefined or null
-    return null; // or set default values
+   
+    return null;
   }
 
   return (

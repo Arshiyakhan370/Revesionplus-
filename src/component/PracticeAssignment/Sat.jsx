@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Container, Paper, Grid, Typography, Box } from '@mui/material';
-import ButtonsSection from './ButtonsSection';
+import ButtonsSection from './SourceAssignment/IBMYP/ButtonsSection';
 import Footer from './Footer';
 import Nav from './Nav';
 

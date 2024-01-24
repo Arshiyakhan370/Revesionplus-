@@ -57,7 +57,7 @@ const SlEconomic = () => {
             <li key={item.id} className='mid-inner1' style={{ backgroundColor: item.backgroundColor }}>
               <Link to={item.link}>
                 <div className="questionbank-item">
-                  <img src={item.imageSrc} alt="Question Image" />
+                  <img src={item.imageSrc} alt="" />
                   <div className="questionbank-item-head">
                     <h2>{item.title}</h2>
                   </div>

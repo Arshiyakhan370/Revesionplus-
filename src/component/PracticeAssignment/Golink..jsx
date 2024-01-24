@@ -1,17 +1,19 @@
 // MathSection.js
 
-import React, { useState } from 'react';
-import './Golink.css'; // Assuming Golink.css is in the same directory as this component
+import React, { Fragment, useState } from 'react';
+import './Golink.css'; 
 import QuestionLevel from './QuestionLevel';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Nav from './Nav';
+import Navbar1 from '../Dashboard Components/Buttons1';
+import { Card, CardContent, Container, Grid } from '@mui/material';
 
 const Golink= () => {
   const [selectedSubtopics, setSelectedSubtopics] = useState([]);
   const [selectedCriteria, setSelectedCriteria] = useState([]);
-
+  const location = useLocation();
   const subtopics = [
     { value: '183', label: 'Absolute values' },
     { value: '214', label: 'Representing and solving inequalities, including compound and double inequalities' },
@@ -57,76 +59,145 @@ const Golink= () => {
     },
   });
   return (
-    <div>
-    <Nav/>
-      <ThemeProvider theme={theme}>
-      <div className='text-center pt-20 pb-4'>
-        <Button variant="contained" style={{ margin: '5px', height:'40px' }}>
-          B MYP
-        </Button>
-        <Button variant="contained" style={{  margin: '5px' , height:'40px'}}>
-          MYP 4&5
-        </Button>
-        <Button variant="contained" style={{  margin: '5px' , height:'40px'}}>
-          Math Standard
-        </Button>
-        <Button variant="contained" style={{ margin: '5px', height:'40px' }}>
+    <Fragment>
+    <Nav />
+    <Navbar1 />
+    <Container maxWidth="xl" sx={{backgroundColor: '#4b7dd4'}}>
+    <Card>
+    <ThemeProvider theme={theme}>
+    <div className='text-center mb-8 lg:mb-12 mt-8 '>
+              
+          <Link to='/ibmyb'>
+            <Button
+              variant="contained"
+              style={{
+                width: '120px',
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                backgroundColor: location.pathname === '/ibmyb' ? 'lightSkyBlue' : '',
+                borderRadius: '30px 0 0 30px',
+              }}
+            >
+              IB MYP
+            </Button>
+          </Link>
+          <Link to=''>
+            <Button
+              variant="contained"
+              style={{
+                margin: '1px',
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                backgroundColor: location.pathname === '/' ? 'lightSkyBlue' : '',
+              }}
+            >
+              MYP 4&5
+            </Button>
+          </Link>
+          <Link to='/maths-standard'>
+          <Button
+            variant="contained"
+            style={{
+              margin: '1px',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+              backgroundColor: location.pathname === '/maths-standard' ? 'lightSkyBlue' : '',
+            }}
+          >
+            Math Standard
+          </Button></Link>
+          <Link to='/maths-question'>
+          <Button
+            variant="contained"
+            style={{
+              margin: '1px',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+              backgroundColor: location.pathname === '/maths-question' ? 'lightSkyBlue' : '',
+            }}
+          >
           MYP Questionbank
-        </Button>
-        
-       <Link to='/go-link'><Button variant="contained" style={{ height:'40px', width:'120px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', Width:'120px', backgroundColor: 'lightSkyBlue', borderRadius: '30px', margin: '5px' }}>
-          0
-        </Button></Link> 
-      </div>
-    </ThemeProvider>
-    <section id="head-top">
-      <div className="mid-inner wiki-mk">
-        <h3>IB MATHs</h3>
-        <div className="ib-homecheck">
-          <div className="homecheck-left">
-            <h3>Select Subtopic</h3>
-            <div className="homecheck-items">
-            <div className="main-wrapper">
-  {subtopics.map((subtopic) => (
-    <div key={subtopic.value} className="cutsom-checkbox-row">
-      <input
-        id={`checkbox${subtopic.value}`}
-        type="checkbox"
-        name="subtopic[]"
-        value={subtopic.value}
-        checked={selectedSubtopics.includes(subtopic.value)}
-        onChange={() => handleSubtopicChange(subtopic.value)}
-      />
-      <label htmlFor={`checkbox${subtopic.value}`}>{subtopic.label}</label>
-    </div>
-  ))}
-</div>
-            </div>
-          </div>
-
-          <div className="homecheck-right">
-            <h3>Select Criteria</h3>
-          <div className="main-wrapper">
-  {criteria.map((criterion) => (
-    <div key={criterion.value} className="cutsom-checkbox-row">
-      <input
-        id={`checkbox${criterion.value}`}
-        type="checkbox"
-        name="criteria[]"
-        value={criterion.value}
-        checked={selectedCriteria.includes(criterion.value)}
-        onChange={() => handleCriteriaChange(criterion.value)}
-      />
-      <label htmlFor={`checkbox${criterion.value}`}>{criterion.label}</label>
-    </div>
-  ))}
-</div>
-          </div>
+          </Button></Link>
+          <Link to='/aisl-paper-go-link'>
+          <Button
+            variant="contained"
+            style={{
+              margin: '1px',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+              backgroundColor: location.pathname === '' ? 'lightSkyBlue' : '',
+            }}
+          >
+          Paper
+          </Button></Link>
+          <Link to='/go-link'>
+            <Button
+              variant="contained"
+            
+              style={{
+                width: '120px',
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+                borderRadius: '0 30px 30px 0',
+                margin: '1px',
+              }}
+            >
+            0
+            </Button>
+          </Link>
         </div>
-      </div>
-    </section>
-    <QuestionLevel/>
-    </div>
+      </ThemeProvider>
+      <Card>
+      <CardContent>
+    
+              <h3 className='text-center text-[#122be9]'>IB MATH</h3>
+            
+              <div className='ibHomeCheck lg:flex lg:flex-row md:flex-col sm:flex-col' >
+              <Grid contetent space={2}>
+                <div className='homeCheckLeft w-full lg:w-full  md:w-full sm:w-full'>
+                  <h2 className="text-2xl text-blue-500">Select Subtopic</h2>
+                  <div className='flex flex-wrap'>
+                    {subtopics.map((subtopic) => (
+                      <div key={subtopic.value} className='relative mb-4 lg:w-1/2 md:w-full sm:w-full'>
+                        <input
+                          id={`checkbox${subtopic.value}`}
+                          type="checkbox"
+                          name="subtopic[]"
+                          value={subtopic.value}
+                          checked={selectedSubtopics.includes(subtopic.value)}
+                          onChange={() => handleSubtopicChange(subtopic.value)}
+                          className="mr-2 zoom-150"
+                        />
+                        <label htmlFor={`checkbox${subtopic.value}`} className="text-base">{subtopic.label}</label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                </Grid>
+                <Card>
+                <div className='homeCheckRight w-full lg:w-4/12 md:w-full sm:w-full'>
+                  <h3 className="text-xl text-blue-500">Select Criteria</h3>
+                  <div className='flex flex-wrap text-lg'>
+                    {criteria.map((criterion) => (
+                      <div key={criterion.value} className=' text-lg relative mb-4 lg:w-1/2 md:w-full sm:w-full'>
+                        <input
+                          id={`checkbox${criterion.value}`}
+                          type="checkbox"
+                          name="criteria[]"
+                          value={criterion.value}
+                          checked={selectedCriteria.includes(criterion.value)}
+                          onChange={() => handleCriteriaChange(criterion.value)}
+                          className="mr-2 zoom-150"
+                        />
+                        <label htmlFor={`checkbox${criterion.value}`} className="text-base">{criterion.label}</label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+      </Card>
+    </Container>
+    <QuestionLevel />
+  </Fragment>
+  
   );
 };
 

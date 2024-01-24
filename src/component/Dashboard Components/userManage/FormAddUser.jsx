@@ -6,13 +6,15 @@ import {
   Card,
   CardContent,
 } from '@mui/material';
+import { Eye, EyeOff } from 'react-feather';
 
 
-import { Button,  Pagination,Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from '@mui/material';
+import {IconButton,InputAdornment, Button,  Pagination,Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {  Form,Modal} from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import './ListContainer.css';
+
 const FormAddUser = ({ isSidebarClosed }) => {
   const [selectedValue, setSelectedValue] = useState(10);
   const [page, setPage] = useState(1);
@@ -124,15 +126,29 @@ const FormAddUser = ({ isSidebarClosed }) => {
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
-  
-  
+    const [showPassword, setShowPassword] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState(null);
   const handleSelectChange = (e) => {
     setSelectedValue(parseInt(e.target.value, 10));
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(1); 
   };
 
-  
+  const handleDeleteDialogOpen = (userId) => {
+    setDeleteUserId(userId);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteDialogClose = () => {
+    setDeleteUserId(null);
+    setOpenDeleteDialog(false);
+  };
+
+  const handleDeleteClick = () => {
+       console.log(`Delete user with ID: ${deleteUserId}`);
+    setOpenDeleteDialog(false);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -148,7 +164,10 @@ const FormAddUser = ({ isSidebarClosed }) => {
         console.log(`Update password for user ${userId}`);
       };
      
-      
+      const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+        console.log('Visibility toggled. New state:', !showPassword);
+      };
     
       const handleUpdatePasswordConfirm = () => {
        
@@ -159,27 +178,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
       const handlePasswordModalClose = () => {
         setOpenPasswordModal(false);
       };
-      const handleDeleteClick = async (userId) => {
-      try {
-        const result = await Swal.fire({
-          title: 'Are you sure?',
-          text: 'You will not be able to recover this user!',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Yes, delete it!',
-        });
-    
-        if (result.isConfirmed) {
-          const updatedUserList = userListData.filter((user) => user.id !== userId);
-          setUserListData(updatedUserList);
-          Swal.fire('Deleted!', 'User has been deleted.', 'success');
-        }
-      } catch (error) {
-        console.error('Error during delete operation:', error);
-      }
-    };
+     
     
   const handleEditClick = (userId, userName, userEmail) => {
     setEditUserId(userId);
@@ -222,7 +221,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
                   <h4 className="card-title text-black font-400 ">User List</h4>
                   <Link
                    to="/add-user"
-                    className="btn btn-round btn-gradient-primary float-end "
+                    className="btn btn-round btn-gradient-primary float-end " style={{textDecoration:'none'}}
                   >
                     Add User
                   </Link>
@@ -379,7 +378,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
     <td>
        <div className="d-inline-flex">
                          
-        <Link className="dropdown-item delete-record" id="delete"  onClick={() => handleDeleteClick(user.id)}>
+        <Link className="dropdown-item delete-record" id="delete"  onClick={() => handleDeleteDialogOpen(user.id)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -462,17 +461,49 @@ const FormAddUser = ({ isSidebarClosed }) => {
           </Modal.Body>
         </Modal>
 
+      
+
+<Dialog
+  open={openDeleteDialog}
+  onClose={handleDeleteDialogClose}
+ 
+>
+  <DialogTitle>Delete User</DialogTitle>
+  <DialogContent>
+    <p>Are you sure you want to delete this user?</p>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleDeleteDialogClose} color="secondary">
+      Cancel
+    </Button>
+    <Button onClick={handleDeleteClick} color="primary">
+      Delete
+    </Button>
+  </DialogActions>
+</Dialog>
 
         <Dialog open={openPasswordModal} onClose={handlePasswordModalClose}>
         <DialogTitle>Update Password</DialogTitle>
-        <DialogContent >
+        <DialogContent>
           <TextField
-          className='mt-5 '
+            className='mt-5 '
             label="New Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             fullWidth
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleTogglePasswordVisibility}
+                    edge="end"
+                  >
+                    {showPassword ? <Eye /> : <EyeOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </DialogContent>
         <DialogActions>
@@ -484,6 +515,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
                           <div className="pagination-container">
           <Pagination
             count={Math.ceil(userListData.length / rowsPerPage)}

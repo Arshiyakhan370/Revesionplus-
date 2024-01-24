@@ -11,6 +11,9 @@ const AddStudentPage = () => {
   const toggleSidebar = () => {
     setSidebarClosed(!isSidebarClosed);
   };
+
+
+  
     return (
         <Fragment>
       <Header toggleSidebar={toggleSidebar}/>

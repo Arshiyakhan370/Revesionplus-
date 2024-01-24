@@ -9,28 +9,25 @@ import FormStudentPage from '../Pages/FormStudentPage'
 import AddStudentPage from '../Pages/AddStudentPage'
 import SweetAlert from '../component/TeacherMap/SweetAlert'
 import CreateQuestionPage from '../Pages/CreateQuestionPage'
-
-import Header from '../component/AdminDashboard/Header'
 import Questions from '../component/CreateQuestion/Questions'
 import QuestionPage from '../Pages/QuestionPage'
 import QuestionDescriptionPage from '../Pages/QuestionDescriptionPage'
 import LibraryPage from '../Pages/LibraryPage'
 import Mcq from '../component/CreateQuestion/QuestionSub/Mcq'
 import Drwaing from '../component/CreateQuestion/QuestionSub/Drwaing'
-import CreateAssignment from '../component/Dashboard Components/createAssignment/CreateAssignment'
+import CreateAssignment from '../component/createAssignment/CreateAssignment'
 import StudentDash from '../component/StudentDashboard/StudentDash'
-import FilterForm from '../component/Dashboard Components/createAssignment/FilterForm'
-import PracticeQuestion from '../component/PracticeAssignment/PracticeQuestion'
-import SubjectList from '../component/PracticeAssignment/IBMYP'
+import FilterForm from '../component/createAssignment/FilterForm'
+import PracticeQuestion from '../component/PracticeAssignment/SourceAssignment/PracticeQuestion'
 import IBPage from '../Pages/IBPage'
-import MathsSectionQuestion from '../component/PracticeAssignment/MathsSectionQuestion'
+import MathsSectionQuestion from '../component/PracticeAssignment/SourceAssignment/MathsSectionQuestion'
 import Golink from '../component/PracticeAssignment/Golink.'
-import IbDp from '../component/PracticeAssignment/IbDp'
+import IbDp from '../component/PracticeAssignment/SourceAssignment/IBDP/IbDp'
 import IGcse from '../component/PracticeAssignment/IGcse'
 import Sat from '../component/PracticeAssignment/Sat'
-import Aisl from '../component/PracticeAssignment/Aisl'
-import AislLink from '../component/PracticeAssignment/AislLink'
-import AislLinkGoLink from '../component/PracticeAssignment/aislLinkGoLink'
+import Aisl from '../component/PracticeAssignment/SourceAssignment/IBDP/Aisl'
+import AislLink from '../component/PracticeAssignment/SourceAssignment/IBDP/AislLink'
+import AislLinkGoLink from '../component/PracticeAssignment/SourceAssignment/IBDP/aislLinkGoLink'
 import AislQuestionPaper from '../component/PracticeAssignment/AislQuestionPaper'
 import AlhlComponent from '../component/PracticeAssignment/alHl/AlhlComponent'
 import AaslLink from '../component/PracticeAssignment/AASL/AaslLink';
@@ -40,11 +37,10 @@ import BussinessHl from '../component/PracticeAssignment/IBDPbUSINESS/BussinessH
 import ChemistrySl from '../component/PracticeAssignment/IbdpChemistry/ChemistrySl'
 import ChemistryHl from '../component/PracticeAssignment/IbdpChemistry/ChemistryHl'
 import EconomicSl from '../component/PracticeAssignment/IBeconomic/EconomicSl'
-import Paper1Secound from '../component/PracticeAssignment/Paper1Secound'
-import Paper1MarthscoreLink from '../component/PracticeAssignment/paper1MarthscoreLink'
-import SlEconomic from '../component/PracticeAssignment/IBeconomic/SlEconomic'
-import Hase2Mathematics from '../component/PracticeAssignment/Hase2Mathematics'
-import HaseMathsPpaper1 from '../component/PracticeAssignment/HaseMathsPpaper1'
+import Paper1Secound from '../component/PracticeAssignment/SourceAssignment/IBDP/Paper1Secound'
+import Paper1MarthscoreLink from '../component/PracticeAssignment/SourceAssignment/IBDP/paper1MarthscoreLink'
+import Hase2Mathematics from '../component/PracticeAssignment/SourceAssignment/IBDP/Hase2Mathematics'
+import HaseMathsPpaper1 from '../component/PracticeAssignment/SourceAssignment/IBDP/HaseMathsPpaper1'
 import HaseMathematicsAlhl from '../component/PracticeAssignment/alHl/HaseMathematicsAlhl'
 import Hase2AlhlPaper2 from '../component/PracticeAssignment/alHl/Hase2AlhlPaper2'
 import PhysicsPaper from '../component/PracticeAssignment/IbDkPysicsSl/PhysicsPaper'
@@ -76,6 +72,12 @@ import AudioPage from '../Pages/AudioPage'
 import SimulationPage from '../Pages/SimulationPage'
 import McqPage from '../Pages/McqPage'
 import DrwaingPage from '../Pages/DrwaingPage'
+import FilterFormAndQuestion from '../Pages/FilterFormAndQuestion'
+import ProfileFormPage from '../Pages/ProfileFormPage'
+import AssignmentCreate from '../component/StudentDashboard/AssignmentCreate'
+import IBMYPComponent from '../component/PracticeAssignment/SourceAssignment/IBMYP/IBMYP'
+import AddCategory from '../component/createAssignment/AddCategory'
+import AddCategoryPage from '../Pages/AddCategoryPage'
 
 
 
@@ -110,9 +112,9 @@ const Routing = () => {
           <Route path='/mcq' element={<McqPage/>} />
           <Route path='/drwing' element={<DrwaingPage/>} />
           <Route path='/dashboar-Student' element={<StudentDash/>} />
-          <Route path='/create-filter' element={<FilterForm/>} />
+          <Route path='/create-filter' element={<FilterFormAndQuestion/>} />
           <Route path="/practiceQuestion" element={<PracticeQuestion/>}/>
-          <Route path='/ibmyb' element={<SubjectList/>}/>
+          <Route path='/ibmyb' element={<IBMYPComponent/>}/>
           <Route path='/maths-standard' element={<IBPage/>}/>
           <Route path='/maths-question' element={<MathsSectionQuestion/>}/>
           <Route path='/go-link' element={<Golink/>}/>
@@ -159,9 +161,11 @@ const Routing = () => {
           <Route path='/schdule-box' element={<ScheduleContainer/>}/>
           <Route path='/past-class' element={<PastClass/>}/>
           <Route path='/nav1' element={<Navbar1/>}/>
-
+<Route path='/profile' element={<ProfileFormPage/>}/>
+<Route path='/Student-Create-assignment' element={<AssignmentCreate/>}/>
+<Route path='/Add-category' element={<AddCategoryPage/>}/>
                   </Routes>
-      </Suspense>
+    </Suspense>
   )
 }
 

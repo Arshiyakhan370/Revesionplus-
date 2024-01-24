@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, Row, Modal } from 'react-bootstrap';
+import { Form, Button, Col, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import Header from '../../AdminDashboard/Header';
 import { useDropzone } from 'react-dropzone';
 import { useMediaQuery } from 'react-responsive';
 import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
@@ -34,7 +33,7 @@ const Vdeo = ({isSidebarClosed}) => {
   const [showModal, setShowModal] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: 'video/*',
     onDrop: (acceptedFiles) => {
       const file = acceptedFiles[0];
@@ -68,10 +67,7 @@ const Vdeo = ({isSidebarClosed}) => {
     
     handleModalClose();
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-  };
+ 
 
   const handleCancel = () => {
     console.log('Cancel button clicked');

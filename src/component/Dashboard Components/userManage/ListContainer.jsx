@@ -5,7 +5,8 @@ import {
   Container,
   Card,
   CardHeader,
- 
+  IconButton,
+  InputAdornment,
   CardContent,
   FormControl,
   InputLabel,
@@ -14,7 +15,7 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-
+import { Eye, EyeOff } from 'react-feather';
 
 import { Table, Button,  Pagination,Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -137,11 +138,17 @@ const ListContainer = ({ isSidebarClosed }) => {
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
-  
+  const [showPassword, setShowPassword] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+const [deleteUserId, setDeleteUserId] = useState(null);
+ 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+    console.log('Visibility toggled. New state:', !showPassword);
+  };
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -151,7 +158,19 @@ const ListContainer = ({ isSidebarClosed }) => {
     setPage(1); 
   };
 
+  const handleDeleteDialogOpen = (userId) => {
+    setDeleteUserId(userId);
+    setOpenDeleteDialog(true);
+  };
   
+  const handleDeleteDialogClose = () => {
+    setDeleteUserId(null);
+    setOpenDeleteDialog(false);
+  };
+const handleDeleteClick = () => {
+       console.log(`Delete user with ID: ${deleteUserId}`);
+    setOpenDeleteDialog(false);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -183,27 +202,7 @@ const ListContainer = ({ isSidebarClosed }) => {
       const handlePasswordModalClose = () => {
         setOpenPasswordModal(false);
       };
-      const handleDeleteClick = async (userId) => {
-      try {
-        const result = await Swal.fire({
-          title: 'Are you sure?',
-          text: 'You will not be able to recover this user!',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Yes, delete it!',
-        });
     
-        if (result.isConfirmed) {
-          const updatedUserList = userListData.filter((user) => user.id !== userId);
-          setUserListData(updatedUserList);
-          Swal.fire('Deleted!', 'User has been deleted.', 'success');
-        }
-      } catch (error) {
-        console.error('Error during delete operation:', error);
-      }
-    };
     
   const handleEditClick = (userId, userName, userEmail) => {
     setEditUserId(userId);
@@ -224,7 +223,7 @@ const ListContainer = ({ isSidebarClosed }) => {
     setShowEditModal(false);
   };
 
-    
+  
 
     const handleScrollToTop = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -247,6 +246,7 @@ const ListContainer = ({ isSidebarClosed }) => {
                   <Link
                     to="/student-add"
                     className="btn btn-round btn-gradient-primary float-end "
+                    style={{textDecoration:'none'}}
                   >
                     Add User
                   </Link>
@@ -402,7 +402,7 @@ const ListContainer = ({ isSidebarClosed }) => {
     )}
     <td>
                                 <div className="d-inline-flex">
-                                {/* <UserActionsMenu/> */}
+                              
                                 <Button
         onClick={handleClick}
         className="hide-arrow text-primary"
@@ -431,12 +431,13 @@ const ListContainer = ({ isSidebarClosed }) => {
           <LockIcon sx={{ marginRight: 1 }} />
           Update Password
         </MenuItem>
-        <MenuItem  onClick={() => handleDeleteClick(user.id)}>
+        <MenuItem    onClick={() => handleDeleteDialogOpen(user.id)}>
           <DeleteIcon sx={{ marginRight: 1 }} />
           Delete
         </MenuItem>
       </Menu>
-                                
+       
+                        
        
         <a  className="item-edit" onClick={() => handleEditClick(user.id, user.name, user.email)}>
           <svg
@@ -499,18 +500,44 @@ const ListContainer = ({ isSidebarClosed }) => {
             </Form>
           </Modal.Body>
         </Modal>
-
+ <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
+        
+      <DialogTitle>Delete User</DialogTitle>
+      <DialogContent>
+        <p>Are you sure you want to delete this user?</p>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleDeleteDialogClose} color="secondary">
+          Cancel
+        </Button>
+        <Button onClick={() => handleDeleteClick(deleteUserId)} color="primary">
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
 
         <Dialog open={openPasswordModal} onClose={handlePasswordModalClose}>
         <DialogTitle>Update Password</DialogTitle>
-        <DialogContent >
+        <DialogContent>
           <TextField
-          className='mt-5 '
+            className='mt-5 '
             label="New Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             fullWidth
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleTogglePasswordVisibility}
+                    edge="end"
+                  >
+                    {showPassword ? <Eye /> : <EyeOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </DialogContent>
         <DialogActions>
@@ -522,6 +549,7 @@ const ListContainer = ({ isSidebarClosed }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
                           <div className="pagination-container">
           <Pagination
             count={Math.ceil(userListData.length / rowsPerPage)}

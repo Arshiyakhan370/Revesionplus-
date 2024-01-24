@@ -2,10 +2,8 @@
     display:block !important;
 }
 .section-right {
-    width: 40%;
-    padding: 4% 0% 3% 4%;
-    height: 100%;
-    float: left;
+    padding: 4% 4% 4% 4%;
+      float: left;
     display: block;
     background-color: transparent;
 }
@@ -19,7 +17,6 @@
         margin-bottom: 0px;
         text-align: Center;
         padding: 10px 0;
-        font-family: 'Roboto', sans-serif;
         font-weight: bold;
         border-bottom: 1px solid #d9d9d9;
 }
@@ -48,10 +45,9 @@
     position: relative;
     background-color: #fff;
     color: #444;
-    border-radius: 6px;
     padding: 10px 6px;
     box-shadow: 0px 3px 6px #00000029;
-    width: 48%;
+    width: 100%;
     margin: 0 1%;
     border: none;
     outline: none;
@@ -63,25 +59,6 @@
     border: 1px solid #002b4f;
 }
 
-.tab button {
-    display: block;
-    position: relative;
-    background-color: #fff;
-    color: #444;
-    border-radius: 6px;
-    padding: 7px 6px;
-    box-shadow: 0px 3px 6px #00000029;
-    width: 48%;
-    margin: 0 1%;
-    border: none;
-    outline: none;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 14px;
-    float: left;
-    border: 1px solid #002b4f;
-}
 
 form {
     display: block;
@@ -201,7 +178,7 @@ label {
 @media (min-width: 1024px) {
     .section-right {
         width: 100%;
-        padding: 4% 4% 4% 4%;
+      
     }
     .tab button {
         width: 48%;
@@ -240,6 +217,11 @@ label {
     }
     .images {
         display:none ;
+    }
+}
+@media (max-width: 645px) {
+    .images {
+        display:none !important;;
     }
 }
 @media (max-width: 420px) {

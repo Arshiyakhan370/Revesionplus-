@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Button, FormControl, InputLabel, MenuItem, Select, Grid, Paper, Typography, Container, IconButton } from '@mui/material';
+import React, { Fragment, useState } from 'react';
+import { Accordion, AccordionSummary, AccordionDetails, Button, FormControl, InputLabel, MenuItem, Select, Grid, Paper, Typography, Container, IconButton, CardContent, Card } from '@mui/material';
 import Assignment from './Assignment';
 import { ArrowLeft } from 'react-feather';
-import gsap from 'gsap';
 
-const YourComponent = () => {
+
+const FilterForm = () => {
   const [boardID, setBoardID] = useState('');
   const [sourceID, setSourceID] = useState('');
   const [subjectlevelID, setSubjectLevelID] = useState('');
@@ -61,37 +61,40 @@ const YourComponent = () => {
   };
  
   return (
-    <div>
-     <nav className="navbar navbar-light bg-light  flex flex-row">
-        <span id="" className="pro-sidebar-logo ml-8 ">
-          <div>M</div>
-          <h5 className='text-black'> My Revision+ </h5>
-        </span> 
-        <Button variant='primary' style={{  marginRight:'30px',color:'white', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) '}}>LogOut</Button>
-      </nav>
-          <div className='ml-10 mt-8 text-black w-8 h-8  '>
-          <Button onClick={handleGoBack} >
-      <ArrowLeft size={24} />
-    </Button></div>
-          
-    <Container style={{ marginTop:'30px'}}>
-    <Grid container spacing={2} >
-      <Grid item xs={12}>
-        <Accordion defaultExpanded>
-          <AccordionSummary>
-          <div className='flex felx-row justify-between'>
-            <Typography className='text-lg  '>Question Filter</Typography>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
-             height="24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round"
-              className='ml-4'>
-  <polyline points="6 9 12 15 18 9"></polyline>
-</svg>
-</div>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Paper elevation={3} style={{ padding: '20px' }}>
-            <Grid container spacing={2}>
+    <Fragment>
+    <Container maxWidth='xl' style={{ marginTop: '30px' }}>
+      <div className='ml-10 mt-8 text-black w-8 h-8'>
+        <Button onClick={handleGoBack}>
+          <ArrowLeft size={24} />
+        </Button>
+      </div>
+      <Card>
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Accordion defaultExpanded>
+                <AccordionSummary>
+                  <div className='flex flex-row justify-between'>
+                    <Typography className='text-lg'>Question Filter</Typography>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className='ml-4'
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Paper elevation={3} style={{ padding: '20px' }}>
+                    <Grid container spacing={2}>
             <Grid item xs={6} md={4}>
   <FormControl fullWidth>
     <InputLabel htmlFor="boardID">Boards</InputLabel>
@@ -205,24 +208,27 @@ const YourComponent = () => {
 
 
 </Grid>
-        
-              <Button variant="outlined" onClick={handleReset} style={{ marginTop: '25px' }}>
+         <div className="button-container flex justify-end">
+              <Button variant="contained" onClick={handleReset} style={{ marginTop: '25px' }}>
                 Reset
               </Button>
-              <Button variant="outlined" onClick={handleFilter} style={{ marginTop: '25px', marginLeft: '10px' }}>
+              <Button variant="contained" onClick={handleFilter} style={{ marginTop: '25px', marginLeft: '10px' }}>
                 Filter
               </Button>
+              </div>
             </Paper>
           </AccordionDetails>
         </Accordion>
       
    </Grid>
     </Grid>
+    </CardContent>
+    </Card>
     </Container>
-    <Assignment/>
     
-    </div>
+    
+    </Fragment>
   );
 };
 
-export default YourComponent;
+export default FilterForm;

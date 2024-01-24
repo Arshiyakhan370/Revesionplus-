@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Tabs, Tab, Typography, Box, Container, Paper, Pagination ,Button} from '@mui/material';
-import { padding } from '@mui/system';
+import React, { Fragment, useState } from 'react';
+import { Tabs, Tab, Typography, Box, Container, Paper, Pagination ,Button, Card, CardContent, Grid} from '@mui/material';
 import Nav from '../PracticeAssignment/Nav';
 import { ArrowLeft } from 'react-feather';
+import Navbar1 from '../Dashboard Components/Buttons1';
+
+
 const data = [
   { label: 'John Doe', subjects: [
     { content: 'Content for Maths - Subject 1', date: '04-May-23', time: '08:09 PM', location: 'Room 101' },
@@ -98,83 +100,104 @@ const data = [
 
 const itemsPerPage = 5; 
 
-const PastClass = () => {
-  const [value, setValue] = useState(0);
-  const [page, setPage] = useState(1);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedData = data.slice(startIndex, endIndex);
-  const handleGoBack = () => {
-    window.history.back();
-  };
-  return (
-    <div>
-    <Nav/>
-    <div className='ml-10 mt-8 text-black w-8 h-8  '>
-          <Button onClick={handleGoBack} >
-      <ArrowLeft size={24} />
-    </Button></div>
-    <Container>
-      <Paper>
-        <Tabs value={value} onChange={handleChange}>
-          {paginatedData.map((tab, index) => (
-            <Tab key={index} label={tab.label} />
-          ))}
-        </Tabs>
-
-        {paginatedData.map((tab, index) => (
-          <TabPanel key={index} value={value} index={index}>
-            {tab.subjects.map((subject, subIndex) => (
-              <div key={subIndex} className="time-box">
-                <Paper sx={{ padding: '40px',marginBottom:'20px' }}>
-                  <h2>{tab.label}</h2>
-                  <div>Student: {tab.label}</div>
-                  <div>Date: {subject.date}</div>
-                  <div>Time: {subject.time}</div>
-                  <div>Location: {subject.location}</div>
-                  <div className="subjectContainer">{subject.content}</div>
-                </Paper>
-              </div>
+  const PastClass = () => {
+    const [value, setValue] = useState(0);
+    const [page, setPage] = useState(1);
+  
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
+  
+    const handlePageChange = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedData = data.slice(startIndex, endIndex);
+  
+    const handleGoBack = () => {
+      window.history.back();
+    };
+  
+    return (
+      <Fragment>
+        <Nav />
+        <Navbar1 />
+        <Container maxWidth='xl'>
+          <div className='ml-10 mt-8 text-black w-8 h-8'>
+            <Button onClick={handleGoBack}>
+            <ArrowLeft size={24} />
+            </Button>
+          </div>
+  
+          <Paper>
+            <Tabs value={value} onChange={handleChange} centered>
+              {paginatedData.map((tab, index) => (
+                <Tab key={index} label={tab.label} />
+              ))}
+            </Tabs>
+  
+            {paginatedData.map((tab, index) => (
+              <TabPanel key={index} value={value} index={index}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" color="primary" sx={{ marginBottom: 2 }}>
+                      {tab.label}
+                    </Typography>
+                  </Grid>
+                  {tab.subjects.map((subject, subIndex) => (
+                    <Grid item xs={12} md={4} key={subIndex}>
+                      <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                        <CardContent>
+                          <Typography gutterBottom variant="h6" component="div">
+                            {subject.date}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Time: {subject.time}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Location: {subject.location}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {subject.content}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </TabPanel>
             ))}
-          </TabPanel>
-        ))}
-
-        <Pagination
-          count={Math.ceil(data.length / itemsPerPage)}
-          page={page}
-          onChange={handlePageChange}
-          sx={{ marginTop: '20px', alignSelf: 'center' }}
-        />
-      </Paper>
-    </Container>
-    </div>
-  );
-};
-
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </Typography>
-  );
-};
-
-export default PastClass;
+  
+            <Pagination
+              count={Math.ceil(data.length / itemsPerPage)}
+              page={page}
+              onChange={handlePageChange}
+              sx={{ marginTop: '20px', alignSelf: 'center' }}
+            />
+          </Paper>
+        </Container>
+      </Fragment>
+    );
+  };
+  
+  const TabPanel = (props) => {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <Typography
+        component="div"
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box p={3}>{children}</Box>}
+      </Typography>
+    );
+  };
+  
+  export default PastClass;
+  

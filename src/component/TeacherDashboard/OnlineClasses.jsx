@@ -1,115 +1,161 @@
-import React from 'react';
-import { Button, Tabs, Box, Container } from '@mui/material';
+import React, { Fragment, useState } from 'react';
+import { Button, Tabs, Box, Container, Grid, Card, CardContent, Typography } from '@mui/material';
 import Nav from '../PracticeAssignment/Nav';
 import { Link } from 'react-router-dom';
+import Navbar1 from '../Dashboard Components/Buttons1';
 
 const OnlineClasses = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [showScheduleContainer, setShowScheduleContainer] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  return (
-    <div>
-      <Nav />
-     
-      <div>
-        <h1 className='text-center text-[#002B4F] pt-20'>Online Classes</h1>
-        <div className='text-center text-black mt-8'><h2>Muhammad Akram</h2></div>
-       
-      </div>
-      <Box
-        sx={{
-          background: '#ededed',
-          marginBottom: '70px',
-          padding: '40px',
-          margin: '8%',
-          borderRadius: '20px',
-          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        <Container>
-          <Box
-            sx={{
-              background: '#ededed',
-              marginBottom: '20px',
-              padding: '10px',
-              borderRadius: '10px',
-            
-             
-            }}
-          >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between',marginLeft:'20%' }}>
-              <Button
-                onClick={(e) => handleChange(e, 0)}
-                variant="contained"
-                color="primary"
-                sx={{
-                
-                  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
-                  // borderRadius: '40px',
-              //  padding:'20px'
-                }}
-              >Scheduled Class
-                
-              </Button>
-              <Link to='/past-class'><Button
-                onClick={(e) => handleChange(e, 1)}
-                variant="contained"
-                color="primary"
-                sx={{
-                 
-                  marginRight: '0%',
-                  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
-                  // borderRadius: '40px',
-              //  padding:'20px'
-                
-                }}
-              >
-               Past Classes
-              </Button></Link>
-            </Box>
-<Box sx={{ marginTop:'4%', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important', height:'2px'}}></Box>
+  const handleScheduleClick = () => {
+    setShowScheduleContainer(true);
+  };
+  const studentList = [
+    { id: 1, name: 'Student 1' },
+    { id: 2, name: 'Student 2' },
+    { id: 3, name: 'Student 3' },
+   
+  ];
+  const buttonStyle = {
+    transition: 'background-color 0.3s ease, transform 0.3s ease', 
+    '&:hover': {
+      color: '#fff',
+      transform: 'scale(1.1)',
+    },
+  };
 
-            <Box
+  return (
+    <Fragment>
+      <Nav />
+      <Navbar1 />
+      <Container maxWidth="xl">
+        <div>
+          <h1 className='mt-8 mb-2 text-center text-blue-600 hover: hover:translate-y-1.5'>OnlineClasses</h1>
+          <h2 className='mt-8 mb-8 text-center text-sky-500 hover:translate-y-10'>Muhammad Musabani</h2>
+        </div>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Card
               sx={{
-                marginBottom: 0,
-                marginTop: '5%',
-                display: value === 0 ? 'block' : 'none',
+                marginTop: '50px',
+                background: '#ededed',
+                marginBottom: '20px',
+                borderRadius: '10px',
+                boxShadow: '0px 3px 6px #00000029',
               }}
             >
-              <Link to='/schdule-box'><Button href="create_online_class.php" variant="contained" color="info" sx={{  marginLeft: '2%', marginRight: '2%',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important', }}>
-                Schedule New Class
-              </Button></Link>
-              <section className="container--tabs">
-                <Tabs value={value} onChange={handleChange}>
-                  {/* Add your tabs here */}
-                </Tabs>
-                <Box className="tab-content">
-                  {/* Add your tab content here */}
+              <CardContent>
+                <Grid container justifyContent="space-between" alignItems="center">
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="h5" color="primary">
+                      Online Classes
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6} style={{ textAlign: 'right' }}>
+                  <Link to="/past-class">
+                    <Button
+                      onClick={(e) => handleChange(e, 0)}
+                      variant="contained"
+                      color="primary"
+                      sx={{
+                        background:
+                          'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+                ...buttonStyle,
+                      }}
+                    >
+                      Scheduled Class
+                    </Button>
+                    </Link>
+                    <Link to="/past-class">
+                      <Button
+                        onClick={(e) => handleChange(e, 1)}
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          marginLeft: '10px',
+                          background:
+                            'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+                         ...buttonStyle,
+                        }}
+                      >
+                        Past Classes
+                      </Button>
+                    </Link>
+                  </Grid>
+                </Grid>
+                  
+                <Box
+                  sx={{
+                    marginTop: '2%',
+                    marginBottom: '2%',
+                    background:
+                      'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+                    height: '2px',
+                  }}
+                ></Box>
+                <div className='flex felx flex-grow-0 text-center justify-between'>
+                 <Box
+                  sx={{
+                    display: value === 0 ? 'block' : 'none',
+                  }}
+                >
+                 <Link to="/schdule-box">
+             
+                  <Button
+                   
+                    variant="contained"
+                    color="info"
+                    sx={{
+                      marginBottom: '10px',
+                      background:
+                        'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+                      ...buttonStyle, 
+                    }}
+                    onClick={handleScheduleClick}
+                  >
+                    Schedule New Class
+                  </Button>
+                  </Link>
+                  {showScheduleContainer && (
+                    <section className="container--tabs">
+                    </section>
+                  )}
                 </Box>
-              </section>
-            </Box>
-            <Box
-              sx={{
-                marginBottom: 0,
-                display: value === 1 ? 'block' : 'none',
-              }}
+                <Box
+                  sx={{
+                    display: value === 1 ? 'block' : 'none',
+                  }}
+                >
+                  <section className="container--tabs">
+                    <Tabs value={value} onChange={handleChange}></Tabs>
+                    <Box className="tab-content"></Box>
+                  </section>
+                  
+                </Box>
+                <div className="mb-4 flex flex-col w-40">
+          {studentList.map((student) => (
+            <Button
+              key={student.id}
+              variant="contained"
+              color="info"
+              className="mr-2 mb-2 bg-gradient-to-r from-blue-800 to-blue-500 text-white hover:from-blue-500 hover:to-blue-300 hover:bg-blue-600 ...buttonStyle"
             >
-              <section className="container--tabs">
-                <Tabs value={value} onChange={handleChange}>
-                  {/* Add your tabs here */}
-                </Tabs>
-                <Box className="tab-content">
-                  {/* Add your tab content here */}
-                </Box>
-              </section>
-            </Box>
-          </Box>
-        </Container>
-      </Box>
-    </div>
+              {student.name}
+            </Button>
+          ))}
+        </div>
+        </div>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+    </Fragment>
   );
 };
 

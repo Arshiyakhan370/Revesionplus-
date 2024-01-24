@@ -1,7 +1,6 @@
 
-
 import React, { useState } from 'react';
-import './Golink.css'; // Assuming Golink.css is in the same directory as this component
+import './Golink.css'; 
 import QuestionLevel from './QuestionLevel';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';

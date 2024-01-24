@@ -13,6 +13,8 @@ import {
   DialogActions,
   SvgIcon,
   Grid,
+  Card,
+  CardContent,
 } from '@mui/material';
 import { Edit2, Trash2 } from 'react-feather';
 import Swal from 'sweetalert2';
@@ -80,7 +82,7 @@ const Assignment = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editedQuestionText, setEditedQuestionText] = useState(EditorState.createEmpty());
   const [showAssignmentPreview, setShowAssignmentPreview] = useState(false);
-  const [filterType, setFilterType] = useState('both'); // 'question', 'answer', 'both'
+  const [filterType, setFilterType] = useState('both'); 
 
   const filteredQuestions = questions.filter((question) => {
     if (filterType === 'both') return true;
@@ -201,7 +203,11 @@ const Assignment = () => {
   };
 
   return (
-    <Container>
+    <Container maxWidth="xl" >
+      <Grid container spacing={2} >
+        <Grid item xs={12} >
+          <Card elevation={2} >
+            <CardContent>
       <Form onSubmit={handleSubmit} style={{ marginTop: '50px' }}>
         <Grid container mt={2} style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h6" gutterBottom>
@@ -258,7 +264,7 @@ const Assignment = () => {
                   ))}
                 </div>
                 <Divider />
-                <div className="button-container ml-[800px]">
+                <div className="button-container flex justify-end mt-4">
                   <Button variant="outlined" startIcon={<Edit2 />} onClick={() => handleEdit(question)} sx={{ marginRight: 2 }}>
                     Edit
                   </Button>
@@ -295,55 +301,68 @@ const Assignment = () => {
         </Dialog>
 
         {showAssignmentPreview && (
-          <Dialog open={showAssignmentPreview} onClose={() => setShowAssignmentPreview(false)} >
-          <span className="pro-sidebar-logo  ml-8 mt-4">
-          <div>M</div>
-          <h5 className='text-black'>My Revision+</h5>
-          
-          </span>
-          <div className='border border-[#002B4F] h-1'></div>
-            <DialogTitle>Selected Questions</DialogTitle>
-            <div style={{ marginTop: '20px', marginLeft:'20px' }}>
-                <Button variant="outlined" onClick={() => handlePrint('question')}>
-                 Questions
-                </Button>
-                <Button variant="outlined" onClick={() => handlePrint('answer')} sx={{ marginLeft: 2 }}>
-                  Answers
-                </Button>
-                <Button variant="outlined" onClick={() => handlePrint('both')} sx={{ marginLeft: 2 }}>
-                  Both
-                </Button>
-              </div>
-            <DialogContent>
-            {selectedQuestions.map((question) => (
-  <Container key={question.id} style={{ marginTop: '20px' }}>
-    <Paper elevation={2} className="question-paper pt-4 pb-4 pl-4 pr-4">
-      <Typography variant="h6" gutterBottom>
-        Question {question.id}
-      </Typography>
-      <Typography variant="body1">{question.text}</Typography>
-      <div>
-        {question.options.map((option, index) => (
-          <Typography variant="body2" key={index}>
-            Option {String.fromCharCode(65 + index)}: {option}
-          </Typography>
-        ))}
-      </div>
-      {filterType === 'both' || filterType === 'answer' ? (
+  <Dialog  maxWidth='xl' open={showAssignmentPreview} onClose={() => setShowAssignmentPreview(false)}>
+    <div className="pro-sidebar-logo ml-8 mt-4">
+      <div>M</div>
+      <h5 className='text-black'>My Revision+</h5>
+    </div>
+    <div className='border border-[#002B4F] h-1'></div>
+    <DialogTitle>Selected Questions</DialogTitle>
+    <div style={{ marginTop: '20px', marginLeft: '20px' }}>
+      <Button variant="outlined" onClick={() => handlePrint('question')}>
+        Questions
+      </Button>
+      <Button variant="outlined" onClick={() => handlePrint('answer')} sx={{ marginLeft: 2 }}>
+        Answers
+      </Button>
+      <Button variant="outlined" onClick={() => handlePrint('both')} sx={{ marginLeft: 2 }}>
+        Both
+      </Button>
+      <Button variant="outlined" sx={{ marginLeft: 2 ,marginRight:2}}>
+        Mark Scheme
+      </Button>
+    
+    </div>
+    <DialogContent>
+   {selectedQuestions.map((question) => (
+    <Container key={question.id} style={{ marginTop: '20px' }}>
+      <Paper elevation={2} className="question-paper pt-4 pb-4 pl-4 pr-4">
+        <Typography variant="h6" gutterBottom>
+          Question {question.id}
+        </Typography>
+        <Typography variant="body1">{question.text}</Typography>
         <div>
-          <Typography variant="h6" gutterBottom>
-            Answer:
-          </Typography>
-          <Typography variant="body2">{question.answer}</Typography>
+          {question.options.map((option, index) => (
+            <Typography variant="body2" key={index}>
+              Option {String.fromCharCode(65 + index)}: {option}
+            </Typography>
+          ))}
         </div>
-      ) : null}
-    </Paper>
-  </Container>
-))}
+        {filterType === 'both' || filterType === 'answer' ? (
+          <div>
+            <Typography variant="h6" gutterBottom>
+              Answer:
+            </Typography>
+            <Typography variant="body2">{question.answer}</Typography>
+          </div>
+        ) : null}
+        {filterType === 'schememark' ? (
+          <div>
+            <Typography variant="h6" gutterBottom>
+              Mark Scheme:
+            </Typography>
+          
+            <Typography variant="body2">
+              Marking criteria and additional information for this question.
+            </Typography>
+          </div>
+        ) : null}
+      </Paper>
+    </Container>
+  ))}
+</DialogContent>
 
-              
-            </DialogContent>
-            <DialogActions>
+    <DialogActions>
             <Button variant="outlined" onClick={() => handlePrint('both')} sx={{ marginLeft: 2 }}>
                   Print 
                 </Button>
@@ -351,10 +370,18 @@ const Assignment = () => {
                 Close
               </Button>
             </DialogActions>
-          </Dialog>
-        )}
+  </Dialog>
+)}
+              
+          
       </Form>
+      </CardContent>
+     
+      </Card>
+      </Grid>
+      </Grid>
     </Container>
+
   );
 };
 

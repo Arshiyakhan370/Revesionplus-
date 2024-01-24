@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import {Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card } from '@mui/material';
-import Swal from 'sweetalert2';
+import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SweetAlert from './SweetAlert';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useMediaQuery } from 'react-responsive';
 
-
-
-
-const TeacherMap = ({isSidebarClosed }) => {
+const TeacherMap = ({ isSidebarClosed }) => {
   const [teacherData, setTeacherData] = useState([
    
     { id: 2, name: 'xyz', board: '', subject: '' },
@@ -59,31 +55,30 @@ const TeacherMap = ({isSidebarClosed }) => {
   ])
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+const [deleteTeacherId, setDeleteTeacherId] = useState(null);
+
   const [page, setPage] = useState(1);
   const teachersPerPage = 5;
 
   const handleEdit = (teacher) => {
     setSelectedTeacher(teacher);
   };
-
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this data!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-       
-        setTeacherData((prevData) => prevData.filter((teacher) => teacher.id !== id));
-        Swal.fire('Deleted!', 'Your data has been deleted.', 'success');
-      }
-    });
+  const handleDeleteDialogOpen = (teacherId) => {
+    setDeleteTeacherId(teacherId);
+    setOpenDeleteDialog(true);
   };
 
+  const handleDeleteDialogClose = () => {
+    setDeleteTeacherId(null);
+    setOpenDeleteDialog(false);
+  };
+
+  const handleDeleteClick = () => {
+ 
+    setTeacherData((prevData) => prevData.filter((teacher) => teacher.id !== deleteTeacherId));
+    setOpenDeleteDialog(false);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -143,7 +138,8 @@ const styles = {
                 data-bs-toggle="tooltip"
                 title=""
                 data-bs-original-title="Delete"
-                onClick={() => handleDelete(teacher.id)}
+               
+      onClick={() => handleDeleteDialogOpen(teacher.id)}
                 style={{
     width: '50px',
     height: '50px',
@@ -191,6 +187,20 @@ const styles = {
             </div>
         </Card>
       </div>
+      <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
+          <DialogTitle>Delete Teacher</DialogTitle>
+          <DialogContent>
+            <p>Are you sure you want to delete this teacher?</p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteDialogClose} color="secondary">
+              Cancel
+            </Button>
+            <Button onClick={handleDeleteClick} color="primary">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       <Modal open={!!selectedTeacher} onClose={handleClose}>
       <Box
         sx={{

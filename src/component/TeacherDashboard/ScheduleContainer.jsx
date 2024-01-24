@@ -21,7 +21,7 @@ const ScheduleOnlineClass = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Add your form submission logic here
+   
   };
 
   return (
@@ -39,7 +39,7 @@ const ScheduleOnlineClass = () => {
                 id="studentid"
                 label="studentid"
                 className="input-md textinput textInput form-control"
-                value="263" // Set the default selected value
+                value="263" 
               >
                 <MenuItem value="263" id="student_263">
                   Gaurav
@@ -68,7 +68,7 @@ const ScheduleOnlineClass = () => {
                 id="subjectid"
                 label="subjectid"
                 className="input-md textinput textInput form-control"
-                value="65" // Set the default selected value
+                value="65" 
               >
                 <MenuItem value="65" id="subject_65">
                   Biology
