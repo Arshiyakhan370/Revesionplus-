@@ -158,9 +158,7 @@ const Golink= () => {
   <h3 className='text-center text-[#122be9]'>IB MATH</h3>
 
  
-  <Card>
-  
-    <div className='ibHomeCheck lg:flex lg:flex-row md:flex-col sm:flex-col'>
+  <div className='ibHomeCheck lg:flex lg:flex-row md:flex-col sm:flex-col'>
     <Card  className='homeCheckLeft w-full lg:w-6/12 md:w-full sm:w-full'>
     
         <h2 className="text-2xl text-blue-500">Select Subtopic</h2>
@@ -204,8 +202,8 @@ const Golink= () => {
           ))}
         </div>
       </Card>
-    </div>
-  </Card>
+   
+  </div>
 </CardContent>
 
 </Card>
