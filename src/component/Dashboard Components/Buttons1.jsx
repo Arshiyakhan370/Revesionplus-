@@ -79,7 +79,7 @@ const Navbar1 = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className='text-white ml-4' component="div" sx={{ margineLeft:'5px' ,flexGrow: 1 }}>
-            My Revesion+
+            My Revesion <sup>+</sup>
           </Typography>
         </Toolbar>
       </AppBar>
