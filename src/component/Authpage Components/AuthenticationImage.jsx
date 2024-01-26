@@ -22,7 +22,7 @@ const AuthenticationImage = () => {
     } else if (selectedRole === 'student' && isV1) {
       destinationRoute = 'dashboar-Student';
     } else {
-      destinationRoute = '/dashboard';
+      destinationRoute = '/admin';
     }
     navigate(destinationRoute);
   };

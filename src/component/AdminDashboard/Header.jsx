@@ -274,7 +274,9 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             <li className="nav-link">
               <Link to="/dashboard">
             <Home className="icons" /> 
+            <Link to="/admin">
                 <span className="text nav-text">Dashboard</span>
+                </Link>
               </Link>
             </li>
             <li className={`nav-link ${isOpen ? 'active' : ''}`}>
