@@ -134,7 +134,24 @@ const FormAddUser = ({ isSidebarClosed }) => {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(1); 
   };
-
+  const ScrollUpIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      width="24"
+      height="24"
+      className="scroll-up-icon"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M5 10l7-7m0 0l7 7m-7-7v18"
+      />
+    </svg>
+  );
   const handleDeleteDialogOpen = (userId) => {
     setDeleteUserId(userId);
     setOpenDeleteDialog(true);
@@ -527,21 +544,19 @@ const FormAddUser = ({ isSidebarClosed }) => {
         </div>
        <div className=' flex flex-row justify-between mt-10 ml-2'>
        <p className='ml-2 '>COPYRIGHT © 2024 My revesion+, All rights Reserved</p>
+        
         <Button
       onClick={handleScrollToTop}
       style={{
-        
-        bottom: '20px',
+         bottom: '20px',
         right: 0,
         left:0,
         zIndex: 1000,
-        color:'white',
-        background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
-      }}
+        textAlign:'center',
+             }}
       color="primary"
-      startIcon={<KeyboardArrowUpIcon />}
+      startIcon={<ScrollUpIcon/>}
     >
-     Top
     </Button>
     </div>
                         

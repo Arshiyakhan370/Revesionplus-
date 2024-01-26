@@ -12,7 +12,7 @@ import '.././AdminDashboard/Header.css';
 const Navbar1 = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [dropdownMenus, setDropdownMenus] = useState([
-    { icon: <Home/> , text:'Dashboard', link:'/dashboard'},
+    { icon: <Home/> , text:'Dashboard', link:'/admin'},
     { icon: <Users />, text: 'User Manage', submenu: [
       { icon: <BookOpen />, text: 'Teacher', link: '/admin' },
       { icon: <UserPlus />, text: 'Student', link: '/add-user-show' },
@@ -48,7 +48,7 @@ const Navbar1 = () => {
   const renderSubMenu = (submenu) => (
     <ul>
       {submenu.map((item, index) => (
-        <li className="nav-link text-white" key={index}>
+        <li className="nav-link text-white mb-4" key={index}>
           <Link className='text-white' to={item.link} style={{textDecoration:'none'}}>
             {item.icon}
             <span className="text nav-text text-white">{item.text}</span>

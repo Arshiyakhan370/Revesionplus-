@@ -129,7 +129,7 @@ const NavStudent = () => {
         <nav className="navbar navbar-light bg-light flex flex-row" style={{ borderBottom: '1px solid #002b4f' }}>
           <span id="" className="pro-sidebar-logo ml-8 ">
             <div>M</div>
-            <h5 className='text-black'> My Revision+ </h5>
+            <h5 className='text-black'> My Revision<sup className="  text-blue-900 ">+</sup></h5>
           </span>
           <div className='flex flex-row justify-center mr-4'>
           <h4 className='mt-3'>{displayedName}</h4>

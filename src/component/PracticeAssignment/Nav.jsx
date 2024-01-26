@@ -20,10 +20,12 @@ const Nav = () => {
     <div>
       {windowWidth > 1024 ? (
         <nav className="navbar navbar-light bg-light flex flex-row" style={{ borderBottom: '1px solid #002b4f' }}>
-          <span id="" className="pro-sidebar-logo ml-8 ">
-            <div>M</div>
-            <h5 className='text-black'> My Revision+ </h5>
-          </span>
+        <span id="" className="pro-sidebar-logo ml-8">
+  <div>M</div>
+  <h5 className='text-black mt-2'> My Revision<sup className="  text-blue-900 ">+</sup></h5>
+</span>
+
+
           <Button
             variant='primary'
             style={{

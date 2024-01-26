@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import '../../MathsSectionQuestion.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -11,7 +11,7 @@ import { Card, Container } from '@mui/material';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF',
+      main: '#002B4F',
     },
   },
 });
@@ -24,7 +24,19 @@ const AislLink = () => {
   const [checkedItems, setCheckedItems] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 767);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   const handleCheckboxChange = (id) => {
     setCheckedItems((prevCheckedItems) => ({
       ...prevCheckedItems,
@@ -40,7 +52,7 @@ const AislLink = () => {
       alert('Please check at least one checkbox before clicking Go.');
     }
   };
-
+  
   return (
 <Fragment>
 <Nav />
@@ -49,7 +61,7 @@ const AislLink = () => {
 <Card backgroundColor='gray' >
 <section className="questionbank-section" style={{ alignItems: 'center',borderBottom: '1px solid #002b4f' }}>
 <ThemeProvider theme={theme}>
-<div className='text-center mb-sm-28 mb-lg-12'>
+<div className={`text-center mt-8 ${isSmallScreen ? 'mb-28' : ''}`}>
   <Link to='/ibmyb'>
     <Button
       variant="contained"
@@ -92,7 +104,7 @@ const AislLink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/aislLink' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/aislLink' ? '#12b6e9' : '',
     }}
   >
   Hodder 2019

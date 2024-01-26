@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../MathsStandard.css';
 import Footer from '../Footer';
@@ -31,7 +31,25 @@ const theme = createTheme({
     },
   });
 const  EconomicSl = () => {
-   const location = useLocation();
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+  const location = useLocation();
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 767);
+    };
+  
+    const logPathname = () => {
+      console.log('Current pathname:', location.pathname);
+    };
+  
+    window.addEventListener('resize', handleResize);
+    logPathname(); 
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      logPathname();
+    };
+  }, [location.pathname]);
+  
 
     return (
       <div>
@@ -39,7 +57,7 @@ const  EconomicSl = () => {
       <Navbar1/>
       <section className="questionbank-section" style={{ alignItems: 'center', borderBottom: '1px solid #002b4f' }}>
               <ThemeProvider theme={theme}>
-          <div className='text-center '>
+              <div className={`button text-center mt-8 ${isSmallScreen ? 'mb-28' : ''}`}>
             <Link to='/ibmyb'>
               <Button
                 variant="contained"

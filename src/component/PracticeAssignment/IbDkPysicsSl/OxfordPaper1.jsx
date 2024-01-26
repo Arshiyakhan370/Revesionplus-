@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import '../MathsSectionQuestion.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Nav from '../Nav';
@@ -25,7 +25,25 @@ const data = [
 
 const OxfordPaper1 = () => {
   const [checkedItems, setCheckedItems] = useState({});
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
   const location = useLocation();
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 767);
+    };
+  
+    const logPathname = () => {
+      console.log('Current pathname:', location.pathname);
+    };
+  
+    window.addEventListener('resize', handleResize);
+    logPathname(); 
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      logPathname();
+    };
+  }, [location.pathname]);
+  
   const navigate = useNavigate();
 
   const handleCheckboxChange = (id) => {
@@ -52,7 +70,7 @@ const OxfordPaper1 = () => {
 <Card backgroundColor='gray' >
 <section className="questionbank-section" style={{ alignItems: 'center',borderBottom: '1px solid #002b4f' }}>
 <ThemeProvider theme={theme}>
-<div className='text-center mb-sm-28 mb-lg-12'>
+<div className={`button text-center mt-8 ${isSmallScreen ? 'mb-28' : ''}`}>
   <Link to='/ibmyb'>
     <Button
       variant="contained"

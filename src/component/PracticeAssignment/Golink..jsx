@@ -24,6 +24,10 @@ const Golink= () => {
     { value: '231', label: 'Number System notation' },
     { value: '232', label: 'Direct and inverse Proportion' },
     { value: '233', label: 'Number sequences(prediction,description)' },
+    { value: '228', label: 'Standard form(scientific notation)' },
+    { value: '230', label: 'Laws of exponents, including integer and negative exponents' },
+    { value: '231', label: 'Number System notation' },
+   
   ];
 
   const criteria = [
@@ -34,6 +38,13 @@ const Golink= () => {
     { value: '652', label: 'B' },
     { value: '659', label: 'C' },
     { value: '660', label: 'A,B&C' },
+    { value: '660', label: 'A,B&C' },
+    { value: '659', label: 'C' },
+    { value: '660', label: 'A,B&C' },
+    { value: '660', label: 'A,B&C' },
+    { value: '660', label: 'A,B&C' },
+    { value: '660', label: 'A,B&C' },
+
   ];
 
   const handleSubtopicChange = (value) => {
@@ -142,58 +153,62 @@ const Golink= () => {
           </Link>
         </div>
       </ThemeProvider>
-      <Card>
-      <CardContent>
     
-              <h3 className='text-center text-[#122be9]'>IB MATH</h3>
-            
-              <div className='ibHomeCheck lg:flex lg:flex-row md:flex-col sm:flex-col' >
-              <Grid contetent space={2}>
-                <div className='homeCheckLeft w-full lg:w-full  md:w-full sm:w-full'>
-                  <h2 className="text-2xl text-blue-500">Select Subtopic</h2>
-                  <div className='flex flex-wrap'>
-                    {subtopics.map((subtopic) => (
-                      <div key={subtopic.value} className='relative mb-4 lg:w-1/2 md:w-full sm:w-full'>
-                        <input
-                          id={`checkbox${subtopic.value}`}
-                          type="checkbox"
-                          name="subtopic[]"
-                          value={subtopic.value}
-                          checked={selectedSubtopics.includes(subtopic.value)}
-                          onChange={() => handleSubtopicChange(subtopic.value)}
-                          className="mr-2 zoom-150"
-                        />
-                        <label htmlFor={`checkbox${subtopic.value}`} className="text-base">{subtopic.label}</label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                </Grid>
-                <Card>
-                <div className='homeCheckRight w-full lg:w-4/12 md:w-full sm:w-full'>
-                  <h3 className="text-xl text-blue-500">Select Criteria</h3>
-                  <div className='flex flex-wrap text-lg'>
-                    {criteria.map((criterion) => (
-                      <div key={criterion.value} className=' text-lg relative mb-4 lg:w-1/2 md:w-full sm:w-full'>
-                        <input
-                          id={`checkbox${criterion.value}`}
-                          type="checkbox"
-                          name="criteria[]"
-                          value={criterion.value}
-                          checked={selectedCriteria.includes(criterion.value)}
-                          onChange={() => handleCriteriaChange(criterion.value)}
-                          className="mr-2 zoom-150"
-                        />
-                        <label htmlFor={`checkbox${criterion.value}`} className="text-base">{criterion.label}</label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
+      <CardContent>
+  <h3 className='text-center text-[#122be9]'>IB MATH</h3>
+
+ 
+  <Card>
+  
+    <div className='ibHomeCheck lg:flex lg:flex-row md:flex-col sm:flex-col'>
+    <Card  className='homeCheckLeft w-full lg:w-6/12 md:w-full sm:w-full'>
+    
+        <h2 className="text-2xl text-blue-500">Select Subtopic</h2>
+     
+        <div className='flex flex-wrap'>
+          {subtopics.map((subtopic) => (
+            <div key={subtopic.value} className='relative mb-4 lg:w-1/2 md:w-full sm:w-full'>
+              <input
+                id={`subtopicCheckbox${subtopic.value}`}
+                type="checkbox"
+                name="subtopic[]"
+                value={subtopic.value}
+                checked={selectedSubtopics.includes(subtopic.value)}
+                onChange={() => handleSubtopicChange(subtopic.value)}
+                className="mr-2 zoom-150"
+              />
+              <label htmlFor={`subtopicCheckbox${subtopic.value}`} className="text-base">{subtopic.label}</label>
+            </div>
+          ))}
+        </div>
+        
+         </Card>
+       
+    <Card className='homeCheckRight w-full lg:w-6/12 md:w-full sm:w-full'>
+     
+        <h3 className="text-xl text-blue-500">Select Criteria</h3>
+        <div className='flex flex-wrap text-lg'>
+          {criteria.map((criterion) => (
+            <div key={criterion.value} className=' text-lg relative mb-4 lg:w-1/2 md:w-full sm:w-full'>
+              <input
+                id={`criteriaCheckbox${criterion.value}`}
+                type="checkbox"
+                name="criteria[]"
+                value={criterion.value}
+                checked={selectedCriteria.includes(criterion.value)}
+                onChange={() => handleCriteriaChange(criterion.value)}
+                className="mr-2 zoom-150"
+              />
+              <label htmlFor={`criteriaCheckbox${criterion.value}`} className="text-base">{criterion.label}</label>
+            </div>
+          ))}
+        </div>
       </Card>
+    </div>
+  </Card>
+</CardContent>
+
+</Card>
     </Container>
     <QuestionLevel />
   </Fragment>

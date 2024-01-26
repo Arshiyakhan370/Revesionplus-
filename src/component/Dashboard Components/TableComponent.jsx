@@ -1,67 +1,203 @@
-import React from 'react'
+import { Button, Card } from '@mui/material'
+import React, { Fragment } from 'react'
+import Nav from '../PracticeAssignment/Nav'
 
-const TableComponent = ({ Nameofstudent, assingmentList, UserList }) => {
-    let Arr = [1, 2, 3, 4, 5]
+const TableComponent = () => {
+    
+
+
+
+const handleButtonClick = (buttonLabel) => {
+ 
+  console.log(`${buttonLabel} button clicked`);
+};
+
+const buttons = [
+  { label: 'Button 1', active: true },
+  { label: 'Button 2', active: false },
+  { label: 'Button 3', active: false },
+  { label: 'Button 4', active: false },
+];
     return (
-        <div>
-            {assingmentList &&
-                Arr.map(itm => (
-                    <div key={Math.random()} className='flex justify-between px-8 py-2 hover:bg-blue-50'>
-                      
-                        <div className='flex items-center'>
-                            {Nameofstudent}
-                        </div>
-                       
-                        <div className='flex space-x-2 md:space-x-5'>
-                            <button class="bg-yellow-500 hover:bg-yellow-700 text-white  py-0 px-2 rounded">
-                                Share
-                            </button>
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white  py-0 px-2 rounded">
-                                Print
-                            </button>
-                            <button class="bg-red-500 hover:bg-red-700 text-white  py-0 px-2 rounded">
-                                View
-                            </button>
-                        </div>
-                      
-                    </div>
-                ))
-            }
+        <Fragment>
+            <Nav/>
+       
+      <Card>
+      <div className="capsule-button-container">
+      {buttons.map((button, index) => (
+        <Button
+          key={index}
+          label={button.label}
+          active={button.active}
+          onClick={() => handleButtonClick(button.label)}
+        />
+      ))}
+    </div>
+      <div className='flex flex-wrap gap-4 text-center justify-center'>
+                        <div style={{
+  width: '260px',
+  height: '150px',
+  borderRadius: '30px',
+  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
+  padding: '20px',
+  position: 'relative',
+  boxShadow: 'inset 2px 2px 10px rgba(255, 255, 255, 0.5), inset -2px -2px 10px rgba(0, 0, 0, 0.3)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: 'white',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease-in-out',
+  textAlign: 'center',
+  fontSize: '18px',
+  fontFamily: 'Arial, sans-serif',
+  fontWeight: 'bold',
+}}
+  onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+>
+  <span>Paper 1</span>
+</div>
 
+<div style={{
+  width: '260px',
+  height: '150px',
+  borderRadius: '30px',
+  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
+  padding: '20px',
+  position: 'relative',
+  boxShadow: 'inset 2px 2px 10px rgba(255, 255, 255, 0.5), inset -2px -2px 10px rgba(0, 0, 0, 0.3)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: 'white',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease-in-out',
+  textAlign: 'center',
+  fontSize: '18px',
+  fontFamily: 'Arial, sans-serif',
+  fontWeight: 'bold',
+}}
+  onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+>
+  <span>Paper 1</span>
+</div>
 
-            {UserList && <table className="table-auto w-full">
-            
-                <thead className='bg-[#e4eff6]'>
-                    <tr>
-                        <th className="px-4 py-2">Name</th>
-                        <th className="px-4 py-2 hidden sm:table-cell">Email</th>
-                        <th className="px-4 py-2 hidden md:table-cell">Role</th>
-                        <th className="px-4 py-2">Mobile</th>
-                        <th className="px-4 py-2 hidden lg:table-cell">Expiry Date</th>
-                        <th className="px-4 py-2">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {Arr.map(itm => (
-                    <tr>
-                    <th className="px-4 py-2 text-sm md:text-base lg:text-lg">Pakeeza Fatima</th>
-                    <th className="px-4 py-2 hidden sm:table-cell text-sm md:text-base lg:text-lg">pakeeza@gmail.com</th>
-                    <th className="px-4 py-2 hidden md:table-cell text-sm md:text-base lg:text-lg">Teacher</th>
-                    <th className="px-4 py-2 text-sm md:text-base lg:text-lg">8745921532</th>
-                    <th className="px-4 py-2 hidden lg:table-cell text-sm md:text-base lg:text-lg">12-11-2023</th>
-                    <th className="px-4 py-2 text-sm md:text-base lg:text-lg">
-                       
-                         <span>dots</span>
-                             <span>edit</span>
-                                
-                    </th>
-                  </tr>
-                ))}
-                </tbody>
-            </table>
-            
-            }
-        </div>
+<div style={{
+  width: '260px',
+  height: '150px',
+  borderRadius: '30px',
+  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
+  padding: '20px',
+  position: 'relative',
+  boxShadow: 'inset 2px 2px 10px rgba(255, 255, 255, 0.5), inset -2px -2px 10px rgba(0, 0, 0, 0.3)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: 'white',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease-in-out',
+  textAlign: 'center',
+  fontSize: '18px',
+  fontFamily: 'Arial, sans-serif',
+  fontWeight: 'bold',
+}}
+  onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+>
+  <span>Paper 1</span>
+</div>
+
+<div style={{
+  width: '260px',
+  height: '150px',
+  borderRadius: '30px',
+  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
+  padding: '20px',
+  position: 'relative',
+  boxShadow: 'inset 2px 2px 10px rgba(255, 255, 255, 0.5), inset -2px -2px 10px rgba(0, 0, 0, 0.3)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: 'white',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease-in-out',
+  textAlign: 'center',
+  fontSize: '18px',
+  fontFamily: 'Arial, sans-serif',
+  fontWeight: 'bold',
+}}
+  onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+>
+  <span>Paper 1</span>
+</div>
+
+<div style={{
+  width: '260px',
+  height: '150px',
+  borderRadius: '30px',
+  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
+  padding: '20px',
+  position: 'relative',
+  boxShadow: 'inset 2px 2px 10px rgba(255, 255, 255, 0.5), inset -2px -2px 10px rgba(0, 0, 0, 0.3)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: 'white',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease-in-out',
+  textAlign: 'center',
+  fontSize: '18px',
+  fontFamily: 'Arial, sans-serif',
+  fontWeight: 'bold',
+}}
+  onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+>
+  <span>Paper 1</span>
+</div>
+
+<div style={{
+  width: '260px',
+  height: '150px',
+  borderRadius: '30px',
+  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
+  padding: '20px',
+  position: 'relative',
+  boxShadow: 'inset 2px 2px 10px rgba(255, 255, 255, 0.5), inset -2px -2px 10px rgba(0, 0, 0, 0.3)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: 'white',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease-in-out',
+  textAlign: 'center',
+  fontSize: '18px',
+  fontFamily: 'Arial, sans-serif',
+  fontWeight: 'bold',
+}}
+  onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+  onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+>
+  <span>Paper 1</span>
+</div>
+</div>   
+</Card>
+ </Fragment>
     )
 }
 

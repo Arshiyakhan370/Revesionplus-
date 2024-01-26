@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import {Link} from 'react-router-dom';
 import { Container, Paper, Grid, Typography, Box } from '@mui/material';
 import Nav from '../../Nav';
+import Navbar1 from '../../../Dashboard Components/Buttons1';
 
   
 
@@ -22,6 +23,7 @@ const IBMYPComponent = () => {
   return (
   <Fragment>
   <Nav/>
+  <Navbar1/>
       <Container maxWidth='xl'>
       <Box style={{ backgroundColor: '#4b7dd4' ,height:'auto' ,borderBottom: '1px solid #002b4f'}}>
     <h1
@@ -34,9 +36,9 @@ const IBMYPComponent = () => {
           >
         Best Assignment Practice Resources For
       </h1>
-            <div style={{ zIndex:'99' ,position: 'relative', textAlign: 'center', marginBottom:'-15px' }}>
+            <div className='lg:block md:hidden sm:hidden' style={{ zIndex:'99' ,position: 'relative', textAlign: 'center', marginBottom:'-15px' }}>
            
- <div
+ <div className='hidden sm:block'
     style={{  background: 'linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%)', borderRadius: '60%', width: '100px', height: '100px',zIndex:'99', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',border:'1px solid white' }}
    >
    <h2 className='text-center text-8xl text-white mt-2

@@ -1,4 +1,4 @@
- import React, { Fragment, useState } from 'react';
+ import React, { Fragment, useEffect, useState } from 'react';
 import '../../MathsSectionQuestion.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -21,7 +21,26 @@ const data = [
 ];
 const Hase2Mathematics = () => {
       const [checkedItems, setCheckedItems] = useState({});
-  const location = useLocation();
+      const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+      const location = useLocation();
+      useEffect(() => {
+        const handleResize = () => {
+          setIsSmallScreen(window.innerWidth <= 767);
+        };
+      
+        const logPathname = () => {
+          console.log('Current pathname:', location.pathname);
+        };
+      
+        window.addEventListener('resize', handleResize);
+        logPathname(); 
+        return () => {
+          window.removeEventListener('resize', handleResize);
+          logPathname();
+        };
+      }, [location.pathname]);
+      
+ 
   const navigate = useNavigate();
 
   const handleCheckboxChange = (id) => {
@@ -48,7 +67,7 @@ const Hase2Mathematics = () => {
 <Card backgroundColor='gray' >
 <section className="questionbank-section" style={{ alignItems: 'center',borderBottom: '1px solid #002b4f' }}>
 <ThemeProvider theme={theme}>
-<div className='text-center mb-sm-28 mb-lg-12'>
+<div className={`text-center mt-8 ${isSmallScreen ? 'mb-28' : ''}`}>
   <Link to='/ibmyb'>
     <Button
       variant="contained"

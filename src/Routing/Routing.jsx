@@ -78,6 +78,7 @@ import AssignmentCreate from '../component/StudentDashboard/AssignmentCreate'
 import IBMYPComponent from '../component/PracticeAssignment/SourceAssignment/IBMYP/IBMYP'
 import AddCategory from '../component/createAssignment/AddCategory'
 import AddCategoryPage from '../Pages/AddCategoryPage'
+import TableComponent from '../component/Dashboard Components/TableComponent'
 
 
 
@@ -164,6 +165,7 @@ const Routing = () => {
 <Route path='/profile' element={<ProfileFormPage/>}/>
 <Route path='/Student-Create-assignment' element={<AssignmentCreate/>}/>
 <Route path='/Add-category' element={<AddCategoryPage/>}/>
+<Route path='/Add' element={<TableComponent/>}/>
                   </Routes>
     </Suspense>
   )

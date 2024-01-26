@@ -73,9 +73,9 @@ const IbDp = () => {
           >
         Best Assignment Practice Resources For
       </h1>
-      <div style={{ zIndex:'99' ,position: 'relative', textAlign: 'center', marginBottom:'-15px' }}>
+      <div className='lg:block md:hidden sm:hidden' style={{ zIndex:'99' ,position: 'relative', textAlign: 'center', marginBottom:'-15px' }}>
            
-           <div
+           <div className='hidden sm:block'
               style={{  background: '#4b7dd4', borderRadius: '60%', width: '100px', height: '100px',zIndex:'99', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' , border:'1px solid white'}}
              >
              <h2 className='text-center text-8xl text-white mt-2

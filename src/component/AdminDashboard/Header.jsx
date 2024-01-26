@@ -168,7 +168,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
         <div className="text header-text">
           <span className="pro-sidebar-logo">
           <div>M</div>
-          <h5>My Revision+</h5>
+          <h5>My Revision<sup>+</sup></h5>
            
           </span>
         

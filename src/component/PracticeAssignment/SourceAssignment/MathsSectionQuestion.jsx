@@ -4,6 +4,7 @@ import { Button, Card, Container, createTheme, ThemeProvider } from '@mui/materi
 import Navbar1 from '../../Dashboard Components/Buttons1';
 import '../MathsSectionQuestion.css';
 import Nav from '../Nav';
+import { useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -24,7 +25,25 @@ const data = [
 
 const MathsSectionQuestion = () => {
   const [checkedItems, setCheckedItems] = useState({});
-  const location = useLocation();
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+  const location = useLocation();  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 767);
+    };
+  
+    const logPathname = () => {
+      console.log('Current pathname:', location.pathname);
+    };
+  
+    window.addEventListener('resize', handleResize);
+    logPathname(); 
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      logPathname();
+    };
+  }, [location.pathname]);
+
   const navigate = useNavigate();
 
   const handleCheckboxChange = (id) => {
@@ -53,7 +72,7 @@ const MathsSectionQuestion = () => {
         <section className="questionbank-section" style={{ alignItems: 'center',borderBottom: '1px solid #002b4f' }}>
        
         <ThemeProvider theme={theme}>
-        <div className='text-center lg:mb- md:mb-8 sm:mb-30'>
+        <div className={`text-center mt-8 ${isSmallScreen ? 'mb-28' : ''}`}>
           <Link to='/ibmyb'>
             <Button
               variant="contained"

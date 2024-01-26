@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { TextField, Checkbox, FormControlLabel, Button, Grid, Container, Input } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel, Button, Grid, Container, Input, Radio, RadioGroup, FormLabel, FormControl } from '@mui/material';
 import './Authentication.css';
 
 const AuthenticationImage = () => {
@@ -18,15 +18,12 @@ const AuthenticationImage = () => {
     let destinationRoute;
 
     if (selectedRole === 'teacher' && isV1) {
-      destinationRoute = '/TeacherDashboardV1'; 
-    } else if (selectedRole === 'teacher' && !isV1) {
-      destinationRoute = '/TeacherDashboardV2'; 
+      destinationRoute = 'TeacherDashboard';
     } else if (selectedRole === 'student' && isV1) {
-      destinationRoute = '/DashboardStudentV1'; 
+      destinationRoute = 'dashboar-Student';
     } else {
-      destinationRoute = '/dashboard'; 
+      destinationRoute = '/dashboard';
     }
-  
     navigate(destinationRoute);
   };
 
@@ -45,7 +42,7 @@ const AuthenticationImage = () => {
             </div>
           </Grid>
           <Grid item xs={12} md={6}>
-        <div className="section-right  h-full float-left block bg- transparent ">
+        <div className="section-right  h-full float-left block bg- transparent mb-16 mt-16 ">
           <h2>Welcome to <span className="text-global">My Revision+</span> </h2>
           <div className="tab">
             <Button
@@ -69,38 +66,34 @@ const AuthenticationImage = () => {
             </Button>
           </div>
           {isV1 && (
-  <div className='flex items-center justify-between mt-4'>
-    <div className="flex items-center me-4">
-    <Grid sx={12} sm={6}>
-    <input
-        checked
-        id="student-radio"
-        type="radio"
-        value=""
-        name="colored-radio"
-        className="w-4 h-4 text-purple-600  bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600"
-      />
-      <label htmlFor="student-radio" className="ms-2 text-sm font-medium text-white dark:text-gray-300">
-        Student Login
-      </label>
-      </Grid>
-    </div>
-   
-    <div className="flex items-center me-4">
-      <input
-        id="teacher-radio"
-        type="radio"
-        value=""
-        name="colored-radio"
-        className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800  dark:bg-gray-700 dark:border-gray-600"
-      />
-      <label htmlFor="teacher-radio" className="ms-2 text-sm font-medium text-white dark:text-gray-300">
-        Teacher Login
-      </label>
-    </div>
-  </div>
-)}
-
+            <div className='flex items-center justify-between mt-4'>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Choose Role</FormLabel>
+                <RadioGroup
+                  row
+                  aria-label="role"
+                  name="role-radio"
+                  value={selectedRole}
+                  className='flex justify-between'
+                  onChange={(e) => setSelectedRole(e.target.value)}
+                >
+                  <FormControlLabel
+                    value="student"
+                    control={<Radio style={{ color: 'white' }} />}
+                    label="Student Login"
+                    style={{ color: 'white' }}
+                  />
+                  <FormControlLabel
+                    value="teacher"
+                    color='#fff'
+                    control={<Radio style={{ color: 'white' }} />}
+                    label="Teacher Login"
+                    style={{ color: 'white' }}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+          )}
        
           <form>
         <div className="mb-10 mt-10 bg-white">
@@ -138,6 +131,7 @@ const AuthenticationImage = () => {
               />
             }
             label="Remember me"
+            style={{ color: 'white' }}
           />
           <Link to="#" style={{textDecoration:'none'}} className="forgot-password text-white ">
             Forgot Password?
@@ -148,7 +142,7 @@ const AuthenticationImage = () => {
             type="submit"
             variant="contained"
             color="primary"
-            className="submit-now"
+            className="submit-now border border-white"
             onClick={handleLogin}
           >
             Continue

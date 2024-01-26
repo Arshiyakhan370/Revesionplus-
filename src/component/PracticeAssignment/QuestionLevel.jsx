@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import './QuestionLevel.css';
 import { Link } from 'react-router-dom';
 import { Modal,} from 'react-bootstrap';
-import {  Card, List, ListItem, } from '@mui/material';
+import {  Card, List, ListItem,} from '@mui/material';
 
 import {  Bookmark as BookmarkIcon,
    BookmarkBorder as BookmarkBorderIcon, 
@@ -11,7 +11,66 @@ import {  Bookmark as BookmarkIcon,
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import {IconButton, Box, Typography, Button, LinearProgress } from '@mui/material';
+
+
+const QuestionData = [
+  {
+    id: '1',
+    questionNumber: 1,
+    question: '1 The rate of change of x with respect to y is given by 3x. Find the gradient on the graph of y against x when x = 2.',
+    options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option e'],
+    level: 'medium',
+    canUseCalculator: false,
+    isRevisited: false,
+  },
+  {
+    id: '2',
+    questionNumber: 2,
+    question: '2 The rate of change of x with respect to y is given by 3x. Find the gradient on the graph of y against x when x = 2.',
+    options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option E'],
+    level: 'easy',
+    canUseCalculator: false,
+    isRevisited: false,
+  },
+  {
+    id: '3',
+    questionNumber: 3,
+    question: '3 Some question text here.',
+    options: ['option1', 'option2', 'option3', 'option4', 'option5'],
+    level: 'tough',
+    canUseCalculator: true,
+    isRevisited: false,
+  },
+  {
+    id: '4',
+    questionNumber: 4,
+    question: '4 Some question text here.',
+    options: ['option1', 'option2', 'option3', 'option4', 'option5'],
+    level: 'medium',
+    canUseCalculator: false,
+    isRevisited: false,
+  },
+  {
+    id: '5',
+    questionNumber: 5,
+    question: '5 Some question text here.',
+    options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option E'],
+    level: 'easy',
+    canUseCalculator: false,
+    isRevisited: false,
+  },
+  {
+    id: '6',
+    questionNumber: 6,
+    question: '6 Some question text here.',
+    options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option E'],
+    level: 'tough',
+    canUseCalculator: true,
+    isRevisited: false,
+  },
+];
 const QuestionLevel = () => {
+  
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState('medium'); 
   const [bookmarkedQuestions, setBookmarkedQuestions] = useState([]);
@@ -19,58 +78,57 @@ const QuestionLevel = () => {
   const [thumbsDownCount, setThumbsDownCount] = useState(0);
   const [isBookmarked1, setIsBookmarked1] = useState(false);
   const [isRevisited, setIsRevisited] = useState(false);
-
-  const QuestionData = [
-    {
-      id: '1',
-      questionNumber: 1,
-      question: '1 The rate of change of x with respect to y is given by 3x. Find the gradient on the graph of y against x when x = 2.',
-      options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option e'],
-      level: 'medium',
-      canUseCalculator: false,
-    },
-    {
-      id: '2',
-      questionNumber: 2,
-      question: '2 The rate of change of x with respect to y is given by 3x. Find the gradient on the graph of y against x when x = 2.',
-      options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option E'],
-      level: 'easy',
-      canUseCalculator: false,
-    },
-    {
-      id: '3',
-      questionNumber: 3,
-      question: '3 Some question text here.',
-      options: ['option1', 'option2', 'option3', 'option4', 'option5'],
-      level: 'tough',
-      canUseCalculator: true,
-    },
-    {
-      id: '4',
-      questionNumber: 4,
-      question: '4 Some question text here.',
-      options: ['option1', 'option2', 'option3', 'option4', 'option5'],
-      level: 'medium',
-      canUseCalculator: false,
-    },
-    {
-      id: '5',
-      questionNumber: 5,
-      question: '5 Some question text here.',
-      options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option E'],
-      level: 'easy',
-      canUseCalculator: false,
-    },
-    {
-      id: '6',
-      questionNumber: 6,
-      question: '6 Some question text here.',
-      options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option E'],
-      level: 'tough',
-      canUseCalculator: true,
-    },
+  const [questionData, setQuestionData] = useState(QuestionData);
+  const [showAnswerKeyModal, setShowAnswerKeyModal] = useState(false);
+  const buttonsData = [
+   
+    { backgroundColor: 'lightblue', text: 'Answer Key', icon: <svg viewBox="0 0 24 24" data-testid="DescriptionIcon" width='2rem' height='2rem'><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path></svg> },
+   {backgroundColor:'#AA98A9', text:'Mark Scheme',icon: <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DescriptionIcon " width='2rem' height='2rem'>
+   <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path>
+                              </svg>}
   ];
+  const handleModalButtonClick = (buttonText) => {
+    if (buttonText === 'Answer Key') {
+     
+      openModal();
+    } else if (buttonText === 'Mark Scheme') {
+   
+     
+    } else {
+      
+    }
+  };
   
+  const ModalContent = ({ question }) => (
+    <div>
+      {question ? (
+        <>
+          <p>{`Question ${question.questionNumber} - ${question.level}`}</p>
+          <ul>
+            {question.options.map((option, index) => (
+              <li key={index}>{option}</li>
+            ))}
+          </ul>
+         
+        </>
+      ) : (
+        <p>No question data available</p>
+      )}
+    </div>
+  );
+  
+  
+  const handleRevisitClick = (questionId) => {
+    const updatedQuestions = QuestionData.map((question) =>
+      question.id === questionId
+        ? { ...question, isRevisited: !question.isRevisited }
+        : question
+    );
+   
+  
+    setQuestionData(updatedQuestions);
+    setIsRevisited(true);
+  };
   const openModal = (questionNumber, level) => {
     setSelectedQuestion(questionNumber);
     setSelectedLevel(level);
@@ -79,17 +137,8 @@ const QuestionLevel = () => {
   const closeModal = () => {
     setSelectedQuestion(null);
   };
-  const handleRevisitClick = () => {
-    setIsRevisited(true);
-    
-  }
-  const bookmarkQuestion = (questionNumber) => {
-    if (!bookmarkedQuestions.includes(questionNumber)) {
-      setBookmarkedQuestions([...bookmarkedQuestions, questionNumber]);
-    } else {
-      setBookmarkedQuestions(bookmarkedQuestions.filter((q) => q !== questionNumber));
-    }
-  };
+ 
+ 
 
   const isBookmarked = (questionNumber) => {
     return bookmarkedQuestions.includes(questionNumber);
@@ -109,11 +158,11 @@ const QuestionLevel = () => {
   const getLevelBadgeColor = (level) => {
     switch (level.toLowerCase()) {
       case 'easy':
-        return 'green';
+        return ' #4CAF50';
       case 'medium':
-        return ' yellow ';
+        return '  #FFEB3B ';
       case 'tough':
-        return 'red';
+        return ' #f44336';
       default:
         return 'purple'; 
     }
@@ -142,17 +191,28 @@ const QuestionLevel = () => {
                     Question {ques.questionNumber}
                     <div className="easy-box">
                     {ques.level.toLowerCase() === 'tough' && ques.canUseCalculator ? (
-  <svg fill="black" stroke="#737373" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="4rem" height="4rem" className='text-black'>
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                      <svg
+    fill="black"
+    stroke="#737373"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    width="4rem"
+    height="4rem"
+    className='text-black'
+   
+  >
+    <path    fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
   </svg>
 ) : (
   <svg
     viewBox="0 0 15 19"
     fill="black"
-    stroke=""
+    stroke="#737373"
     xmlns="http://www.w3.org/2000/svg"
     width="3rem"
     height="3rem"
+    className='text-black'
+    
   >
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M1.77652 0.369901C1.42851
            -0.0589417 0.798744 -0.124468 0.369901 0.223544C-0.0589417 0.571556 -0.124468
@@ -191,114 +251,148 @@ const QuestionLevel = () => {
                   
                   </h2>
                 </div>
-               
-                <div className="easy-box">
+                </div>
+                <div className="button-row mb-8 text-center">
                
                 <Button
         variant="contained"
         size="small"
         style={{
     backgroundColor: getLevelBadgeColor(ques.level),
-    color: '#fff',
     marginRight: '10px',
-    borderRadius: '50px',
-    padding: '6px 14px',
-    textAlign: 'center',
-    WebkitBoxPack: 'center',
-    justifyContent: 'center',
-    border: 'none',
-
+            borderRadius: '50px',
+            width: '190px',
+            height:'45px',
+            padding: '6px 14px',
+            textAlign: 'center',
+            border: '1px solid white',
+             marginBottom:'10px'
         }}
       >
        {ques.level.toUpperCase()}
   
       </Button>
-      <div>
+      
+      <Button
+        variant="contained"
+        size="small"
+        style={{
+         backgroundColor: "#F4BB44",
+           marginRight: '10px',
+            borderRadius: '50px',
+            width: '190px',
+            height:'45px',
+            color:'black',
+            padding: '6px 14px',
+            textAlign: 'center',
+            border: '1px solid white',
+            marginBottom:'10px'
+        }}
+      >
       <IconButton onClick={handleThumbsUpClick} size="medium" type="button">
-        <ThumbUpAltIcon fontSize="medium" />
+        <ThumbUpAltIcon fontSize="medium" color='black' />
       </IconButton>
       <span>{thumbsUpCount}</span>
 
       <IconButton onClick={handleThumbsDownClick} size="medium" type="button">
-        <ThumbDownAltIcon fontSize="medium" />
+        <ThumbDownAltIcon fontSize="medium" color='black'  />
       </IconButton>
       <span>{thumbsDownCount}</span>
+    </Button>
+    <Button
+  variant="contained"
+  size="small"
+
+  style={{
+    backgroundColor: ques.isRevisited ? 'darkblue' : 'lightpink',
+    marginRight: '10px',
+    borderRadius: '50px',
+    width: '190px',
+    height: '45px',
+    padding: '6px 14px',
+    textAlign: 'center',
+    border: '1px solid white',
+    color:'black',
+    marginBottom: '10px',
+  }}
+  onClick={() => handleRevisitClick(ques.id)}
+>
+  {ques.isRevisited ? (
+    <>
+    <svg
+      focusable="false"
+      aria-hidden="true"
+      viewBox="0 0 14 16"
+      className='ml-2'
+      width="14"
+      height="16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        className="a"
+        d="M7 2.01995e-06C5.284 2.01995e-06 3.592 0.106002 1.93 0.310002C0.806 0.450002 3.722e-09 1.414 3.722e-09 2.517V15.25C-1.26339e-05 15.3769 0.0321572 15.5017 0.0934999 15.6127C0.154843 15.7238 0.243353 15.8174 0.35075 15.885C0.458148 15.9525 0.580922 15.9917 0.707586 15.9989C0.834249 16.0061 0.960663 15.981 1.075 15.926L7 13.082L12.925 15.926C13.0393 15.981 13.1657 16.0061 13.2924 15.9989C13.4191 15.9917 13.5419 15.9525 13.6493 15.885C13.7566 15.8174 13.8452 15.7238 13.9065 15.6127C13.9678 15.5017 14 15.3769 14 15.25V2.517C14 1.414 13.194 0.449002 12.07 0.310002C10.3879 0.103001 8.69475 -0.00052737 7 2.01995e-06Z"
+        fill="darkblue"
+      ></path>
+    </svg>{''}
+     <div> Revisited</div>
+    </>
+   
+  ) : (
+    <>
+    <svg
+      focusable="false"
+      aria-hidden="true"
+      viewBox="0 0 14 16"
+      className='ml-2'
+      width="14"
+      height="16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        className="a"
+        d="M7 2.01995e-06C5.284 2.01995e-06 3.592 0.106002 1.93 0.310002C0.806 0.450002 3.722e-09 1.414 3.722e-09 2.517V15.25C-1.26339e-05 15.3769 0.0321572 15.5017 0.0934999 15.6127C0.154843 15.7238 0.243353 15.8174 0.35075 15.885C0.458148 15.9525 0.580922 15.9917 0.707586 15.9989C0.834249 16.0061 0.960663 15.981 1.075 15.926L7 13.082L12.925 15.926C13.0393 15.981 13.1657 16.0061 13.2924 15.9989C13.4191 15.9917 13.5419 15.9525 13.6493 15.885C13.7566 15.8174 13.8452 15.7238 13.9065 15.6127C13.9678 15.5017 14 15.3769 14 15.25V2.517C14 1.414 13.194 0.449002 12.07 0.310002C10.3879 0.103001 8.69475 -0.00052737 7 2.01995e-06Z"
+        fill="darkpink"
+      ></path>
+    </svg>{' '}
+    <div className=' text-center ml-2'>Revisit</div>
+    </>
+    
+  )}
+</Button>
+
+
+      {buttonsData.map((button, index) => (
+        <Button
+          key={index}
+          style={{
+            backgroundColor: button.backgroundColor,
+            color: button.backgroundColor === 'lightpink' ? 'black' : 'black', 
+            marginRight: '10px',
+            borderRadius: '50px',
+            width: '190px',
+            height:'45px',
+            padding: '6px 14px',
+            textAlign: 'center',
+            marginBottom:'10px',
+            border: '1px solid white',
+          }}
+          onClick={() => handleModalButtonClick(button.text)}
+        >
+          
+          <IconButton>
+            {button.icon}
+          </IconButton>
+          <Typography variant="subtitle2">
+            {button.text}
+          </Typography>
+        </Button>
+      ))}
     </div>
-</div>
- 
- <Button className=' flex flex-row text-center'  style={{
-    backgroundColor: 'lightpink',
-    color: '#fff',
-    marginRight: '10px',
-    borderRadius: '50px',
-    width:'150px',
-    padding: '6px 14px',
-    textAlign: 'center',
-    WebkitBoxPack: 'center',
-    justifyContent: 'center',
-    border: 'none',
-  }}>
-      <IconButton onClick={handleBookmarkClick}>
-        <svg  focusable="false" aria-hidden="true" viewBox="0 0 14 16"
-        width="14" height="16" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"
-         clip-rule="evenodd" class="a" d="M7 2.01995e-06C5.284 2.01995e-06 3.592 0.106002 
-         1.93 0.310002C0.806 0.450002 3.722e-09 1.414 3.722e-09 2.517V15.25C-1.26339e-05 
-         15.3769 0.0321572 15.5017 0.0934999 15.6127C0.154843 15.7238 0.243353 15.8174 
-         0.35075 15.885C0.458148 15.9525 0.580922 15.9917 0.707586 15.9989C0.834249 
-         16.0061 0.960663 15.981 1.075 15.926L7 13.082L12.925 15.926C13.0393 15.981
-          13.1657 16.0061 13.2924 15.9989C13.4191 15.9917 13.5419 15.9525 13.6493 
-          15.885C13.7566 15.8174 13.8452 15.7238 13.9065 15.6127C13.9678 15.5017 14 15.3769 
-          14 15.25V2.517C14 1.414 13.194 0.449002 12.07 0.310002C10.3879 0.103001 8.69475
-           -0.00052737 7 2.01995e-06Z" fill="darkpink"></path></svg>
-         
-      </IconButton>
-      
-        <Typography variant="subtitle2"  >
-        Revisit
-        </Typography>
-      </Button>
-      <div>
-    </div>
-                      <Button  style={{
-    backgroundColor:'lightblue',
-    color: 'black',
-    textDecoration:'none',
-    marginRight: '10px',
-    borderRadius: '50px',
-    width:'150px',
-    padding: '6px 14px',
-    textAlign: 'center',
-    WebkitBoxPack: 'center',
-    justifyContent: 'center',
-    border: 'none',
-  }} className="wrap-box">
-                       <div> <Link onClick={() => openModal(ques.questionNumber, ques.level)} href="#">
-                        <svg  focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DescriptionIcon" width='2rem' height='2rem'><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path></svg> 
-                        </Link></div>
-                        <div>Answer Key</div>
-                      </Button>
-                  
-                      <Button className="text-center" style={{
-    backgroundColor: 'skyblue',
-    color: 'whilte',
-    marginRight: '10px',
-    borderRadius: '50px',
-    textDecoration:'none',
-    padding: '6px 14px',
-    width:'170px',
-    textAlign: 'center',
-    WebkitBoxPack: 'center',
-    justifyContent: 'center',
-    border: 'none',
-  }}><div>
-                        <Link data-popup-open="popup-m6496" href="#">
-                        <svg  className={isBookmarked(ques.questionNumber) ? 'bookmarked' : ''}  onClick={() => bookmarkQuestion(ques.questionNumber)} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DescriptionIcon " width='2rem' height='2rem'>
-                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path>
-                                                   </svg>
-                        </Link></div>
-                        <div>Mark Scheme</div> 
-                      </Button>
-                  </div>
+    
               <div className="question-box">
                 <div className="leftbox">
                   <p>
@@ -350,23 +444,26 @@ const QuestionLevel = () => {
       </main>
   
       <Modal show={selectedQuestion !== null} onHide={closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>{`Question ${selectedQuestion} - ${selectedLevel.toUpperCase()}`}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <p>
-        question: '2 The rate of change of x with respect to y is given by 3x. Find the gradient on the graph of y against x when x = 2.',
-      options: ['Option A', 'Option B', 'Option C', 'Option D', 'Option E'],
-      Answer:'option A'
-        </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            Close
-          </Button>
-        </Modal.Footer>
+        {selectedQuestion !== null && (
+          <>
+            <Modal.Header closeButton>
+              <Modal.Title>{`Question ${selectedQuestion} - ${selectedLevel}`}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Card>
+                <ModalContent
+                  question={QuestionData.find((ques) => ques.id === selectedQuestion)}
+                />
+              </Card>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={closeModal}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </>
+        )}
       </Modal>
-    
       </Fragment>
    
 
