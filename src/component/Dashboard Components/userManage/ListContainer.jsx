@@ -8,15 +8,11 @@ import {
   IconButton,
   InputAdornment,
   CardContent,
-  FormControl,
-  InputLabel,
-  Select,
-  Input,
-  Grid,
-  Typography,
+ 
+ 
 } from '@mui/material';
 import { Eye, EyeOff } from 'react-feather';
-
+import { User } from 'react-feather';
 import { Table, Button,  Pagination,Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {  Form,Modal} from 'react-bootstrap';
@@ -30,6 +26,7 @@ const ListContainer = ({ isSidebarClosed }) => {
   const [selectedValue, setSelectedValue] = useState(10);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(selectedValue);
+
   const [userListData, setUserListData] = useState([
     {
       name: 'aarabbanisadiq',
@@ -129,7 +126,7 @@ const ListContainer = ({ isSidebarClosed }) => {
                 },
   ]);
  
-
+const [searchQuery, setSearchQuery] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
   const [editUserName, setEditUserName] = useState('');
@@ -141,7 +138,15 @@ const ListContainer = ({ isSidebarClosed }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 const [deleteUserId, setDeleteUserId] = useState(null);
- 
+
+
+  const filteredUserList = userListData.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.mobile.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.expiryDate.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -246,15 +251,19 @@ const handleDeleteClick = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
    
+    const sidebarWidth = isSidebarClosed ? '40px' : '262px';
+    const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
+    
     const styles = {
-      width: isSidebarClosed ?  (isSmallScreen ? '100%' : '95%') : (isSmallScreen ? '100%' : '79%'),
-      marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '5%') : (isSmallScreen ? '0%' : '21%'),
+      width: mainComponentWidth,
+      marginLeft: isSidebarClosed ? '65px' : (isSmallScreen ? '0' : '262px'),
       transition: 'width 0.3s, margin-left 0.3s',
     };
+    
     return (
         <Fragment>
           
-        <Container maxWidth="xl">
+        <Container maxWidth="xxl">
       <Card style={styles}>
       <CardContent>
       <section id="responsive-datatable">
@@ -293,15 +302,18 @@ const handleDeleteClick = () => {
         </select>
         <label>entries</label>
       </div>
-      <div id="datatable_filter" className="dataTables_filter ms-3 float-right ">
-        <label>Search:</label>
-        <input
-          type="search"
-          className="form-control"
-          placeholder=""
-          aria-controls="datatable"
-        />
-      </div>
+    <div id="datatable_filter" className="dataTables_filter ms-3 float-right">
+  <label>Search:</label>
+  <input
+    type="search"
+    className="form-control"
+    placeholder=""
+    aria-controls="datatable"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+</div>
+
     </div>
   </div>
 </div>
@@ -393,8 +405,8 @@ const handleDeleteClick = () => {
                             </tr>
                           </thead>
                           <tbody>
-                          {userListData.slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage).map((user, index) => (
-  <tr key={user.id} className={index % 2 === 0 ? 'even' : 'odd'}>
+                          {filteredUserList.slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage).map((user, index) => (
+                        <tr key={user.id} className={index % 2 === 0 ? 'even' : 'odd'}>
     <td className="dtr-control" tabIndex="0">
       {user.name}
     </td>
@@ -441,7 +453,7 @@ const handleDeleteClick = () => {
         }}
       >
         <MenuItem onClick={() => { handleProfileClick(); handleClose(); }}>
-          <LockIcon sx={{ marginRight: 1 }} />
+          <User sx={{ marginRight: 1 }} />
           Profile
         </MenuItem>
         <MenuItem  onClick={handleUpdatePassword}>

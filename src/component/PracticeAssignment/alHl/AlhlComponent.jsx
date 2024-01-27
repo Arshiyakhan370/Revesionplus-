@@ -25,7 +25,7 @@ const questionBankData = [
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#D0E1FF',
+        main: '#002B4F',
       },
     },
   });
@@ -62,7 +62,7 @@ const AlhlComponent = () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
                 borderRadius: '30px 0 0 30px',
               }}
             >
@@ -76,7 +76,7 @@ const AlhlComponent = () => {
               style={{
                 margin: '1px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
               }}
             >
                Math AI 
@@ -87,7 +87,7 @@ const AlhlComponent = () => {
             style={{
               margin: '1px',
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '/aihl' ? 'lightSkyBlue' : '',
+              backgroundColor: location.pathname === '/aihl' ? '#12b6e9' : '',
             }}
           >
            AL HL
@@ -98,7 +98,7 @@ const AlhlComponent = () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/aisl-paper-go-link' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/aisl-paper-go-link' ? '#12b6e9' : '',
                 borderRadius: '0 30px 30px 0',
                 margin: '1px',
               }}

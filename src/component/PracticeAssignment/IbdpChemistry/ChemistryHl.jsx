@@ -33,7 +33,7 @@ const questionBankData = [
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#D0E1FF',
+        main: '#002B4F',
       },
     },
   });
@@ -71,7 +71,7 @@ const ChemistryHl = () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
                 borderRadius: '30px 0 0 30px',
               }}
             >
@@ -85,7 +85,7 @@ const ChemistryHl = () => {
               style={{
                 margin: '1px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
               }}
             >
               Chemistry
@@ -96,7 +96,7 @@ const ChemistryHl = () => {
             style={{
               margin: '1px',
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '/Chemistry-hl' ? 'lightSkyBlue' : '',
+              backgroundColor: location.pathname === '/Chemistry-hl' ? '#12b6e9' : '',
             }}
           >
              Chemistry HL
@@ -107,7 +107,7 @@ const ChemistryHl = () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === 'chemistry-cam-paper1' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === 'chemistry-cam-paper1' ? '#12b6e9' : '',
                 borderRadius: '0 30px 30px 0',
                 margin: '1px',
               }}

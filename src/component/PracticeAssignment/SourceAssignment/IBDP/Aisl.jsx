@@ -32,7 +32,7 @@ const questionBankData = [
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#D0E1FF',
+        main: '#002B4F',
       },
     },
   });
@@ -61,8 +61,7 @@ const Aisl = () => {
   const buttonStyle = {
     width: '120px',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
-    color: 'white',
+    marginLeft:'2px',
   };
 
   
@@ -75,12 +74,12 @@ const Aisl = () => {
         <ThemeProvider theme={theme}>
       
 <div className={`button text-center mt-8 ${isSmallScreen ? 'mb-28' : ''}`}>
-  <Link to='/ibmyb'>
+  <Link to='/ibdp'>
     <Button
       variant="contained"
       style={{
         ...buttonStyle,
-        backgroundColor: location.pathname.trim() === '/ibmyb' ? 'white' : '',
+        backgroundColor: location.pathname.trim() === '/ibdp' ? '#12b6e9' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -92,7 +91,7 @@ const Aisl = () => {
       variant="contained"
       style={{
         ...buttonStyle,
-        backgroundColor: location.pathname.trim() === '/ibmyb' ? 'white' : '',
+        backgroundColor: location.pathname.trim() === '/ibdp' ? '#12b6e9' : '',
       }}
     >
       Math AI
@@ -102,7 +101,7 @@ const Aisl = () => {
     variant="contained"
     style={{
       ...buttonStyle,
-      backgroundColor: location.pathname.trim() === '/aisl' ? 'white' : '',
+      backgroundColor: location.pathname.trim() === '/aisl' ? '#12b6e9' : '',
     }}
   >
     AL SL
@@ -112,7 +111,7 @@ const Aisl = () => {
       variant="contained"
       style={{
         ...buttonStyle,
-        backgroundColor: location.pathname.trim() === '/go-link' ? 'white' : '',
+        backgroundColor: location.pathname.trim() === '/go-link' ? '#12b6e9' : '',
         borderRadius: '0 30px 30px 0',
       }}
     >

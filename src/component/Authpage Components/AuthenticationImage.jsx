@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { TextField, Checkbox, FormControlLabel, Button, Grid, Container, Input, Radio, RadioGroup, FormLabel, FormControl } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel, Button, Grid, Container, Input, Radio, RadioGroup, FormLabel, FormControl, InputAdornment, IconButton, OutlinedInput, InputLabel } from '@mui/material';
 import './Authentication.css';
+import { Eye, EyeOff } from 'react-feather';
 
 const AuthenticationImage = () => {
   const [isV1, setIsV1] = useState(false);
@@ -9,7 +10,8 @@ const AuthenticationImage = () => {
   const [selectedRole, setSelectedRole] = useState('student');
   const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState(''); 
-  const [rememberMe, setRememberMe] = useState(false); 
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -26,7 +28,9 @@ const AuthenticationImage = () => {
     }
     navigate(destinationRoute);
   };
-
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   return (
     <Fragment>
       <Container maxWidth='xl'>
@@ -96,32 +100,47 @@ const AuthenticationImage = () => {
           )}
        
           <form>
-        <div className="mb-10 mt-10 bg-white">
-       
-          <TextField
-            type="email"
-            id="floating_outlined"
-            label="Your Email"
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            fullWidth
-          />
-         
-        </div>
+          <div className="mb-10 mt-10 bg-white rounded-sm">
+          <FormControl fullWidth>
+  <InputLabel htmlFor="floating_outlined">Email</InputLabel>
+  <OutlinedInput
+    type="email"
+    id="floating_outlined"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    fullWidth
+    sx={{
+      height: '50px',
+    }}
+    label="email"
+  />
+  </FormControl>
+</div>
 
-        <div className="mb-10 bg-white ">
-          <TextField
-            type="password"
-            id="floating_outlined"
-            label="Password"
-            variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            fullWidth
-          />
+
+        <div className="mb-10 bg-white rounded-sm">
+        <FormControl fullWidth>
+  <InputLabel htmlFor="floating_outlined">Password</InputLabel>
+  <OutlinedInput
+    id="floating_outlined"
+    type={showPassword ? 'text' : 'password'}
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    endAdornment={
+      <InputAdornment position="end">
+        <IconButton onClick={togglePasswordVisibility} edge="end" style={{ width: '30px', height: '30px' }}>
+          {showPassword ? <Eye style={{ width: '30px', height: '30px' }} /> : <EyeOff style={{ width: '30px', height: '30px' }} />}
+        </IconButton>
+      </InputAdornment>
+    }
+  
+    label="Password"
+  />
+</FormControl>
+
+
         </div>
-        <div className="touch-form2 text-white">
+        <div className="touch-form2 text-white flex flex-row justify-between">
           <FormControlLabel
             control={
               <Checkbox
@@ -136,7 +155,7 @@ const AuthenticationImage = () => {
           <Link to="#" style={{textDecoration:'none'}} className="forgot-password text-white ">
             Forgot Password?
           </Link>
-        </div>
+          </div>
         <div className="touch-form2">
           <Button
             type="submit"

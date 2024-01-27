@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import React, { Fragment, useState } from 'react';
+import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SweetAlert from './SweetAlert';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useMediaQuery } from 'react-responsive';
+import { Container } from '@mui/system';
 
-const TeacherMap = ({ isSidebarClosed }) => {
+const TeacherMap = ({ isSidebarClosed,selectedBoard,selectedSubject }) => {
+ 
+ 
   const [teacherData, setTeacherData] = useState([
    
     { id: 2, name: 'xyz', board: '', subject: '' },
@@ -94,19 +97,26 @@ const [deleteTeacherId, setDeleteTeacherId] = useState(null);
 const handleClose=()=>{
 
 }
-const styles = {
-  width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
-  marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
-  transition: 'width 0.3s, margin-left 0.3s',
+const handleAddMapping = (newMapping) => {
+  setTeacherData((prevData) => [...prevData, newMapping]);
 };
+const sidebarWidth = isSidebarClosed ? '40px' : '262px';
+    const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
+    
+    const styles = {
+      width: mainComponentWidth,
+      marginLeft: isSidebarClosed ? '65px' : (isSmallScreen ? '0' : '262px'),
+      transition: 'width 0.3s, margin-left 0.3s',
+    };
   return (
-    <div className="content-wrapper container-xxl p-0">
-      <div className="content-body">
-        <Card style={styles}>
+    <Fragment>
+    <Container maxWidth="xxl">
+    <Card style={styles}>
+    <CardContent>
           <div className="row2">
             <div className="col-md-12 col-12">
               <Paper elevation={3} className="p-2">
-                <SweetAlert />
+              <SweetAlert onAddMapping={handleAddMapping} />
               </Paper>
             </div>
 
@@ -127,11 +137,11 @@ const styles = {
                     <TableBody>
                       {teacherData.slice(startIndex, endIndex).map((teacher, index) => (
                         <TableRow key={teacher.id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
-                          <TableCell>{teacher.name}</TableCell>
+                          <TableCell>{teacher.name} </TableCell>
                           {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.board}</TableCell>)}
+                          <TableCell>{teacher.board} </TableCell>)}
                           {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.subject}</TableCell>)}
+                          <TableCell>{teacher.subject} </TableCell>)}
                           <TableCell>
                             <Link to=""
                 className="item-trash text-danger circle"
@@ -180,13 +190,16 @@ const styles = {
                   </Table>
                 </TableContainer>
                 <Stack spacing={2} justifyContent="center" className="mt-3">
-                  <Pagination count={Math.ceil(teacherData.length / teachersPerPage)} page={page} onChange={handleChangePage} />
+                <Pagination count={Math.ceil(teacherData.length / teachersPerPage)} page={page} onChange={handleChangePage} />
+
                 </Stack>
               </Paper>
             </div>
             </div>
+            </CardContent>
         </Card>
-      </div>
+      
+      </Container>
       <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
           <DialogTitle>Delete Teacher</DialogTitle>
           <DialogContent>
@@ -243,7 +256,8 @@ const styles = {
         </Box>
       </Box>
     </Modal>
-    </div>
+   
+    </Fragment>
   );
 };
 

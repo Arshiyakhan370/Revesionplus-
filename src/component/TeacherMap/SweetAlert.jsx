@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { Grid, Select, MenuItem, Button, FormControl, InputLabel } from '@mui/material';
+import { Grid, Select, MenuItem, Button, FormControl, InputLabel,  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions, } from '@mui/material';
 
-const  SweetAlert= () => {
+const  SweetAlert= ({ onAddMapping}) => {
   const [selectedTeacher, setSelectedTeacher] = useState('');
   const [selectedBoard, setSelectedBoard] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
-
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  
   const teacherOptions = [
       { value: '2', label: 'xyz [sakzishu]' },
       { value: "2",   label: "xyz  [sakzishu]"},
@@ -86,9 +92,28 @@ const  SweetAlert= () => {
   };
 
   const handleSubmit = () => {
-    console.log('Selected Teacher:', selectedTeacher);
-    console.log('Selected Board:', selectedBoard);
-    console.log('Selected Subject:', selectedSubject);
+    if (!selectedTeacher || !selectedBoard || !selectedSubject) {
+      setErrorDialogOpen(true);
+      return;
+    }
+
+    const newMapping = {
+      teacher: selectedTeacher,
+      board: selectedBoard,
+      subject: selectedSubject,
+    };
+    onAddMapping(newMapping);
+    setSelectedTeacher('');
+    setSelectedBoard('');
+    setSelectedSubject('');
+    setSuccessDialogOpen(true);
+  };
+
+  const handleCloseErrorDialog = () => {
+    setErrorDialogOpen(false);
+  };
+  const handleCloseSuccessDialog = () => {
+    setSuccessDialogOpen(false);
   };
   const goBack = () => {
     window.history.back();
@@ -96,7 +121,7 @@ const  SweetAlert= () => {
   return (
     <div>
     <div className="card-header border-bottom mt-4 mb-4">
-    <h4 className="card-title">Teacher Subject Mapping</h4>
+    <h4 className="card-title mb-4 text-blue-800">Teacher Subject Mapping</h4>
   </div>
     <Grid container spacing={2}>
       <Grid item xs={12} sm={4}>
@@ -107,6 +132,7 @@ const  SweetAlert= () => {
             id="teacher-select"
             value={selectedTeacher}
             onChange={handleTeacherChange}
+            sx={{ height: '40px' }} 
           >
             {teacherOptions.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -124,6 +150,7 @@ const  SweetAlert= () => {
             labelId="board-label"
             id="board-select"
             value={selectedBoard}
+            sx={{ height: '40px' }} 
             onChange={handleBoardChange}
           >
             {boardOptions.map((option) => (
@@ -142,7 +169,8 @@ const  SweetAlert= () => {
             labelId="subject-label"
             id="subject-select"
             value={selectedSubject}
-            onChange={handleSubjectChange}
+            sx={{ height: '40px' }}
+                onChange={handleSubjectChange}
           >
             {subjectOptions.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -158,13 +186,31 @@ const  SweetAlert= () => {
                 <Button variant="outlined"  onClick={goBack} sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
                   Back
                 </Button>
-                <Button type="submit" variant="contained" onClick={handleSubmit} sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+                 <Button type="submit" variant="contained" onClick={handleSubmit} sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
                   Add
                 </Button>
               </div>
         
       </Grid>
     </Grid>
+    <Dialog open={successDialogOpen} onClose={handleCloseSuccessDialog}>
+        <DialogTitle className="text-green-500">Success</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Data added successfully!</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSuccessDialog}>OK</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={errorDialogOpen} onClose={handleCloseErrorDialog}>
+        <DialogTitle className='text-red-500'>Error</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Please select values for all fields.</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseErrorDialog}>OK</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

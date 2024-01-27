@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF',
+      main: '#002B4F',
     },
   },
 });
@@ -79,7 +79,7 @@ const MathsSectionQuestion = () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/ibmyb' ? 'lightSkyBlue' : 'linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%)',
+                backgroundColor: location.pathname === '/ibmyb' ? '#12b6e9' : 'linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%)',
                 borderRadius: '30px 0 0 30px',
               }}
             >
@@ -92,7 +92,7 @@ const MathsSectionQuestion = () => {
               style={{
                 margin: '1px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/' ? 'lightSkyBlue' : 'linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%)',
+                backgroundColor: location.pathname === '/' ? '#12b6e9' : 'linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%)',
               }}
             >
               MYP 4&5
@@ -104,7 +104,7 @@ const MathsSectionQuestion = () => {
             style={{
               margin: '1px',
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '/maths-standard' ? 'lightSkyBlue' : 'linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%)',
+              backgroundColor: location.pathname === '/maths-standard' ? '#12b6e9' : 'linear-gradient(119.62deg, #002B4F 0.57%, #12b6e9 100%)',
             }}
           >
             Math Standard
@@ -115,7 +115,7 @@ const MathsSectionQuestion = () => {
             style={{
               margin: '1px',
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '/maths-question' ? 'lightSkyBlue' : '',
+              backgroundColor: location.pathname === '/maths-question' ? '#12b6e9' : '',
             }}
           >
           MYP Questionbank
@@ -126,7 +126,7 @@ const MathsSectionQuestion = () => {
             style={{
               margin: '1px',
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '' ? 'lightSkyBlue' : '',
+              backgroundColor: location.pathname === '' ? '#12b6e9' : '',
             }}
           >
           Paper
@@ -138,7 +138,7 @@ const MathsSectionQuestion = () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/go-link' ? '#12b6e9' : '',
                 borderRadius: '0 30px 30px 0',
                 margin: '1px',
               }}
@@ -152,7 +152,7 @@ const MathsSectionQuestion = () => {
             <ul className="flex flex-row gap-3">
               {data.map((item) => (
                 <li key={item.id} className="mid-inner1">
-                  <Link to={`/maths-question/${item.id}`} style={{ textDecoration: 'none' }}>
+                  <Link to={`${item.id}`} style={{ textDecoration: 'none' }}>
                     <div className="questionbank-item">
                       <img src={item.imageUrl} alt="Paper Type Image" />
                       <h4 className="text-center">{item.name}</h4>

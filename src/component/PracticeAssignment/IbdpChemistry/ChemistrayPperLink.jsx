@@ -10,7 +10,7 @@ import Navbar1 from '../../Dashboard Components/Buttons1';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF',
+      main: '#002B4F',
     },
   },
 });
@@ -84,7 +84,7 @@ const theme = createTheme({
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -97,7 +97,7 @@ const theme = createTheme({
       style={{
         margin: '1px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
       }}
     >
     Chemistry
@@ -109,7 +109,7 @@ const theme = createTheme({
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/Chemistry-sl' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/Chemistry-sl' ? '#12b6e9' : '',
     }}
   >
    Chemistry SL
@@ -120,18 +120,18 @@ const theme = createTheme({
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/chemistry-oxford-paper1' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/chemistry-oxford-paper1' ? '#12b6e9' : '',
     }}
   >
 Oxford 2023 Ed
   </Button></Link>
-  <Link to='/chemistry-oxford-paper1-link'>
+  <Link to='/chemistry-paper1'>
   <Button
     variant="contained"
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/chemistry-oxford-paper1-link' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/chemistry-paper1' ? '#12b6e9' : '',
     }}
   >
   Paper
@@ -143,7 +143,7 @@ Oxford 2023 Ed
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/go-link' ? '#12b6e9' : '',
         borderRadius: '0 30px 30px 0',
         margin: '1px',
       }}

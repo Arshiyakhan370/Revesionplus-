@@ -12,10 +12,19 @@ import {
   Typography,
   IconButton,
   Avatar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Container,
 } from '@mui/material';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/airbnb.css';
 import { useMediaQuery } from 'react-responsive';
+import {Eye, EyeOff } from 'react-feather';
+import InputAdornment from '@mui/material/InputAdornment';
+
 
 const FormStudent = ({isSidebarClosed}) => {
   const [teacher, setTeacher] = useState('');
@@ -25,11 +34,59 @@ const FormStudent = ({isSidebarClosed}) => {
   const [parentEmail, setParentEmail] = useState('');
   const [inactiveDate, setInactiveDate] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [errorFields, setErrorFields] = useState([]);
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    const validationErrors = [];
+    if (!teacher) validationErrors.push('Teacher');
+    if (!name) validationErrors.push('Name');
+    if (!email) validationErrors.push('Email');
+    if (!parentName) validationErrors.push('Parent Name');
+    if (!parentEmail) validationErrors.push('Parent Email');
+    if (!inactiveDate) validationErrors.push('Inactivation Date');
+    if (!password) validationErrors.push('User Password');
+    if (!isStrongPassword(password)) validationErrors.push('Password must be strong.');
+
+    if (validationErrors.length > 0) {
+      setErrorDialogOpen(true);
+      setErrorFields(validationErrors);
+      return;
+    }
+
+    setSuccessDialogOpen(true);
+    setErrorDialogOpen(false);
+
+    setTeacher('');
+    setName('');
+    setEmail('');
+    setParentName('');
+    setParentEmail('');
+    setInactiveDate('');
+    setPassword('');
+    setProfilePic(null);
+  };
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+  const isStrongPassword = (password) => {
+       const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasDigit = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+     return (
+      password.length >= minLength &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasDigit &&
+      hasSpecialChar
+    );
   };
 
   const handleProfilePicChange = (e) => {
@@ -45,13 +102,23 @@ const FormStudent = ({isSidebarClosed}) => {
   const goBack = () => {
     window.history.back();
   };
+
+  const handleCloseDialogs = () => {
+    setSuccessDialogOpen(false);
+    setErrorDialogOpen(false);
+    setErrorFields([]);
+  };
+  const sidebarWidth = isSidebarClosed ? '40px' : '262px';
+  const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
+  
   const styles = {
-    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '95%') : (isSmallScreen ? '100%' : '79%'),
-    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '5%') : (isSmallScreen ? '0%' : '21%'),
+    width: mainComponentWidth,
+    marginLeft: isSidebarClosed ? '65px' : (isSmallScreen ? '0' : '262px'),
     transition: 'width 0.3s, margin-left 0.3s',
   };
+  const inputStyle = { height: '40px' };
   return (
-    <div className="content-wrapper container-xxl p-0">
+    <Container maxWidth="xxl">
       <div className="content-header row1"></div>
       <div className="content-body">
         <Card style={styles}>
@@ -69,6 +136,7 @@ const FormStudent = ({isSidebarClosed}) => {
                       id="select-teacher"
                       name="teacher"
                       value={teacher}
+                      sx={{height:'40px'}}
                       onChange={(e) => setTeacher(e.target.value)}
                       required
                     >
@@ -87,6 +155,8 @@ const FormStudent = ({isSidebarClosed}) => {
                     placeholder="Name"
                     name="name"
                     value={name}
+                    InputProps={{
+          style: inputStyle}}
                     onChange={(e) => setName(e.target.value)}
                     required
                   />
@@ -99,6 +169,8 @@ const FormStudent = ({isSidebarClosed}) => {
                     placeholder="john.doe@email.com"
                     name="email"
                     value={email}
+                    InputProps={{
+          style: inputStyle}}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
@@ -110,6 +182,8 @@ const FormStudent = ({isSidebarClosed}) => {
                     placeholder="Name"
                     name="parentName"
                     value={parentName}
+                    InputProps={{
+          style: inputStyle}}
                     onChange={(e) => setParentName(e.target.value)}
                     required
                   />
@@ -122,13 +196,15 @@ const FormStudent = ({isSidebarClosed}) => {
                     placeholder="john.doe@email.com"
                     name="parentEmail"
                     value={parentEmail}
+                    InputProps={{
+          style: inputStyle}}
                     onChange={(e) => setParentEmail(e.target.value)}
                     required
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Flatpickr
-                    className="form-control flatpickr-basic flatpickr-input h-16 "
+                    className="form-control flatpickr-basic flatpickr-input h-12 "
                     placeholder="Set Inactivation Date"
                     options={{ dateFormat: 'Y-m-d' }}
                     value={inactiveDate}
@@ -136,17 +212,27 @@ const FormStudent = ({isSidebarClosed}) => {
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                  <TextField
-                    fullWidth
-                    type="password"
-                    label="User Password"
-                    placeholder="············"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </Grid>
+      <TextField
+        fullWidth
+        type={showPassword ? 'text' : 'password'}
+        label="User Password"
+        placeholder="············"
+        name="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        InputProps={{
+          style: inputStyle,
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={handleTogglePasswordVisibility} edge="end" style={{ width: '24px', height: '24px' }}>
+                {showPassword ? <Eye style={{ width: '30px', height: '30px' }} /> : <EyeOff style={{ width: '30px', height: '30px' }} />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Grid>
                 <Grid item xs={12} md={4}>
                   <FormControl fullWidth>
                     <InputLabel id="profile-pic-label"></InputLabel>
@@ -156,6 +242,8 @@ const FormStudent = ({isSidebarClosed}) => {
                       className="form-control2  h-16"
                       name="Profile Picture"
                       accept="image/*"
+                      InputProps={{
+          style: inputStyle}}
                       onChange={(e) => handleProfilePicChange(e)}
                       required
                     />
@@ -196,7 +284,29 @@ const FormStudent = ({isSidebarClosed}) => {
           </CardContent>
         </Card>
       </div>
-    </div>
+      <Dialog open={successDialogOpen} onClose={handleCloseDialogs}>
+        <DialogTitle className="text-green-500">Success</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Data added successfully!</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogs}>OK</Button>
+        </DialogActions>
+      </Dialog>
+
+    
+      <Dialog open={errorDialogOpen} onClose={handleCloseDialogs}>
+        <DialogTitle className="text-red-500">Error</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please fill in the following fields: {errorFields.join(', ')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogs}>OK</Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
   );
 };
 

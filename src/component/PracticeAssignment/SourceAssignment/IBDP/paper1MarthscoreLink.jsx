@@ -11,7 +11,7 @@ import { Card, Container } from '@mui/material';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF',
+      main: '#002B4F',
     },
   },
 });
@@ -76,7 +76,7 @@ const Paper1MarthscoreLink = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -89,7 +89,7 @@ const Paper1MarthscoreLink = () => {
       style={{
         margin: '1px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
       }}
     >
     Math AI 
@@ -101,7 +101,7 @@ const Paper1MarthscoreLink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/alsl' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/alsl' ? '#12b6e9' : '',
     }}
   >
    AL SL
@@ -112,7 +112,7 @@ const Paper1MarthscoreLink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/core-paper1' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/core-paper1' ? '#12b6e9' : '',
     }}
   >
    Haese Mathematics Core 1 AISL & AASL
@@ -124,7 +124,7 @@ const Paper1MarthscoreLink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/maths-core-paper1' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/maths-core-paper1' ? '#12b6e9' : '',
     }}
   >
   Paper
@@ -136,7 +136,7 @@ const Paper1MarthscoreLink = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/go-link' ? '#12b6e9' : '',
         borderRadius: '0 30px 30px 0',
         margin: '1px',
       }}

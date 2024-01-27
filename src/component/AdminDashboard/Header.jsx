@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Header.css'
-import { ChevronRight, Home, Users ,UserPlus, BookOpen, Clipboard, HelpCircle, Info, MessageCircle } from 'react-feather';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Menu, MenuItem, TextField} from '@mui/material';
+import { ChevronRight, Home, Users ,UserPlus, BookOpen, Clipboard, HelpCircle, Info, MessageCircle, EyeOff, Eye } from 'react-feather';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Menu, MenuItem, TextField, InputAdornment} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonIcon from '@mui/icons-material/Person';
 import PrintIcon from '@mui/icons-material/Print';
@@ -33,6 +33,7 @@ const Header = ({toggleSidebar }) => {
   const [displayedName, setDisplayedName] = useState(userName);
   const [displayedAvatar, setDisplayedAvatar] = useState(null);
   const [selectedAvatar, setSelectedAvatar] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -45,6 +46,16 @@ const Header = ({toggleSidebar }) => {
     };
   }, []);
 
+
+    
+  
+    const handlePasswordVisibilityToggle = () => {
+      setShowPassword(!showPassword);
+    };
+  
+    
+   const isPasswordStrong = password.length >= 8;
+  
   const handleProfileClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -160,7 +171,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
   const toggleSidebar1 = () => {
     setSidebarClosed(!isSidebarClosed);
   };
- 
+  const inputStyle = { height: '40px' };
   return (
     <nav className={`sidebar  ${isSidebarClosed ? 'close' : ''}`}>
       <header>
@@ -174,7 +185,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
         
           </div>
         </div>
-        <ChevronRight className="toggle mr-4 border border-white text-white"   onClick={handleButtonClick } />
+        <ChevronRight className="toggle mr-4 border border-white text-white" style={{color:'white'}}   onClick={handleButtonClick } />
       </header>
       <div className="menu-bar">
         <div className="menu">
@@ -201,19 +212,35 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
               onChange={(e) => setUserName(e.target.value)}
               fullWidth
               margin="normal"
+              InputProps={{
+          style: inputStyle}}
             />
-            <TextField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
+               <TextField
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            margin="normal"
+            InputProps={{
+              style: inputStyle,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handlePasswordVisibilityToggle} edge="end">
+                    {showPassword ? <Eye/> : <EyeOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            error={!isPasswordStrong}
+            helperText={!isPasswordStrong ? 'Password must be at least 8 characters long' : ''}
+          />
             <TextField
               label="Email"
               type="email"
               value={email}
+              InputProps={{
+          style: inputStyle}}
               onChange={(e) => setEmail(e.target.value)}
               fullWidth
               margin="normal"
@@ -222,6 +249,8 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
               select
               label="Gender"
               value={gender}
+              InputProps={{
+          style: inputStyle}}
               onChange={(e) => setGender(e.target.value)}
               fullWidth
               margin="normal"
@@ -234,6 +263,8 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
               label="Mobile Number"
               type="tel"
               value={mobileNumber}
+              InputProps={{
+          style: inputStyle}}
               onChange={(e) => setMobileNumber(e.target.value)}
               fullWidth
               margin="normal"
@@ -256,6 +287,8 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
         <TextField
           label="Avatar (Optional)"
           value={avatar || ''}
+          InputProps={{
+          style: inputStyle}}
           onChange={(e) => setAvatar(e.target.value)}
           fullWidth
           margin="normal"
@@ -273,7 +306,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
       </Dialog>
             <li className="nav-link">
               <Link to="/dashboard">
-            <Home className="icons" /> 
+            <Home   className="icons mr-4" /> 
             <Link to="/admin">
                 <span className="text nav-text">Dashboard</span>
                 </Link>
@@ -282,7 +315,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             <li className={`nav-link ${isOpen ? 'active' : ''}`}>
               <Link to="#" onClick={toggleDropdown}>
              
-              <Users className="icons" />
+              <Users className="icons mr-4 " />
                 <span className="text nav-text">User Manage</span>
                 <ChevronRight className={`submenu-toggle ${isOpen ? 'open' : ''}`} />
               </Link>
@@ -292,20 +325,20 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                 <ul>
                 <li className="nav-link ">
                   <Link to="/admin">
-                  <BookOpen className="icons"/> 
+                  <BookOpen className="icons mr-4"/> 
                     <span className="text nav-text">Teacher</span>
                   </Link>
                 </li>
              
                 <li className="nav-link">
                   <Link to="/add-user-show">
-                  <UserPlus className="icons"/> 
+                  <UserPlus className="icons mr-4"/> 
                     <span className="text nav-text">Student</span>
                   </Link>
                 </li>
                 <li className="nav-link">
                   <Link to="/teacher">
-                  <Clipboard className="icons"/> 
+                  <Clipboard className="icons mr-4"/> 
                     <span className="text nav-text">Teacher Map</span>
                   </Link>
                 </li>
@@ -314,7 +347,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
               <li className={`nav-link ${isOpen1 ? 'active' : ''}`}>
               <Link to=""  onClick={toggleDropdown1}>
               
-              <Info className="icons"/> 
+              <Info className="icons mr-4"/> 
                 <span className="text nav-text">Create Question</span>
                 <ChevronRight className={`submenu-toggle ${isOpen1 ? 'open' : ''}`} />
               </Link>
@@ -323,14 +356,14 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             <ul>
                 <li className="nav-link">
                   <Link to="/createquestion">
-                  <HelpCircle className="icons"/> 
+                  <HelpCircle className="icons mr-4"/> 
                     <span className="text nav-text">Add Que</span>
                   </Link>
                 </li>
              
                 <li className="nav-link">
                   <Link to="">
-                  <MessageCircle className="icons"/> 
+                  <MessageCircle className="icons mr-4"/> 
                     <span className="text nav-text">View Que</span>
                   </Link>
                 </li>
@@ -344,7 +377,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                   height="1em"
                   fill="currentColor"
                   aria-hidden="true"
-                  className="icons"
+                  className="icons mr-4"
                 >
                   <path d="M464 144H160c-8.8 0-16 7.2-16 16v304c0 8.8 7.2 16 16 16h304c8.8 0 16-7.2 16-16V160c0-8.8-7.2-16-16-16zm-52 268H212V212h200v200zm452-268H560c-8.8 0-16 7.2-16 16v304c0 8.8 7.2 16 16 16h304c8.8 0 16-7.2 16-16V160c0-8.8-7.2-16-16-16zm-52 268H612V212h200v200zm52 132H560c-8.8 0-16 7.2-16 16v304c0 8.8 7.2 16 16 16h304c8.8 0 16-7.2 16-16V560c0-8.8-7.2-16-16-16zm-52 268H612V680h560v208zM424 712H296V584c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v128H104c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h128v128c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V776h128c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8z"></path>
                 </svg>
@@ -364,7 +397,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                   height="1em"
                   fill="currentColor"
                   aria-hidden="true"
-                  className="icons"
+                  className="icons mr-4"
                 >
                   <path d="M764 280.9c-14-30.6-33.9-58.1-59.3-81.6C653.1 151.4 584.6 125 512 125s-141.1 26.4-192.7 74.2c-25.4 23.6-45.3 51-59.3 81.7-14.6 32-22 65.9-22 100.9v27c0 6.2 5 11.2 11.2 11.2h54c6.2 0 11.2-5 11.2-11.2v-27c0-99.5 88.6-180.4 197.6-180.4s197.6 80.9 197.6 180.4c0 40.8-14.5 79.2-42 111.2-27.2 31.7-65.6 54.4-108.1 64-24.3 5.5-46.2 19.2-61.7 38.8a110.85 110.85 0 00-23.9 68.6v31.4c0 6.2 5 11.2 11.2 11.2h54c6.2 0 11.2-5 11.2-11.2v-31.4c0-15.7 10.9-29.5 26-32.9 58.4-13.2 111.4-44.7 149.3-88.7 19.1-22.3 34-47.1 44.3-74 10.7-27.9 16.1-57.2 16.1-87 0-35-7.4-69-22-100.9zM512 787c-30.9 0-56 25.1-56 56s25.1 56 56 56 56-25.1 56-56-25.1-56-56-56z"></path>
                 </svg>
@@ -382,7 +415,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                   height="1em"
                   fill="currentColor"
                   aria-hidden="true"
-                  className="icons"
+                  className="icons mr-4"
                 >
                   <path d="M832 64H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V96c0-17.7-14.3-32-32-32zm-600 72h560v208H232V136zm560 480H232V408h560v208zm0 272H232V680h560v208zM304 240a40 40 0 1080 0 40 40 0 10-80 0zm0 272a40 40 0 1080 0 40 40 0 10-80 0zm0 272a40 40 0 1080 0 40 40 0 10-80 0z"></path>
                 </svg>
@@ -393,7 +426,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             )}
             <li className="nav-link">
               <Link to="#" onClick={toggleDropdown2}>
-                <BookOpen className="icons" />
+                <BookOpen className="icons mr-4" />
                 <span className="text nav-text">Create Assignment</span>
                 <ChevronRight className={`submenu-toggle ${isOpen2 ? 'open' : ''}`} />
               </Link>
@@ -402,7 +435,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             <ul>
           
             <li className="nav-link">
-                  <Link to="/create-filter">
+                  <Link to="/Add-category">
                   <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -413,7 +446,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="icons"
+      className="icons mr-4"
     >
       <path d="M21 2H3a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-1 14H4"></path>
       <path d="M11 16h6"></path>
@@ -425,7 +458,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                   </Link>
                 </li> 
                 <li className="nav-link">
-                  <Link to="">
+                  <Link to="/create-filter">
                   
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -437,7 +470,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="icons"
+      className="icons mr-4"
     >
       <path d="M12 2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 14l-4-4 1.414-1.414L10 13.172l6.293-6.293L18 8l-8 8z"></path>
     </svg>
@@ -457,7 +490,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="icons"
+      className="icons mr-4"
     >
       <circle cx="18" cy="5" r="3"></circle>
       <circle cx="6" cy="12" r="3"></circle>
@@ -476,7 +509,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
               <Link to="#" onClick={toggleDropdown3}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
-            stroke-linejoin="round" className="icons">
+            stroke-linejoin="round" className="icons mr-4">
             <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z">
 
             </path></svg>
@@ -488,14 +521,14 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             <ul>
                 <li className="nav-link">
                   <Link to="/practiceQuestion">
-                  <BookOpen className="icons"/> 
+                  <BookOpen className="icons mr-4"/> 
                     <span className="text nav-text">Add Category</span>
                   </Link>
                 </li>
              
                 <li className="nav-link">
                   <Link to="">
-                  <UserPlus className="icons"/> 
+                  <UserPlus className="icons mr-4"/> 
                     <span className="text nav-text">View Category</span>
                   </Link>
                 </li>
@@ -505,19 +538,19 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             )}
             <li className="nav-link">
               <Link to="#">
-                <i className="bx bx-wallet-alt icons"></i>
+                <i className="bx bx-wallet-alt icons mr-4"></i>
                 <span className="text nav-text">Reports</span>
               </Link>
             </li>
           </ul>
         </div>
 
-        <div className="bottom-content">
-          <li className="nav-link">
+        <div className="bottom-content ml-8">
+          <li className="nav-link ml-8">
             <Link to="#">
             <svg xmlns="http://www.w3.org/2000/svg" 
             viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" 
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className=" icons">
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className=" icons mr-4">
   <circle cx="12" cy="12" r="10" />
   <line x1="15" y1="9" x2="9" y2="15" />
   <line x1="9" y1="9" x2="15" y2="15" />

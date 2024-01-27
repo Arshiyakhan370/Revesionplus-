@@ -10,7 +10,7 @@ import Navbar1 from '../../Dashboard Components/Buttons1';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF',
+      main: '#002B4F',
     },
   },
 });
@@ -77,7 +77,7 @@ const EconimicBlink = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -90,7 +90,7 @@ const EconimicBlink = () => {
       style={{
         margin: '1px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
       }}
     >
    Economics
@@ -102,7 +102,7 @@ const EconimicBlink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/Chemistry-sl' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/Chemistry-sl' ? '#12b6e9' : '',
     }}
   >
    Economics SL
@@ -113,7 +113,7 @@ const EconimicBlink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/Economic-Blink-paper2' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/Economic-Blink-paper2' ? '#12b6e9' : '',
     }}
   >
   Oxford_2020_Jocelyn Blink,Ian Dorton
@@ -124,7 +124,7 @@ const EconimicBlink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/Economic-Blink-paper-link' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/Economic-Blink-paper-link' ? '#12b6e9' : '',
     }}
   >
   Paper
@@ -136,7 +136,7 @@ const EconimicBlink = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/go-link' ? '#12b6e9' : '',
         borderRadius: '0 30px 30px 0',
         margin: '1px',
       }}

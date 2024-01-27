@@ -59,10 +59,10 @@ const FilterForm = () => {
   const handleGoBack = () => {
     window.history.back();
   };
- 
+  const inputStyle = { height: '40px' };
   return (
     <Fragment>
-    <Container maxWidth='xl' style={{ marginTop: '30px' }}>
+    <Container maxWidth='xxl' style={{ marginTop: '30px' }}>
       <div className='ml-10 mt-8 text-black w-8 h-8'>
         <Button onClick={handleGoBack}>
           <ArrowLeft size={24} />
@@ -103,6 +103,7 @@ const FilterForm = () => {
       value={boardID}
       label="Boards"
       onChange={handleBoardChange}
+      sx={{height:'40px'}}
     >
       <MenuItem value="">Select board</MenuItem>
       <MenuItem value="1">IB</MenuItem>
@@ -121,6 +122,7 @@ const FilterForm = () => {
       label="Source"
       value={sourceID}
       onChange={handleSourceChange}
+      sx={{height:'40px'}}
     >
       <MenuItem value="">Select Source</MenuItem>
     
@@ -137,6 +139,7 @@ const FilterForm = () => {
       label="Subject"
       value={subjectIDs}
       onChange={handleSubjectChange}
+      sx={{height:'40px'}}
     >
       <MenuItem value="">Select subject</MenuItem>
      
@@ -152,6 +155,7 @@ const FilterForm = () => {
       label="Subject Level"
       value={subjectlevelID}
       onChange={handleSubjectLevelChange}
+      sx={{height:'40px'}}
     >
       <MenuItem value="">Select Level</MenuItem>
      
@@ -168,6 +172,7 @@ const FilterForm = () => {
       label="paperID"
       value={paperID}
       onChange={handlePaperChange}
+      sx={{height:'40px'}}
     >
       <MenuItem value="">Select Paper</MenuItem>
     
@@ -184,6 +189,7 @@ const FilterForm = () => {
       label="topic"
       value={topicID}
       onChange={handleTopicChange}
+      sx={{height:'40px'}}
     >
       <MenuItem value="">Select Topic</MenuItem>
      
@@ -198,6 +204,7 @@ const FilterForm = () => {
       name="subtopicID"
       label="Subtopic"
       value={subtopicID}
+      sx={{height:'40px'}}
       onChange={handlePaperChange}
     >
       <MenuItem value="">Select Subtopic</MenuItem>
@@ -209,12 +216,12 @@ const FilterForm = () => {
 
 </Grid>
          <div className="button-container flex justify-end">
-              <Button variant="contained" onClick={handleReset} style={{ marginTop: '25px' }}>
-                Reset
-              </Button>
-              <Button variant="contained" onClick={handleFilter} style={{ marginTop: '25px', marginLeft: '10px' }}>
+         <Button type="submit" variant="contained" onClick={handleReset}  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+               Reset
+                </Button>
+                <Button type="submit" variant="contained"  onClick={handleFilter}  sx={{marginLeft: '10px',color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
                 Filter
-              </Button>
+                </Button>
               </div>
             </Paper>
           </AccordionDetails>

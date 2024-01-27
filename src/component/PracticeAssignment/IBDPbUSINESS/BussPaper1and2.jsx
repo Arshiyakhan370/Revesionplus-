@@ -12,7 +12,7 @@ import Navbar1 from '../../Dashboard Components/Buttons1';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF',
+      main: '#002B4F',
     },
   },
 });
@@ -79,7 +79,7 @@ const  BussPaper1and2 = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -92,7 +92,7 @@ const  BussPaper1and2 = () => {
       style={{
         margin: '1px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
       }}
     >
     Business Management
@@ -104,7 +104,7 @@ const  BussPaper1and2 = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/Businees-sl' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/Businees-sl' ? '#12b6e9' : '',
     }}
   >
      Business SL
@@ -115,7 +115,7 @@ const  BussPaper1and2 = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/busniess-paper' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/busniess-paper' ? '#12b6e9' : '',
     }}
   >
     Tsokos 6th Ed.
@@ -126,7 +126,7 @@ const  BussPaper1and2 = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/busniess1-paper1and2' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/busniess1-paper1and2' ? '#12b6e9': '',
     }}
   >
   Paper
@@ -138,7 +138,7 @@ const  BussPaper1and2 = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/go-link' ? '#12b6e9': '',
         borderRadius: '0 30px 30px 0',
         margin: '1px',
       }}

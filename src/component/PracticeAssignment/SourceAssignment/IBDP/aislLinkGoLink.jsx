@@ -11,7 +11,7 @@ import Navbar1 from '../../../Dashboard Components/Buttons1';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF',
+      main: '#002B4F',
     },
   },
 });
@@ -72,7 +72,7 @@ const AislLinkGoLink = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? ' #12b6e9 ' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -85,7 +85,7 @@ const AislLinkGoLink = () => {
       style={{
         margin: '1px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? ' #12b6e9 ' : '',
       }}
     >
     Math AI 
@@ -97,7 +97,7 @@ const AislLinkGoLink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/alsl' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/alsl' ? ' #12b6e9 ' : '',
     }}
   >
     SL
@@ -108,7 +108,7 @@ const AislLinkGoLink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/aislLink' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/aislLink' ? ' #12b6e9 ' : '',
     }}
   >
   Hodder 2019
@@ -119,7 +119,7 @@ const AislLinkGoLink = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/aisl-paper-go-link' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/aisl-paper-go-link' ? ' #12b6e9 ' : '',
     }}
   >
   Paper
@@ -131,7 +131,7 @@ const AislLinkGoLink = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/go-link' ? ' #12b6e9 ' : '',
         borderRadius: '0 30px 30px 0',
         margin: '1px',
       }}

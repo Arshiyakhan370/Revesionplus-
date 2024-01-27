@@ -129,11 +129,19 @@ const FormAddUser = ({ isSidebarClosed }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const handleSelectChange = (e) => {
     setSelectedValue(parseInt(e.target.value, 10));
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(1); 
   };
+  const filteredUserList = userListData.filter((user) =>
+  user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  user.mobile.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  user.expiryDate.toLowerCase().includes(searchQuery.toLowerCase())
+);
   const ScrollUpIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -222,15 +230,19 @@ const FormAddUser = ({ isSidebarClosed }) => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
    
+   
+    const sidebarWidth = isSidebarClosed ? '40px' : '262px';
+    const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
+    
     const styles = {
-      width: isSidebarClosed ?  (isSmallScreen ? '100%' : '95%') : (isSmallScreen ? '100%' : '79%'),
-      marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '5%') : (isSmallScreen ? '0%' : '21%'),
+      width: mainComponentWidth,
+      marginLeft: isSidebarClosed ? '65px' : (isSmallScreen ? '0' : '262px'),
       transition: 'width 0.3s, margin-left 0.3s',
     };
     return (
         <Fragment>
           
-        <Container maxWidth="xl">
+        <Container maxWidth="xxl">
       <Card style={styles}>
       <CardContent>
       <section id="responsive-datatable">
@@ -268,15 +280,18 @@ const FormAddUser = ({ isSidebarClosed }) => {
         </select>
         <label>entries</label>
       </div>
-      <div id="datatable_filter" className="dataTables_filter ms-3 float-right ">
-        <label>Search:</label>
-        <input
-          type="search"
-          className="form-control"
-          placeholder=""
-          aria-controls="datatable"
-        />
-      </div>
+      <div id="datatable_filter" className="dataTables_filter ms-3 float-right">
+  <label>Search:</label>
+  <input
+    type="search"
+    className="form-control"
+    placeholder=""
+    aria-controls="datatable"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+</div>
+
     </div>
   </div>
 </div>
@@ -368,8 +383,8 @@ const FormAddUser = ({ isSidebarClosed }) => {
                             </tr>
                           </thead>
                           <tbody>
-                          {userListData.slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage).map((user, index) => (
-  <tr key={user.id} className={index % 2 === 0 ? 'even' : 'odd'}>
+                          {filteredUserList.slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage).map((user, index) => (
+                        <tr key={user.id} className={index % 2 === 0 ? 'even' : 'odd'}>
     <td className="dtr-control" tabIndex="0">
       {user.name}
     </td>

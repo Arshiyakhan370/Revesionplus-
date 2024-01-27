@@ -83,7 +83,11 @@ const Assignment = () => {
   const [editedQuestionText, setEditedQuestionText] = useState(EditorState.createEmpty());
   const [showAssignmentPreview, setShowAssignmentPreview] = useState(false);
   const [filterType, setFilterType] = useState('both'); 
-
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedQuestionToDelete, setSelectedQuestionToDelete] = useState(null);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
+ 
   const filteredQuestions = questions.filter((question) => {
     if (filterType === 'both') return true;
     if (filterType === 'question') return !question.answer;
@@ -97,12 +101,34 @@ const Assignment = () => {
     setSelectedQuestions(selectedQuestionsData);
     setShowAssignmentPreview(true);
   };
+ 
+  const handleShowDeleteDialog = (question) => {
+    setSelectedQuestionToDelete(question);
+    setDeleteDialogOpen(true);
+  };
+  
 
-  const handleDelete = () => {
-    Swal.fire('Deleted!', 'Your question has been deleted.', 'success');
+  const handleDeleteSuccessDialogClose = () => {
+    setDeleteSuccessDialogOpen(false);
   };
 
-  const handleEdit = (question) => {
+  const handleDeleteQuestion = () => {
+       setDeleteSuccessDialogOpen(true);
+        setSelectedQuestionToDelete(null);
+    setDeleteDialogOpen(false);
+  };
+
+  const handleShowAlert = (question) => {
+    setSelectedQuestionToDelete(question);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteDialogClose = () => {
+    setDeleteDialogOpen(false);
+    setSelectedQuestionToDelete(null);
+  };
+
+    const handleEdit = (question) => {
     setSelectedQuestions([]);
     setEditedQuestionText(
       EditorState.createWithContent(ContentState.createFromText(question.text))
@@ -113,27 +139,17 @@ const Assignment = () => {
   const handleEditDialogClose = () => {
     setEditDialogOpen(false);
   };
-
   const handleEditQuestionSave = () => {
     setEditDialogOpen(false);
-    Swal.fire('Updated!', 'Your question has been updated.', 'success');
+    setUpdateDialogOpen(true);
   };
 
-  const handleShowAlert = (question) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this question!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        handleDelete();
-      }
-    });
+  const handleUpdateDialogClose = () => {
+    setUpdateDialogOpen(false);
   };
+
+  
+   
 
   const handleQuestionSelect = (questionId) => {
     setQuestions((prevQuestions) => {
@@ -203,7 +219,7 @@ const Assignment = () => {
   };
 
   return (
-    <Container maxWidth="xl" >
+    <Container maxWidth="xxl" >
       <Grid container spacing={2} >
         <Grid item xs={12} >
           <Card elevation={2} >
@@ -229,17 +245,7 @@ const Assignment = () => {
           control={<Checkbox checked={selectAll} onChange={handleSelectAll} />}
           label="Select All"
         />
-        {/* <div>
-          <Button variant="outlined" onClick={() => setFilterType('both')} sx={{ marginRight: 2 }}>
-            Both
-          </Button>
-          <Button variant="outlined" onClick={() => setFilterType('question')} sx={{ marginRight: 2 }}>
-            Questions
-          </Button>
-          <Button variant="outlined" onClick={() => setFilterType('answer')}>
-            Answers
-          </Button>
-        </div> */}
+        
         {filteredQuestions.map((question) => (
           <Container key={question.id} style={{ marginTop: '20px' }}>
             <Paper elevation={2} className="question-paper">
@@ -268,14 +274,9 @@ const Assignment = () => {
                   <Button variant="outlined" startIcon={<Edit2 />} onClick={() => handleEdit(question)} sx={{ marginRight: 2 }}>
                     Edit
                   </Button>
-                  <Button
-                    variant="outlined"
-                    startIcon={<Trash2 />}
-                    color="error"
-                    onClick={() => handleShowAlert(question)}
-                  >
-                    Delete
-                  </Button>
+                  <Button variant="outlined" startIcon={<Trash2 />} color="error" onClick={() => handleShowDeleteDialog(question)}>
+                Delete
+                </Button>
                 </div>
               </div>
             </Paper>
@@ -376,7 +377,46 @@ const Assignment = () => {
           
       </Form>
       </CardContent>
-     
+      
+
+      <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose}>
+        <DialogTitle className='text-red-500'>Delete Question</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete question {selectedQuestionToDelete?.id}?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteDialogClose}>Cancel</Button>
+          <Button onClick={handleDeleteQuestion} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={deleteSuccessDialogOpen} onClose={handleDeleteSuccessDialogClose}>
+        <DialogTitle className='text-green-500'>Delete Successfully</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Question {selectedQuestionToDelete?.id} deleted successfully.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteSuccessDialogClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+                <Dialog open={updateDialogOpen} onClose={handleUpdateDialogClose}>
+        <DialogTitle className='text-blue-500'>Update Confirmation</DialogTitle>
+       <DialogContent>
+          <p>Your question has been updated.</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateDialogClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
       </Card>
       </Grid>
       </Grid>

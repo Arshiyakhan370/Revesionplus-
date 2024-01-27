@@ -10,7 +10,7 @@
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#D0E1FF',
+        main: '#002B4F',
       },
     },
   });
@@ -85,7 +85,7 @@
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -98,7 +98,7 @@
       style={{
         margin: '1px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
       }}
     >
     Chemistry
@@ -110,7 +110,7 @@
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/Chemistry-sl' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/Chemistry-sl' ? '#12b6e9' : '',
     }}
   >
    Chemistry SL
@@ -121,7 +121,7 @@
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/chemistry-person' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/chemistry-person' ? '#12b6e9' : '',
     }}
   >
    Pearson 23 Ed
@@ -132,7 +132,7 @@
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/chemistry-person-paper' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/chemistry-person-paper' ? '#12b6e9' : '',
     }}
   >
   Paper
@@ -144,7 +144,7 @@
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/go-link' ? '#12b6e9' : '',
         borderRadius: '0 30px 30px 0',
         margin: '1px',
       }}

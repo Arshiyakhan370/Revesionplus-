@@ -26,7 +26,7 @@ const questionBankData = [
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#D0E1FF',
+        main: '#002B4F',
       },
     },
   });
@@ -64,7 +64,7 @@ const  EconomicSl = () => {
                 style={{
                   width: '120px',
                   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                  backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+                  backgroundColor: location.pathname === '/ibdp' ? ' #12b6e9' : '',
                   borderRadius: '30px 0 0 30px',
                 }}
               >
@@ -78,7 +78,7 @@ const  EconomicSl = () => {
                 style={{
                   margin: '1px',
                   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                  backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+                  backgroundColor: location.pathname === '/ibdp' ? ' #12b6e9' : '',
                 }}
               >
                Economic
@@ -89,7 +89,7 @@ const  EconomicSl = () => {
               style={{
                 margin: '1px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/eco-sl' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/eco-sl' ? ' #12b6e9' : '',
               }}
             >
                Economic SL
@@ -100,7 +100,7 @@ const  EconomicSl = () => {
                 style={{
                   width: '120px',
                   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                  backgroundColor: location.pathname === '/Economic-paper-sl' ? 'lightSkyBlue' : '',
+                  backgroundColor: location.pathname === '/Economic-paper-sl' ? ' #12b6e9' : '',
                   borderRadius: '0 30px 30px 0',
                   margin: '1px',
                 }}

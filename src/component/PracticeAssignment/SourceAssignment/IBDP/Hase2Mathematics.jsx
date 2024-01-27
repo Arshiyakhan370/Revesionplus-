@@ -11,7 +11,7 @@ import { Card, Container } from '@mui/material';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF'
+      main: '#002B4F'
     },
   },
 });
@@ -65,7 +65,7 @@ const Hase2Mathematics = () => {
 <Navbar1 />
 <Container maxWidth='xl'>
 <Card backgroundColor='gray' >
-<section className="questionbank-section" style={{ alignItems: 'center',borderBottom: '1px solid #002b4f' }}>
+<section className="questionbank-section" style={{ alignItems: 'center',borderBottom: '1px solid #12b6e9' }}>
 <ThemeProvider theme={theme}>
 <div className={`text-center mt-8 ${isSmallScreen ? 'mb-28' : ''}`}>
   <Link to='/ibmyb'>
@@ -74,7 +74,7 @@ const Hase2Mathematics = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -87,7 +87,7 @@ const Hase2Mathematics = () => {
       style={{
         margin: '1px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9' : '',
       }}
     >
     Math AI 
@@ -99,7 +99,7 @@ const Hase2Mathematics = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/alsl' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/alsl' ? '#12b6e9' : '',
     }}
   >
    AL SL
@@ -110,7 +110,7 @@ const Hase2Mathematics = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/hase2-maths-paper1' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/hase2-maths-paper1' ? '#12b6e9' : '',
     }}
   >
     Haese Mathematics Core 1 AISL & AASL 2
@@ -121,7 +121,7 @@ const Hase2Mathematics = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/hase2-maths-paper1-link' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/hase2-maths-paper1-link' ? '#12b6e9' : '',
     }}
   >
   Paper
@@ -133,7 +133,7 @@ const Hase2Mathematics = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/go-link' ? '#12b6e9' : '',
         borderRadius: '0 30px 30px 0',
         margin: '1px',
       }}

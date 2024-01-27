@@ -10,7 +10,7 @@ import { Card, Container } from '@mui/material';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#D0E1FF',
+      main: '#002B4F',
     },
   },
 });
@@ -74,7 +74,7 @@ const PhysicsPaper = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9 ' : '',
         borderRadius: '30px 0 0 30px',
       }}
     >
@@ -87,7 +87,7 @@ const PhysicsPaper = () => {
       style={{
         margin: '1px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/ibdp' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/ibdp' ? '#12b6e9 ' : '',
       }}
     >
      Physics 
@@ -99,7 +99,7 @@ const PhysicsPaper = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/Pysics' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/Pysics' ? '#12b6e9 ' : '',
     }}
   >
      Physics  SL
@@ -110,7 +110,7 @@ const PhysicsPaper = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/pysics-paper' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/pysics-paper' ? '#12b6e9 ' : '',
     }}
   >
    Tsokos 6th Ed.
@@ -121,7 +121,7 @@ const PhysicsPaper = () => {
     style={{
       margin: '1px',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backgroundColor: location.pathname === '/pysics-paper1' ? 'lightSkyBlue' : '',
+      backgroundColor: location.pathname === '/pysics-paper1' ? '#12b6e9 ' : '',
     }}
   >
   Paper
@@ -133,7 +133,7 @@ const PhysicsPaper = () => {
       style={{
         width: '120px',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+        backgroundColor: location.pathname === '/go-link' ? '#12b6e9 ' : '',
         borderRadius: '0 30px 30px 0',
         margin: '1px',
       }}

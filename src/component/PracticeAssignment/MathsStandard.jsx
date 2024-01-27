@@ -30,7 +30,9 @@ const MathsStandard = () => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#D0E1FF',
+        main: '#002B4F', 
+       
+      
       },
     },
   });
@@ -47,8 +49,9 @@ const MathsStandard = () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/ibmyb' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/ibmyb' ? '#12b6e9' : '',
                 borderRadius: '30px 0 0 30px',
+              
               }}
             >
               IB MYP
@@ -59,8 +62,9 @@ const MathsStandard = () => {
               variant="contained"
               style={{
                 margin: '1px',
+               
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/' ? '#12b6e9' : '',
               }}
             >
               MYP 4&5
@@ -70,8 +74,9 @@ const MathsStandard = () => {
             variant="contained"
             style={{
               margin: '1px',
+              
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '/maths-standard' ? 'lightSkyBlue' : '',
+              backgroundColor: location.pathname === '/maths-standard' ? '#12b6e9' : '',
             }}
           >
             Math Standard
@@ -82,7 +87,7 @@ const MathsStandard = () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/aisl-paper-go-link' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/aisl-paper-go-link' ? '#12b6e9' : '',
                 borderRadius: '0 30px 30px 0',
                 margin: '1px',
               }}
@@ -92,9 +97,9 @@ const MathsStandard = () => {
           </Link>
         </div>
       </ThemeProvider>
-      <div className="mid-inner wiki-mk pt-30 pb-20 pl-40 pr-40  border border-red-500">
-        <ul className='mid-inner1'>
-          <li className=''>
+      <div className="mid-inner wiki-mk pt-30 pb-20 pl-40 pr-40">
+        <ul className=''>
+          <li className='mid-inner1'>
             <Link to="/maths-question" style={{ textDecoration: "none" }}>
               <div className="questionbank-item">
                 <img src="https://ibgakiosk.com/v2/upload/mainimages/2023/01/1.png" alt="Question Image" />
