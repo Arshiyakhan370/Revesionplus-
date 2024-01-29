@@ -14,6 +14,7 @@ import {
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
 import Nav from '../PracticeAssignment/Nav';
+import { style } from '@mui/system';
 
 const ScheduleOnlineClass = () => {
   const [selectedStartTime, setSelectedStartTime] = useState(null);
@@ -28,7 +29,7 @@ const ScheduleOnlineClass = () => {
     <div>
     <Nav/>
     <Box>
-    <Container component="section" maxWidth="lg">
+    <Container component="section" maxWidth="xxl">
       <Paper elevation={3} sx={{ p: 3, mt: 5 }}>
         <Grid container spacing={3}>
           <Grid item xs={6}>
@@ -39,7 +40,8 @@ const ScheduleOnlineClass = () => {
                 id="studentid"
                 label="studentid"
                 className="input-md textinput textInput form-control"
-                value="263" 
+                value="263"
+                sx={{height:'40px'}}
               >
                 <MenuItem value="263" id="student_263">
                   Gaurav
@@ -69,6 +71,7 @@ const ScheduleOnlineClass = () => {
                 label="subjectid"
                 className="input-md textinput textInput form-control"
                 value="65" 
+                sx={{height:'40px'}}
               >
                 <MenuItem value="65" id="subject_65">
                   Biology
@@ -91,6 +94,9 @@ const ScheduleOnlineClass = () => {
               margin="normal"
               placeholder="Class Details (Ex:-Math Class)"
               required
+              InputProps={{
+              style: { height: '40px' },
+            }}
             />
           </Grid>
 
@@ -104,6 +110,9 @@ const ScheduleOnlineClass = () => {
               fullWidth
               margin="normal"
               placeholder="Meeting Name"
+              InputProps={{
+              style: { height: '40px' },
+            }}
             />
           </Grid>
 
@@ -115,6 +124,9 @@ const ScheduleOnlineClass = () => {
               fullWidth
               margin="normal"
               placeholder="Meeting ID"
+              InputProps={{
+              style: { height: '40px' },
+            }}
             />
           </Grid>
 
@@ -126,6 +138,9 @@ const ScheduleOnlineClass = () => {
               fullWidth
               margin="normal"
               placeholder="Host ID"
+              InputProps={{
+              style: { height: '40px' },
+            }}
             />
           </Grid>
 
@@ -148,6 +163,9 @@ const ScheduleOnlineClass = () => {
                     margin="normal"
                     required
                     inputRef={ref}
+                    InputProps={{
+              style: { height: '40px' },
+            }}
                   />
                 )}
               />
@@ -160,6 +178,7 @@ const ScheduleOnlineClass = () => {
               <Flatpickr
                 id="end_time"
                 name="end_time"
+                className='h-16'
                 options={{
                   enableTime: true,
                   dateFormat: 'Y-m-dTH:i',
@@ -173,6 +192,9 @@ const ScheduleOnlineClass = () => {
                     margin="normal"
                     required
                     inputRef={ref}
+                    InputProps={{
+              style: { height: '40px' },
+            }}
                   />
                 )}
               />

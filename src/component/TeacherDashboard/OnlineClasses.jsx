@@ -33,7 +33,7 @@ const OnlineClasses = () => {
     <Fragment>
       <Nav />
       <Navbar1 />
-      <Container maxWidth="xl">
+      <Container maxWidth="xxl">
         <div>
           <h1 className='mt-8 mb-2 text-center text-blue-600 hover: hover:translate-y-1.5'>OnlineClasses</h1>
           <h2 className='mt-8 mb-8 text-center text-sky-500 hover:translate-y-10'>Muhammad Musabani</h2>

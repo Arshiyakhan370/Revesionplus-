@@ -1,16 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import './QuestionLevel.css';
-import { Link } from 'react-router-dom';
 import { Modal,} from 'react-bootstrap';
-import {  Card, List, ListItem,} from '@mui/material';
-
-import {  Bookmark as BookmarkIcon,
-   BookmarkBorder as BookmarkBorderIcon, 
-   Grid} from '@mui/material';
-
+import { Card,} from '@mui/material';
+import { Grid} from '@mui/material';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
-import {IconButton, Box, Typography, Button, LinearProgress } from '@mui/material';
+import {IconButton, Box, Typography, Button,  } from '@mui/material';
 
 
 const QuestionData = [
@@ -70,17 +65,12 @@ const QuestionData = [
   },
 ];
 const QuestionLevel = () => {
-  
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [selectedLevel, setSelectedLevel] = useState('medium'); 
-  const [bookmarkedQuestions, setBookmarkedQuestions] = useState([]);
-  const [thumbsUpCount, setThumbsUpCount] = useState(0);
+  const [selectedLevel, setSelectedLevel] = useState('medium');
+    const [thumbsUpCount, setThumbsUpCount] = useState(0);
   const [thumbsDownCount, setThumbsDownCount] = useState(0);
-  const [isBookmarked1, setIsBookmarked1] = useState(false);
-  const [isRevisited, setIsRevisited] = useState(false);
   const [questionData, setQuestionData] = useState(QuestionData);
-  const [showAnswerKeyModal, setShowAnswerKeyModal] = useState(false);
-  const buttonsData = [
+   const buttonsData = [
    
     { backgroundColor: 'lightblue', text: 'Answer Key', icon: <svg viewBox="0 0 24 24" data-testid="DescriptionIcon" width='2rem' height='2rem'><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path></svg> },
    {backgroundColor:'#AA98A9', text:'Mark Scheme',icon: <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DescriptionIcon " width='2rem' height='2rem'>
@@ -92,7 +82,7 @@ const QuestionLevel = () => {
      
       openModal();
     } else if (buttonText === 'Mark Scheme') {
-   
+   openModal()
      
     } else {
       
@@ -117,17 +107,17 @@ const QuestionLevel = () => {
     </div>
   );
   
-  
   const handleRevisitClick = (questionId) => {
-    const updatedQuestions = QuestionData.map((question) =>
+    console.log('handleRevisitClick called with questionId:', questionId);
+    
+    const updatedQuestions = questionData.map((question) =>
       question.id === questionId
         ? { ...question, isRevisited: !question.isRevisited }
         : question
     );
-   
   
+    console.log('updatedQuestions:', updatedQuestions);
     setQuestionData(updatedQuestions);
-    setIsRevisited(true);
   };
   const openModal = (questionNumber, level) => {
     setSelectedQuestion(questionNumber);
@@ -140,21 +130,9 @@ const QuestionLevel = () => {
  
  
 
-  const isBookmarked = (questionNumber) => {
-    return bookmarkedQuestions.includes(questionNumber);
-  };
-  useEffect(() => {
-        const storedIsBookmarked = localStorage.getItem('isBookmarked');
-    if (storedIsBookmarked) {
-      setIsBookmarked1(JSON.parse(storedIsBookmarked));
-    }
-  }, []);
+  
 
-  const handleBookmarkClick = () => {
-    const newBookmarkState = !isBookmarked;
-    setIsBookmarked1(newBookmarkState);
-    localStorage.setItem('isBookmarked', JSON.stringify(newBookmarkState));
-    };
+
   const getLevelBadgeColor = (level) => {
     switch (level.toLowerCase()) {
       case 'easy':
@@ -300,25 +278,24 @@ const QuestionLevel = () => {
       <span>{thumbsDownCount}</span>
     </Button>
     <Button
-  variant="contained"
-  size="small"
-
-  style={{
-    backgroundColor: ques.isRevisited ? 'darkblue' : 'lightpink',
-    marginRight: '10px',
-    borderRadius: '50px',
-    width: '190px',
-    height: '45px',
-    padding: '6px 14px',
-    textAlign: 'center',
-    border: '1px solid white',
-    color:'black',
-    marginBottom: '10px',
-  }}
-  onClick={() => handleRevisitClick(ques.id)}
->
-  {ques.isRevisited ? (
-    <>
+                    variant="contained"
+                    size="small"
+                    style={{
+                      backgroundColor: ques.isRevisited ? 'white' : 'lightpink',
+                      marginRight: '10px',
+                      borderRadius: '50px',
+                      width: '190px',
+                      height: '45px',
+                      padding: '6px 14px',
+                      textAlign: 'center',
+                      border: '1px solid white',
+                      color: 'black',
+                      marginBottom: '10px',
+                    }}
+                    onClick={() => handleRevisitClick(ques.id)}
+                  >
+                    {ques.isRevisited ? (
+                      <>
     <svg
       focusable="false"
       aria-hidden="true"
@@ -443,7 +420,7 @@ const QuestionLevel = () => {
         </section>
       </main>
   
-      <Modal show={selectedQuestion !== null} onHide={closeModal}>
+      <Modal show={selectedQuestion !== null} onHide={closeModal} className='mt-10'>
         {selectedQuestion !== null && (
           <>
             <Modal.Header closeButton>

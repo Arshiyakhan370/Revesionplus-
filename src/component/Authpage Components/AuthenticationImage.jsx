@@ -47,7 +47,7 @@ const AuthenticationImage = () => {
           </Grid>
           <Grid item xs={12} md={6}>
         <div className="section-right  h-full float-left block bg- transparent mb-16 mt-16 ">
-          <h2>Welcome to <span className="text-global">My Revision+</span> </h2>
+          <h2>Welcome to <span className="text-global">My Revision<sup>+</sup></span> </h2>
           <div className="tab">
             <Button
               className={`tablinks hover:bg-[#065982] ${!isV1 ? '!bg-[#002b4f] !text-white' : ''}`}

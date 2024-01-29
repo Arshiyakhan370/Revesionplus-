@@ -65,7 +65,7 @@ const Golink= () => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#D0E1FF',
+        main: '#002B4F',
       },
     },
   });
@@ -84,7 +84,7 @@ const Golink= () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/ibmyb' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/ibmyb' ? '#12b6e9' : '',
                 borderRadius: '30px 0 0 30px',
               }}
             >
@@ -97,7 +97,7 @@ const Golink= () => {
               style={{
                 margin: '1px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/' ? '#12b6e9' : '',
               }}
             >
               MYP 4&5
@@ -109,7 +109,7 @@ const Golink= () => {
             style={{
               margin: '1px',
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '/maths-standard' ? 'lightSkyBlue' : '',
+              backgroundColor: location.pathname === '/maths-standard' ? '#12b6e9' : '',
             }}
           >
             Math Standard
@@ -120,7 +120,7 @@ const Golink= () => {
             style={{
               margin: '1px',
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '/maths-question' ? 'lightSkyBlue' : '',
+              backgroundColor: location.pathname === '/maths-question' ? '#12b6e9' : '',
             }}
           >
           MYP Questionbank
@@ -131,7 +131,7 @@ const Golink= () => {
             style={{
               margin: '1px',
               boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              backgroundColor: location.pathname === '' ? 'lightSkyBlue' : '',
+              backgroundColor: location.pathname === '' ? '#12b6e9' : '',
             }}
           >
           Paper
@@ -143,7 +143,7 @@ const Golink= () => {
               style={{
                 width: '120px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                backgroundColor: location.pathname === '/go-link' ? 'lightSkyBlue' : '',
+                backgroundColor: location.pathname === '/go-link' ? '#12b6e9' : '',
                 borderRadius: '0 30px 30px 0',
                 margin: '1px',
               }}

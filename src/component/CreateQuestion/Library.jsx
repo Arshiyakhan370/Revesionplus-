@@ -11,7 +11,8 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Grid from '@mui/material/Grid';
 import { useMediaQuery } from 'react-responsive';
-
+import { IconButton } from '@mui/material';
+import SearchIcon from 'react-feather/dist/icons/search';
 const Library = ({isSidebarClosed}) => {
   const [isChecked, setChecked] = useState(false);
   const [selectedCriteria, setSelectedCriteria] = useState('');
@@ -42,7 +43,7 @@ const Library = ({isSidebarClosed}) => {
       <Grid item xs={12}>
         <Card style={{ padding: 20, backgroundColor: '#fff' }}>
           <CardContent>
-            <h1 style={{ textAlign: 'left', fontSize: 14, marginLeft: 4 }}>
+            <h1 style={{ textAlign: 'left', fontSize: 24, marginLeft: 4 }}>
               Add from Library - Product Design
             </h1>
          
@@ -51,20 +52,27 @@ const Library = ({isSidebarClosed}) => {
           <CardContent>
             <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <TextField
-                variant="outlined"
-                placeholder="Search"
-                style={{ flex: 1 }}
-              />
-              <Button
-                variant="contained"
-               
-                style={{ marginLeft: -55, color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important' }}
-              >
-                Search
-              </Button>
-              <div className="text-muted">0 item found</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <TextField
+            variant="outlined"
+            placeholder="Search"
+            fullWidth
+            InputProps={{
+              style: { height: '40px' },
+            }}
+          />
+          <IconButton
+            variant="contained"
+            sx={{
+              marginLeft: -5,
+              color: 'black',
+             
+            }}
+          >
+            <SearchIcon />
+          </IconButton>
+        
+              <div className="text-muted  ml-4">0 item found</div>
             </div>
             </Grid>
             </Grid>
@@ -79,6 +87,7 @@ const Library = ({isSidebarClosed}) => {
                     value={selectedCriteria}
                     onChange={handleCriteriaChange}
                     label="Criteria"
+                    sx={{height:'40px'}}
                   >
                     <MenuItem value="criteriaOption1">Criteria Option 1</MenuItem>
                     <MenuItem value="criteriaOption2">Criteria Option 2</MenuItem>
@@ -94,6 +103,7 @@ const Library = ({isSidebarClosed}) => {
                     value={selectedItem}
                     onChange={handleItemChange}
                     label="Item"
+                    sx={{height:'40px'}}
                   >
                     <MenuItem value="itemOption1">Item Option 1</MenuItem>
                     <MenuItem value="itemOption2">Item Option 2</MenuItem>
@@ -111,6 +121,7 @@ const Library = ({isSidebarClosed}) => {
                       />
                     }
                     label="me"
+                    sx={{height:'40px'}}
                   />
                   <Select
                     id="authorSelect"
@@ -118,6 +129,7 @@ const Library = ({isSidebarClosed}) => {
                     onChange={handleItemChange}
                     label="Authors"
                     className='mt-4'
+                    sx={{height:'40px'}}
                   >
                     <MenuItem value="authorOption1">Authors</MenuItem>
                     <MenuItem value="authorOption2">Author Option 2</MenuItem>
@@ -130,7 +142,7 @@ const Library = ({isSidebarClosed}) => {
         </Card>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" onClick={goBack} sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+        <Button variant="contained" onClick={goBack} sx={{color:'white', marginTop:'10px', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
           Back
         </Button>
       </Grid>

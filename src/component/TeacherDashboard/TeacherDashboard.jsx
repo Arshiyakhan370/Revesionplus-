@@ -19,21 +19,21 @@ const TeacherDashboard = () => {
    
   ];
 
-  const backgroundColors = ['#3468b2', '	#CF9FFF','#73abdc', '#6fb85e','#3468b2'];
+  const backgroundColors = ['#3468b2', '	#CF9FFF','#73abdc','#3468b2'];
   const buttonTexts = [
     [
       { text: ' Assignment', link: '/create-filter' }],
   [{text:'Classes ' , link: '/Online-classes' }],
   [{text:' Printer' , link: 'https://www.neodynamic.com/downloads/wcpp/wcpp2.aspx', external: true }],
-  [{text:'My Profile' , link: '/aisl' }],
+  // [{text:'My Profile' , link: '/aisl' }],
   [{text:'Share ' , link: '/aisl' }],
   ]
-  const MYP = ['Prepare Assignment', 'OnlineClass', 'Setup Printer','My Profile','Share Assignment'];
+  const MYP = ['Prepare Assignment', 'OnlineClass', 'Setup Printer','Share Assignment'];
   return (
     <div>
     <NavStudent/>
     <Navbar1/>
-     <Container maxWidth='xl'>
+     <Container maxWidth='xxl'>
      <div><h2 className='text-center text-sky-500 mt-8 mb-2'>Welcom to Teacher Dashboard</h2>
      <h4 className='text-center mb-16'>Muhammad Musabani</h4></div>
      <Grid container spacing={2} styl e={{  marginTop:'5vh',paddingBottom: '12vh', paddingTop: '1vw', paddingLeft: '1vw',paddingRight:'1vw' }}>
@@ -97,10 +97,13 @@ const cardHeaderStyle = {
 
 const cardImageStyle = {
  position: 'absolute',
- left: '22%',
+ left: '23%',
  top: '-40px',
  width: 'auto',
  height: '100px',
+ textAlign:'center',
+ alignItems:'center',
+ justifyContent:'center',
  background: '#002b4f',
  borderRadius: '16px',
  boxShadow: '0px 3px 6px #00000029',

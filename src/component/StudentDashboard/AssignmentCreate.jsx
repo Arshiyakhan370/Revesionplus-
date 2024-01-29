@@ -211,7 +211,7 @@ import Navbar1 from '../Dashboard Components/Buttons1';
         <NavStudent/>
         <Navbar1/>
         <FilterForm/>
-        <Container maxWidth="xl" >
+        <Container maxWidth="xxl" >
           <Grid container spacing={2} >
             <Grid item xs={12} >
               <Card elevation={2} >

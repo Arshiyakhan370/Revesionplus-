@@ -124,7 +124,7 @@ const itemsPerPage = 5;
       <Fragment>
         <Nav />
         <Navbar1 />
-        <Container maxWidth='xl'>
+        <Container maxWidth='xxl'>
           <div className='ml-10 mt-8 text-black w-8 h-8'>
             <Button onClick={handleGoBack}>
             <ArrowLeft size={24} />
