@@ -125,7 +125,7 @@ const itemsPerPage = 5;
         <Nav />
         <Navbar1 />
         <Container maxWidth='xxl'>
-          <div className='ml-10 mt-8 text-black w-8 h-8'>
+          <div className='ml-10 mt-8 mb-8 text-black w-8 h-8'>
             <Button onClick={handleGoBack}>
             <ArrowLeft size={24} />
             </Button>
