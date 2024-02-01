@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Navbar1 from '../Dashboard Components/Buttons1';
 import Nav from '../PracticeAssignment/Nav';
 import NavStudent from '../StudentDashboard/NavStudent';
+import StudentNavSmall from '../StudentDashboard/StudentNavSmall';
 
 
 
@@ -32,7 +33,8 @@ const TeacherDashboard = () => {
   return (
     <div>
     <NavStudent/>
-    <Navbar1/>
+    {/* <Navbar1/> */}
+    <StudentNavSmall/>
      <Container maxWidth='xxl'>
      <div><h2 className='text-center text-sky-500 mt-8 mb-2'>Welcom to Teacher Dashboard</h2>
      <h4 className='text-center mb-16'>Muhammad Musabani</h4></div>

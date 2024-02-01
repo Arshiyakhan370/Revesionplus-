@@ -3,6 +3,7 @@ import { Button, Tabs, Box, Container, Grid, Card, CardContent, Typography } fro
 import Nav from '../PracticeAssignment/Nav';
 import { Link } from 'react-router-dom';
 import Navbar1 from '../Dashboard Components/Buttons1';
+import StudentNavSmall from '../StudentDashboard/StudentNavSmall';
 
 const OnlineClasses = () => {
   const [value, setValue] = useState(0);
@@ -32,7 +33,8 @@ const OnlineClasses = () => {
   return (
     <Fragment>
       <Nav />
-      <Navbar1 />
+      {/* <Navbar1 /> */}
+      <StudentNavSmall/>
       <Container maxWidth="xxl">
         <div>
           <h1 className='mt-8 mb-2 text-center text-blue-600 hover: hover:translate-y-1.5'>OnlineClasses</h1>

@@ -15,6 +15,7 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
 import Nav from '../PracticeAssignment/Nav';
 import { style } from '@mui/system';
+import StudentNavSmall from '../StudentDashboard/StudentNavSmall';
 
 const ScheduleOnlineClass = () => {
   const [selectedStartTime, setSelectedStartTime] = useState(null);
@@ -28,6 +29,7 @@ const ScheduleOnlineClass = () => {
   return (
     <div>
     <Nav/>
+    <StudentNavSmall/>
     <Box>
     <Container component="section" maxWidth="xxl">
       <Paper elevation={3} sx={{ p: 3, mt: 5 }}>

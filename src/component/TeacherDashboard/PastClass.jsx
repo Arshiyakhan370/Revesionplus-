@@ -3,6 +3,7 @@ import { Tabs, Tab, Typography, Box, Container, Paper, Pagination ,Button, Card,
 import Nav from '../PracticeAssignment/Nav';
 import { ArrowLeft } from 'react-feather';
 import Navbar1 from '../Dashboard Components/Buttons1';
+import StudentNavSmall from '../StudentDashboard/StudentNavSmall';
 
 
 const data = [
@@ -123,7 +124,8 @@ const itemsPerPage = 5;
     return (
       <Fragment>
         <Nav />
-        <Navbar1 />
+        {/* <Navbar1 /> */}
+        <StudentNavSmall/>
         <Container maxWidth='xxl'>
           <div className='ml-10 mt-8 mb-8 text-black w-8 h-8'>
             <Button onClick={handleGoBack}>

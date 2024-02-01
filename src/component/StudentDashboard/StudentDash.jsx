@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Navbar1 from '../Dashboard Components/Buttons1';
 import Nav from '../PracticeAssignment/Nav';
 import NavStudent from './NavStudent';
+import StudentNavSmall from './StudentNavSmall';
 
 
 const StudentDash = () => {
@@ -29,8 +30,10 @@ const StudentDash = () => {
 
   return (
     <div>
+  
      <NavStudent/>
-     <Navbar1/>
+     {/* <Navbar1/> */}
+     <StudentNavSmall/>
       <Container maxWidth='xl'>
       <div><h2 className='text-center text-sky-500 mt-8 mb-2'>Welcom to My Revesion</h2>
       <h4 className='text-center mb-16'>Aush Batra</h4></div>

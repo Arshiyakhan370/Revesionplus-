@@ -26,6 +26,7 @@ import { FilterFrames } from '@mui/icons-material';
 import FilterForm from '../createAssignment/FilterForm';
 import NavStudent from './NavStudent';
 import Navbar1 from '../Dashboard Components/Buttons1';
+import StudentNavSmall from './StudentNavSmall';
     
     const CreateAssignmentIcon = (props) => (
       <SvgIcon {...props}>
@@ -209,7 +210,8 @@ import Navbar1 from '../Dashboard Components/Buttons1';
       return (
         <Fragment>
         <NavStudent/>
-        <Navbar1/>
+        <StudentNavSmall/>
+        {/* <Navbar1/> */}
         <FilterForm/>
         <Container maxWidth="xxl" >
           <Grid container spacing={2} >

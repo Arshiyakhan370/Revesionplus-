@@ -4,40 +4,20 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
-import { Home, Users, UserPlus, BookOpen, Clipboard, HelpCircle, Info, MessageCircle } from 'react-feather';
+import { Home, Users, UserPlus, BookOpen, Clipboard, HelpCircle, Info, MessageCircle, User } from 'react-feather';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Menu, MenuItem, TextField } from '@mui/material';
 
 import '.././AdminDashboard/Header.css';
 
-const Navbar1 = () => {
+const StudentNavSmall = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [dropdownMenus, setDropdownMenus] = useState([
-    { icon: <Home/> , text:'Dashboard', link:'/admin'},
-    { icon: <Users />, text: 'User Master', submenu: [
-      { icon: <BookOpen />, text: 'Teacher', link: '/admin' },
-      { icon: <UserPlus />, text: 'Student', link: '/add-user-show' },
-      { icon: <Clipboard />, text: 'Teacher  subject Mapping', link: '/teacher' },
-    ]},
-    { icon: <BookOpen />, text: 'Category Master', submenu: [
-      { icon: <BookOpen />, text: 'Add Category', link: '/Add-category' },
-      { icon: <BookOpen />, text: 'View Category', link: '/View-category' },
-    ]},
-    { icon: <Info />, text: ' Question Master', submenu: [
-      { icon: <HelpCircle />, text: 'Add Question', link: '/createquestion' },
-      { icon: <MessageCircle />, text: 'View Question', link: '/viewquestion' },
-      { icon: <BookOpen />, text: 'Que Description', link: '/description' },
-      { icon: <BookOpen />, text: 'Question', link: '/question' },
-      { icon: <BookOpen />, text: 'Library', link: '/library' },
-    ]},
-    { icon: <BookOpen />, text: ' Assignment Master', submenu: [
-      { icon: <BookOpen />, text: 'Create Assignment', link: '/create-filter' },
-           { icon: <BookOpen />, text: 'Share Assignment', link: '/share-assignment' },
-           { icon: <BookOpen />, text: 'Practice Assignment', link: '/practiceQuestion' },
-    ]},
-   
-    { icon: <i className="bx bx-wallet-alt" />, text: 'Reports', link: '/reports' },
-    { icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>, text: 'Log Out', link: '/logout' },
-  ]);
+    { icon: <Home/> , text:'Dashboard', link:''},
+      { icon: <UserPlus />, text: 'Profile', link: '/' },
+      { icon: <User />, text: 'Logout', link: '/' },
+    
+ 
+]);
 
   const handleToggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && ((event.key === 'Tab' && event.shiftKey) || event.key === 'Escape')) {
@@ -141,4 +121,6 @@ const Navbar1 = () => {
   );
 };
 
-export default Navbar1;
+
+
+export default StudentNavSmall
