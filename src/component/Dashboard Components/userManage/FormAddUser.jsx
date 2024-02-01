@@ -513,6 +513,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
   <Flatpickr
     className='form-select'
     value={editUserExpiryDate}
+    aria-placeholder='date'
     options={{ dateFormat: 'Y-m-d', enableTime: false }}
     onChange={(selectedDates) => {
       const selectedDate = selectedDates[0];

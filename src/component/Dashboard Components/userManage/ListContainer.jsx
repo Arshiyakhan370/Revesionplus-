@@ -545,6 +545,7 @@ Add User
   <Flatpickr
     className='form-select'
     value={editUserExpiryDate}
+    placeholder='date'
     options={{ dateFormat: 'Y-m-d', enableTime: false }}
     onChange={(selectedDates) => {
       const selectedDate = selectedDates[0];

@@ -5,21 +5,19 @@ import {
   CardContent,
   Checkbox,
   Button,
-  Select,
-  Input,
-  Switch,
+ Switch,
   Typography,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  FormControlLabel,
+    FormControlLabel,
+    Snackbar,
+    Alert,
 } from "@mui/material";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useMediaQuery } from "react-responsive";
 import "react-quill/dist/quill.snow.css";
 import FilterForm from "../createAssignment/FilterForm";
-
+import { Close, Apps, QuestionAnswer, Add } from '@mui/icons-material';
+import { Copy, Delete } from "react-feather";
 const CreateQuestion = ({ isSidebarClosed }) => {
   const [content, setContent] = useState("");
   const [editing, setEditing] = useState(false);
@@ -31,7 +29,23 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [selectChecked, setSelectChecked] = useState(false);
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
- ;
+  const [isListItemVisible, setIsListItemVisible] = useState(false);
+   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
+   const [snackbarOpen, setSnackbarOpen] = useState(false);
+   const [snackbarMessage, setSnackbarMessage] = useState("");
+   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+ 
+  const [items, setItems] = useState([]);
+
+  const handleAddItem = () => {
+    setItems([...items, { isVisible: true }]);
+  };
+ 
+  const handleDeleteItem = (index) => {
+    const updatedItems = [...items];
+    updatedItems.splice(index, 1);
+    setItems(updatedItems);
+  };
   const handkeSelectedCriteria = () => {
     setSelectChecked(!selectChecked);
   };
@@ -65,9 +79,15 @@ const CreateQuestion = ({ isSidebarClosed }) => {
     setSelectedStrands(value);
   };
 
+  const handleToggleItem = (index) => {
+    const updatedItems = [...items];
+    updatedItems[index].isVisible = !updatedItems[index].isVisible;
+    setItems(updatedItems);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const newQuestion = {
       content,
       selectedStrands,
@@ -76,7 +96,9 @@ const CreateQuestion = ({ isSidebarClosed }) => {
       studentEditor,
       selectChecked,
       isChecked,
+      editorContent: content,
     };
+  
     setSavedQuestions([...savedQuestions, newQuestion]);
     setContent("");
     setSelectedStrands([]);
@@ -87,9 +109,8 @@ const CreateQuestion = ({ isSidebarClosed }) => {
     setIsChecked(false);
     setEditing(false);
   };
-
-  const handleChange = (value) => {
-    setContent(value);
+  const handleChange = (editorState) => {
+    setContent(editorState.getCurrentContent().getPlainText());
   };
   const sidebarWidth = isSidebarClosed ? "100px" : "320px";
   const mainComponentWidth = isSmallScreen
@@ -105,7 +126,28 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   const goBack = () => {
     window.history.back();
   };
-
+  const handleToggleListItem = () => {
+    setIsListItemVisible(!isListItemVisible);
+  };
+  const handleCopyQuestionContent = (index) => {
+    const copiedQuestion = { ...savedQuestions[index] };
+    setSavedQuestions((prevQuestions) => [...prevQuestions, copiedQuestion]);
+    showSnackbar("Question copied successfully", "success");
+  };
+  
+  const handleDeleteQuestion = (index) => {
+    setSavedQuestions((prevQuestions) =>
+      prevQuestions.filter((_, i) => i !== index)
+    );
+    showSnackbar("Question deleted successfully", "success");
+  };
+  
+  const showSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+  
   return (
     <Fragment>
      <Card style={styles}>
@@ -115,6 +157,43 @@ const CreateQuestion = ({ isSidebarClosed }) => {
           <Typography variant="h5" gutterBottom className="mt-4 mb-4">
             Create a Question
           </Typography>
+          {savedQuestions.map((savedQuestion, index) => (
+            <div key={index}>
+              <Card >
+              <div className=" ml-4 pt-4 " dangerouslySetInnerHTML={{ __html: savedQuestion.content }} />
+              <div className=" flex flex-row justify-end">
+              <Button onClick={() => handleCopyQuestionContent(index)}>
+              <svg
+                    viewBox="64 64 896 896"
+                    focusable="false"
+                    data-icon="copy"
+                    width="1.5em"
+                    height="1.5em"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M832 64H296c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496v688c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V96c0-17.7-14.3-32-32-32zM704 192H192c-17.7 0-32 14.3-32 32v530.7c0 8.5 3.4 16.6 9.4 22.6l173.3 173.3c2.2 2.2 4.7 4 7.4 5.5v1.9h4.2c3.5 1.3 7.2 2 11 2H704c17.7 0 32-14.3 32-32V224c0-17.7-14.3-32-32-32zM350 856.2L263.9 770H350v86.2zM664 888H414V746c0-22.1-17.9-40-40-40H232V264h432v624z"></path>
+                  </svg>
+</Button>
+
+<Button onClick={() => handleDeleteQuestion(index)}>
+<svg
+                    viewBox="64 64 896 896"
+                    focusable="false"
+                    data-icon="delete"
+                    width="1.5em"
+                    height="1.5em"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path>
+                  </svg>
+</Button>
+</div>
+</Card>
+   </div>
+          ))}
+
           <Card className="h-14 mt-4 mb-4">
             <Grid container justifyContent="flex-end" alignItems="center" className="text-center" >
               <Grid item>
@@ -149,7 +228,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
               </Grid>
 
               <Grid item>
-                <Button>
+              <Button onClick={() => handleCopyQuestionContent}>
                   <svg
                     viewBox="64 64 896 896"
                     focusable="false"
@@ -164,7 +243,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button>
+           <Button onClick={() => handleDeleteQuestion}>
                   <svg
                     viewBox="64 64 896 896"
                     focusable="false"
@@ -179,6 +258,15 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                 </Button>
               </Grid>
             </Grid>
+            <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000} 
+          onClose={() => setSnackbarOpen(false)}
+        >
+          <Alert severity={snackbarSeverity}>
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
           </Card>
           {editing && (
             <Grid>
@@ -196,7 +284,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                         className=" flex flex-row justify-between"
                       >
                        <FormControlLabel
-                    className="ml-8"
+                    sx={{marginLeft:'10px', padding:'20px'}}
                     control={
                       <Switch
                         color="primary"
@@ -316,18 +404,46 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                 margin: "16px 0",
               }}
             >
-              <Button
-                variant="outlined"
-                sx={{
-                  color: "white",
-                  background:
-                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
-                }}
-              >
-                Add
-              </Button>
-            </div>
-          </Grid>
+            <Button onClick={handleAddItem}>
+        <Add />
+        <span> Add Item</span>
+      </Button>
+      <ul>
+        {items.map((item, index) => (
+          <li key={index} className="ant-list-item" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
+            <Button
+              type="button"
+              className="ant-btn css-bua3hd ant-btn-circle ant-btn-default ant-btn-lg ant-btn-icon-only ant-btn-background-ghost ant-btn-dangerous ant-btn-icon-m-t-4"
+              onClick={() => handleToggleItem(index)}
+            >
+              <span className="ant-btn-icon">
+                {item.isVisible ? <Close /> : <Add />}
+              </span>
+            </Button>
+            {item.isVisible && (
+              <div className="ant-row css-bua3hd" style={{ marginTop: '10px' }}>
+                <Grid container spacing={2} justifyContent="center">
+                  <Grid item>
+                    <Button type="button" className="ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
+                      <Apps />
+                      <span> Content</span>
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button type="button" className="ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
+                      <QuestionAnswer />
+                      <span> Questions</span>
+                    </Button>
+                  </Grid>
+                   </Grid>
+              </div>
+            )}
+          
+          </li>
+        ))}
+      </ul>
+    </div>
+         </Grid>
 
           <Grid item xs={12}>
             <div
