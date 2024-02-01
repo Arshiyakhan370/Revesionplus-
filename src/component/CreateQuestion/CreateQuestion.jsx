@@ -31,9 +31,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [selectChecked, setSelectChecked] = useState(false);
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
+ ;
   const handkeSelectedCriteria = () => {
     setSelectChecked(!selectChecked);
   };
@@ -50,13 +48,19 @@ const CreateQuestion = ({ isSidebarClosed }) => {
     setEditing(!editing);
   };
 
-  const checkboxes = [
-    { label: "A", checked: true },
-    { label: "B", checked: false },
-    { label: "C", checked: true },
-    { label: "D", checked: false },
-  ];
-
+  const [checkboxesState, setCheckboxesState] = useState({
+    A: false,
+    B: false,
+    C: false,
+    D: false,
+  });
+  const handleCheckboxChange = (label) => {
+    setCheckboxesState((prevState) => {
+          const newState = { ...prevState };
+           newState[label] = !newState[label];
+      return newState;
+    });
+  };
   const handleStrandsChange = (value) => {
     setSelectedStrands(value);
   };
@@ -87,14 +91,14 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   const handleChange = (value) => {
     setContent(value);
   };
-  const sidebarWidth = isSidebarClosed ? "90px" : "290px";
+  const sidebarWidth = isSidebarClosed ? "100px" : "320px";
   const mainComponentWidth = isSmallScreen
     ? "100%"
     : `calc(100% - ${sidebarWidth})`;
 
   const styles = {
     width: mainComponentWidth,
-    marginLeft: isSidebarClosed ? "90px" : isSmallScreen ? "0" : "290px",
+    marginLeft: isSidebarClosed ? "100px" : isSmallScreen ? "0" : "320px",
     transition: "width 0.3s, margin-left 0.3s",
   };
 
@@ -111,8 +115,8 @@ const CreateQuestion = ({ isSidebarClosed }) => {
           <Typography variant="h5" gutterBottom className="mt-4 mb-4">
             Create a Question
           </Typography>
-          <Card className="h-16 mt-4 mb-4">
-            <Grid container justifyContent="flex-end" alignItems="center ">
+          <Card className="h-14 mt-4 mb-4">
+            <Grid container justifyContent="flex-end" alignItems="center" className="text-center" >
               <Grid item>
                 <Button onClick={handleEditClick}>
                   {editing ? (
@@ -120,10 +124,11 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                       viewBox="64 64 896 896"
                       focusable="false"
                       data-icon="edit"
-                      width="2em"
-                      height="2em"
+                      width="1.5em"
+                      height="1.5em"
                       fill="currentColor"
                       aria-hidden="true"
+                      className="mt-4 mr-2"
                     >
                       <path d="M257.7 752c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 000-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 009.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9zm67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"></path>
                     </svg>
@@ -132,8 +137,8 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                       viewBox="64 64 896 896"
                       focusable="false"
                       data-icon="edit"
-                      width="2em"
-                      height="2em"
+                      width="1.5em"
+                      height="1.5em"
                       fill="currentColor"
                       aria-hidden="true"
                     >
@@ -149,8 +154,8 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                     viewBox="64 64 896 896"
                     focusable="false"
                     data-icon="copy"
-                    width="2em"
-                    height="2em"
+                    width="1.5em"
+                    height="1.5em"
                     fill="currentColor"
                     aria-hidden="true"
                   >
@@ -164,8 +169,8 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                     viewBox="64 64 896 896"
                     focusable="false"
                     data-icon="delete"
-                    width="2em"
-                    height="2em"
+                    width="1.5em"
+                    height="1.5em"
                     fill="currentColor"
                     aria-hidden="true"
                   >
@@ -190,22 +195,34 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                         alignItems="center"
                         className=" flex flex-row justify-between"
                       >
-                        <Grid item xs={4}>
-                          <Select
-                            className="h-14 border border-gray-500 mr-10"
-                            placeholder="selectOption"
-                            id="select-strands"
-                            value={selectedValue}
-                            onChange={handleSelectChange}
-                            input={<Input />}
-                            fullWidth
-                          >
-                            <MenuItem value="option1">Option 1</MenuItem>
-                            <MenuItem value="option2">Option 2</MenuItem>
-                            <MenuItem value="option3">Option 3</MenuItem>
-                          </Select>
-                        </Grid>
-
+                       <FormControlLabel
+                    className="ml-8"
+                    control={
+                      <Switch
+                        color="primary"
+                        checked={selectChecked}
+                        onChange={handkeSelectedCriteria}
+                      />
+                    }
+                    label="select criteria "
+                  />
+                   {selectChecked && (
+  <div>
+    {window.innerWidth > 1024 && (
+      <Grid item xs={12}>
+        {Object.keys(checkboxesState).map((label) => (
+          <React.Fragment key={label}>
+            <Checkbox
+              checked={checkboxesState[label]}
+              onChange={() => handleCheckboxChange(label)}
+            />
+            {label}
+          </React.Fragment>
+        ))}
+      </Grid>
+    )}
+  </div>
+)}
                         <Grid item xs={2}>
                           <Button
                             variant="outlined"
@@ -243,52 +260,26 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                     }
                     label="Include Markscheme"
                   />
-                  <FormControlLabel
-                    className="ml-8"
-                    control={
-                      <Switch
-                        color="primary"
-                        checked={selectChecked}
-                        onChange={handkeSelectedCriteria}
-                      />
-                    }
-                    label="select criteria "
-                  />
+                 
                 </Grid>
-                {selectChecked && (
-                  <div>
-                    {window.innerWidth > 1024 && (
-                      <Grid item xs={12}>
-                        {checkboxes.map((checkbox) => (
-                          <React.Fragment key={checkbox.label}>
-                            <Checkbox
-                              checked={checkbox.checked}
-                              onChange={() =>
-                                handleCheckboxChange(checkbox.label)
-                              }
-                            />
-                            {checkbox.label}
-                          </React.Fragment>
-                        ))}
-                      </Grid>
-                    )}
-                  </div>
-                )}
+              <div className="border border-gray-500 mb-4">
                 <Editor
                   toolbarClassName="toolbarClassName"
                   wrapperClassName="wrapperClassName"
                   editorClassName="editorClassName"
+                  className="border border-gray-500"
                   onEditorStateChange={(editorState) =>
                     handleChange(editorState)
                   }
                 />
-
+                </div>
                 {teacherEditor && (
-                  <div>
+                  <div className="border border-gray-500 mb-4">
                     <Editor
                       toolbarClassName="toolbarClassName"
                       wrapperClassName="wrapperClassName"
                       editorClassName="editorClassName"
+                      className="border border-gray-500"
                       onEditorStateChange={(editorState) =>
                         handleChange(editorState)
                       }
@@ -297,11 +288,12 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                 )}
 
                 {studentEditor && (
-                  <div>
+                  <div className="border border-gray-500 mb-4">
                     <Editor
                       toolbarClassName="toolbarClassName"
                       wrapperClassName="wrapperClassName"
                       editorClassName="editorClassName"
+                      className="border border-gray-500 pl-5 pr-5"
                       onEditorStateChange={(editorState) =>
                         handleChange(editorState)
                       }
@@ -309,44 +301,10 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                   </div>
                 )}
               </Grid>
-
-              <form onSubmit={handleSubmit}>
+             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel id="select-strands-label">
-                        Select Strands
-                      </InputLabel>
-                      <Select
-                        className="h-14 border border-gray-500"
-                        labelId="select-strands-label"
-                        id="select-strands"
-                        multiple
-                        value={selectedStrands}
-                        onChange={(event) =>
-                          handleStrandsChange(event.target.value)
-                        }
-                        input={<Input />}
-                        renderValue={(selected) => selected.join(", ")}
-                      >
-                        <MenuItem value="strand1">Strand 1</MenuItem>
-                        <MenuItem value="strand1">Strand 1</MenuItem>
-                        <MenuItem value="strand2">Strand 2</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                {/* <Grid item xs={12}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', margin: '16px 0' }}>
-            <Button variant="outlined"  onClick={goBack} sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
-                  Back
-                </Button>
-            <Button type="submit" variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
-              Save
-            </Button>
-            </div>
-            </Grid> */}
-              </form>
+            </Grid>
+             </form>
             </Grid>
           )}
 

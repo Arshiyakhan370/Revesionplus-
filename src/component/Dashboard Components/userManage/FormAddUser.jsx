@@ -7,8 +7,8 @@ import {
   CardContent,
 } from '@mui/material';
 import { Eye, EyeOff } from 'react-feather';
-
-
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/themes/material_green.css';
 import {IconButton,InputAdornment, Button,  Pagination,Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {  Form,Modal} from 'react-bootstrap';
@@ -19,6 +19,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
   const [selectedValue, setSelectedValue] = useState(10);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(selectedValue);
+  const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
   const [userListData, setUserListData] = useState([
     {
       name: 'aarabbanisadiq',
@@ -122,7 +123,9 @@ const FormAddUser = ({ isSidebarClosed }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
   const [editUserName, setEditUserName] = useState('');
-  const [editUserEmail, setEditUserEmail] = useState('');
+  const [editUserEmail, setEditUserEmail] = useState('');const [editUserMobile, setEditUserMobile]=useState('');
+  const [editUserExpiryDate, setEditUserExpiryDate] = useState('');
+  const [editUserRole,setEditUserRole]=useState('');
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
@@ -130,6 +133,8 @@ const FormAddUser = ({ isSidebarClosed }) => {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const roles = ['Admin', 'Ib Facility'];
   const handleSelectChange = (e) => {
     setSelectedValue(parseInt(e.target.value, 10));
     setRowsPerPage(parseInt(e.target.value, 10));
@@ -168,11 +173,14 @@ const FormAddUser = ({ isSidebarClosed }) => {
   const handleDeleteDialogClose = () => {
     setDeleteUserId(null);
     setOpenDeleteDialog(false);
+    setOpenSuccessDialog(false);
   };
-
   const handleDeleteClick = () => {
-       console.log(`Delete user with ID: ${deleteUserId}`);
-    setOpenDeleteDialog(false);
+    
+    const updatedUserList = userListData.filter((user) => user.id !== deleteUserId);
+         setUserListData(updatedUserList);
+         setOpenDeleteDialog(false);
+          setOpenSuccessDialog(true);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -205,20 +213,25 @@ const FormAddUser = ({ isSidebarClosed }) => {
       };
      
     
-  const handleEditClick = (userId, userName, userEmail) => {
-    setEditUserId(userId);
-    setEditUserName(userName);
-    setEditUserEmail(userEmail);
-    setShowEditModal(true);
-  };
-  
-  const handleSaveEdit = () => {
-    const updatedUserList = userListData.map((user) =>
-      user.id === editUserId ? { ...user, name: editUserName, email: editUserEmail } : user
-    );
-    setUserListData(updatedUserList);
-    setShowEditModal(false);
-  };
+      const handleEditClick = (userId, userName, userEmail,userMobileNo,userRole,userExpiryDate) => {
+        setEditUserId(userId);
+        setEditUserName(userName);
+        setEditUserEmail(userEmail);
+        setEditUserMobile(userMobileNo);
+        setEditUserExpiryDate(userExpiryDate);
+        setEditUserRole(userRole)
+        setShowEditModal(true);
+      };
+      
+      const handleSaveEdit = () => {
+            const updatedUserList = userListData.map((user) =>
+          user.id === editUserId
+            ? { ...user, name: editUserName, email: editUserEmail, role: editUserRole, mobile: editUserMobile, expiryDate: editUserExpiryDate }
+            : user
+        );
+             setUserListData(updatedUserList);
+             setShowEditModal(false);
+      };
 
   const handleCloseEditModal = () => {
     setShowEditModal(false);
@@ -241,19 +254,13 @@ const FormAddUser = ({ isSidebarClosed }) => {
     };
     return (
         <Fragment>
-          
-        <Container maxWidth="xxl">
-      <Card style={styles}>
+        <Container maxWidth="xxl" style={styles}>
+      <Card sx={{marginTop:'15px',background:'#f0f0f0'}}>
       <CardContent>
       <section id="responsive-datatable">
         <div className="card-header border-bottom  flex flex-grow-0 justify-between">
                   <h4 className="card-title text-black font-400 ">User List</h4>
-                  <Link
-                   to="/add-user"
-                    className="btn btn-round btn-gradient-primary float-end " style={{textDecoration:'none'}}
-                  >
-                    Add User
-                  </Link>
+                 
                 </div>
                
                 <div className="card-datatable">
@@ -261,9 +268,9 @@ const FormAddUser = ({ isSidebarClosed }) => {
                     id="datatable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer"
                   >
                     <div className="row">
-  <div className="col-sm-12 col-md-6">
+  
     <div className=" pt-4 pb-4 lg:flex lg:flex-row lg:justify-between sm: flex-col sm:gap-4 "  >
-      <div className="dataTables_length" id="datatable_length float-left">
+      <div className="dataTables_length" id="datatable_length ">
         <label>Show</label>
         <select
           name="datatable_length"
@@ -280,7 +287,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
         </select>
         <label>entries</label>
       </div>
-      <div id="datatable_filter" className="dataTables_filter ms-3 float-right">
+      <div id="datatable_filter" className="dataTables_filter ms-3 ">
   <label>Search:</label>
   <input
     type="search"
@@ -293,8 +300,14 @@ const FormAddUser = ({ isSidebarClosed }) => {
 </div>
 
     </div>
-  </div>
-</div>
+ 
+  </div> 
+  <div className='flex  flex-row justify-end'>  <Button>
+  <Link to="/add-user" className="btn btn-round btn-gradient-primary float-end  " style={{textDecoration:'none'}}>
+ Add User
+ </Link></Button></div>
+
+
 
                     </div>
                 </div>
@@ -459,39 +472,81 @@ const FormAddUser = ({ isSidebarClosed }) => {
                           </div>
                           
                           <Modal show={showEditModal} onHide={handleCloseEditModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit User</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3" controlId="editFormName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter name"
-                  value={editUserName}
-                  onChange={(e) => setEditUserName(e.target.value)}
-                />
-              </Form.Group>
+  <Modal.Header closeButton>
+    <Modal.Title>Edit User</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form>
+      <Form.Group className="mb-3" controlId="editFormName">
+        <Form.Label>Name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter name"
+          value={editUserName}
+          onChange={(e) => setEditUserName(e.target.value)}
+        />
+      </Form.Group>
 
-              <Form.Group className="mb-3" controlId="editFormEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  value={editUserEmail}
-                  onChange={(e) => setEditUserEmail(e.target.value)}
-                />
-              </Form.Group>
+      <Form.Group className="mb-3" controlId="editFormEmail">
+        <Form.Label>Email</Form.Label>
+        <Form.Control
+          type="email"
+          placeholder="Enter email"
+          value={editUserEmail}
+          onChange={(e) => setEditUserEmail(e.target.value)}
+        />
+      </Form.Group>
 
-            
+      <Form.Group className="mb-3" controlId="editFormMobile">
+        <Form.Label>Mobile Number</Form.Label>
+        <Form.Control
+          type="tel"
+          placeholder="Enter mobile number"
+          value={editUserMobile}
+          onChange={(e) => setEditUserMobile(e.target.value)}
+        />
+      </Form.Group>
 
-              <Button variant="outline" sx={{  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',color:'white'}} onClick={handleSaveEdit}>
-                Save Changes
-              </Button>
-            </Form>
-          </Modal.Body>
-        </Modal>
+      <Form.Group className="mb-3" controlId="editFormExpiry">
+  <Form.Label>Expiry Date</Form.Label>
+  <Flatpickr
+    className='form-select'
+    value={editUserExpiryDate}
+    options={{ dateFormat: 'Y-m-d', enableTime: false }}
+    onChange={(selectedDates) => {
+      const selectedDate = selectedDates[0];
+      setEditUserExpiryDate(selectedDate instanceof Date ? selectedDate.toISOString() : selectedDate);
+    }}
+  />
+</Form.Group>
+      <Form.Group className="mb-3" controlId="editFormRole">
+        <Form.Label>Role</Form.Label>
+        <Form.Select
+          value={editUserRole}
+          onChange={(e) => setEditUserRole(e.target.value)}
+        >
+          {roles.map((role) => (
+            <option key={role} value={role}>
+              {role}
+            </option>
+          ))}
+        </Form.Select>
+      </Form.Group>
+
+      <Button
+        variant="outline"
+        sx={{
+          background:
+            'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+          color: 'white',
+        }}
+        onClick={handleSaveEdit}
+      >
+        Save Changes
+      </Button>
+    </Form>
+  </Modal.Body>
+</Modal>;
 
       
 
@@ -500,7 +555,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
   onClose={handleDeleteDialogClose}
  
 >
-  <DialogTitle>Delete User</DialogTitle>
+  <DialogTitle className='text-red-500'>Delete User</DialogTitle>
   <DialogContent>
     <p>Are you sure you want to delete this user?</p>
   </DialogContent>
@@ -513,6 +568,17 @@ const FormAddUser = ({ isSidebarClosed }) => {
     </Button>
   </DialogActions>
 </Dialog>
+ <Dialog open={openSuccessDialog} onClose={handleDeleteDialogClose}>
+        <DialogTitle className='text-green-500'>Deletion Successful</DialogTitle>
+        <DialogContent>
+          <p>User has been successfully deleted.</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteDialogClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
 
         <Dialog open={openPasswordModal} onClose={handlePasswordModalClose}>
         <DialogTitle>Update Password</DialogTitle>

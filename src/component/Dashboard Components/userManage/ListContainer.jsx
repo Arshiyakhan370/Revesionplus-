@@ -4,24 +4,23 @@ import { useMediaQuery } from 'react-responsive';
 import {
   Container,
   Card,
-  CardHeader,
-  IconButton,
+   IconButton,
   InputAdornment,
   CardContent,
- 
  
 } from '@mui/material';
 import { Eye, EyeOff } from 'react-feather';
 import { User } from 'react-feather';
-import { Table, Button,  Pagination,Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from '@mui/material';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Button,  Pagination,Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from '@mui/material';
 import {  Form,Modal} from 'react-bootstrap';
-import Swal from 'sweetalert2';
 import './ListContainer.css';
-import Header from '../../AdminDashboard/Header';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LockIcon from '@mui/icons-material/Lock';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/themes/material_green.css';
+
+
 const ListContainer = ({ isSidebarClosed }) => {
   const [selectedValue, setSelectedValue] = useState(10);
   const [page, setPage] = useState(1);
@@ -131,6 +130,9 @@ const [searchQuery, setSearchQuery] = useState('');
   const [editUserId, setEditUserId] = useState(null);
   const [editUserName, setEditUserName] = useState('');
   const [editUserEmail, setEditUserEmail] = useState('');
+  const [editUserMobile, setEditUserMobile]=useState('');
+  const [editUserExpiryDate, setEditUserExpiryDate] = useState('');
+  const [editUserRole,setEditUserRole]=useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState('');
@@ -138,8 +140,8 @@ const [searchQuery, setSearchQuery] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 const [deleteUserId, setDeleteUserId] = useState(null);
-
-
+const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
+const roles = ['Admin', 'Ib Facility'];
   const filteredUserList = userListData.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -188,12 +190,17 @@ const [deleteUserId, setDeleteUserId] = useState(null);
   const handleDeleteDialogClose = () => {
     setDeleteUserId(null);
     setOpenDeleteDialog(false);
+    setOpenSuccessDialog(false);
   };
-const handleDeleteClick = () => {
-       console.log(`Delete user with ID: ${deleteUserId}`);
-    setOpenDeleteDialog(false);
-  };
+ 
 
+  const handleDeleteClick = () => {
+        const updatedUserList = userListData.filter((user) => user.id !== deleteUserId);
+           setUserListData(updatedUserList);
+         setOpenDeleteDialog(false);
+      setOpenSuccessDialog(true);
+  };
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -226,19 +233,24 @@ const handleDeleteClick = () => {
       };
     
     
-  const handleEditClick = (userId, userName, userEmail) => {
+  const handleEditClick = (userId, userName, userEmail,userMobileNo,userRole,userExpiryDate) => {
     setEditUserId(userId);
     setEditUserName(userName);
     setEditUserEmail(userEmail);
+    setEditUserMobile(userMobileNo);
+    setEditUserExpiryDate(userExpiryDate);
+    setEditUserRole(userRole)
     setShowEditModal(true);
   };
   
   const handleSaveEdit = () => {
-    const updatedUserList = userListData.map((user) =>
-      user.id === editUserId ? { ...user, name: editUserName, email: editUserEmail } : user
+        const updatedUserList = userListData.map((user) =>
+      user.id === editUserId
+        ? { ...user, name: editUserName, email: editUserEmail, role: editUserRole, mobile: editUserMobile, expiryDate: editUserExpiryDate }
+        : user
     );
-    setUserListData(updatedUserList);
-    setShowEditModal(false);
+         setUserListData(updatedUserList);
+         setShowEditModal(false);
   };
 
   const handleCloseEditModal = () => {
@@ -263,60 +275,57 @@ const handleDeleteClick = () => {
     return (
         <Fragment>
           
-        <Container maxWidth="xxl">
-      <Card style={styles}>
+        <Container maxWidth="xxl" style={styles}>
+      <Card  sx={{marginTop:'15px',background:'#f0f0f0'}}>
       <CardContent>
       <section id="responsive-datatable">
         <div className="card-header border-bottom  flex flex-grow-0 justify-between">
                   <h4 className="card-title text-black font-400 ">User List</h4>
-                  <Link
-                    to="/student-add"
-                    className="btn btn-round btn-gradient-primary float-end "
-                    style={{textDecoration:'none'}}
-                  >
-                    Add User
-                  </Link>
-                </div>
+                                  </div>
                
                 <div className="card-datatable">
                   <div
                     id="datatable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer"
                   >
-                    <div className="row">
-  <div className="col-sm-12 col-md-6">
-    <div className=" pt-4 pb-4 lg:flex lg:flex-row lg:justify-between sm: flex-col sm:gap-4 "  >
-      <div className="dataTables_length" id="datatable_length float-left">
-        <label>Show</label>
-        <select
-          name="datatable_length"
-          aria-controls="datatable"
-          value={selectedValue}
-          onChange={handleSelectChange}
-          className="form-select"
-          style={{ width: '80px' }} 
-        >
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-        <label>entries</label>
-      </div>
-    <div id="datatable_filter" className="dataTables_filter ms-3 float-right">
-  <label>Search:</label>
-  <input
-    type="search"
-    className="form-control"
-    placeholder=""
-    aria-controls="datatable"
-    value={searchQuery}
-    onChange={(e) => setSearchQuery(e.target.value)}
-  />
+                      <div className="row">
+  
+  <div className=" pt-4 pb-4 lg:flex lg:flex-row lg:justify-between sm: flex-col sm:gap-4 "  >
+    <div className="dataTables_length" id="datatable_length ">
+      <label>Show</label>
+      <select
+        name="datatable_length"
+        aria-controls="datatable"
+        value={selectedValue}
+        onChange={handleSelectChange}
+        className="form-select"
+        style={{ width: '80px' }} 
+      >
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+      <label>entries</label>
+    </div>
+    <div id="datatable_filter" className="dataTables_filter ms-3 ">
+<label>Search:</label>
+<input
+  type="search"
+  className="form-control"
+  placeholder=""
+  aria-controls="datatable"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+/>
 </div>
 
-    </div>
   </div>
-</div>
+
+</div> 
+<div className='flex  flex-row justify-end'>  <Button>
+<Link to="/student-add" className="btn btn-round btn-gradient-primary float-end  " style={{textDecoration:'none'}}>
+Add User
+</Link></Button></div>
 
                     </div>
                 </div>
@@ -486,52 +495,93 @@ const handleDeleteClick = () => {
           </svg>
         </a>
       </div>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                          </table>
-
-                          </div>
-                          </div>
+      </td>
+      </tr>
+    ))}
+     </tbody>
+      </table>
+     </div>
+   </div>
                           
-                          <Modal show={showEditModal} onHide={handleCloseEditModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit User</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3" controlId="editFormName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter name"
-                  value={editUserName}
-                  onChange={(e) => setEditUserName(e.target.value)}
-                />
-              </Form.Group>
+   <Modal show={showEditModal} onHide={handleCloseEditModal}>
+  <Modal.Header closeButton>
+    <Modal.Title>Edit User</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form>
+      <Form.Group className="mb-3" controlId="editFormName">
+        <Form.Label>Name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter name"
+          value={editUserName}
+          onChange={(e) => setEditUserName(e.target.value)}
+        />
+      </Form.Group>
 
-              <Form.Group className="mb-3" controlId="editFormEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  value={editUserEmail}
-                  onChange={(e) => setEditUserEmail(e.target.value)}
-                />
-              </Form.Group>
+      <Form.Group className="mb-3" controlId="editFormEmail">
+        <Form.Label>Email</Form.Label>
+        <Form.Control
+          type="email"
+          placeholder="Enter email"
+          value={editUserEmail}
+          onChange={(e) => setEditUserEmail(e.target.value)}
+        />
+      </Form.Group>
 
-            
+      <Form.Group className="mb-3" controlId="editFormMobile">
+        <Form.Label>Mobile Number</Form.Label>
+        <Form.Control
+          type="tel"
+          placeholder="Enter mobile number"
+          value={editUserMobile}
+          onChange={(e) => setEditUserMobile(e.target.value)}
+        />
+      </Form.Group>
 
-              <Button variant="outline" sx={{  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',color:'white'}} onClick={handleSaveEdit}>
-                Save Changes
-              </Button>
-            </Form>
-          </Modal.Body>
-        </Modal>
+      <Form.Group className="mb-3" controlId="editFormExpiry">
+  <Form.Label>Expiry Date</Form.Label>
+  <Flatpickr
+    className='form-select'
+    value={editUserExpiryDate}
+    options={{ dateFormat: 'Y-m-d', enableTime: false }}
+    onChange={(selectedDates) => {
+      const selectedDate = selectedDates[0];
+      setEditUserExpiryDate(selectedDate instanceof Date ? selectedDate.toISOString() : selectedDate);
+    }}
+  />
+</Form.Group>
+      <Form.Group className="mb-3" controlId="editFormRole">
+        <Form.Label>Role</Form.Label>
+        <Form.Select
+          value={editUserRole}
+          onChange={(e) => setEditUserRole(e.target.value)}
+        >
+          {roles.map((role) => (
+            <option key={role} value={role}>
+              {role}
+            </option>
+          ))}
+        </Form.Select>
+      </Form.Group>
+
+      <Button
+        variant="outline"
+        sx={{
+          background:
+            'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+          color: 'white',
+        }}
+        onClick={handleSaveEdit}
+      >
+        Save Changes
+      </Button>
+    </Form>
+  </Modal.Body>
+</Modal>;
  <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
         
-      <DialogTitle>Delete User</DialogTitle>
+      <DialogTitle className='text-red-500'>Delete User</DialogTitle>
       <DialogContent>
         <p>Are you sure you want to delete this user?</p>
       </DialogContent>
@@ -544,6 +594,17 @@ const handleDeleteClick = () => {
         </Button>
       </DialogActions>
     </Dialog>
+    <Dialog open={openSuccessDialog} onClose={handleDeleteDialogClose}>
+        <DialogTitle className='text-green-500'>Deletion Successful</DialogTitle>
+        <DialogContent>
+          <p>User has been successfully deleted.</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteDialogClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
 
         <Dialog open={openPasswordModal} onClose={handlePasswordModalClose}>
         <DialogTitle>Update Password</DialogTitle>

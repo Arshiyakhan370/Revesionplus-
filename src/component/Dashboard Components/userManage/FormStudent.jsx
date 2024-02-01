@@ -108,46 +108,48 @@ const FormStudent = ({isSidebarClosed}) => {
     setErrorDialogOpen(false);
     setErrorFields([]);
   };
-  const sidebarWidth = isSidebarClosed ? '40px' : '262px';
+  const sidebarWidth = isSidebarClosed ? '50px' : '272px';
   const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
   
   const styles = {
     width: mainComponentWidth,
-    marginLeft: isSidebarClosed ? '65px' : (isSmallScreen ? '0' : '262px'),
+    marginLeft: isSidebarClosed ? '75px' : (isSmallScreen ? '0' : '272px'),
     transition: 'width 0.3s, margin-left 0.3s',
   };
-  const inputStyle = { height: '40px' };
+  const inputStyle = { height: '35px' };
   return (
-    <Container maxWidth="xxl">
+    <Container maxWidth="xxl" style={styles}>
       <div className="content-header row1"></div>
       <div className="content-body">
-        <Card style={styles}>
+        <Card  sx={{marginTop:'25px',background:'#f0f0f0'}}>
           <CardContent>
             <Typography variant="h4" gutterBottom className='mt-4 mb-4'>
               Add User
             </Typography>
             <form className="needs-validation" noValidate onSubmit={handleSubmit}>
               <Grid container spacing={2}>
-                <Grid item xs={12} md={4}>
-                  <FormControl fullWidth>
-                    <InputLabel id="select-teacher-label">Teacher</InputLabel>
-                    <Select
-                      labelId="select-teacher-label"
-                      id="select-teacher"
-                      name="teacher"
-                      value={teacher}
-                      sx={{height:'40px'}}
-                      onChange={(e) => setTeacher(e.target.value)}
-                      required
-                    >
-                      <MenuItem value="">Select UserType</MenuItem>
-                      <MenuItem value="SuperAdmin">SuperAdmin</MenuItem>
-                      <MenuItem value="Admin">Admin</MenuItem>
-                      <MenuItem value="IB Facilitator">IB Facilitator</MenuItem>
-                      <MenuItem value="Assignment Editor/IB Facilitator">Assignment Editor/IB Facilitator</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
+             <Grid item xs={12} md={4}>
+      <FormControl fullWidth>
+        <InputLabel id="select-teacher-label mt-2" sx={{ fontSize: 12 }}>
+          Teacher
+        </InputLabel>
+        <Select
+          labelId="select-teacher-label"
+          id="select-teacher"
+          name="teacher"
+          value={teacher}
+          sx={{ height: '35px' }}
+          onChange={(e) => setTeacher(e.target.value)}
+          required
+        >
+          <MenuItem value="">Select UserType</MenuItem>
+          <MenuItem value="SuperAdmin">SuperAdmin</MenuItem>
+          <MenuItem value="Admin">Admin</MenuItem>
+          <MenuItem value="IB Facilitator">IB Facilitator</MenuItem>
+          <MenuItem value="Assignment Editor/IB Facilitator">Assignment Editor/IB Facilitator</MenuItem>
+        </Select>
+      </FormControl>
+    </Grid>
                 <Grid item xs={12} md={4}>
                   <TextField
                     fullWidth
@@ -204,7 +206,7 @@ const FormStudent = ({isSidebarClosed}) => {
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Flatpickr
-                    className="form-control flatpickr-basic flatpickr-input h-12 "
+                    className="form-control flatpickr-basic flatpickr-input h-10 "
                     placeholder="Set Inactivation Date"
                     options={{ dateFormat: 'Y-m-d' }}
                     value={inactiveDate}

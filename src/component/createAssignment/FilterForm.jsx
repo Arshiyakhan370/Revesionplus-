@@ -68,7 +68,7 @@ const FilterForm = () => {
           <ArrowLeft size={24} />
         </Button>
       </div>
-      <Card>
+      
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -230,8 +230,7 @@ const FilterForm = () => {
    </Grid>
     </Grid>
     </CardContent>
-    </Card>
-    </Container>
+     </Container>
     
     
     </Fragment>

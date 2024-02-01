@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Header.css'
-import { ChevronRight, Home, Users ,UserPlus, BookOpen, Clipboard, HelpCircle, Info, MessageCircle, EyeOff, Eye } from 'react-feather';
+import { ChevronRight, Home, Users ,UserPlus, BookOpen, Clipboard, HelpCircle, Info, MessageCircle, EyeOff, Eye, User } from 'react-feather';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Menu, MenuItem, TextField, InputAdornment} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonIcon from '@mui/icons-material/Person';
@@ -161,6 +161,14 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
       setIsOpen2(false);
       setIsOpen3(!isOpen3);
       setIsOpen4(false);
+      setIsOpen5(false);
+    };
+    const toggleDropdown4 = () => {
+      setIsOpen(false);
+      setIsOpen1(false);
+      setIsOpen2(false);
+     setIsOpen3(false);
+      setIsOpen4(!isOpen4);
       setIsOpen5(false);
     };
    
@@ -326,7 +334,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                 <li className="nav-link ">
                   <Link to="/admin">
                   <BookOpen className="icons mr-4"/> 
-                    <span className="text nav-text">Teacher</span>
+                    <span className="text nav-text">Teacher/Admin</span>
                   </Link>
                 </li>
              
@@ -339,16 +347,43 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                 <li className="nav-link">
                   <Link to="/teacher">
                   <Clipboard className="icons mr-4"/> 
-                    <span className="text nav-text">Teacher Map</span>
+                    <span className="text nav-text">Teacher Subject Mapping</span>
                   </Link>
                 </li>
               </ul>
               )}
+
+              <li className="nav-link">
+            <Link to="#" onClick={toggleDropdown4}>
+                <User className="bx bx-wallet-alt icons mr-4"/>
+                <span className="text nav-text">Category Master</span>
+                <ChevronRight className={`submenu-toggle ${isOpen4 ? 'open' : ''}`} />
+              </Link>
+             </li>
+            {isOpen4 && (
+            <ul>
+                <li className="nav-link">
+                 <Link to="/Add-category">
+                  <BookOpen className="icons mr-4"/> 
+                    <span className="text nav-text">Add Category</span>
+                  </Link>
+                </li>
+             
+                <li className="nav-link">
+                  <Link to="/View-category">
+                  <UserPlus className="icons mr-4"/> 
+                    <span className="text nav-text">View Category</span>
+                  </Link>
+                </li>
+                
+              </ul>
+
+            )}
               <li className={`nav-link ${isOpen1 ? 'active' : ''}`}>
               <Link to=""  onClick={toggleDropdown1}>
               
               <Info className="icons mr-4"/> 
-                <span className="text nav-text">Create Question</span>
+                <span className="text nav-text">Question Master</span>
                 <ChevronRight className={`submenu-toggle ${isOpen1 ? 'open' : ''}`} />
               </Link>
             </li>
@@ -357,14 +392,14 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                 <li className="nav-link">
                   <Link to="/createquestion">
                   <HelpCircle className="icons mr-4"/> 
-                    <span className="text nav-text">Add Que</span>
+                    <span className="text nav-text">Add Question</span>
                   </Link>
                 </li>
              
                 <li className="nav-link">
                   <Link to="">
                   <MessageCircle className="icons mr-4"/> 
-                    <span className="text nav-text">View Que</span>
+                    <span className="text nav-text">View Question</span>
                   </Link>
                 </li>
                 <li className="nav-link">
@@ -427,7 +462,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             <li className="nav-link">
               <Link to="#" onClick={toggleDropdown2}>
                 <BookOpen className="icons mr-4" />
-                <span className="text nav-text">Create Assignment</span>
+                <span className="text nav-text">Assignment Master</span>
                 <ChevronRight className={`submenu-toggle ${isOpen2 ? 'open' : ''}`} />
               </Link>
             </li>
@@ -435,7 +470,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             <ul>
           
             <li className="nav-link">
-                  <Link to="/Add-category">
+                  <Link to="/create-filter">
                   <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -454,11 +489,11 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
       <path d="M7 8h6"></path>
     </svg>
                    
-                    <span className="text nav-text">New Assignment</span>
+                    <span className="text nav-text">Create Assignment</span>
                   </Link>
                 </li> 
                 <li className="nav-link">
-                  <Link to="/create-filter">
+                  <Link to="">
                   
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -475,11 +510,11 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
       <path d="M12 2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 14l-4-4 1.414-1.414L10 13.172l6.293-6.293L18 8l-8 8z"></path>
     </svg>
                  
-                    <span className="text nav-text">View Assignment</span>
+                    <span className="text nav-text">share Assignment</span>
                   </Link>
                 </li>
                 <li className="nav-link">
-                  <Link to="/create-question">
+                  <Link to="/practiceQuestion">
                   <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -499,13 +534,13 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
       <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
     </svg>
                 
-                    <span className="text nav-text">Share Assignment</span>
+                    <span className="text nav-text">practice Question</span>
                   </Link>
                 </li>
           
                 </ul>
             )}
-            <li className="nav-link">
+            {/* <li className="nav-link">
               <Link to="#" onClick={toggleDropdown3}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
@@ -520,7 +555,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
             {isOpen3 && (
             <ul>
                 <li className="nav-link">
-                  <Link to="/practiceQuestion">
+                  <Link to="/Add-category">
                   <BookOpen className="icons mr-4"/> 
                     <span className="text nav-text">Add Category</span>
                   </Link>
@@ -535,13 +570,8 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                 
               </ul>
 
-            )}
-            <li className="nav-link">
-              <Link to="#">
-                <i className="bx bx-wallet-alt icons mr-4"></i>
-                <span className="text nav-text">Reports</span>
-              </Link>
-            </li>
+            )} */}
+          
           </ul>
         </div>
 

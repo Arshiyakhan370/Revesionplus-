@@ -1,61 +1,71 @@
 import React, { Fragment, useState } from 'react';
 import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions, CardContent, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
-import SweetAlert, { boardOptions, subjectOptions, teacherOptions } from './SweetAlert';
+
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
 
-const TeacherMap = ({ isSidebarClosed,selectedBoard,selectedSubject }) => {
+
+const Subject = () => {
  
  
   const [teacherData, setTeacherData] = useState([
    
-    { id: 2, name: 'xyz', board: '', subject: '' },
-    { id: 3, name: 'xyz', board: '', subject: '' },
-    { id: 3, name: 'xyz', board: '', subject: '' },
-      { id: 4, name:"Mr. Shankar Jha", board: '', subject: '' },
-      { id: 5, name:"Mr. S. Singh", board: '', subject: '' },
-      { id: 6, name:"Mr Rahul Khewadia", board: '', subject: '' },
-      { id: 7, name:"Mr Sanjay Singh", board: '', subject: '' },
-      { id: 8, name:"xyz", board: '', subject: '' },
-      { id: 9, name:"xyz", board: '', subject: '' },
-      { id: 10, name:"xyz", board: '', subject: '' },
-      { id: 11, name:"Mr. Harish Singh", board: '', subject: '' },
-      { id: 12, name:"Mr Azam Khan", board: '', subject: '' },
-      { id: 13, name:"Mr. Jay Prakash", board: '', subject: '' },
-      { id: 14, name:"Mr Shahbaz Shirazi", board: '', subject: '' },
-      { id: 15, name:"Mr. Quyamuddin", board: '', subject: '' },
-      { id:16 , name:"Anjali Rathi", board: '', subject: '' },
-      { id: 17, name:"Uggarsain Bhardwaj", board: '', subject: '' },
-      { id:18, name:"xyz", board: '', subject: '' },
-      { id:19, name:"Sarita Mittal", board: '', subject: '' },
-      { id: 20, name:"Moin Ahmed", board: '', subject: '' },
-      { id: 21, name:"Priyanka", board: '', subject: '' },
-      { id: 22, name:"Mrs. Sandhya Singh", board: '', subject: '' },
-      { id:23 , name:"Mr. Hari Shankar Kumar", board: '', subject: '' },
-      { id:24 , name:"Musabani", board: '', subject: '' },
-      { id:25 , name:"Mohd Sagheer Ahmad", board: '', subject: '' },
-      { id: 26, name:"xyz", board: '', subject: '' },
-      { id:27 , name:"Dr Palash Chakraborty", board: '', subject: '' },
-      { id:28 , name:"Saksham Kaushik", board: '', subject: '' },
-      { id: 29, name:"Shiv Batra", board: '', subject: '' },
-       { id: 30, name:"Shiv Batra-Student", board: '', subject: '' },
-      { id:31 , name:"Jasleen Singh Gill", board: '', subject: '' },
-      { id: 32, name:"Muhammad Akram", board: '', subject: '' },
-      { id:33 , name:"Sarfraz Javed", board: '', subject: '' },
-      { id:34 , name:"Manoj Kumar", board: '', subject: '' },
-      { id:35, name:"Pankaj Kumar sharma", board: '', subject: '' },
-      { id: 36, name:"Shahid Javed", board: '', subject: '' },
-      { id: 37, name:"Test Teacher", board: '', subject: '' },
-      { id: 39, name:"Swati Dudhani", board: '', subject: '' },
-      { id: 38, name:"Andeep Kaur", board: '', subject: '' },
-      { id:40 , name:"INDRANI SINHA", board: '', subject: '' },
-      { id: 41, name:"  MINAKSHI GROVER", board: '', subject: '' },
-      { id: 42, name:"ZIA RAZAQUI", board: '', subject: '' },
-      { id: 43, name:"NAINA VAISH", board: '', subject: '' },
+    { id: 2, board: 'IB DP', subject: 'Maths AI' },
+    { id: 3, board: 'IB MYP', subject: 'Economic' },
+    { id: 3, board: '', subject: '' },
+      { id: 4, board: '', subject: '' },
+      { id: 5,board: '', subject: '' },
+      { id: 6, board: '', subject: '' },
+      { id: 7, board: '', subject: '' },
+      { id: 8,board: '', subject: '' },
+      { id: 9,board: '', subject: '' },
+      { id: 10,board: '', subject: '' },
+      { id: 11, board: '', subject: '' },
+      { id: 12, board: '', subject: '' },
+      { id: 13, board: '', subject: '' },
+      { id: 14, board: '', subject: '' },
+      { id: 15, board: '', subject: '' },
+      { id:16 , board: '', subject: '' },
+      { id: 17, board: '', subject: '' },
+      { id:18,board: '', subject: '' },
+      { id:19,  board: '', subject: '' },
+      { id: 20, board: '', subject: '' },
+      { id: 21, board: '', subject: '' },
+      { id: 22,board: '', subject: '' },
+      { id:23 , board: '', subject: '' },
+      { id:24 , board: '', subject: '' },
+      { id:25 , board: '', subject: '' },
+      { id: 26,board: '', subject: '' },
+      { id:27 , board: '', subject: '' },
+      { id:28 , board: '', subject: '' },
+      { id: 29, board: '', subject: '' },
+       { id: 30, board: '', subject: '' },
+      { id:31 , board: '', subject: '' },
+      { id: 32, board: '', subject: '' },
+      { id:33 , board: '', subject: '' },
+      { id:34 , board: '', subject: '' },
+      { id:35,  board: '', subject: '' },
+      { id: 36,  board: '', subject: '' },
+      { id: 37 ,board: '', subject: '' },
+      { id: 39, board: '', subject: '' },
+      { id: 38, board: '', subject: '' },
+      { id:40 ,  board: '', subject: '' },
+      { id: 41,  board: '', subject: '' },
+      { id: 42,  board: '', subject: '' },
+      { id: 43,  board: '', subject: '' },
   ])
+
+  const  boardOptions=[
+    { value: 'IB DP', label: 'IB DP' },
+    { value: 'IB MYP', label: 'IB MYP' },
+]
+const subjectOptions=[
+    { value: 'Maths AI', label: 'Maths AI' },
+    { value: 'Economics', label: 'Economics' },
+]
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -78,13 +88,14 @@ const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
     setOpenDeleteDialog(false);
   };
 
+  const handleDeleteClick = () => {
+     setTeacherData((prevData) => prevData.filter((teacher) => teacher.id !== deleteTeacherId));
+    setOpenDeleteDialog(false);
+    setDeleteSuccessDialogOpen(true);
+  };
+ 
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
-  };
-  const handleDeleteClick = () => {
-    setDeleteSuccessDialogOpen(true);
-    setTeacherData((prevData) => prevData.filter((teacher) => teacher.id !== deleteTeacherId));
-    setOpenDeleteDialog(false);
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -99,40 +110,21 @@ const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
     setSelectedTeacher(null);
   };
 const handleClose=()=>{
-
+    setSelectedTeacher(null);
 }
 const handleAddMapping = (newMapping) => {
   setTeacherData((prevData) => [...prevData, newMapping]);
 };
-const sidebarWidth = isSidebarClosed ? '60px' : '280px';
-    const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
-    
-    const styles = {
-      width: mainComponentWidth,
-      marginLeft: isSidebarClosed ? '75px' : (isSmallScreen ? '0' : '280px'),
-      transition: 'width 0.3s, margin-left 0.3s',
-    };
+
   return (
     <Fragment>
-    <Container maxWidth="xxl" style={styles}>
-    <Card sx={{marginTop:'15px',background:'#f0f0f0'}}>
-    <CardContent>
-          <div className="row2">
-            <div className="col-md-12 col-12">
-           
-              <SweetAlert onAddMapping={handleAddMapping} />
-              
-            </div>
-
-            <div className="col-12">
-             
+    <Container maxWidth="xxl" sx={{marginTop:'15px',background:'#f0f0f0'}}>
+   
                 <TableContainer>
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell>Teacher Name</TableCell>
-                        {window.innerWidth > 1024 && (
-                        <TableCell>Board Name</TableCell>)}
+                        <TableCell>Board Name</TableCell>
                         {window.innerWidth > 1024 && (
                         <TableCell>Subject Name</TableCell>)}
                         <TableCell>Action</TableCell>
@@ -141,9 +133,7 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
                     <TableBody>
                       {teacherData.slice(startIndex, endIndex).map((teacher, index) => (
                         <TableRow key={teacher.id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
-                          <TableCell>{teacher.name} </TableCell>
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.board} </TableCell>)}
+                           <TableCell>{teacher.board}</TableCell>
                           {window.innerWidth > 1024 && (
                           <TableCell>{teacher.subject} </TableCell>)}
                           <TableCell>
@@ -197,16 +187,9 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
                 <Pagination count={Math.ceil(teacherData.length / teachersPerPage)} page={page} onChange={handleChangePage} />
 
                 </Stack>
-              
-            </div>
-            </div>
-           </CardContent>
-            </Card>
-        
-      
-      </Container>
-      <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
-        <DialogTitle  className='text-red-500'>Delete Teacher</DialogTitle>
+                  </Container>
+                  <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
+        <DialogTitle className='text-red-500'>Delete Teacher</DialogTitle>
         <DialogContent>
           <p>Are you sure you want to delete this teacher?</p>
         </DialogContent>
@@ -220,7 +203,6 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
         </DialogActions>
       </Dialog>
 
-     
       <Dialog open={deleteSuccessDialogOpen} onClose={handleDeleteSuccessDialogClose}>
         <DialogTitle className='text-green-500'>Delete Successful</DialogTitle>
         <DialogContent>
@@ -232,7 +214,6 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
           </Button>
         </DialogActions>
       </Dialog>
-
       <Modal open={!!selectedTeacher} onClose={handleClose}>
       <Box
         sx={{
@@ -251,25 +232,7 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
           Edit Teacher
         </Typography>
         <Grid container spacing={2} mt={2}>
-         <Grid item xs={12} sm={4}>
-          <FormControl fullWidth>
-            <InputLabel id="teacher-label">Select Teacher</InputLabel>
-            <Select
-              labelId="teacher-label"
-              id="teacher-select"
-             value={selectedTeacher?.name || ''}
-          onChange={(e) => setSelectedTeacher((prev) => ({ ...prev, name: e.target.value }))}
-              sx={{ height: '35px', marginTop: '8px' }}
-            >
-              {teacherOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={4}>
+       <Grid item xs={12} sm={4}>
           <FormControl fullWidth>
             <InputLabel id="board-label">Select Board</InputLabel>
             <Select
@@ -307,11 +270,23 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
         </Grid>
         </Grid>
        
-        <Box mt={2}>
-          <Button variant="contained" onClick={handleSaveEdit}>
-            Save
-          </Button>
-        </Box>
+        <Box mt={2} className='flex flex-row justify-between'>
+        <Button variant="outlined" onClick={handleClose}   sx={{
+                  color: "white",
+                  background:
+                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
+                }}>
+        Close
+      </Button>
+      <Button variant="contained" onClick={handleSaveEdit}   sx={{
+                  color: "white", marginLeft: 2,
+                  background:
+                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
+                }}>
+        Save
+      </Button>
+     
+    </Box>
       </Box>
     </Modal>
    
@@ -319,4 +294,8 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
   );
 };
 
-export default TeacherMap;
+
+
+
+
+export default Subject

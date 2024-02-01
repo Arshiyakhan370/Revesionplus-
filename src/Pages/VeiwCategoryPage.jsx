@@ -1,10 +1,9 @@
 import React, { Fragment, useState } from 'react'
+import VeiwCategory from '../component/CategoryMaster/VeiwCategory';
 import Header from '../component/AdminDashboard/Header';
 import Navbar1 from '../component/Dashboard Components/Buttons1';
-import AddCategory from '../component/CategoryMaster/AddCategory';
 
-
-const AddCategoryPage = () => {
+const VeiwCategoryPage = () => {
     const [isSidebarClosed, setSidebarClosed] = useState(false);
 
     const toggleSidebar = () => {
@@ -14,8 +13,9 @@ const AddCategoryPage = () => {
           <Fragment>
         <Header toggleSidebar={toggleSidebar}/>
      <Navbar1/>
-     <AddCategory isSidebarClosed={isSidebarClosed}/>
+     <VeiwCategory isSidebarClosed={isSidebarClosed}/>
      </Fragment>
-      )
+  )
 }
-export default AddCategoryPage
+
+export default VeiwCategoryPage

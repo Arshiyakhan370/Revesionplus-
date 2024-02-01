@@ -80,15 +80,15 @@ const StudentAdd = ({isSidebarClosed }) => {
   const goBack = () => {
     window.history.back();
   };
-  const sidebarWidth = isSidebarClosed ? '40px' : '262px';
+  const sidebarWidth = isSidebarClosed ? '50px' : '270px';
   const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
   
   const styles = {
     width: mainComponentWidth,
-    marginLeft: isSidebarClosed ? '65px' : (isSmallScreen ? '0' : '262px'),
+    marginLeft: isSidebarClosed ? '75px' : (isSmallScreen ? '0' : '270px'),
     transition: 'width 0.3s, margin-left 0.3s',
   };
-  const inputStyle = { height: '40px' };
+  const inputStyle = { height: '35px' };
   const isStrongPassword = (password) => {
        const minLength = 8;
     const hasUpperCase = /[A-Z]/.test(password);
@@ -105,10 +105,10 @@ const StudentAdd = ({isSidebarClosed }) => {
   };
 
   return (
-   <Container maxWidth='xxl'>
+   <Container maxWidth='xxl' style={styles}  >
       <div className="content-header row1"></div>
       <div className="content-body">
-        <Card style={styles}>
+        <Card  sx={{marginTop:'25px',background:'#f0f0f0'}}>
           <CardContent>
             <h4 className="card-title mt-4 mb-4">Add User</h4>
            
@@ -122,7 +122,7 @@ const StudentAdd = ({isSidebarClosed }) => {
                       id="select-country1"
                       name="usertype"
                       value={usertype}
-                     sx={{height:'40px'}}
+                     sx={{height:'35px'}}
                       onChange={(e) => setUsertype(e.target.value)}
                       required
                     >
