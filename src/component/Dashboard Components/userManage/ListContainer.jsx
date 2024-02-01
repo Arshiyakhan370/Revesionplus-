@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import LockIcon from '@mui/icons-material/Lock';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
+import { Box } from '@mui/system';
 
 
 const ListContainer = ({ isSidebarClosed }) => {
@@ -564,7 +565,18 @@ Add User
           ))}
         </Form.Select>
       </Form.Group>
-
+<Box className="flex flex-row justify-between">
+      <Button
+        variant="outline"
+        sx={{
+          background:
+            'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+          color: 'white',
+        }}
+        onClick={handleCloseEditModal}
+      >
+       Close
+      </Button>
       <Button
         variant="outline"
         sx={{
@@ -574,8 +586,9 @@ Add User
         }}
         onClick={handleSaveEdit}
       >
-        Save Changes
+        Save
       </Button>
+      </Box>
     </Form>
   </Modal.Body>
 </Modal>;

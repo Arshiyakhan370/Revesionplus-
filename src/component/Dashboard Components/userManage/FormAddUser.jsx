@@ -14,6 +14,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {  Form,Modal} from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import './ListContainer.css';
+import { Box } from '@mui/system';
 
 const FormAddUser = ({ isSidebarClosed }) => {
   const [selectedValue, setSelectedValue] = useState(10);
@@ -533,6 +534,18 @@ const FormAddUser = ({ isSidebarClosed }) => {
         </Form.Select>
       </Form.Group>
 
+      <Box className="flex flex-row justify-between">
+      <Button
+        variant="outline"
+        sx={{
+          background:
+            'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+          color: 'white',
+        }}
+        onClick={handleCloseEditModal}
+      >
+       Close
+      </Button>
       <Button
         variant="outline"
         sx={{
@@ -542,8 +555,9 @@ const FormAddUser = ({ isSidebarClosed }) => {
         }}
         onClick={handleSaveEdit}
       >
-        Save Changes
+        Save
       </Button>
+      </Box>
     </Form>
   </Modal.Body>
 </Modal>;

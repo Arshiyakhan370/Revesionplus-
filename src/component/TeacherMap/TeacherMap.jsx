@@ -99,7 +99,7 @@ const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
     setSelectedTeacher(null);
   };
 const handleClose=()=>{
-
+  setSelectedTeacher(null);
 }
 const handleAddMapping = (newMapping) => {
   setTeacherData((prevData) => [...prevData, newMapping]);
@@ -307,8 +307,19 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
         </Grid>
         </Grid>
        
-        <Box mt={2}>
-          <Button variant="contained" onClick={handleSaveEdit}>
+        <Box mt={2} className="flex flex-row justify-between">
+          <Button variant="contained" onClick={handleClose}  sx={{
+                  color: "white",
+                  background:
+                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
+                }}>
+           Back
+          </Button>
+          <Button variant="contained" onClick={handleSaveEdit}  sx={{
+                  color: "white",
+                  background:
+                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
+                }}>
             Save
           </Button>
         </Box>
