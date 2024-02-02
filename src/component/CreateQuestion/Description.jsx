@@ -72,7 +72,7 @@ const Description = () => {
     setOpenModal7(false);
   }
   return (
-    <Container maxWidth='xxl'>
+    <Container maxWidth='xxl' className='mt-4'>
            <Card>
           <CardContent className='text-center'>
           {/* <Link to="/text" style={{ textDecoration: 'none', margin:'10px' }}> */}
@@ -103,12 +103,16 @@ const Description = () => {
               >
                 Text
               </Button>
+              {openModal && (
+                <Text/>
+              )}
+             
             {/* </Link> */}
-            <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md">
+            {/* <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md">
             <DialogContent>
             <Text handleCloseModal={handleCloseModal} />
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
           {/* <Link to='/according' style={{ textDecoration: 'none', margin:'10px' }}> */}
               <Button
                 type="button"

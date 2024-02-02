@@ -68,7 +68,7 @@ import SimulationComponent from './QuestionDescriptionSection/Simulation';
     window.history.back();
   };
   return (
-    <Container maxWidth='xxl' >
+    <Container maxWidth='xxl' className='mt-4' >
    
      <Card>
           <CardContent className='text-center'>

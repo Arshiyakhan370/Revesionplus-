@@ -129,7 +129,7 @@ const FormStudent = ({isSidebarClosed}) => {
             <form className="needs-validation" noValidate onSubmit={handleSubmit}>
               <Grid container spacing={2}>
              <Grid item xs={12} md={4}>
-      <FormControl fullWidth>
+   <FormControl fullWidth size="small" className="mt-3">
         <InputLabel id="select-teacher-label mt-2" sx={{ fontSize: 12 }}>
           Teacher
         </InputLabel>
@@ -157,10 +157,15 @@ const FormStudent = ({isSidebarClosed}) => {
                     placeholder="Name"
                     name="name"
                     value={name}
-                    InputProps={{
-          style: inputStyle}}
+                  required
+                variant="outlined"
+                    margin="normal"
+                  InputLabelProps={{
+                    shrink: true, 
+                    }}
+                     size="small" 
                     onChange={(e) => setName(e.target.value)}
-                    required
+                  
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
@@ -171,10 +176,15 @@ const FormStudent = ({isSidebarClosed}) => {
                     placeholder="john.doe@email.com"
                     name="email"
                     value={email}
-                    InputProps={{
-          style: inputStyle}}
+                  required
+                variant="outlined"
+                    margin="normal"
+                  InputLabelProps={{
+                    shrink: true, 
+                    }}
+                     size="small" 
                     onChange={(e) => setEmail(e.target.value)}
-                    required
+                   
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
@@ -184,10 +194,15 @@ const FormStudent = ({isSidebarClosed}) => {
                     placeholder="Name"
                     name="parentName"
                     value={parentName}
-                    InputProps={{
-          style: inputStyle}}
+                  required
+                variant="outlined"
+                    margin="normal"
+                  InputLabelProps={{
+                    shrink: true, 
+                    }}
+                     size="small" 
                     onChange={(e) => setParentName(e.target.value)}
-                    required
+                    
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
@@ -198,15 +213,20 @@ const FormStudent = ({isSidebarClosed}) => {
                     placeholder="john.doe@email.com"
                     name="parentEmail"
                     value={parentEmail}
-                    InputProps={{
-          style: inputStyle}}
+                  required
+                variant="outlined"
+                    margin="normal"
+                  InputLabelProps={{
+                    shrink: true, 
+                    }}
+                     size="small" 
                     onChange={(e) => setParentEmail(e.target.value)}
-                    required
+                    
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Flatpickr
-                    className="form-control flatpickr-basic flatpickr-input h-10 "
+                    className="form-control flatpickr-basic flatpickr-input h-11 mt-3"
                     placeholder="Set Inactivation Date"
                     options={{ dateFormat: 'Y-m-d' }}
                     value={inactiveDate}
@@ -236,7 +256,7 @@ const FormStudent = ({isSidebarClosed}) => {
       />
     </Grid>
                 <Grid item xs={12} md={4}>
-                  <FormControl fullWidth>
+               <FormControl fullWidth size="small" className="mt-3">
                     <InputLabel id="profile-pic-label"></InputLabel>
                     <input
                       type="file"
@@ -244,10 +264,15 @@ const FormStudent = ({isSidebarClosed}) => {
                       className="form-control2  h-16"
                       name="Profile Picture"
                       accept="image/*"
-                      InputProps={{
-          style: inputStyle}}
+                    required
+                variant="outlined"
+                    margin="normal"
+                  InputLabelProps={{
+                    shrink: true, 
+                    }}
+                     size="small" 
                       onChange={(e) => handleProfilePicChange(e)}
-                      required
+                    
                     />
                   
                   {profilePic && (

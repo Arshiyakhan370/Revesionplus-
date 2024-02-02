@@ -100,9 +100,9 @@ const AuthenticationImage = () => {
           )}
        
           <form>
-          <div className="mb-10 mt-10 bg-white rounded-sm">
+          <div className="mb-10 mt-10">
           <FormControl fullWidth>
-  <InputLabel htmlFor="floating_outlined">Email</InputLabel>
+  <InputLabel htmlFor="floating_outlined" className=' text-white'>Email</InputLabel>
   <OutlinedInput
     type="email"
     id="floating_outlined"
@@ -110,21 +110,20 @@ const AuthenticationImage = () => {
     onChange={(e) => setEmail(e.target.value)}
     fullWidth
     sx={{
-      height: '50px',
+      height: '50px',borderRadius:'7px' ,background:'white'
     }}
     label="email"
   />
   </FormControl>
 </div>
 
-
-        <div className="mb-10 bg-white rounded-sm">
-        <FormControl fullWidth>
-  <InputLabel htmlFor="floating_outlined">Password</InputLabel>
+<FormControl fullWidth>
+  <InputLabel htmlFor="floating_outlined" className='text-white'>Password</InputLabel>
   <OutlinedInput
     id="floating_outlined"
     type={showPassword ? 'text' : 'password'}
     value={password}
+   sx={{  background: 'white',borderRadius:'7px' ,color:'black' ,  height: '50px',}}
     onChange={(e) => setPassword(e.target.value)}
     endAdornment={
       <InputAdornment position="end">
@@ -139,7 +138,7 @@ const AuthenticationImage = () => {
 </FormControl>
 
 
-        </div>
+        
         <div className="touch-form2 text-white flex flex-row justify-between">
           <FormControlLabel
             control={

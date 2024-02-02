@@ -35,7 +35,7 @@ const ScheduleOnlineClass = () => {
       <Paper elevation={3} sx={{ p: 3, mt: 5 }}>
         <Grid container spacing={3}>
           <Grid item xs={6}>
-            <FormControl required fullWidth >
+          <FormControl fullWidth size="small" className="mt-3">
               <InputLabel htmlFor="studentid">Select Student</InputLabel>
               <Select
                 name="studentid"
@@ -43,7 +43,7 @@ const ScheduleOnlineClass = () => {
                 label="studentid"
                 className="input-md textinput textInput form-control"
                 value="263"
-                sx={{height:'40px'}}
+               
               >
                 <MenuItem value="263" id="student_263">
                   Gaurav
@@ -65,7 +65,7 @@ const ScheduleOnlineClass = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <FormControl fullWidth >
+          <FormControl fullWidth size="small" className="mt-3">
               <InputLabel htmlFor="subjectid">Select Subject</InputLabel>
               <Select
                 name="subjectid"
@@ -73,7 +73,7 @@ const ScheduleOnlineClass = () => {
                 label="subjectid"
                 className="input-md textinput textInput form-control"
                 value="65" 
-                sx={{height:'40px'}}
+               
               >
                 <MenuItem value="65" id="subject_65">
                   Biology
@@ -96,9 +96,7 @@ const ScheduleOnlineClass = () => {
               margin="normal"
               placeholder="Class Details (Ex:-Math Class)"
               required
-              InputProps={{
-              style: { height: '40px' },
-            }}
+              
             />
           </Grid>
 
@@ -112,9 +110,7 @@ const ScheduleOnlineClass = () => {
               fullWidth
               margin="normal"
               placeholder="Meeting Name"
-              InputProps={{
-              style: { height: '40px' },
-            }}
+              
             />
           </Grid>
 
@@ -126,9 +122,7 @@ const ScheduleOnlineClass = () => {
               fullWidth
               margin="normal"
               placeholder="Meeting ID"
-              InputProps={{
-              style: { height: '40px' },
-            }}
+              
             />
           </Grid>
 
@@ -140,9 +134,7 @@ const ScheduleOnlineClass = () => {
               fullWidth
               margin="normal"
               placeholder="Host ID"
-              InputProps={{
-              style: { height: '40px' },
-            }}
+              
             />
           </Grid>
 
@@ -165,9 +157,7 @@ const ScheduleOnlineClass = () => {
                     margin="normal"
                     required
                     inputRef={ref}
-                    InputProps={{
-              style: { height: '40px' },
-            }}
+                    
                   />
                 )}
               />
@@ -194,9 +184,7 @@ const ScheduleOnlineClass = () => {
                     margin="normal"
                     required
                     inputRef={ref}
-                    InputProps={{
-              style: { height: '40px' },
-            }}
+                    
                   />
                 )}
               />

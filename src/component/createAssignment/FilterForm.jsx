@@ -96,14 +96,14 @@ const FilterForm = () => {
                  
                     <Grid container spacing={2} style={{ padding: '20px' }}>
             <Grid item xs={6} md={4}>
-  <FormControl fullWidth>
+ <FormControl fullWidth size="small" className="mt-3">
     <InputLabel htmlFor="boardID">Boards</InputLabel>
     <Select
       id="boardID"
       value={boardID}
       label="Boards"
       onChange={handleBoardChange}
-      sx={{height:'40px'}}
+     
     >
       <MenuItem value="">Select board</MenuItem>
       <MenuItem value="1">IB</MenuItem>
@@ -114,7 +114,7 @@ const FilterForm = () => {
 </Grid>
 
 <Grid item xs={6} md={4}>
-  <FormControl fullWidth>
+ <FormControl fullWidth size="small" className="mt-3">
     <InputLabel htmlFor="sourceID">Source</InputLabel>
     <Select
       id="sourceID"
@@ -122,7 +122,7 @@ const FilterForm = () => {
       label="Source"
       value={sourceID}
       onChange={handleSourceChange}
-      sx={{height:'40px'}}
+     
     >
       <MenuItem value="">Select Source</MenuItem>
     
@@ -131,7 +131,7 @@ const FilterForm = () => {
 </Grid>
 
 <Grid item xs={6} md={4}>
-  <FormControl fullWidth>
+ <FormControl fullWidth size="small" className="mt-3">
     <InputLabel htmlFor="subjectIDs">Subject</InputLabel>
     <Select
       id="subjectIDs"
@@ -139,7 +139,7 @@ const FilterForm = () => {
       label="Subject"
       value={subjectIDs}
       onChange={handleSubjectChange}
-      sx={{height:'40px'}}
+     
     >
       <MenuItem value="">Select subject</MenuItem>
      
@@ -147,7 +147,7 @@ const FilterForm = () => {
   </FormControl>
 </Grid>
 <Grid item xs={6} md={4}>
-  <FormControl fullWidth>
+ <FormControl fullWidth size="small" className="mt-3">
     <InputLabel htmlFor="subjectlevelID">Subject Level</InputLabel>
     <Select
       id="subjectlevelID"
@@ -155,7 +155,7 @@ const FilterForm = () => {
       label="Subject Level"
       value={subjectlevelID}
       onChange={handleSubjectLevelChange}
-      sx={{height:'40px'}}
+     
     >
       <MenuItem value="">Select Level</MenuItem>
      
@@ -164,7 +164,7 @@ const FilterForm = () => {
 </Grid>
 
 <Grid item xs={6} md={4}>
-  <FormControl fullWidth>
+ <FormControl fullWidth size="small" className="mt-3">
     <InputLabel htmlFor="paperID">paper</InputLabel>
     <Select
       id="paperID"
@@ -172,7 +172,7 @@ const FilterForm = () => {
       label="paperID"
       value={paperID}
       onChange={handlePaperChange}
-      sx={{height:'40px'}}
+     
     >
       <MenuItem value="">Select Paper</MenuItem>
     
@@ -181,7 +181,7 @@ const FilterForm = () => {
 </Grid>
 
 <Grid item xs={6} md={4}>
-  <FormControl fullWidth>
+ <FormControl fullWidth size="small" className="mt-3">
     <InputLabel htmlFor="topicID">Topic</InputLabel>
     <Select
       id="topicID"
@@ -189,7 +189,7 @@ const FilterForm = () => {
       label="topic"
       value={topicID}
       onChange={handleTopicChange}
-      sx={{height:'40px'}}
+     
     >
       <MenuItem value="">Select Topic</MenuItem>
      
@@ -197,14 +197,14 @@ const FilterForm = () => {
   </FormControl>
 </Grid>
 <Grid item xs={6} md={4}>
-  <FormControl fullWidth>
+ <FormControl fullWidth size="small" className="mt-3">
     <InputLabel htmlFor="subtopicID">Subtopic</InputLabel>
     <Select
       id="subtopicID"
       name="subtopicID"
       label="Subtopic"
       value={subtopicID}
-      sx={{height:'40px'}}
+     
       onChange={handlePaperChange}
     >
       <MenuItem value="">Select Subtopic</MenuItem>

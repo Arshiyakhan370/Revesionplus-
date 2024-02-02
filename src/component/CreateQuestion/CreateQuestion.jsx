@@ -414,15 +414,15 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                 margin: "16px 0",
               }}
             >
-            <Button onClick={handleAddItem} sx={{width:'100px', height:'20px'}}>
-        <Add /> Add Item
+            <Button onClick={handleAddItem} variant="outlined" sx={{width:'13em', height:'3em',background:"linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important", color:'white'}}>
+         Add Question
       </Button>
       <ul>
         {items.map((item, index) => (
           <li key={index} className="ant-list-item" style={{ width: '100%', display: 'block', textAlign: 'center' }}>
             <Button
               type="button"
-              className="ant-btn css-bua3hd ant-btn-circle ant-btn-default ant-btn-lg ant-btn-icon-only ant-btn-background-ghost ant-btn-dangerous ant-btn-icon-m-t-4"
+              className="ant-btn css-bua3hd ant-btn-circle bg-white ant-btn-default ant-btn-lg ant-btn-icon-only ant-btn-background-ghost ant-btn-primary ant-btn-icon-m-t-4"
               onClick={() => handleToggleItem(index)}
             >
               <span className="ant-btn-icon">
@@ -435,16 +435,20 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                   <Grid item>
                     <Button type="button"
                      onClick={handleToggleAdditionalButtons}
-                     className="ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
+                     sx={{ background:
+                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important", color:'white'}}
+                      className=" text-white ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
                       <Apps />
-                      <span> Question Description</span>
+                      <span> Question/ Question Description</span>
                     </Button>
                   </Grid>
                   <Grid item>
                     <Button type="button"
-                    onClick={handleQuestion} className="ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
+                     sx={{ background:
+                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important", color:'white'}}
+                    onClick={handleQuestion} className="text-white ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
                       <QuestionAnswer />
-                      <span> Questions</span>
+                      <span>Sub Questions</span>
                     </Button>
                   </Grid>
                    </Grid>

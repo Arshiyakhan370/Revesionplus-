@@ -57,8 +57,9 @@ const Library = ({isSidebarClosed}) => {
             variant="outlined"
             placeholder="Search"
             fullWidth
+            size='small'
             InputProps={{
-              style: { height: '40px' },
+              
             }}
           />
           <IconButton
@@ -80,14 +81,14 @@ const Library = ({isSidebarClosed}) => {
           <CardContent>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={4}>
-                <FormControl fullWidth>
+              <FormControl fullWidth size="small" className="mt-3">
                   <InputLabel htmlFor="criteriaSelect">Criteria</InputLabel>
                   <Select
                     id="criteriaSelect"
                     value={selectedCriteria}
                     onChange={handleCriteriaChange}
                     label="Criteria"
-                    sx={{height:'40px'}}
+                    
                   >
                     <MenuItem value="criteriaOption1">Criteria Option 1</MenuItem>
                     <MenuItem value="criteriaOption2">Criteria Option 2</MenuItem>
@@ -96,7 +97,7 @@ const Library = ({isSidebarClosed}) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={4}>
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small" className="mt-3">
                   <InputLabel htmlFor="itemSelect">Item</InputLabel>
                   <Select
                     id="itemSelect"
@@ -112,7 +113,7 @@ const Library = ({isSidebarClosed}) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={4}>
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small" className="mt-3">
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -121,7 +122,7 @@ const Library = ({isSidebarClosed}) => {
                       />
                     }
                     label="me"
-                    sx={{height:'40px'}}
+                   
                   />
                   <Select
                     id="authorSelect"
@@ -129,7 +130,7 @@ const Library = ({isSidebarClosed}) => {
                     onChange={handleItemChange}
                     label="Authors"
                     className='mt-4'
-                    sx={{height:'40px'}}
+                    
                   >
                     <MenuItem value="authorOption1">Authors</MenuItem>
                     <MenuItem value="authorOption2">Author Option 2</MenuItem>

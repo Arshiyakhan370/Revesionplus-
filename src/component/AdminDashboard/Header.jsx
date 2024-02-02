@@ -408,7 +408,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
                 </li>
              
                 <li className="nav-link">
-                  <Link to="">
+                  <Link to="/create-filter">
                   <MessageCircle className="icons mr-4"/> 
                     <span className="text nav-text">View Question</span>
                   </Link>
