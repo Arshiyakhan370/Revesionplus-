@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, Row, Modal } from 'react-bootstrap';
+import { Form,  Col, Row, Modal } from 'react-bootstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDropzone } from 'react-dropzone';
-import { Card, Container } from '@mui/material';
+import { Button, Card, Container } from '@mui/material';
 import { useMediaQuery } from 'react-responsive';
 
 
@@ -21,7 +21,7 @@ const PdfComponent = ({ pdfFile }) => {
   );
 };
 
-const Pdf = ({isSidebarClosed}) => {
+const Pdf = ({handleCloseModal}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [pdfFile, setPdfFile] = useState(null);
@@ -42,13 +42,13 @@ const Pdf = ({isSidebarClosed}) => {
     setShowModal(true);
   };
 
-  const handleModalClose = () => {
+  const handleModalClose1 = () => {
     setShowModal(false);
   };
 
   const handlePdfSubmit = () => {
    
-    handleModalClose();
+    handleModalClose1();
   };
 
   const handleSubmit = (e) => {
@@ -61,13 +61,9 @@ const Pdf = ({isSidebarClosed}) => {
    
     window.history.back();
   };
-  const styles = {
-    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
-    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
-    transition: 'width 0.3s, margin-left 0.3s',
-  };
+
   return (
-    <Container maxWidth="xl" mt={16} style={styles}>
+    <Container maxWidth="xxl" mt={16} >
     <Card  mt={16}>
      
       
@@ -168,7 +164,7 @@ const Pdf = ({isSidebarClosed}) => {
           </Col>
 
         
-          <Col
+          {/* <Col
             xs={24}
             className="css-14mf4t4"
             style={{ paddingLeft: '12px', paddingRight: '12px' }}
@@ -179,39 +175,28 @@ const Pdf = ({isSidebarClosed}) => {
             >
               Add PDF
             </Button>
-          </Col>
+          </Col> */}
 
           
-          <Modal show={showModal} onHide={handleModalClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Add PDF</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+         <Button>
               <div {...getRootProps({ className: 'dropzone' })}>
                 <input {...getInputProps()} />
                 <p>Drag 'n' drop a PDF file here, or click to select a PDF file</p>
               </div>
               {pdfFile && <PdfComponent pdfFile={pdfFile} />}
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleModalClose}>
-                Cancel
               </Button>
-              <Button variant="primary" onClick={handlePdfSubmit}>
-                OK
-              </Button>
-            </Modal.Footer>
-          </Modal>
 
          
           <div className="ant-form-item css-14mf4t4">
             <Row className="ant-form-item-row css-14mf4t4">
-              <Col xs={12} className="mt-3">
+              <Col xs={12} className="mt-3 ml-2 mr-2">
                 <div className="d-flex justify-content-between">
-                <Button type="button" variant="primary" onClick={handleCancel}>
-                    Back
+                <Button type="button" onClick={ handleCloseModal } variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+           
+                   Close
                   </Button>
-                  <Button type="submit" variant="primary">
+                  <Button type="submit" variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+          
                     Save
                   </Button>
                 

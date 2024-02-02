@@ -11,9 +11,9 @@ const TextPage = () => {
       };
         return (
             <Fragment>
-          <Header toggleSidebar={toggleSidebar}/>
-       <Navbar1/>
-       <Text isSidebarClosed={isSidebarClosed}/>
+          {/* <Header toggleSidebar={toggleSidebar}/> */}
+       {/* <Navbar1/> */}
+       <Text/>
        
         </Fragment>
       )

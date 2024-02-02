@@ -13,7 +13,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMediaQuery } from 'react-responsive';
 
-const According = ({isSidebarClosed}) => {
+const According = ({ handleCloseModal }) => {
   const [tabs, setTabs] = useState([
     { key: 'panel1', title: 'Panel 1' },
   ]);
@@ -29,22 +29,13 @@ const According = ({isSidebarClosed}) => {
     setTabs(updatedTabs);
   };
 
-  const handleCancel = () => {
-    console.log('Cancel button clicked');
-    window.history.back();
-  };
-  const styles = {
-    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
-    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
-    transition: 'width 0.3s, margin-left 0.3s',
-  };
+ 
   return (
-    <Container maxWidth="xl" mt={16}>
+    <Container maxWidth="xxl" mt={16}>
       
-      <Grid container justifyContent="center" spacing={3} style={styles}>
+      <Grid container justifyContent="center" spacing={3}>
         <Grid item xs={12}>
-          <Card >
-            <CardContent>
+          
               <Typography variant="h5" align="center" mb={4}>
                 Accordion
               </Typography>
@@ -57,31 +48,30 @@ const According = ({isSidebarClosed}) => {
                         <CloseIcon />
                       </IconButton>
                     </Grid>
-                    <div style={{ marginBottom: '20px' }}>
-                      <Typography variant="subtitle1">Title</Typography>
-                      <Editor placeholder="Write here" 
+                    <Typography variant="subtitle1">Title</Typography>
+                    <div className='border border-gray-500' style={{ marginBottom: '20px' }}>
+                <Editor placeholder="Write here" 
                      
                       />
                     </div>
-                    <div>
-                      <Typography variant="subtitle1">Content</Typography>
-                      <Editor placeholder="Write here" />
+                    <Typography variant="subtitle1">Content</Typography>
+                    <div className='border border-gray-500'>
+               <Editor placeholder="Write here"  />
                     </div>
                   </CardContent>
                 </Card>
               ))}
-              <Button type="button" variant="contained" color="primary" onClick={addPanel}>
+              <Button type="button" variant="contained" color="primary" onClick={addPanel} sx={{ color: 'white', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important' }}>
                 Add Panel
               </Button>
-            </CardContent>
-          </Card>
+            
         </Grid>
         <Grid item xs={12}>
           <Grid container justifyContent="space-between">
-            <Button variant="contained" onClick={handleCancel}  style={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
-              Back
-            </Button>
-            <Button variant="contained" color="primary" type="submit"  style={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+          <Button type="button" onClick={handleCloseModal} sx={{ color: 'white', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important' }}>
+                    Close
+                    </Button>
+            <Button variant="contained" color="primary" type="submit"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
               Save
             </Button>
           </Grid>

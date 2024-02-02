@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, Row, Modal } from 'react-bootstrap';
+import { Form, Col, Row, Modal } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../../AdminDashboard/Header';
 import { EditorState, convertToRaw } from 'draft-js';
-import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import { useMediaQuery } from 'react-responsive';
 
-const Audio = ({isSidebarClosed}) => {
+const Audio = ({ handleCloseModal}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -54,15 +54,11 @@ const Audio = ({isSidebarClosed}) => {
     
     window.history.back();
   };
-  const styles = {
-    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
-    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
-    transition: 'width 0.3s, margin-left 0.3s',
-  };
+  
   return (
-    <Container maxWidth="xl" mt={16}>
+    <Container maxWidth="xxl" mt={16}>
       
-    <Grid container justifyContent="center" spacing={3} style={styles}>
+    <Grid container justifyContent="center" spacing={3} >
       <Grid item xs={12}>
         <Card >
           <CardContent>
@@ -84,8 +80,8 @@ const Audio = ({isSidebarClosed}) => {
                   onStop={(blob) => setAudioBlob(blob)}
                   onData={(data) => console.log('chunk of real-time data', data)}
                 /> */}
-                <button onClick={() => {}}>Start Recording</button>
-                <button onClick={() => {}}>Stop Recording</button>
+                <Button onClick={() => {}}>Start Recording</Button>
+                <Button onClick={() => {}}>Stop Recording</Button>
               </Col>
             </Row>
           </Col>
@@ -173,9 +169,7 @@ const Audio = ({isSidebarClosed}) => {
                         value={audioBlob} 
                         onChange={(e) => setAudioBlob(e.target.value)}
                       />
-                      <Button onClick={handleAddFromUrl} className="ant-btn css-14mf4t4 ant-btn-primary">
-                        Add from URL
-                      </Button>
+                    
                     </div>
                   </div>
                 </div>
@@ -183,13 +177,9 @@ const Audio = ({isSidebarClosed}) => {
             </div>
           </Col>
         
-          <Modal show={showModal} onHide={handleModalClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Add from URL</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+         
               <Form.Group controlId="formImageUrl">
-                <Form.Label>Image URL:</Form.Label>
+                <Form.Label> Audio URL:</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter URL"
@@ -197,22 +187,21 @@ const Audio = ({isSidebarClosed}) => {
                   onChange={(e) => setAudioBlob(e.target.value)}
                 />
               </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
+           
               <Button variant="secondary" onClick={handleModalClose}>
                 Cancel
               </Button>
               <Button variant="primary" onClick={handleUrlSubmit}>
                 OK
               </Button>
-            </Modal.Footer>
-          </Modal>
+           
           <Col xs={12} className="mt-3">
             <div className="d-flex justify-content-between">
-            <Button type="button" variant="primary" onClick={handleCancel}>
-                Back
+            <Button type="button"  onClick={ handleCloseModal} variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+            Close
               </Button>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+           
                 Save
               </Button>
             

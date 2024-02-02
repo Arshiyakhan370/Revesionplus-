@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form, Row, Col, ListGroup } from 'react-bootstrap';
+import { Modal,  Form, Row, Col, ListGroup } from 'react-bootstrap';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Header from '../../AdminDashboard/Header';
 import { useMediaQuery } from 'react-responsive';
-import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 
-const Mcq = ({isSidebarClosed}) => {
+const Mcq = ({handleCloseModal}) => {
   const [showModal, setShowModal] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [answerOptions, setAnswerOptions] = useState([]);
@@ -37,14 +37,9 @@ const Mcq = ({isSidebarClosed}) => {
     setAnswerOptions(updatedOptions);
   };
 
-  const handleCancel = () => {
-    console.log('Cancel button clicked');
-   
-    window.history.back();
-  };
 
   const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal1 = () => setShowModal(false);
 
   const handleAddOption = () => {
     if (newOption.trim() !== '') {
@@ -81,14 +76,10 @@ const Mcq = ({isSidebarClosed}) => {
   };
 
   
-    const styles = {
-      width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
-      marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
-      transition: 'width 0.3s, margin-left 0.3s',
-    };
+   
     return (
-      <Container maxWidth="xl" mt={16}>
-        <Grid container justifyContent="center" spacing={3} style={styles}>
+      <Container maxWidth="xxl" mt={16}>
+        <Grid container justifyContent="center" spacing={3}>
           <Grid item xs={12}>
             <Card >
               <CardContent>
@@ -199,40 +190,28 @@ const Mcq = ({isSidebarClosed}) => {
           </Row>
         </Form.Group>
 
-       
-        <Button variant="secondary" onClick={handleShowModal}>
-          Show Modal
-        </Button>
-
-        
-        <Modal show={showModal} onHide={handleCancelClick}>
-          <Modal.Header closeButton>
-            <Modal.Title>Your Modal Title</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group controlId="formQuestionDescription">
-              <Form.Label>Question Description:</Form.Label>
+            <Form.Group controlId="formQuestionDescription" className='border border-gray-500 mt-8'>
               <Editor
                 editorState={editorState}
                 onEditorStateChange={(state) => setEditorState(state)}
               />
             </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
+         
             <Button variant="secondary" onClick={handleCancelClick}>
               Cancel
             </Button>
             <Button variant="primary" onClick={handleOkClick}>
               Ok
             </Button>
-          </Modal.Footer>
-        </Modal>
+         
         <Col xs={12} className="mt-3">
           <div className="d-flex justify-content-between">
-          <Button type="button" variant="primary" onClick={handleCancel}>
-              Back
+          <Button type="button" onClick={handleCloseModal} variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+             
+             Close
             </Button>
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+              
               Save
             </Button>
            

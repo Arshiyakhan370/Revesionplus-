@@ -18,6 +18,8 @@ import "react-quill/dist/quill.snow.css";
 import FilterForm from "../createAssignment/FilterForm";
 import { Close, Apps, QuestionAnswer, Add } from '@mui/icons-material';
 import { Copy, Delete } from "react-feather";
+import Description from "./Description";
+import Questions from "./Questions";
 const CreateQuestion = ({ isSidebarClosed }) => {
   const [content, setContent] = useState("");
   const [editing, setEditing] = useState(false);
@@ -34,13 +36,21 @@ const CreateQuestion = ({ isSidebarClosed }) => {
    const [snackbarOpen, setSnackbarOpen] = useState(false);
    const [snackbarMessage, setSnackbarMessage] = useState("");
    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
- 
+   const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
+   const [showQuestion, setShowQuestion] = useState(false);
   const [items, setItems] = useState([]);
 
   const handleAddItem = () => {
     setItems([...items, { isVisible: true }]);
   };
- 
+  const handleToggleAdditionalButtons = () => {
+    setShowAdditionalButtons(!showAdditionalButtons);
+    setShowQuestion()
+  };
+  const handleQuestion=()=>{
+    setShowAdditionalButtons(false);
+    setShowQuestion(!showQuestion)
+  }
   const handleDeleteItem = (index) => {
     const updatedItems = [...items];
     updatedItems.splice(index, 1);
@@ -112,14 +122,14 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   const handleChange = (editorState) => {
     setContent(editorState.getCurrentContent().getPlainText());
   };
-  const sidebarWidth = isSidebarClosed ? "100px" : "320px";
+  const sidebarWidth = isSidebarClosed ? "85px" : "290px";
   const mainComponentWidth = isSmallScreen
     ? "100%"
     : `calc(100% - ${sidebarWidth})`;
 
   const styles = {
     width: mainComponentWidth,
-    marginLeft: isSidebarClosed ? "100px" : isSmallScreen ? "0" : "320px",
+    marginLeft: isSidebarClosed ? "89px" : isSmallScreen ? "0" : "290px",
     transition: "width 0.3s, margin-left 0.3s",
   };
 
@@ -150,7 +160,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   
   return (
     <Fragment>
-     <Card style={styles}>
+     <Card maxWidth='xxl' style={styles} sx={{ p: 3,marginTop:'25px',background:'#f0f0f0', marginRight:'25px' }}>
     <FilterForm/>
      
         <CardContent>
@@ -404,9 +414,8 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                 margin: "16px 0",
               }}
             >
-            <Button onClick={handleAddItem}>
-        <Add />
-        <span> Add Item</span>
+            <Button onClick={handleAddItem} sx={{width:'100px', height:'20px'}}>
+        <Add /> Add Item
       </Button>
       <ul>
         {items.map((item, index) => (
@@ -424,25 +433,42 @@ const CreateQuestion = ({ isSidebarClosed }) => {
               <div className="ant-row css-bua3hd" style={{ marginTop: '10px' }}>
                 <Grid container spacing={2} justifyContent="center">
                   <Grid item>
-                    <Button type="button" className="ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
+                    <Button type="button"
+                     onClick={handleToggleAdditionalButtons}
+                     className="ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
                       <Apps />
-                      <span> Content</span>
+                      <span> Question Description</span>
                     </Button>
                   </Grid>
                   <Grid item>
-                    <Button type="button" className="ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
+                    <Button type="button"
+                    onClick={handleQuestion} className="ant-btn css-bua3hd ant-btn-primary ant-btn-background-ghost">
                       <QuestionAnswer />
                       <span> Questions</span>
                     </Button>
                   </Grid>
                    </Grid>
-              </div>
+                  
+                   {showAdditionalButtons && (
+        <div>
+         <Description/>
+        </div>
+      )}
+      {
+        !showAdditionalButtons && (
+          <div>
+          <Questions/>
+          </div>
+        )}
+        </div>  
+
             )}
           
           </li>
         ))}
       </ul>
     </div>
+    
          </Grid>
 
           <Grid item xs={12}>

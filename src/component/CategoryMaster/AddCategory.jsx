@@ -40,12 +40,12 @@ const AddCategory = ({isSidebarClosed}) => {
     event.preventDefault();
     
   };
-  const sidebarWidth = isSidebarClosed ? '80px' : '299px';
+  const sidebarWidth = isSidebarClosed ? '90px' : '290px';
   const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
   
   const styles = {
     width: mainComponentWidth,
-    marginLeft: isSidebarClosed ? '90px' : (isSmallScreen ? '10px' : '299px'),
+    marginLeft: isSidebarClosed ? '90px' : (isSmallScreen ? '10px' : '290px'),
     transition: 'width 0.3s, margin-left 0.3s',
   };
   const inputStyle = { height: '35px' };

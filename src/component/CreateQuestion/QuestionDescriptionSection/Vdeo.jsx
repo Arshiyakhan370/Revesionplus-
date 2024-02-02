@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, Modal } from 'react-bootstrap';
+import { Form,  Col, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { useDropzone } from 'react-dropzone';
 import { useMediaQuery } from 'react-responsive';
-import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 
 
 const VideoComponent = ({ videoUrl }) => {
@@ -26,7 +26,7 @@ const VideoComponent = ({ videoUrl }) => {
   );
 };
 
-const Vdeo = ({isSidebarClosed}) => {
+const Vdeo = ({ handleCloseModal}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
@@ -74,15 +74,11 @@ const Vdeo = ({isSidebarClosed}) => {
 
     window.history.back();
   };
-  const styles = {
-    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
-    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
-    transition: 'width 0.3s, margin-left 0.3s',
-  };
+
   return (
-    <Container maxWidth="xl" mt={16}>
+    <Container maxWidth="xxl" mt={16}>
       
-    <Grid container justifyContent="center" spacing={3} style={styles}>
+    <Grid container justifyContent="center" spacing={3}>
       <Grid item xs={12}>
         <Card >
           <CardContent>
@@ -198,7 +194,7 @@ const Vdeo = ({isSidebarClosed}) => {
             </Form.Group>
           </Col>
          
-          <Col
+          {/* <Col
             xs={24}
             className="css-14mf4t4"
             style={{ paddingLeft: '12px', paddingRight: '12px', }}
@@ -219,21 +215,15 @@ const Vdeo = ({isSidebarClosed}) => {
             </Button>
           
 
-          </Col>
+          </Col> */}
 
-         
-          
-    
-          <Modal show={showModal} onHide={handleModalClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Add Video</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+      
               {showUrlInput && (
                 <Form.Group controlId="formVideoUrl">
                   <Form.Label>Video URL:</Form.Label>
                   <Form.Control
                     type="text"
+                    className='mb-8'
                     placeholder="Enter URL"
                     value={videoUrl}
                     onChange={(e) => setVideoUrl(e.target.value)}
@@ -241,17 +231,18 @@ const Vdeo = ({isSidebarClosed}) => {
                 </Form.Group>
               )}
               {!showUrlInput && (
+                
                 <div {...getRootProps({ className: 'dropzone' })}>
                   <input {...getInputProps()} />
-                  <p>
+                  <Button className='mt-8'>
                     Drag 'n' drop a video file here, or click to select a video
                     file
-                  </p>
+                    </Button>
                 </div>
+               
               )}
               {videoUrl && <VideoComponent videoUrl={videoUrl} />}
-            </Modal.Body>
-            <Modal.Footer>
+            
               <Button variant="secondary" onClick={handleModalClose}>
                 Cancel
               </Button>
@@ -264,16 +255,16 @@ const Vdeo = ({isSidebarClosed}) => {
                   OK
                 </Button>
               )}
-            </Modal.Footer>
-          </Modal>
-
+            
          
           <Col xs={12} className="mt-3">
               <div className="d-flex justify-content-between">
-              <Button type="button" variant="primary" onClick={handleCancel}>
-                  Back
+              <Button type="button" onClick={ handleCloseModal} variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+             
+                Close
                 </Button>
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+             
                   Save
                 </Button>
                 

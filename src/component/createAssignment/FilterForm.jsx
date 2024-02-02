@@ -63,7 +63,7 @@ const FilterForm = () => {
   return (
     <Fragment>
     <Container maxWidth='xxl' style={{ marginTop: '30px' }}>
-      <div className='ml-10 mt-8 text-black w-8 h-8'>
+      <div className=' mt-8 text-black w-8 h-8'>
         <Button onClick={handleGoBack}>
           <ArrowLeft size={24} />
         </Button>
@@ -93,8 +93,8 @@ const FilterForm = () => {
                   </div>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Paper elevation={3} style={{ padding: '20px' }}>
-                    <Grid container spacing={2}>
+                 
+                    <Grid container spacing={2} style={{ padding: '20px' }}>
             <Grid item xs={6} md={4}>
   <FormControl fullWidth>
     <InputLabel htmlFor="boardID">Boards</InputLabel>
@@ -223,7 +223,7 @@ const FilterForm = () => {
                 Filter
                 </Button>
               </div>
-            </Paper>
+           
           </AccordionDetails>
         </Accordion>
       

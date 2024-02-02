@@ -5,10 +5,10 @@ import Header from '../../AdminDashboard/Header';
 import {Col} from 'react-bootstrap';
 import { Editor } from 'react-draft-wysiwyg';   
 import { useMediaQuery } from 'react-responsive';
-import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 
 
-const DrawingApp = ({isSidebarClosed}) => {
+const DrawingApp = ({handleCloseModal}) => {
     const [description, setDescription] = useState('');
   const [lines, setLines] = useState([]);
   const [tool, setTool] = useState('pen');
@@ -53,14 +53,10 @@ const DrawingApp = ({isSidebarClosed}) => {
 
   const colorPalette = ['#000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
 
-  const styles = {
-    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
-    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
-    transition: 'width 0.3s, margin-left 0.3s',
-  };
+ 
   return (
-    <Container maxWidth="xl" mt={16}>
-      <Grid container justifyContent="center" spacing={3} style={styles}>
+    <Container maxWidth="xxl" mt={16}>
+      <Grid container justifyContent="center" spacing={3} >
         <Grid item xs={12}>
           <Card >
             <CardContent>
@@ -242,6 +238,19 @@ height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d=
         <CompactPicker color={selectedColor} onChange={handleColorChange1} />
       </div>
     </div>
+    <Col xs={12} className="mt-3">
+          <div className="d-flex justify-content-between">
+          <Button type="button" variant="contained" onClick={handleCloseModal} sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+             
+              Close
+            </Button>
+            <Button type="submit" variant="contained"  sx={{color:'white',  background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
+            
+              Save
+            </Button>
+           
+          </div>
+        </Col>
     </CardContent>
     </Card>
     </Grid>

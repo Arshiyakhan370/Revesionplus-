@@ -105,7 +105,7 @@ const Navbar1 = () => {
           },
         }}
       >
-        <div style={{ textDecoration: 'none', Color: 'white' }}>
+        <div className='mt-8 text-2xl text-end mr-16 mb-12' style={{ textDecoration: 'none', Color: 'white' }}>
         <IconButton
   size="large"
   edge="end"
@@ -114,9 +114,9 @@ const Navbar1 = () => {
   sx={{ marginLeft: 'auto' }}
   onClick={handleToggleDrawer(false)}
 >
-  <CloseIcon />
+  <CloseIcon sx={{width:'30px',height:'30px'}}/>
 </IconButton>
-
+  </div>
 
           
           <div className="menu-bar">
@@ -124,7 +124,7 @@ const Navbar1 = () => {
               <ul className="menu-links text-white">
                 
                 {dropdownMenus.map((menu, index) => (
-                  <li className={`nav-link  mb-4 ${menu.submenu ? 'has-submenu' : ''}`} key={index}>
+                  <li className={`nav-link ml-12 mb-4 ${menu.submenu ? 'has-submenu' : ''}`} key={index}>
                     <Link to="#" className='text-white' style={{textDecoration:'none'}} onClick={() => setDropdownMenus((prevMenus) => prevMenus.map((m, i) => (i === index ? { ...m, isOpen: !m.isOpen } : m)))}>
                       {menu.icon}
                       <span className="text nav-text  text-white">{menu.text}</span>
@@ -135,7 +135,7 @@ const Navbar1 = () => {
               </ul>
             </div>
           </div>
-        </div>
+      
       </Drawer>
     </div>
   );
