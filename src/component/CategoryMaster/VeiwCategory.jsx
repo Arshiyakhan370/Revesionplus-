@@ -37,15 +37,15 @@ import SubTopic from './SubTopic';
         <Paper  elevation={3}   style={styles} sx={{ p: 3,marginTop:'25px',background:'#f0f0f0', marginRight:'25px' }}>
           <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" className='text-center'>
           <Tab icon={<Layers />} label="Subject" />
-            <Tab icon={<ChevronRightIcon />} disabled />
+            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={<Layers />} label="Subject Level" />
-            <Tab icon={<ChevronRightIcon />} disabled />
+            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={<Description/>} label="Source" />
-            <Tab icon={<ChevronRightIcon />} disabled />
+            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={< AddBox/>} label="Paper" />
-            <Tab icon={<ChevronRightIcon />} disabled />
+            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={<MenuBook/>} label="Topic" />
-            <Tab icon={<ChevronRightIcon />} disabled />
+            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={< LibraryBooks/>} label="Subtopic" />
           </Tabs>
   <div className='border border-gray-500 mt-4 mb-2'></div>
@@ -53,19 +53,19 @@ import SubTopic from './SubTopic';
           {value === 0 && (
             <Subject/>
           )}
-          {value === 2 && (
+          {value === 1 && (
             <SubjectLevel/>
           )}
-          {value === 4 && (
+          {value === 2 && (
             <Source/>
           )}
-          {value === 6 && (
+          {value === 3 && (
             <PaperLevel/>
           )}
-          {value === 8 && (
+          {value === 4 && (
             <TopicLevel/>
           )}
-          {value === 10 && (
+          {value === 5 && (
             <SubTopic/>
           )}
         </Paper>

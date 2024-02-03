@@ -126,6 +126,7 @@ const StudentAdd = ({ isSidebarClosed }) => {
     <Select
       labelId="usertype-label"
       id="select-usertype"
+      className="bg-white"
       name="usertype"
       value={usertype}
       onChange={(e) => setUsertype(e.target.value)}
@@ -150,6 +151,7 @@ const StudentAdd = ({ isSidebarClosed }) => {
                   <TextField
                     fullWidth
                     label="User Name"
+                    className="bg-white"
                     placeholder="Name"
                     name="name"
                     value={name}
@@ -171,6 +173,7 @@ const StudentAdd = ({ isSidebarClosed }) => {
                     fullWidth
                     type="email"
                     label="User Email"
+                    className="bg-white"
                     placeholder="john.doe@email.com"
                     name="email"
                     value={email}
@@ -191,6 +194,7 @@ const StudentAdd = ({ isSidebarClosed }) => {
                   <TextField
                     fullWidth
                     label="User Mobile"
+                    className="bg-white"
                     placeholder="9145780000"
                     name="mobile"
                     value={mobile}
@@ -222,6 +226,7 @@ const StudentAdd = ({ isSidebarClosed }) => {
                     fullWidth
                     type={showPassword ? "text" : "password"}
                     label="User Password"
+                    className="bg-white"
                     placeholder="············"
                     name="password"
                     value={password}

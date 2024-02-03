@@ -135,6 +135,7 @@ const FormStudent = ({isSidebarClosed}) => {
         </InputLabel>
         <Select
           labelId="select-teacher-label"
+          className="bg-white"
           id="select-teacher"
           name="teacher"
           value={teacher}
@@ -155,6 +156,7 @@ const FormStudent = ({isSidebarClosed}) => {
                     fullWidth
                     label="Name"
                     placeholder="Name"
+                    className="bg-white"
                     name="name"
                     value={name}
                   required
@@ -173,6 +175,7 @@ const FormStudent = ({isSidebarClosed}) => {
                     fullWidth
                     type="email"
                     label="Email"
+                    className="bg-white"
                     placeholder="john.doe@email.com"
                     name="email"
                     value={email}
@@ -193,6 +196,7 @@ const FormStudent = ({isSidebarClosed}) => {
                     label="Parent Name"
                     placeholder="Name"
                     name="parentName"
+                    className="bg-white"
                     value={parentName}
                   required
                 variant="outlined"
@@ -212,6 +216,7 @@ const FormStudent = ({isSidebarClosed}) => {
                     label="Parent Email"
                     placeholder="john.doe@email.com"
                     name="parentEmail"
+                    className="bg-white"
                     value={parentEmail}
                   required
                 variant="outlined"
@@ -226,9 +231,9 @@ const FormStudent = ({isSidebarClosed}) => {
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Flatpickr
-                    className="form-control flatpickr-basic flatpickr-input h-11 mt-3"
+                    className="form-control flatpickr-basic flatpickr-input h-11 mt-3 bg-white"
                     placeholder="Set Inactivation Date"
-                    options={{ dateFormat: 'Y-m-d' }}
+                     options={{ dateFormat: 'Y-m-d' }}
                     value={inactiveDate}
                     onChange={(date) => setInactiveDate(date[0])}
                   />
@@ -239,6 +244,7 @@ const FormStudent = ({isSidebarClosed}) => {
         type={showPassword ? 'text' : 'password'}
         label="User Password"
         placeholder="············"
+        className="bg-white"
         name="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -261,7 +267,7 @@ const FormStudent = ({isSidebarClosed}) => {
                     <input
                       type="file"
                       id="profile-pic"
-                      className="form-control2  h-16"
+                      className="form-control2  h-16 bg-white"
                       name="Profile Picture"
                       accept="image/*"
                     required

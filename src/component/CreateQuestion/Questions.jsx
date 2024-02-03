@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Button, Card, CardContent, Container ,Dialog,DialogContent,Grid} from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
@@ -7,6 +7,7 @@ import DrawingApp from './QuestionSub/Drwaing';
 import Vdeo from './QuestionDescriptionSection/Vdeo';
 import Audio from './QuestionDescriptionSection/Audio';
 import SimulationComponent from './QuestionDescriptionSection/Simulation';
+import LongAnswer from './QuestionSub/LongAnswer';
 
    const Questions =  () => {
     const [openModal, setOpenModal] = useState(false);
@@ -68,14 +69,15 @@ import SimulationComponent from './QuestionDescriptionSection/Simulation';
     window.history.back();
   };
   return (
+    <Fragment>
     <Container maxWidth='xxl' className='mt-4' >
-   
-     <Card>
-          <CardContent className='text-center'>
-          <Link to="/createquestion" style={{ textDecoration: 'none', margin:'10px'  }}>
+        {/* <Card>
+          <CardContent className='text-center'> */}
+          {/* <Link to="/createquestion" style={{ textDecoration: 'none', margin:'10px'  }}> */}
               <Button
                 type="button"
                 className="segment-type-button"
+                onClick={handleOpenModal}
                 variant="text"
                 startIcon={
                   <svg stroke="currentColor" fill="none" strokeWidth="2"
@@ -88,7 +90,7 @@ import SimulationComponent from './QuestionDescriptionSection/Simulation';
               >
              Long answer
               </Button>
-            </Link>
+            {/* </Link> */}
             {/* <Link to='/mcq' style={{ textDecoration: 'none', margin:'10px' }}> */}
               <Button
                 type="button"
@@ -226,9 +228,15 @@ import SimulationComponent from './QuestionDescriptionSection/Simulation';
             </Button> 
             </div>
             </Grid>  */}
-            </CardContent>
-            </Card>
-    </Container>
+            {/* </CardContent>
+            </Card> */}
+            </Container>
+           
+              {openModal && (
+                <LongAnswer/>
+              )}
+          
+   </Fragment>
   );
 };
 export default Questions

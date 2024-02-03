@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Button, Card, CardContent, Container, Dialog, DialogContent, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
@@ -11,7 +11,7 @@ import Audio from './QuestionDescriptionSection/Audio';
 import SimulationComponent from './QuestionDescriptionSection/Simulation';
 ;
 
-const Description = () => {
+const Description = ({ onSave }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
   const [openModal3, setOpenModal3] = useState(false);
@@ -20,9 +20,12 @@ const Description = () => {
   const [openModal6, setOpenModal6] = useState(false);
   const [openModal7, setOpenModal7] = useState(false);
 
-
+  const handleSave = (textContent) => {
+ 
+    onSave(textContent);
+  }
   const handleOpenModal = () => {
-    setOpenModal(true);
+    setOpenModal(!openModal);
   };
 
   const handleCloseModal = () => {
@@ -72,9 +75,10 @@ const Description = () => {
     setOpenModal7(false);
   }
   return (
-    <Container maxWidth='xxl' className='mt-4'>
-           <Card>
-          <CardContent className='text-center'>
+    <Fragment>
+    <Container maxWidth='xxl' className='mt-4 text-center'>
+           {/* <Card>
+          <CardContent className='text-center'> */}
           {/* <Link to="/text" style={{ textDecoration: 'none', margin:'10px' }}> */}
               <Button
                 type="button"
@@ -103,9 +107,7 @@ const Description = () => {
               >
                 Text
               </Button>
-              {openModal && (
-                <Text/>
-              )}
+              
              
             {/* </Link> */}
             {/* <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md">
@@ -243,10 +245,15 @@ const Description = () => {
           </Dialog>
             {/* </Link> */}
            
-            </CardContent>
-        </Card>
+            {/* </CardContent>
+        </Card> */}
      
     </Container>
+
+    {openModal && (
+      <Text onSave={setTextData} />
+    )}
+    </Fragment>
   );
 };
 

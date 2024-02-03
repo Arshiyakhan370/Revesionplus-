@@ -62,14 +62,14 @@ const FilterForm = () => {
   const inputStyle = { height: '40px' };
   return (
     <Fragment>
-    <Container maxWidth='xxl' style={{ marginTop: '30px' }}>
-      <div className=' mt-8 text-black w-8 h-8'>
+    <Container maxWidth='xxl' style={{}}>
+      <div className=' mt-4 mb-4 text-black w-8 h-8'>
         <Button onClick={handleGoBack}>
           <ArrowLeft size={24} />
         </Button>
       </div>
+      <Card>
       
-        <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Accordion defaultExpanded>
@@ -229,7 +229,8 @@ const FilterForm = () => {
       
    </Grid>
     </Grid>
-    </CardContent>
+   
+    </Card>
      </Container>
     
     

@@ -54,15 +54,15 @@ const AddCategory = ({isSidebarClosed}) => {
       <Paper elevation={3}   style={styles} sx={{ p: 3,marginTop:'25px',background:'#f0f0f0', marginRight:'25px' }}>
         <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" className='text-center'>
         <Tab icon={<Layers />} label="Subject" />
-          <Tab icon={<ChevronRightIcon />} disabled />
+          {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
           <Tab icon={<Layers />} label="Subject Level" />
-          <Tab icon={<ChevronRightIcon />} disabled />
+          {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
           <Tab icon={<Description/>} label="Source" />
-          <Tab icon={<ChevronRightIcon />} disabled />
+          {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
           <Tab icon={< AddBox/>} label="Paper" />
-          <Tab icon={<ChevronRightIcon />} disabled />
+          {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
           <Tab icon={<MenuBook/>} label="Topic" />
-          <Tab icon={<ChevronRightIcon />} disabled />
+          {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
           <Tab icon={< LibraryBooks/>} label="Subtopic" />
         </Tabs>
 
@@ -112,7 +112,7 @@ const AddCategory = ({isSidebarClosed}) => {
             </Card>
           </form>
                   )}
-                  {value === 2 && (
+                  {value === 1 && (
           <form onSubmit={handleSubmit}>
             <Card>
               <CardContent>
@@ -166,7 +166,7 @@ const AddCategory = ({isSidebarClosed}) => {
             </Card>
           </form>
                   )}
-                  {value === 4 && (
+                  {value === 2 && (
           <form onSubmit={handleSubmit}>
             <Card>
               <CardContent>
@@ -229,7 +229,7 @@ const AddCategory = ({isSidebarClosed}) => {
             </Card>
           </form>
                   )}
-                  {value === 6 && (
+                  {value === 3 && (
           <form onSubmit={handleSubmit}>
             <Card>
               <CardContent>
@@ -301,7 +301,7 @@ const AddCategory = ({isSidebarClosed}) => {
             </Card>
           </form>
                   )}
-                  {value === 8 && (
+                  {value === 4 && (
           <form onSubmit={handleSubmit}>
             <Card>
               <CardContent>
@@ -382,7 +382,7 @@ const AddCategory = ({isSidebarClosed}) => {
             </Card>
           </form>
                   )}
-                  {value === 10 && (
+                  {value === 5 && (
           <form onSubmit={handleSubmit}>
             <Card>
               <CardContent>
