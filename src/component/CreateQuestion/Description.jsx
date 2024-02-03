@@ -251,7 +251,7 @@ const Description = ({ onSave }) => {
     </Container>
 
     {openModal && (
-      <Text onSave={setTextData} />
+      <Text onSave={handleSave} />
     )}
     </Fragment>
   );
