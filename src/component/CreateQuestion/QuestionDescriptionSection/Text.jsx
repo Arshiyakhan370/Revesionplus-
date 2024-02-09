@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Suspense } from "react";
 import { Form, Col, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw ,convertFromRaw } from "draft-js";
 import {
   Container,
   Card,
@@ -14,19 +14,34 @@ import {
   TextField,
   Checkbox,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useMediaQuery } from "react-responsive";
+import { useDropzone } from "react-dropzone";
+
+const PdfComponent = React.lazy(() => import("./PdfComponent"));
 
 const Text = () => {
-
   const editorRef = useRef(null);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [subEditorState, setSubEditorState] = useState(
+    EditorState.createEmpty()
+  );
   const [questions, setQuestions] = useState([]);
-
-  const [answerKeyEditorState, setAnswerKeyEditorState] = useState(EditorState.createEmpty());
-  const [markSchemeEditorState, setMarkSchemeEditorState] = useState(EditorState.createEmpty());
+  const [answerKeyEditorState, setAnswerKeyEditorState] = useState(
+    EditorState.createEmpty()
+  );
+  const [markSchemeEditorState, setMarkSchemeEditorState] = useState(
+    EditorState.createEmpty()
+  );
   const [savedAnswerKey, setSavedAnswerKey] = useState(null);
   const [savedMarkScheme, setSavedMarkScheme] = useState(null);
+  const [subQuestionNumber, setSubQuestionNumber] = useState(1);
+  const [questionNumber, setQuestionNumber] = useState(1);
+  const [showSubEditor, setShowSubEditor] = useState(false);
   const [savedData, setSavedData] = useState(null);
   const [showAnswerKeyEditor, setShowAnswerKeyEditor] = useState(false);
   const [showMarkSchemeEditor, setShowMarkSchemeEditor] = useState(false);
@@ -36,18 +51,67 @@ const Text = () => {
     A: false,
     B: false,
     C: false,
-    D: false
+    D: false,
   });
   const [marks, setMarks] = useState(false);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
-  const [questionNumber, setQuestionNumber] = useState(1);
-
- 
+   const [pdfFile, setPdfFile] = useState(null);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [videoSrc, setVideoSrc] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false); 
 
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
-  const criteriaArray = ['A', 'B', 'C', 'D'];
+  const criteriaArray = ["A", "B", "C", "D"];
 
-  const handkeSelectedCriteria = () => {
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+    setAlertMessage(null); 
+  };
+
+  const handleOpenAlert = (message) => {
+    setAlertMessage(message);
+    setOpenAlert(true);
+  };
+
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+    accept: ".pdf, image/*",
+    onDrop: (acceptedFiles) => {
+      acceptedFiles.forEach((file) => {
+        const reader = new FileReader();
+  
+        reader.onload = () => {
+          const fileType = file.type.split('/')[0];
+          switch(fileType) {
+            case 'image':
+              if (file.size > 1024 * 1024) {
+                handleOpenAlert("Image size should be less than 1MB.");
+                return;
+              }
+              setImageSrc(reader.result);
+              break;
+            case 'application':
+              if (file.type !== 'application/pdf') {
+                handleOpenAlert("Unsupported file type.");
+                return;
+              }
+              if (file.size > 1024 * 1024) {
+                handleOpenAlert("PDF size should be less than 1MB.");
+                return;
+              }
+              setPdfFile(URL.createObjectURL(file));
+              break;
+            default:
+              console.log(`Unsupported file type: ${fileType}`);
+          }
+        };
+  
+        reader.readAsDataURL(file);
+      });
+    },
+  });
+  
+  const handleSelectedCriteria = () => {
     setSelectChecked(!selectChecked);
   };
 
@@ -64,21 +128,49 @@ const Text = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (selectChecked && Object.values(checkboxesState).every((val) => val === false)) {
-      setAlertMessage("Please select at least one criterion!");
+    const questionPrefix = showSubEditor ? `${questionNumber}.${subQuestionNumber}` : `${questionNumber}`;
+    if (
+      selectChecked &&
+      Object.values(checkboxesState).every((val) => val === false)
+    ) {
+      handleOpenAlert("Please select at least one criterion!");
     } else {
       setAlertMessage(null);
-
-      const newQuestion = {
+         const newQuestion = {
         editorState: convertToRaw(editorState.getCurrentContent()),
         answerKey: convertToRaw(answerKeyEditorState.getCurrentContent()),
         markScheme: convertToRaw(markSchemeEditorState.getCurrentContent()),
-        criteria: selectChecked ? criteriaArray.filter(label => checkboxesState[label]) : null,
-        marks: marks ? marksValue : null
+        subEditorState: showSubEditor
+          ? convertToRaw(subEditorState.getCurrentContent())
+          : null,
+        questionNumber: showSubEditor
+          ? `${questionNumber}.${subQuestionNumber}`
+          : questionNumber.toString(),
+        criteria: selectChecked
+          ? criteriaArray.filter((label) => checkboxesState[label])
+          : null,
+        marks: marks ? marksValue : null,
+        pdfFile: pdfFile ? pdfFile : null,
+        imageSrc: imageSrc ? imageSrc : null,
+        videoSrc: videoSrc ? videoSrc : null,
       };
+  
+      
+      if (selectedQuestionIndex !== null) {
+        const updatedQuestions = [...questions];
+        updatedQuestions[selectedQuestionIndex] = newQuestion;
+        setQuestions(updatedQuestions);
+        setSelectedQuestionIndex(null); 
+      } else {
 
-      setQuestions([...questions, newQuestion]);
+        setQuestions([...questions, newQuestion]);
+        if (showSubEditor) {
+          setSubQuestionNumber(subQuestionNumber + 1);
+          setSubEditorState(EditorState.createEmpty());
+        } else {
+          setQuestionNumber(questionNumber + 1);
+        }
+      }
 
       setEditorState(EditorState.createEmpty());
       setAnswerKeyEditorState(EditorState.createEmpty());
@@ -86,21 +178,35 @@ const Text = () => {
       setSelectChecked(false);
       setMarks(false);
       setMarksValue(0);
+      setPdfFile(null);
+      setImageSrc(null);
+      setVideoSrc(null);
     }
+  };
+  
+  
+  const handleSubEditorChange = (newEditorState) => {
+    setSubEditorState(newEditorState);
+  };
+
+  const toggleSubEditor = () => {
+    setShowSubEditor(!showSubEditor);
   };
 
   const handleCopy = (questionIndex) => {
     const questionToCopy = questions[questionIndex];
-    navigator.clipboard.writeText(convertToText(questionToCopy.editorState));
+    navigator.clipboard.writeText(
+      convertToText(questionToCopy.editorState)
+    );
     console.log(`Copy button clicked for Question ${questionIndex + 1}`);
   };
-  const handleCopyQuestionContent = (index,questionIndex) => {
+
+  const handleCopyQuestionContent = (index, questionIndex) => {
     const questionToCopy = questions[questionIndex];
-   
+
     const copiedQuestion = { ...questions[index] };
     setQuestions((prevQuestions) => [...prevQuestions, copiedQuestion]);
-    console.log(`Copy button clicked for Question ${questionIndex + 1}`)
-    
+    console.log(`Copy button clicked for Question ${questionIndex + 1}`);
   };
 
   const handleDelete = (questionIndex) => {
@@ -110,27 +216,38 @@ const Text = () => {
     console.log(`Delete button clicked for Question ${questionIndex + 1}`);
   };
 
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    const printContent = editorRef.current?.editor.innerHTML; // Access editor content using the ref
-    printWindow.document.write("<html><head><title>Print</title></head><body>");
-    printWindow.document.write("<pre>" + printContent + "</pre>");
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    console.log("Print button clicked");
+  const handleEditQuestion = (index) => {
+    const questionToEdit = questions[index];
+     
+    setEditorState(EditorState.createWithContent(convertFromRaw(questionToEdit.editorState)));
+    setAnswerKeyEditorState(EditorState.createWithContent(convertFromRaw(questionToEdit.answerKey)));
+    setMarkSchemeEditorState(EditorState.createWithContent(convertFromRaw(questionToEdit.markScheme)));
+    setPdfFile(questionToEdit.pdfFile);
+    setImageSrc(questionToEdit.imageSrc);
+    setVideoSrc(questionToEdit.videoSrc);
+        
+    if (questionToEdit.questionNumber.includes('.')) {
+      const [questionNumber, subQuestionNumber] = questionToEdit.questionNumber.split('.');
+      setQuestionNumber(parseInt(questionNumber));
+      setSubQuestionNumber(parseFloat(subQuestionNumber));
+      setShowSubEditor(true);
+    } else {
+      setQuestionNumber(parseInt(questionToEdit.questionNumber));
+      setShowSubEditor(false);
+    }
+      setSelectedQuestionIndex(index);
   };
-  
-  
-  
-  
 
   const handleViewPage = (questionIndex) => {
     const questionToView = questions[questionIndex];
     const newWindow = window.open();
-    newWindow.document.write("<html><head><title>Question Page</title></head><body>");
+    newWindow.document.write(
+      "<html><head><title>Question Page</title></head><body>"
+    );
     newWindow.document.write(`<h2>Q${questionIndex + 1}</h2>`);
-    newWindow.document.write("<p>" + convertToText(questionToView.editorState) + "</p>");
+    newWindow.document.write(
+      "<p>" + convertToText(questionToView.editorState) + "</p>"
+    );
     newWindow.document.write("</body></html>");
     newWindow.document.close();
     console.log(`View Page button clicked for Question ${questionIndex + 1}`);
@@ -144,36 +261,77 @@ const Text = () => {
 
   return (
     <div>
-      {questions.map((question, index) => (
-        <Card key={index} className="text-start ml-4 mb-3">
-          <div className="mb-3 ml-4 ">
-            <h5>Q{index + 1}</h5>
-            <p>{convertToText(question.editorState)}</p>
-            {question.criteria && (
-              <p>Criteria: {question.criteria.join(', ')}</p>
-            )}
-            {question.marks && (
-              <p>Marks: {question.marks}</p>
-            )}
-          </div>
-          <div className="mb-3 ml-4">
-            <h6> Answer Key:</h6>
-            <span>{convertToText(question.answerKey)}</span>
-          </div>
-          <div className="mb-3 ml-4">
-            <h6>Mark Scheme:</h6>
-            <span>{convertToText(question.markScheme)}</span>
-          </div>
-          <Button onClick={() => handleCopyQuestionContent(index)} variant="outlined" sx={{ marginRight: 1 }}>
+    {questions.map((question, index) => (
+  <Card key={index} className="text-start ml-4 mb-3">
+    <div className="mb-3 ml-4 ">
+      <h5>Q{question.questionNumber}</h5>
+      <p>{question.editorState && question.editorState.blocks[0].text}</p>
+    </div>
+    {showSubEditor && (
+      <div className="mb-3 ml-4 ">
+        <h5>Sub-Q{question.subQuestionNumber}</h5>
+        <p>{question.subEditorState && question.subEditorState.blocks[0].text}</p>
+      </div>
+    )}
+    {question.criteria && (
+      <p>Criteria: {question.criteria.join(", ")}</p>
+    )}
+    {question.marks && <p>Marks: {question.marks}</p>}
+    <div className="mb-3 ml-4">
+      <h6> Answer Key:</h6>
+      <span>{question.answerKey && convertToText(question.answerKey)}</span>
+    </div>
+    <div className="mb-3 ml-4">
+      <h6>Mark Scheme:</h6>
+      <span>{question.markScheme && convertToText(question.markScheme)}</span>
+    </div>
+    <div>
+      <div>
+        {question.pdfFile && (
+          <Suspense fallback={<div>Loading PDF...</div>}>
+            <PdfComponent pdfFile={question.pdfFile} />
+          </Suspense>
+        )}
+      </div>
+      <div>
+        {question.imageSrc && (
+          <img src={question.imageSrc} alt="Uploaded"
+               className="img-fluid"
+               style={{ maxWidth: "100%", height: "auto", width: '40%', marginTop: '20px' }} />
+        )}
+      </div>
+      <div>
+        {question.videoSrc && (
+          <video controls src={question.videoSrc} className="video-fluid" />
+        )}
+      </div>
+    </div>
+          <Button
+            onClick={() => handleCopyQuestionContent(index)}
+            variant="outlined"
+            sx={{ marginRight: 1 }}
+          >
             Copy
           </Button>
-          <Button onClick={() => handleDelete(index)} variant="outlined" sx={{ marginRight: 1 }}>
+          <Button
+            onClick={() => handleDelete(index)}
+            variant="outlined"
+            sx={{ marginRight: 1 }}
+          >
             Delete
           </Button>
-          <Button onClick={handlePrint} variant="outlined" sx={{ marginRight: 1 }}>
-            Print
-          </Button>
-          <Button onClick={() => handleViewPage(index)} variant="outlined" sx={{ marginRight: 1 }}>
+          <Button
+      onClick={() => handleEditQuestion(index)}
+      variant="outlined"
+      sx={{ marginRight: 1 }}
+    >
+      Edit
+    </Button>
+          <Button
+            onClick={() => handleViewPage(index)}
+            variant="outlined"
+            sx={{ marginRight: 1 }}
+          >
             View Page
           </Button>
         </Card>
@@ -182,7 +340,15 @@ const Text = () => {
         <div className="container mt-3 ">
           <h2 className="text-center mb-8">Text</h2>
           <Form onSubmit={handleSubmit}>
-            {alertMessage && <Alert severity="error">{alertMessage}</Alert>}
+            <Dialog open={openAlert} onClose={handleCloseAlert}>
+              <DialogTitle>Error</DialogTitle>
+              <DialogContent>
+                <Alert severity="error">{alertMessage}</Alert>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseAlert}>Close</Button>
+              </DialogActions>
+            </Dialog>
             <Grid container spacing={2}>
               <Grid item xs={12} className=" mt-4 mb-4">
                 <div className="flex flex-row justify-between">
@@ -192,7 +358,7 @@ const Text = () => {
                       <Switch
                         color="primary"
                         checked={selectChecked}
-                        onChange={handkeSelectedCriteria}
+                        onChange={handleSelectedCriteria}
                       />
                     }
                     label="Select Criteria"
@@ -236,17 +402,47 @@ const Text = () => {
               <Col className="border border-gray-500 bg-white">
                 <Editor
                   editorState={editorState}
-                  onEditorStateChange={(newEditorState) => setEditorState(newEditorState)}
+                  onEditorStateChange={(newEditorState) =>
+                    setEditorState(newEditorState)
+                  }
                   placeholder="Enter text content"
                 />
               </Col>
+              {showSubEditor && (
+                <Col className="border border-gray-500 bg-white">
+                  <Editor
+                    editorState={subEditorState}
+                    onEditorStateChange={handleSubEditorChange}
+                    placeholder="Enter sub-question content"
+                  />
+                </Col>
+              )}
+            
               <Grid container spacing={2}>
-                <Grid item xs={24} className=" mt-4 mb-4">
+              <Grid item xs={12} className=" mt-4 mb-4">
+                <div className="flex flex-row justify-between">
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        color="primary"
+                        onChange={toggleSubEditor}
+                        checked={showSubEditor}
+                      />
+                    }
+                    label="Show Sub-Question"
+                  />
+                </div>
+              </Grid>
+            </Grid>
+              <Grid container spacing={2}>
+                 <Grid item xs={24} className=" mt-4 mb-4">
                   <FormControlLabel
                     control={
                       <Switch
                         checked={showAnswerKeyEditor}
-                        onChange={() => setShowAnswerKeyEditor(!showAnswerKeyEditor)}
+                        onChange={() =>
+                          setShowAnswerKeyEditor(!showAnswerKeyEditor)
+                        }
                       />
                     }
                     label="Show Answer Key Editor"
@@ -255,7 +451,9 @@ const Text = () => {
                     <div className="border border-gray-500 bg-white">
                       <Editor
                         editorState={answerKeyEditorState}
-                        onEditorStateChange={(newEditorState) => setAnswerKeyEditorState(newEditorState)}
+                        onEditorStateChange={(newEditorState) =>
+                          setAnswerKeyEditorState(newEditorState)
+                        }
                         placeholder="Enter Answer Key content"
                       />
                     </div>
@@ -264,19 +462,57 @@ const Text = () => {
                     control={
                       <Switch
                         checked={showMarkSchemeEditor}
-                        onChange={() => setShowMarkSchemeEditor(!showMarkSchemeEditor)}
+                        onChange={() =>
+                          setShowMarkSchemeEditor(!showMarkSchemeEditor)
+                        }
                       />
                     }
                     label="Show Mark Scheme Editor"
                   />
                   {showMarkSchemeEditor && (
-                    <div xs={12} className="border border-gray-500 bg-white mt-3">
-                      <Editor
-                        editorState={markSchemeEditorState}
-                        onEditorStateChange={(newEditorState) => setMarkSchemeEditorState(newEditorState)}
-                        placeholder="Enter Mark Scheme content"
-                      />
+                    <div>
+                      <div xs={12} className="border border-gray-500 bg-white mt-3">
+                        <Editor
+                          editorState={markSchemeEditorState}
+                          onEditorStateChange={(newEditorState) =>
+                            setMarkSchemeEditorState(newEditorState)
+                          }
+                          placeholder="Enter Mark Scheme content"
+                        />
+                      </div>
+                      <div className="mt-4 cursor-pointer text-blue-600">
+                        <div {...getRootProps({ className: "dropzone" })}>
+                          <input {...getInputProps()} />
+                          <p>Drag 'n' drop a PDF file here, or click to select a PDF file</p>
+                        </div>
+                        {pdfFile && <PdfComponent pdfFile={pdfFile} />}
+                      </div>
+                      <div className="mt-4 cursor-pointer text-blue-600">
+                        {imageSrc && (
+                          <img src={imageSrc} alt="Uploaded"  className="img-fluid"
+      style={{ maxWidth: "100%", height: "auto",width:'40%' }} />
+                        )}
+                        <div {...getRootProps({ className: "dropzone" })}>
+                          <input {...getInputProps()} />
+                          <p>
+                            Drag 'n' drop an image here, or click to select an image
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-4 cursor-pointer text-blue-600">
+                        {videoSrc && (
+                          <video controls src={videoSrc} className="video-fluid" />
+                        )}
+                        <div {...getRootProps({ className: "dropzone" })}>
+                          <input {...getInputProps()} />
+                          <p>
+                            Drag 'n' drop a video here, or click to select a video
+                          </p>
+                        </div>
+                      </div>
                     </div>
+                   
+                  
                   )}
                 </Grid>
               </Grid>
