@@ -262,7 +262,8 @@ const Text = () => {
   return (
     <div>
     {questions.map((question, index) => (
-  <Card key={index} className="text-start ml-4 mb-3">
+      <Card key={index} sx={{ marginLeft: '20px', marginTop: '10px', marginBottom:'20px', textAlign:'start' }}>
+
     <div className="mb-3 ml-4 ">
       <h5>Q{question.questionNumber}</h5>
       <p>{question.editorState && question.editorState.blocks[0].text}</p>

@@ -23,12 +23,12 @@ import { Eye, EyeOff } from "react-feather";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 
-const StudentAdd = ({ isSidebarClosed }) => {
-  const [usertype, setUsertype] = useState("");
+const StudentAdd = ({ isSidebarClosed, addStudent}) => {
+  const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
-  const [expireDate, setExpireDate] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
@@ -40,13 +40,21 @@ const StudentAdd = ({ isSidebarClosed }) => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    const userData = {
+      role,
+      name,
+      email,
+      mobile,
+      expiryDate,
+      password,
+    };
+    addStudent(userData);
     const validationErrors = [];
-    if (!usertype) validationErrors.push("Usertype");
+    if (!role) validationErrors.push("Role");
     if (!name) validationErrors.push("User Name");
     if (!email) validationErrors.push("User Email");
     if (!mobile) validationErrors.push("User Mobile");
-    if (!expireDate) validationErrors.push("Inactivation Date");
+    if (!expiryDate) validationErrors.push("ExpiryDate");
     if (!password) validationErrors.push("User Password");
     if (!isStrongPassword(password)) {
       setErrorDialogOpen(true);
@@ -62,11 +70,11 @@ const StudentAdd = ({ isSidebarClosed }) => {
 
     setSuccessDialogOpen(true);
     setErrorDialogOpen(false);
-    setUsertype("");
+    setRole("");
     setName("");
     setEmail("");
     setMobile("");
-    setExpireDate("");
+    setExpiryDate("");
     setPassword("");
     setShowPassword(false);
   };
@@ -105,7 +113,7 @@ const StudentAdd = ({ isSidebarClosed }) => {
       hasSpecialChar
     );
   };
-
+  
   return (
     <Container maxWidth="xxl" style={styles}>
       <div className="content-header row1"></div>
@@ -122,14 +130,14 @@ const StudentAdd = ({ isSidebarClosed }) => {
               <Grid container spacing={2}>
               <Grid item xs={12} md={4}>
   <FormControl fullWidth size="small" className="mt-3">
-    <InputLabel id="usertype-label">User Type</InputLabel>
+    <InputLabel id="usertype-label">Role</InputLabel>
     <Select
       labelId="usertype-label"
       id="select-usertype"
       className="bg-white"
-      name="usertype"
-      value={usertype}
-      onChange={(e) => setUsertype(e.target.value)}
+      name="role"
+      value={role}
+      onChange={(e) => setRole(e.target.value)}
       required
       aria-labelledby="usertype-label"
     >
@@ -211,14 +219,15 @@ const StudentAdd = ({ isSidebarClosed }) => {
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                  <Flatpickr
-                    className="form-control flatpickr-basic flatpickr-input h-12 mt-3"
-                    placeholder="Set Inactivation Date"
-                    label="Date"
-                    options={{ dateFormat: "Y-m-d" }}
-                    value={expireDate}
-                    onChange={(date) => setExpireDate(date[0])}
-                  />
+                <Flatpickr
+  className="form-control flatpickr-basic flatpickr-input h-12 mt-3"
+  placeholder="Set Inactivation Date"
+  label="Date"
+  options={{ dateFormat: "Y-m-d" }}
+  value={expiryDate ? [new Date(expiryDate)] : []} 
+  onChange={(date) => setExpiryDate(date[0]?.toISOString() || "")} 
+
+/>
                 </Grid>
 
                 <Grid item xs={12} md={4}>
@@ -288,7 +297,7 @@ const StudentAdd = ({ isSidebarClosed }) => {
                       "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
                   }}
                 >
-                  Add
+               Add
                 </Button>
               </div>
             </form>
@@ -321,3 +330,4 @@ const StudentAdd = ({ isSidebarClosed }) => {
 };
 
 export default StudentAdd;
+

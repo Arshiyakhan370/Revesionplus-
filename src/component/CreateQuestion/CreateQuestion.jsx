@@ -128,10 +128,10 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                         <>
                           <Button
                             type="button"
-                            className="ant-btn css-bua3hd ant-btn-circle bg-white ant-btn-default ant-btn-lg ant-btn-icon-only ant-btn-background-ghost ant-btn-dangerous ant-btn-icon-m-t-4"
+                            className="ant-btn css-bua3hd ant-btn-circle bg-white ant-btn-default ant-btn-lg ant-btn-icon-only ant-btn-background-ghost ant-btn-dangerous ant-btn-icon-m-t-4 border border-red-500"
                             onClick={() => handleToggleItem(index)}
                             sx={{
-    background: item.isVisible ? 'red' : 'blue',
+                            background: item.isVisible ? 'red' : 'blue',
                             }}
                           >
                             <span className="ant-btn-icon">

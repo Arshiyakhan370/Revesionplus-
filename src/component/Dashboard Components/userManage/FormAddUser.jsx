@@ -303,10 +303,12 @@ const FormAddUser = ({ isSidebarClosed }) => {
     </div>
  
   </div> 
-  <div className='flex  flex-row justify-end'>  <Button>
-  <Link to="/add-user" className="btn btn-round btn-gradient-primary float-end  " style={{textDecoration:'none'}}>
- Add User
- </Link></Button></div>
+  <div className='flex  flex-row justify-end'>
+  <Link to="/add-user" style={{textDecoration:'none'}}>
+    <Button sx={{height:'30px', marginRight:'14px', color: 'white', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important' }}>
+    Add User
+    </Button> 
+ </Link></div>
 
 
 

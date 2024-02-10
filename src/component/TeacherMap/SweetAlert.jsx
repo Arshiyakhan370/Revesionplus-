@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Select, MenuItem, Button, FormControl, InputLabel, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
  export const teacherOptions = [
-  { value: '2', label: 'xyz [sakzishu]' },
+  { value: 'xyz [sakzishu]', label: 'xyz [sakzishu]' },
   { value: "2",   label: "xyz  [sakzishu]"},
   { value: "3",   label: "yz  [teacher]"},
   { value: "4",   label: "yz  [igcse]"},
@@ -54,13 +54,13 @@ import { Grid, Select, MenuItem, Button, FormControl, InputLabel, Dialog, Dialog
 ];
 
 export const boardOptions = [
-  { value: '1', label: 'IB' },
-  { value: '2', label: 'IGCSE' },
+  { value: 'IB', label: 'IB' },
+  { value: 'IGCSE', label: 'IGCSE' },
 ];
 
 export const subjectOptions = [
-  { value: '1', label: 'Subject 1' },
-  { value: '2', label: 'Subject 2' },
+  { value: 'Subject 1', label: 'Subject 1' },
+  { value: 'Subject 2', label: 'Subject 2' },
 ];
 const SweetAlert = ({ onAddMapping }) => {
   const [selectedTeacher, setSelectedTeacher] = useState('');

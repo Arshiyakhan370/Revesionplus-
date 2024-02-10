@@ -188,7 +188,7 @@ const handleAddMapping = (newMapping) => {
               &nbsp;&nbsp;
               <Link
                 to=''
-           className="item-edit text-info circle " 
+           className="item-edit text-info circle  text-blue-400" 
                 style={{
     width: '50px',
     height: '50px',

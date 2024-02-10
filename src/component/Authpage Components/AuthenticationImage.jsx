@@ -4,6 +4,7 @@ import { TextField, Checkbox, FormControlLabel, Button, Grid, Container, Input, 
 import './Authentication.css';
 import { Eye, EyeOff } from 'react-feather';
 
+
 const AuthenticationImage = () => {
   const [isV1, setIsV1] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,7 +34,7 @@ const AuthenticationImage = () => {
   };
   return (
     <Fragment>
-      <Container maxWidth='xl'>
+      <Container maxWidth='xxl'>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           <Grid item xs={12} md={6}>
             <div className="section-left h-full float-left block bg-transparent ">
@@ -46,7 +47,7 @@ const AuthenticationImage = () => {
             </div>
           </Grid>
           <Grid item xs={12} md={6}>
-        <div className="section-right  h-full float-left block bg- transparent mb-16 mt-16 ">
+        <div className="section-right  h-full float-left block bg- transparent mb-32 mt-16 ">
           <h2>Welcome to <span className="text-global">My Revision<sup>+</sup></span> </h2>
           <div className="tab">
             <Button
@@ -118,9 +119,9 @@ const AuthenticationImage = () => {
 </div>
 
 <FormControl fullWidth>
-  <InputLabel htmlFor="floating_outlined" className='text-white'>Password</InputLabel>
+  <InputLabel htmlFor="floating" className='text-white'>Password</InputLabel>
   <OutlinedInput
-    id="floating_outlined"
+    id="floating"
     type={showPassword ? 'text' : 'password'}
     value={password}
    sx={{  background: 'white',borderRadius:'7px' ,color:'black' ,  height: '50px',}}
@@ -140,9 +141,12 @@ const AuthenticationImage = () => {
 
         
         <div className="touch-form2 text-white flex flex-row justify-between">
+        <div>
           <FormControlLabel
             control={
               <Checkbox
+              sx={{color:'white'}}
+              className='text-white'
                 id="rememberMe"
                 checked={rememberMe}
                 onChange={() => setRememberMe(!rememberMe)}
@@ -151,9 +155,12 @@ const AuthenticationImage = () => {
             label="Remember me"
             style={{ color: 'white' }}
           />
-          <Link to="#" style={{textDecoration:'none'}} className="forgot-password text-white ">
+          </div>
+          <div>
+          <Link to="#" style={{textDecoration:'none', color:'white'}} className="forgot-password text-white ">
             Forgot Password?
           </Link>
+          </div>
           </div>
         <div className="touch-form2">
           <Button

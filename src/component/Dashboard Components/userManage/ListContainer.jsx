@@ -22,109 +22,10 @@ import 'flatpickr/dist/themes/material_green.css';
 import { Box } from '@mui/system';
 
 
-const ListContainer = ({ isSidebarClosed }) => {
+const ListContainer = ({ isSidebarClosed ,userListData,setUserListData}) => {
   const [selectedValue, setSelectedValue] = useState(10);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(selectedValue);
-
-  const [userListData, setUserListData] = useState([
-    {
-      name: 'aarabbanisadiq',
-      email: 'AArabbanisadiq@hotmail.com',
-      role: 'IB Facilitator',
-      mobile: '9667989159',
-      expiryDate: '2023-10-14',
-      id: 310,
-    },
-    {
-        name: 'Dr. Abhay',
-        email: 'Abhay.singh91286@gmail.com',
-        role: 'IB Facilitator',
-        mobile: '',
-        expiryDate: '2023-10-14',
-        id: 311,
-      },
-      {
-        name: 'Afroz',
-        email: 'afroz@ibglobalacademy.org',
-        role: 'IB Facilitator',
-        mobile: '9818805721',
-        expiryDate: '2030-10-31',
-        id: 312,
-      },
-      {
-        name: 'Afroz',
-        email: 'afroz@ibglobalacademy.org',
-        role: 'IB Facilitator',
-        mobile: '9818805721',
-        expiryDate: '2030-10-31',
-        id: 313,
-      },
-      {
-        name: 'Dr. Abhay',
-        email: 'Abhay.singh91286@gmail.com',
-        role: 'IB Facilitator',
-        mobile: '',
-        expiryDate: '2023-10-14',
-        id: 314,
-      },
-      {
-        name: 'Dr. Abhay',
-        email: 'Abhay.singh91286@gmail.com',
-        role: 'IB Facilitator',
-        mobile: '',
-        expiryDate: '2023-10-14',
-        id: 315,
-      },
-      {
-        name: 'aarabbanisadiq',
-        email: 'AArabbanisadiq@hotmail.com',
-        role: 'IB Facilitator',
-        mobile: '9667989159',
-        expiryDate: '2023-10-14',
-        id: 316,
-      },
-      {
-          name: 'Dr. Abhay',
-          email: 'Abhay.singh91286@gmail.com',
-          role: 'IB Facilitator',
-          mobile: '',
-          expiryDate: '2023-10-14',
-          id: 317,
-        },
-        {
-            name: 'aarabbanisadiq',
-            email: 'AArabbanisadiq@hotmail.com',
-            role: 'IB Facilitator',
-            mobile: '9667989159',
-            expiryDate: '2023-10-14',
-            id: 318,
-          },
-          {
-              name: 'Dr. Abhay',
-              email: 'Abhay.singh91286@gmail.com',
-              role: 'IB Facilitator',
-              mobile: '',
-              expiryDate: '2023-10-14',
-              id: 319,
-            },
-            {
-                name: 'aarabbanisadiq',
-                email: 'AArabbanisadiq@hotmail.com',
-                role: 'IB Facilitator',
-                mobile: '9667989159',
-                expiryDate: '2023-10-14',
-                id: 320,
-              },
-              {
-                  name: 'Dr. Abhay',
-                  email: 'Abhay.singh91286@gmail.com',
-                  role: 'IB Facilitator',
-                  mobile: '',
-                  expiryDate: '2023-10-14',
-                  id: 321,
-                },
-  ]);
  
 const [searchQuery, setSearchQuery] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
@@ -143,13 +44,7 @@ const [searchQuery, setSearchQuery] = useState('');
 const [deleteUserId, setDeleteUserId] = useState(null);
 const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
 const roles = ['Admin', 'Ib Facility'];
-  const filteredUserList = userListData.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.mobile.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.expiryDate.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+ 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -243,7 +138,7 @@ const roles = ['Admin', 'Ib Facility'];
     setEditUserRole(userRole)
     setShowEditModal(true);
   };
-  
+  const userListLength = userListData ? userListData.length : 0;
   const handleSaveEdit = () => {
         const updatedUserList = userListData.map((user) =>
       user.id === editUserId
@@ -257,8 +152,16 @@ const roles = ['Admin', 'Ib Facility'];
   const handleCloseEditModal = () => {
     setShowEditModal(false);
   };
-
-  
+  if (!userListData) {
+    return <div>Loading...</div>;
+  }
+  const filteredUserList = userListData.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.mobile.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.expiryDate.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
     const handleScrollToTop = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -323,10 +226,13 @@ const roles = ['Admin', 'Ib Facility'];
   </div>
 
 </div> 
-<div className='flex  flex-row justify-end'>  <Button>
-<Link to="/student-add" className="btn btn-round btn-gradient-primary float-end  " style={{textDecoration:'none'}}>
+<div className='flex  flex-row justify-end'>
+<Link to="/student-add" style={{textDecoration:'none'}}>
+  <Button sx={{height:'30px', marginRight:'14px', color: 'white', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important' }}>
 Add User
-</Link></Button></div>
+</Button>
+</Link>
+</div>
 
                     </div>
                 </div>

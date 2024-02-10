@@ -1,89 +1,92 @@
-import React, { Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
-import AuthPage from '../Pages/AuthPage'
-import DashboardPage from '../Pages/DashboardPage'
-import AddUserPage from '../Pages/AddUserPage'
-import StudentPage from '../Pages/StudentPage'
-import TeacherMapPage from '../Pages/TeacherMapPage'
-import FormStudentPage from '../Pages/FormStudentPage'
-import AddStudentPage from '../Pages/AddStudentPage'
-import SweetAlert from '../component/TeacherMap/SweetAlert'
-import CreateQuestionPage from '../Pages/CreateQuestionPage'
-import Questions from '../component/CreateQuestion/Questions'
-import QuestionPage from '../Pages/QuestionPage'
-import QuestionDescriptionPage from '../Pages/QuestionDescriptionPage'
-import LibraryPage from '../Pages/LibraryPage'
-import Mcq from '../component/CreateQuestion/QuestionSub/Mcq'
-import Drwaing from '../component/CreateQuestion/QuestionSub/Drwaing'
-import CreateAssignment from '../component/createAssignment/CreateAssignment'
-import StudentDash from '../component/StudentDashboard/StudentDash'
-import FilterForm from '../component/createAssignment/FilterForm'
-import PracticeQuestion from '../component/PracticeAssignment/SourceAssignment/PracticeQuestion'
-import IBPage from '../Pages/IBPage'
-import MathsSectionQuestion from '../component/PracticeAssignment/SourceAssignment/MathsSectionQuestion'
-import Golink from '../component/PracticeAssignment/Golink.'
-import IbDp from '../component/PracticeAssignment/SourceAssignment/IBDP/IbDp'
-import IGcse from '../component/PracticeAssignment/IGcse'
-import Sat from '../component/PracticeAssignment/Sat'
-import Aisl from '../component/PracticeAssignment/SourceAssignment/IBDP/Aisl'
-import AislLink from '../component/PracticeAssignment/SourceAssignment/IBDP/AislLink'
-import AislLinkGoLink from '../component/PracticeAssignment/SourceAssignment/IBDP/aislLinkGoLink'
-import AislQuestionPaper from '../component/PracticeAssignment/AislQuestionPaper'
-import AlhlComponent from '../component/PracticeAssignment/alHl/AlhlComponent'
-import AaslLink from '../component/PracticeAssignment/AASL/AaslLink';
-import PysicsSl from '../component/PracticeAssignment/IbDkPysicsSl/PysicsSl'
-import BussinesSl from '../component/PracticeAssignment/IBDPbUSINESS/BussinesSl'
-import BussinessHl from '../component/PracticeAssignment/IBDPbUSINESS/BussinessHl'
-import ChemistrySl from '../component/PracticeAssignment/IbdpChemistry/ChemistrySl'
-import ChemistryHl from '../component/PracticeAssignment/IbdpChemistry/ChemistryHl'
-import EconomicSl from '../component/PracticeAssignment/IBeconomic/EconomicSl'
-import Paper1Secound from '../component/PracticeAssignment/SourceAssignment/IBDP/Paper1Secound'
-import Paper1MarthscoreLink from '../component/PracticeAssignment/SourceAssignment/IBDP/paper1MarthscoreLink'
-import Hase2Mathematics from '../component/PracticeAssignment/SourceAssignment/IBDP/Hase2Mathematics'
-import HaseMathsPpaper1 from '../component/PracticeAssignment/SourceAssignment/IBDP/HaseMathsPpaper1'
-import HaseMathematicsAlhl from '../component/PracticeAssignment/alHl/HaseMathematicsAlhl'
-import Hase2AlhlPaper2 from '../component/PracticeAssignment/alHl/Hase2AlhlPaper2'
-import PhysicsPaper from '../component/PracticeAssignment/IbDkPysicsSl/PhysicsPaper'
-import Paper1 from '../component/PracticeAssignment/IbDkPysicsSl/Paper1'
-import Oxford from '../component/PracticeAssignment/IbDkPysicsSl/Oxford'
-import OxfordPaper1 from '../component/PracticeAssignment/IbDkPysicsSl/OxfordPaper1'
-import BussSlPaper from '../component/PracticeAssignment/IBDPbUSINESS/BussSlPaper'
-import BussPaper1and2 from '../component/PracticeAssignment/IBDPbUSINESS/BussPaper1and2'
-import ChemistryCombridge from '../component/PracticeAssignment/IbdpChemistry/ChemistryCombridge'
-import ChemistrayPperLink from '../component/PracticeAssignment/IbdpChemistry/ChemistrayPperLink'
-import ChemistryOxford from '../component/PracticeAssignment/IbdpChemistry/ChemistryOxford'
-import ChemistryPerson from '../component/PracticeAssignment/IbdpChemistry/ChemistryPerson'
-import ChemOxfordPaper from '../component/PracticeAssignment/IbdpChemistry/ChemOxfordPaper'
-import EconomicSlPaper from '../component/PracticeAssignment/IBeconomic/EconomicSlPaper'
-import EconimicPpaer2 from '../component/PracticeAssignment/IBeconomic/EconimicPpaer2'
-import OxfordEconimic from '../component/PracticeAssignment/IBeconomic/OxfordEconimic'
-import EconimicBlink from '../component/PracticeAssignment/IBeconomic/EconimicBlink'
-import TeacherDashboard from '../component/TeacherDashboard/TeacherDashboard'
-import OnlineClasses from '../component/TeacherDashboard/OnlineClasses'
-import ScheduleContainer from '../component/TeacherDashboard/ScheduleContainer'
-import PastClass from '../component/TeacherDashboard/PastClass'
-import Navbar1 from '../component/Dashboard Components/Buttons1'
-import TextPage from '../Pages/TextPage'
-import AccordionPage from '../Pages/AccordionPage'
-import ImagePage from '../Pages/ImagePage'
-import PdfPage from '../Pages/PdfPage'
-import VdeoPage from '../Pages/VdeoPage'
-import AudioPage from '../Pages/AudioPage'
-import SimulationPage from '../Pages/SimulationPage'
-import McqPage from '../Pages/McqPage'
-import DrwaingPage from '../Pages/DrwaingPage'
-import FilterFormAndQuestion from '../Pages/FilterFormAndQuestion'
-import ProfileFormPage from '../Pages/ProfileFormPage'
-import AssignmentCreate from '../component/StudentDashboard/AssignmentCreate'
-import IBMYPComponent from '../component/PracticeAssignment/SourceAssignment/IBMYP/IBMYP'
-import AddCategoryPage from '../Pages/AddCategoryPage'
-import TableComponent from '../component/Dashboard Components/TableComponent'
-import VeiwCategoryPage from '../Pages/VeiwCategoryPage'
-
-
+import React, { Suspense, lazy } from 'react';
+import { CircularProgress } from '@mui/material';
+import { Route, Routes } from 'react-router-dom';
 
 
 const Routing = () => {
+const AuthPage = lazy(() => import('../Pages/AuthPage'));
+const DashboardPage = lazy(() => import('../Pages/DashboardPage'));
+const AddUserPage = lazy(() => import('../Pages/AddUserPage'));
+const StudentPage = lazy(() => import('../Pages/StudentPage'));
+const TeacherMapPage = lazy(() => import('../Pages/TeacherMapPage'));
+const FormStudentPage = lazy(() => import('../Pages/FormStudentPage'));
+const AddStudentPage = lazy(() => import('../Pages/AddStudentPage'));
+const SweetAlert = lazy(() => import('../component/TeacherMap/SweetAlert'));
+const CreateQuestionPage = lazy(() => import('../Pages/CreateQuestionPage'));
+const Questions = lazy(() => import('../component/CreateQuestion/Questions'));
+const QuestionPage = lazy(() => import('../Pages/QuestionPage'));
+const QuestionDescriptionPage = lazy(() => import('../Pages/QuestionDescriptionPage'));
+const LibraryPage = lazy(() => import('../Pages/LibraryPage'));
+const Mcq = lazy(() => import('../component/CreateQuestion/QuestionSub/Mcq'));
+const Drwaing = lazy(() => import('../component/CreateQuestion/QuestionSub/Drwaing'));
+const CreateAssignment = lazy(() => import('../component/createAssignment/CreateAssignment'));
+const StudentDash = lazy(() => import('../component/StudentDashboard/StudentDash'));
+const FilterForm = lazy(() => import('../component/createAssignment/FilterForm'));
+const PracticeQuestion = lazy(() => import('../component/PracticeAssignment/SourceAssignment/PracticeQuestion'));
+const IBPage = lazy(() => import('../Pages/IBPage'));
+const MathsSectionQuestion = lazy(() => import('../component/PracticeAssignment/SourceAssignment/MathsSectionQuestion'));
+const Golink = lazy(() => import('../component/PracticeAssignment/Golink.'));
+const IbDp = lazy(() => import('../component/PracticeAssignment/SourceAssignment/IBDP/IbDp'));
+const IGcse = lazy(() => import('../component/PracticeAssignment/IGcse'));
+const Sat = lazy(() => import('../component/PracticeAssignment/Sat'));
+const Aisl = lazy(() => import('../component/PracticeAssignment/SourceAssignment/IBDP/Aisl'));
+const AislLink = lazy(() => import('../component/PracticeAssignment/SourceAssignment/IBDP/AislLink'));
+const AislLinkGoLink = lazy(() => import('../component/PracticeAssignment/SourceAssignment/IBDP/aislLinkGoLink'));
+const AislQuestionPaper = lazy(() => import('../component/PracticeAssignment/AislQuestionPaper'));
+const AlhlComponent = lazy(() => import('../component/PracticeAssignment/alHl/AlhlComponent'));
+const AaslLink = lazy(() => import('../component/PracticeAssignment/AASL/AaslLink'));
+const PysicsSl = lazy(() => import('../component/PracticeAssignment/IbDkPysicsSl/PysicsSl'));
+const BussinesSl = lazy(() => import('../component/PracticeAssignment/IBDPbUSINESS/BussinesSl'));
+const BussinessHl = lazy(() => import('../component/PracticeAssignment/IBDPbUSINESS/BussinessHl'));
+const ChemistrySl = lazy(() => import('../component/PracticeAssignment/IbdpChemistry/ChemistrySl'));
+const ChemistryHl = lazy(() => import('../component/PracticeAssignment/IbdpChemistry/ChemistryHl'));
+const EconomicSl = lazy(() => import('../component/PracticeAssignment/IBeconomic/EconomicSl'));
+const Paper1Secound = lazy(() => import('../component/PracticeAssignment/SourceAssignment/IBDP/Paper1Secound'));
+const Paper1MarthscoreLink = lazy(() => import('../component/PracticeAssignment/SourceAssignment/IBDP/paper1MarthscoreLink'));
+const Hase2Mathematics = lazy(() => import('../component/PracticeAssignment/SourceAssignment/IBDP/Hase2Mathematics'));
+const HaseMathsPpaper1 = lazy(() => import('../component/PracticeAssignment/SourceAssignment/IBDP/HaseMathsPpaper1'));
+const HaseMathematicsAlhl = lazy(() => import('../component/PracticeAssignment/alHl/HaseMathematicsAlhl'));
+const Hase2AlhlPaper2 = lazy(() => import('../component/PracticeAssignment/alHl/Hase2AlhlPaper2'));
+const PhysicsPaper = lazy(() => import('../component/PracticeAssignment/IbDkPysicsSl/PhysicsPaper'));
+const Paper1 = lazy(() => import('../component/PracticeAssignment/IbDkPysicsSl/Paper1'));
+const Oxford = lazy(() => import('../component/PracticeAssignment/IbDkPysicsSl/Oxford'));
+const OxfordPaper1 = lazy(() => import('../component/PracticeAssignment/IbDkPysicsSl/OxfordPaper1'));
+const BussSlPaper = lazy(() => import('../component/PracticeAssignment/IBDPbUSINESS/BussSlPaper'));
+const BussPaper1and2 = lazy(() => import('../component/PracticeAssignment/IBDPbUSINESS/BussPaper1and2'));
+const ChemistryCombridge = lazy(() => import('../component/PracticeAssignment/IbdpChemistry/ChemistryCombridge'));
+const ChemistrayPperLink = lazy(() => import('../component/PracticeAssignment/IbdpChemistry/ChemistrayPperLink'));
+const ChemistryOxford = lazy(() => import('../component/PracticeAssignment/IbdpChemistry/ChemistryOxford'));
+const ChemistryPerson = lazy(() => import('../component/PracticeAssignment/IbdpChemistry/ChemistryPerson'));
+const ChemOxfordPaper = lazy(() => import('../component/PracticeAssignment/IbdpChemistry/ChemOxfordPaper'));
+const EconomicSlPaper = lazy(() => import('../component/PracticeAssignment/IBeconomic/EconomicSlPaper'));
+const EconimicPpaer2 = lazy(() => import('../component/PracticeAssignment/IBeconomic/EconimicPpaer2'));
+const OxfordEconimic = lazy(() => import('../component/PracticeAssignment/IBeconomic/OxfordEconimic'));
+const EconimicBlink = lazy(() => import('../component/PracticeAssignment/IBeconomic/EconimicBlink'));
+const TeacherDashboard = lazy(() => import('../component/TeacherDashboard/TeacherDashboard'));
+const OnlineClasses = lazy(() => import('../component/TeacherDashboard/OnlineClasses'));
+const ScheduleContainer = lazy(() => import('../component/TeacherDashboard/ScheduleContainer'));
+const PastClass = lazy(() => import('../component/TeacherDashboard/PastClass'));
+const Navbar1 = lazy(() => import('../component/Dashboard Components/Buttons1'));
+const TextPage = lazy(() => import('../Pages/TextPage'));
+const AccordionPage = lazy(() => import('../Pages/AccordionPage'));
+const ImagePage = lazy(() => import('../Pages/ImagePage'));
+const PdfPage = lazy(() => import('../Pages/PdfPage'));
+const VdeoPage = lazy(() => import('../Pages/VdeoPage'));
+const AudioPage = lazy(() => import('../Pages/AudioPage'));
+const SimulationPage = lazy(() => import('../Pages/SimulationPage'));
+const McqPage = lazy(() => import('../Pages/McqPage'));
+const DrwaingPage = lazy(() => import('../Pages/DrwaingPage'));
+const FilterFormAndQuestion = lazy(() => import('../Pages/FilterFormAndQuestion'));
+const ProfileFormPage = lazy(() => import('../Pages/ProfileFormPage'))
+const AssignmentCreate =lazy (()=> import ('../component/StudentDashboard/AssignmentCreate'))
+const IBMYPComponent =lazy (()=> import ('../component/PracticeAssignment/SourceAssignment/IBMYP/IBMYP')) 
+const AddCategoryPage =lazy (()=> import ( '../Pages/AddCategoryPage'))
+const  TableComponent =lazy (()=> import ( '../component/Dashboard Components/TableComponent'))
+const VeiwCategoryPage =lazy (()=> import ('../Pages/VeiwCategoryPage')) 
+
+
+
+
   return (
    
     <Suspense fallback={<div className="flex h-screen items-center justify-center">

@@ -5,17 +5,17 @@ import NavBar from '../component/Authpage Components/NavBar';
 const AuthPage = () => {
   return (
     <Fragment>
-     <div className="relative z-10 ">
+     <div style={{ position: 'relative', zIndex: 10,  }}>
           <NavBar />
         </div>
 
-      <div
+      <div className=''
         style={{
           backgroundImage: "url('https://img.freepik.com/premium-photo/open-book-bible-light-blue-background-generative-ai_169016-40495.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          height: 'auto',
+          height:'140%',
         }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>

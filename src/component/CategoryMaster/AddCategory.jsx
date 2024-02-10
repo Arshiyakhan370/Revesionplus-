@@ -72,17 +72,18 @@ const AddCategory = ({isSidebarClosed}) => {
             <Card>
               <CardContent>
                 <Grid container spacing={2} >
-                     <Grid item xs={12} md={6} ms={6}>
-                      <FormControl fullWidth size="small"  className='mt-3'>
-                        <InputLabel htmlFor="board"  >Board</InputLabel>
-                        <Select label="Board" id="boardID"  >
-                          <MenuItem value="">Select Board Type</MenuItem>
-                          <MenuItem value="1">IB DP</MenuItem>
-                          <MenuItem value="2">IGCSE</MenuItem>
-                          <MenuItem value="3">IB MYP</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
+                <Grid item xs={12} md={6} ms={6} sx={{ marginTop: '16px' }}>
+  <FormControl fullWidth size="small">
+    <InputLabel htmlFor="board">Board</InputLabel>
+    <Select label="Board" id="boardID">
+      <MenuItem value="">Select Board Type</MenuItem>
+      <MenuItem value="1">IB DP</MenuItem>
+      <MenuItem value="2">IGCSE</MenuItem>
+      <MenuItem value="3">IB MYP</MenuItem>
+    </Select>
+  </FormControl>
+</Grid>
+
                               <Grid item xs={12} md={6} ms={6}>
                               <TextField
                    label="Subject"
@@ -118,8 +119,8 @@ const AddCategory = ({isSidebarClosed}) => {
               <CardContent>
                 <Grid container spacing={2}>
                  
-                    <Grid item xs={12} md={4} ms={6}>
-                    <FormControl fullWidth size="small"  className='mt-3'>
+                <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
+                    <FormControl fullWidth size="small" >
                         <InputLabel htmlFor="subjectLevel">Board</InputLabel>
                         <Select label="Board" id="subjectLevelID" sx={{height:'35px'}}>
                         <MenuItem value="">Select Board Type</MenuItem>
@@ -130,8 +131,8 @@ const AddCategory = ({isSidebarClosed}) => {
                       </FormControl>
                     </Grid>
                  
-                  <Grid item xs={12} md={4} ms={6}>
-                  <FormControl fullWidth size="small"  className='mt-3'>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
+                  <FormControl fullWidth size="small">
                         <InputLabel htmlFor="subjectLevel">Subject Name</InputLabel>
                         <Select label="Subject Name" id="subjectLevelID" sx={{height:'35px'}}>
                           <MenuItem value="">Select board Level</MenuItem>
@@ -172,8 +173,8 @@ const AddCategory = ({isSidebarClosed}) => {
               <CardContent>
                 <Grid container spacing={2}>
                  
-                    <Grid item xs={12} md={4} ms={6}>
-                          <FormControl fullWidth size="small"  className='mt-3'>
+                <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
+                          <FormControl fullWidth size="small">
                         <InputLabel htmlFor="subjectLevel">Board</InputLabel>
                         <Select label="Board" id="subjectLevelID" sx={{height:'35px'}}>
                         <MenuItem value="">Select Board Type</MenuItem>
@@ -184,7 +185,7 @@ const AddCategory = ({isSidebarClosed}) => {
                       </FormControl>
                     </Grid>
                  
-                  <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Subject Name</InputLabel>
                         <Select label="Subject Name" id="subjectLevelID" sx={{height:'35px'}}>
@@ -193,7 +194,7 @@ const AddCategory = ({isSidebarClosed}) => {
                                                </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Subject Level</InputLabel>
                         <Select label="Subject Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -235,7 +236,7 @@ const AddCategory = ({isSidebarClosed}) => {
               <CardContent>
                 <Grid container spacing={2}>
                  
-                    <Grid item xs={12} md={4} ms={6}>
+                <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Board</InputLabel>
                         <Select label="Board" id="subjectLevelID" sx={{height:'35px'}}>
@@ -247,7 +248,7 @@ const AddCategory = ({isSidebarClosed}) => {
                       </FormControl>
                     </Grid>
                  
-                  <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Subject Name</InputLabel>
                         <Select label="Subject Name" id="subjectLevelID " sx={{height:'35px'}}>
@@ -256,7 +257,7 @@ const AddCategory = ({isSidebarClosed}) => {
                                                </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Subject Level</InputLabel>
                         <Select label="Subject Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -265,7 +266,7 @@ const AddCategory = ({isSidebarClosed}) => {
                            </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={6} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Source Level</InputLabel>
                         <Select label="Source Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -307,7 +308,7 @@ const AddCategory = ({isSidebarClosed}) => {
               <CardContent>
                 <Grid container spacing={2}>
                  
-                    <Grid item xs={12} md={4} ms={6}>
+                <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Board</InputLabel>
                         <Select label="Board" id="subjectLevelID" sx={{height:'35px'}}>
@@ -319,7 +320,7 @@ const AddCategory = ({isSidebarClosed}) => {
                       </FormControl>
                     </Grid>
                  
-                  <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Subject Name</InputLabel>
                         <Select label="Subject Name" id="subjectLevelID" sx={{height:'35px'}}>
@@ -328,7 +329,7 @@ const AddCategory = ({isSidebarClosed}) => {
                                                </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Subject Level</InputLabel>
                         <Select label="Subject Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -337,7 +338,7 @@ const AddCategory = ({isSidebarClosed}) => {
                            </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Source Level</InputLabel>
                         <Select label="Source Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -346,7 +347,7 @@ const AddCategory = ({isSidebarClosed}) => {
                            </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Paper/Book</InputLabel>
                         <Select label="Source Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -387,7 +388,7 @@ const AddCategory = ({isSidebarClosed}) => {
             <Card>
               <CardContent>
                 <Grid container spacing={2}>
-                                     <Grid item xs={12} md={4} ms={6}>
+                <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Board</InputLabel>
                         <Select label="Board" id="subjectLevelID" sx={{height:'35px'}}>
@@ -399,7 +400,7 @@ const AddCategory = ({isSidebarClosed}) => {
                       </FormControl>
                     </Grid>
                  
-                  <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Subject Name</InputLabel>
                         <Select label="Subject Name" id="subjectLevelID" sx={{height:'35px'}} >
@@ -408,7 +409,7 @@ const AddCategory = ({isSidebarClosed}) => {
                                                </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Subject Level</InputLabel>
                         <Select label="Subject Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -417,7 +418,7 @@ const AddCategory = ({isSidebarClosed}) => {
                            </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Source Level</InputLabel>
                         <Select label="Source Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -426,7 +427,7 @@ const AddCategory = ({isSidebarClosed}) => {
                            </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} ms={6}>
+                    <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Paper/Book</InputLabel>
                         <Select label="Source Level" id="subjectLevelID" sx={{height:'35px'}}>
@@ -435,7 +436,8 @@ const AddCategory = ({isSidebarClosed}) => {
                            </Select>
                       </FormControl>
                       </Grid>
-                      <Grid item xs={12} md={4} ms={6}>
+                      
+                      <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
                           <FormControl fullWidth size="small"  className='mt-3'>
                         <InputLabel htmlFor="subjectLevel">Topic</InputLabel>
                         <Select label="Paper Level" id="subjectLevelID" sx={{height:'35px'}}>
