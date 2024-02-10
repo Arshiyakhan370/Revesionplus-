@@ -193,7 +193,7 @@ const femaleAvtarUrl='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAk
         
           </div>
         </div>
-        <ChevronRight className="toggle mr-4 border border-white text-white" style={{color:'white'}}   onClick={handleButtonClick } />
+        <ChevronRight className="toggle mr-4  text-white" style={{color:'white'}} onClick={handleButtonClick } />
       </header>
       <div className="menu-bar">
         <div className="menu">

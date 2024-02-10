@@ -87,7 +87,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
         
           <CardContent>
             <Typography variant="h6" gutterBottom className="mt-4 mb-4">
-              Create a Question
+              Create  Question
             </Typography>
           
             {currentContent && (
@@ -96,13 +96,10 @@ const CreateQuestion = ({ isSidebarClosed }) => {
             </div>
           )}
             <Grid item xs={12}>
-              <div
-                style={{
-                  // display: "flex",
-                  // justifyContent: "space-between",
-                  margin: "16px 0",
-                }}
+              <div className="lg:flex flex-row md:flex-col sm:flex-col justify-between "
+                
               >
+              <div className="flex-1">
                 <Button
                   onClick={handleAddItem}
                   variant="outlined"
@@ -116,8 +113,9 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                 >
                   Add Question
                 </Button>
-
-                <ul className="mt-8 text text-center">
+                </div>
+                    <div>
+                <ul className="mt-[-60px]">
                   {items.map((item, index) => (
                     <li
                       key={index}
@@ -172,21 +170,25 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                                 </Button>
                               </Grid>
                             </Grid>
-
-                            {showAdditionalButtons && 
-                            <div>
-                            <Description onSave={handleSaveTextContent} />
-                            </div>}
-                            {showQuestion && <div><Questions /></div>}
                           </div>
                         </>
                       )}
                     </li>
                   ))}
+                 
                 </ul>
+                </div>
               </div>
             </Grid>
-
+            <div className="text-center">
+            {showAdditionalButtons && 
+                            <div>
+                            <Description onSave={handleSaveTextContent} />
+                            </div>}
+                            </div>
+                            <div className="text-center">
+                            {showQuestion && <div><Questions /></div>}
+                            </div>
             <Grid item xs={12}>
               <div
                 style={{

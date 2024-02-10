@@ -128,8 +128,8 @@ const StudentAdd = ({ isSidebarClosed, addStudent}) => {
               onSubmit={handleSubmit}
             >
               <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-  <FormControl fullWidth size="small" className="mt-3">
+              <Grid item xs={12} md={4} sx={{marginTop:'16px'}}>
+  <FormControl fullWidth size="small" >
     <InputLabel id="usertype-label">Role</InputLabel>
     <Select
       labelId="usertype-label"

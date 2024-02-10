@@ -1,9 +1,10 @@
-import React, { useRef, useState, Suspense } from "react";
+import React, { useRef, useState, Suspense, Fragment } from "react";
 import { Form, Col, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw ,convertFromRaw } from "draft-js";
+import AlertDialog from './TextContain/AlertDailog'
 import {
   Container,
   Card,
@@ -21,6 +22,7 @@ import {
 } from "@mui/material";
 import { useMediaQuery } from "react-responsive";
 import { useDropzone } from "react-dropzone";
+import QuestionCard from "./TextContain/QuestionCard";
 
 const PdfComponent = React.lazy(() => import("./PdfComponent"));
 
@@ -128,62 +130,48 @@ const Text = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const questionPrefix = showSubEditor ? `${questionNumber}.${subQuestionNumber}` : `${questionNumber}`;
-    if (
-      selectChecked &&
-      Object.values(checkboxesState).every((val) => val === false)
-    ) {
+
+    if (selectChecked && !Object.values(checkboxesState).some((val) => val)) {
       handleOpenAlert("Please select at least one criterion!");
-    } else {
-      setAlertMessage(null);
-         const newQuestion = {
-        editorState: convertToRaw(editorState.getCurrentContent()),
-        answerKey: convertToRaw(answerKeyEditorState.getCurrentContent()),
-        markScheme: convertToRaw(markSchemeEditorState.getCurrentContent()),
-        subEditorState: showSubEditor
-          ? convertToRaw(subEditorState.getCurrentContent())
-          : null,
-        questionNumber: showSubEditor
-          ? `${questionNumber}.${subQuestionNumber}`
-          : questionNumber.toString(),
-        criteria: selectChecked
-          ? criteriaArray.filter((label) => checkboxesState[label])
-          : null,
-        marks: marks ? marksValue : null,
-        pdfFile: pdfFile ? pdfFile : null,
-        imageSrc: imageSrc ? imageSrc : null,
-        videoSrc: videoSrc ? videoSrc : null,
-      };
-  
-      
-      if (selectedQuestionIndex !== null) {
-        const updatedQuestions = [...questions];
-        updatedQuestions[selectedQuestionIndex] = newQuestion;
-        setQuestions(updatedQuestions);
-        setSelectedQuestionIndex(null); 
-      } else {
-
-        setQuestions([...questions, newQuestion]);
-        if (showSubEditor) {
-          setSubQuestionNumber(subQuestionNumber + 1);
-          setSubEditorState(EditorState.createEmpty());
-        } else {
-          setQuestionNumber(questionNumber + 1);
-        }
-      }
-
-      setEditorState(EditorState.createEmpty());
-      setAnswerKeyEditorState(EditorState.createEmpty());
-      setMarkSchemeEditorState(EditorState.createEmpty());
-      setSelectChecked(false);
-      setMarks(false);
-      setMarksValue(0);
-      setPdfFile(null);
-      setImageSrc(null);
-      setVideoSrc(null);
+      return;
     }
+    let newQuestionNumber;
+    if (showSubEditor) {
+            newQuestionNumber = `${questionNumber}.${subQuestionNumber}`;
+    } else {
+      newQuestionNumber = `${questionNumber}`;
+      setSubQuestionNumber(1);
+    }
+    const newQuestion = {
+      editorState: convertToRaw(editorState.getCurrentContent()),
+      answerKey: convertToRaw(answerKeyEditorState.getCurrentContent()),
+      markScheme: convertToRaw(markSchemeEditorState.getCurrentContent()),
+      subEditorState: showSubEditor
+        ? convertToRaw(subEditorState.getCurrentContent())
+        : null,
+      questionNumber: newQuestionNumber,
+      criteria: selectChecked
+        ? criteriaArray.filter((label) => checkboxesState[label])
+        : null,
+      marks: marks ? marksValue : null,
+      pdfFile: pdfFile ? pdfFile : null,
+      imageSrc: imageSrc ? imageSrc : null,
+      videoSrc: videoSrc ? videoSrc : null,
+    };
+    setQuestions([...questions, newQuestion]);
+    if (!showSubEditor) {
+      setQuestionNumber(questionNumber + 1);
+    }
+    setEditorState(EditorState.createEmpty());
+    setAnswerKeyEditorState(EditorState.createEmpty());
+    setMarkSchemeEditorState(EditorState.createEmpty());
+    setSelectChecked(false);
+    setMarks(false);
+    setMarksValue(0);
+    setPdfFile(null);
+    setImageSrc(null);
+    setVideoSrc(null);
   };
-  
   
   const handleSubEditorChange = (newEditorState) => {
     setSubEditorState(newEditorState);
@@ -260,96 +248,39 @@ const Text = () => {
   };
 
   return (
-    <div>
-    {questions.map((question, index) => (
-      <Card key={index} sx={{ marginLeft: '20px', marginTop: '10px', marginBottom:'20px', textAlign:'start' }}>
+    <Fragment>
+        {questions.map((question, index) => (
+          <Card key={index} className="text-start ml-4 mt-4 mb-4">
+            <div className="mb-3 ml-4">
+                <h5>Q{question.questionNumber}</h5>
+            </div>
 
-    <div className="mb-3 ml-4 ">
-      <h5>Q{question.questionNumber}</h5>
-      <p>{question.editorState && question.editorState.blocks[0].text}</p>
-    </div>
-    {showSubEditor && (
-      <div className="mb-3 ml-4 ">
-        <h5>Sub-Q{question.subQuestionNumber}</h5>
-        <p>{question.subEditorState && question.subEditorState.blocks[0].text}</p>
-      </div>
-    )}
-    {question.criteria && (
-      <p>Criteria: {question.criteria.join(", ")}</p>
-    )}
-    {question.marks && <p>Marks: {question.marks}</p>}
-    <div className="mb-3 ml-4">
-      <h6> Answer Key:</h6>
-      <span>{question.answerKey && convertToText(question.answerKey)}</span>
-    </div>
-    <div className="mb-3 ml-4">
-      <h6>Mark Scheme:</h6>
-      <span>{question.markScheme && convertToText(question.markScheme)}</span>
-    </div>
-    <div>
-      <div>
-        {question.pdfFile && (
-          <Suspense fallback={<div>Loading PDF...</div>}>
-            <PdfComponent pdfFile={question.pdfFile} />
-          </Suspense>
-        )}
-      </div>
-      <div>
-        {question.imageSrc && (
-          <img src={question.imageSrc} alt="Uploaded"
-               className="img-fluid"
-               style={{ maxWidth: "100%", height: "auto", width: '40%', marginTop: '20px' }} />
-        )}
-      </div>
-      <div>
-        {question.videoSrc && (
-          <video controls src={question.videoSrc} className="video-fluid" />
-        )}
-      </div>
-    </div>
-          <Button
-            onClick={() => handleCopyQuestionContent(index)}
-            variant="outlined"
-            sx={{ marginRight: 1 }}
-          >
-            Copy
-          </Button>
-          <Button
-            onClick={() => handleDelete(index)}
-            variant="outlined"
-            sx={{ marginRight: 1 }}
-          >
-            Delete
-          </Button>
-          <Button
-      onClick={() => handleEditQuestion(index)}
-      variant="outlined"
-      sx={{ marginRight: 1 }}
-    >
-      Edit
-    </Button>
-          <Button
-            onClick={() => handleViewPage(index)}
-            variant="outlined"
-            sx={{ marginRight: 1 }}
-          >
-            View Page
-          </Button>
+            {question.criteria && (
+                <p>Criteria: {question.criteria.join(", ")}</p>
+            )}
+            {question.marks && <p>Marks: {question.marks}</p>}
+            <div className="mb-3 ml-4">
+                <h6> Answer Key:</h6>
+                <span>{question.answerKey && convertToText(question.answerKey)}</span>
+            </div>
+            <div className="mb-3 ml-4">
+                <h6>Mark Scheme:</h6>
+                <span>{question.markScheme && convertToText(question.markScheme)}</span>
+            </div>
+            <div>
+                <Button onClick={() => handleCopyQuestionContent(index)} variant="outlined" sx={{ marginRight: 1 }}>Copy</Button>
+                <Button onClick={() => handleDelete(index)} variant="outlined" sx={{ marginRight: 1 }}>Delete</Button>
+                <Button onClick={() => handleEditQuestion(index)} variant="outlined" sx={{ marginRight: 1 }}>Edit</Button>
+                <Button onClick={() => handleViewPage(index)} variant="outlined" sx={{ marginRight: 1 }}>View Page</Button>
+            </div>
         </Card>
       ))}
-      <Container maxWidth="xxl" mt={44}>
+    
+        <Container maxWidth="xxl" mt={44}>
         <div className="container mt-3 ">
           <h2 className="text-center mb-8">Text</h2>
           <Form onSubmit={handleSubmit}>
-            <Dialog open={openAlert} onClose={handleCloseAlert}>
-              <DialogTitle>Error</DialogTitle>
-              <DialogContent>
-                <Alert severity="error">{alertMessage}</Alert>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseAlert}>Close</Button>
-              </DialogActions>
-            </Dialog>
+          <AlertDialog open={openAlert} handleCloseAlert={handleCloseAlert} alertMessage={alertMessage} />
             <Grid container spacing={2}>
               <Grid item xs={12} className=" mt-4 mb-4">
                 <div className="flex flex-row justify-between">
@@ -409,15 +340,7 @@ const Text = () => {
                   placeholder="Enter text content"
                 />
               </Col>
-              {showSubEditor && (
-                <Col className="border border-gray-500 bg-white">
-                  <Editor
-                    editorState={subEditorState}
-                    onEditorStateChange={handleSubEditorChange}
-                    placeholder="Enter sub-question content"
-                  />
-                </Col>
-              )}
+             
             
               <Grid container spacing={2}>
               <Grid item xs={12} className=" mt-4 mb-4">
@@ -547,7 +470,7 @@ const Text = () => {
           </Form>
         </div>
       </Container>
-    </div>
+      </Fragment>
   );
 };
 

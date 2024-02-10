@@ -5,7 +5,7 @@ import NavBar from '../component/Authpage Components/NavBar';
 const AuthPage = () => {
   return (
     <Fragment>
-     <div style={{ position: 'relative', zIndex: 10,  }}>
+     <div style={{ position: 'relative', zIndex: 10, marginTop: '-20px' }}>
           <NavBar />
         </div>
 

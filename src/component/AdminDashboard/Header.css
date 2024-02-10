@@ -344,6 +344,9 @@ body.dark .search-bar input {
 .sidebar.close .toggle {
   transform: translateY(-50%);
 }
+.submenu-toggle{
+color:white;
+}
 @media (max-width: 1024px) {
   .sidebar {
     display:none;

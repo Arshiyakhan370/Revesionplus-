@@ -103,7 +103,7 @@ const AuthenticationImage = () => {
           <form>
           <div className="mb-10 mt-10">
           <FormControl fullWidth>
-  <InputLabel htmlFor="floating_outlined" className=' text-white'>Email</InputLabel>
+  <InputLabel htmlFor="floating_outlined" sx={{color:'white'}}>Email</InputLabel>
   <OutlinedInput
     type="email"
     id="floating_outlined"
@@ -119,7 +119,7 @@ const AuthenticationImage = () => {
 </div>
 
 <FormControl fullWidth>
-  <InputLabel htmlFor="floating" className='text-white'>Password</InputLabel>
+  <InputLabel htmlFor="floating" sx={{color:'white'}}>Password</InputLabel>
   <OutlinedInput
     id="floating"
     type={showPassword ? 'text' : 'password'}
@@ -163,7 +163,7 @@ const AuthenticationImage = () => {
           </div>
           </div>
         <div className="touch-form2">
-          <Button
+          <button
             type="submit"
             variant="contained"
             color="primary"
@@ -171,7 +171,7 @@ const AuthenticationImage = () => {
             onClick={handleLogin}
           >
             Continue
-          </Button>
+          </button>
         </div>
       </form>
         </div>
