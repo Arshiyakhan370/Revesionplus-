@@ -3,8 +3,8 @@ import { Form, Col, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState, convertToRaw ,convertFromRaw } from "draft-js";
-import AlertDialog from './TextContain/AlertDailog'
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import AlertDialog from "./TextContain/AlertDailog";
 import {
   Container,
   Card,
@@ -56,19 +56,28 @@ const Text = () => {
     D: false,
   });
   const [marks, setMarks] = useState(false);
+  const [nextQuestionNumber, setNextQuestionNumber] = useState(1);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
-   const [pdfFile, setPdfFile] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [videoSrc, setVideoSrc] = useState(null);
-  const [openAlert, setOpenAlert] = useState(false); 
+  const [openAlert, setOpenAlert] = useState(false);
+  const [copyingQuestion, setCopyingQuestion] = useState(false);
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState(null);
 
+  const handleImageLoaded = (e) => {
+    const { naturalWidth, naturalHeight } = e.target;
+    setImageSize({ width: naturalWidth, height: naturalHeight });
+  };
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const criteriaArray = ["A", "B", "C", "D"];
 
   const handleCloseAlert = () => {
     setOpenAlert(false);
-    setAlertMessage(null); 
+    setAlertMessage(null);
   };
 
   const handleOpenAlert = (message) => {
@@ -77,31 +86,38 @@ const Text = () => {
   };
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    accept: ".pdf, image/*",
+    accept: "video/*, .pdf, image/*",
     onDrop: (acceptedFiles) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
   
         reader.onload = () => {
-          const fileType = file.type.split('/')[0];
-          switch(fileType) {
-            case 'image':
+          const fileType = file.type.split("/")[0];
+          switch (fileType) {
+            case "image":
               if (file.size > 1024 * 1024) {
                 handleOpenAlert("Image size should be less than 1MB.");
                 return;
               }
               setImageSrc(reader.result);
               break;
-            case 'application':
-              if (file.type !== 'application/pdf') {
+            case "application":
+              if (file.type === "application/pdf") {
+                if (file.size > 1024 * 1024) {
+                  handleOpenAlert("PDF size should be less than 1MB.");
+                  return;
+                }
+                setPdfFile(URL.createObjectURL(file));
+              } else {
                 handleOpenAlert("Unsupported file type.");
+              }
+              break;
+            case "video":
+              if (file.size > 1024 * 1024 * 100) { 
+                handleOpenAlert("Video size should be less than 100MB.");
                 return;
               }
-              if (file.size > 1024 * 1024) {
-                handleOpenAlert("PDF size should be less than 1MB.");
-                return;
-              }
-              setPdfFile(URL.createObjectURL(file));
+              setVideoSrc(URL.createObjectURL(file));
               break;
             default:
               console.log(`Unsupported file type: ${fileType}`);
@@ -113,6 +129,13 @@ const Text = () => {
     },
   });
   
+  const handleImageResize = (e) => {
+    const { name, value } = e.target;
+    setImageSize((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
   const handleSelectedCriteria = () => {
     setSelectChecked(!selectChecked);
   };
@@ -128,6 +151,34 @@ const Text = () => {
     setMarks(!marks);
   };
 
+  const handleCopy = (questionIndex) => {
+    const questionToCopy = questions[questionIndex];
+    const questionNumberParts = questionToCopy.questionNumber.split(".");
+    let newQuestionNumber;
+
+    if (questionNumberParts.length === 1) {
+      newQuestionNumber = parseInt(questionNumberParts[0], 10) + 1;
+    } else {
+      newQuestionNumber = parseInt(questionNumberParts[0], 10);
+      setSubQuestionNumber(subQuestionNumber + 1);
+    }
+
+    const newQuestion = {
+      ...questionToCopy,
+      questionNumber:
+        questionNumberParts.length === 1
+          ? `${newQuestionNumber}`
+          : `${questionNumberParts[0]}.${
+              parseInt(questionNumberParts[1], 10) + 1
+            }`,
+    };
+
+    setQuestions([...questions, newQuestion]);
+    if (questionNumberParts.length === 1) {
+      setQuestionNumber(newQuestionNumber);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -135,11 +186,28 @@ const Text = () => {
       handleOpenAlert("Please select at least one criterion!");
       return;
     }
+
     let newQuestionNumber;
     if (showSubEditor) {
-            newQuestionNumber = `${questionNumber}.${subQuestionNumber}`;
+      if (
+        questions.length > 0 &&
+        questions[questions.length - 1].questionNumber.includes(".")
+      ) {
+        const lastSubQuestionNumber = parseFloat(
+          questions[questions.length - 1].questionNumber.split(".")[1]
+        );
+        newQuestionNumber = `${questionNumber}.${lastSubQuestionNumber + 1}`;
+      } else {
+        newQuestionNumber = `${questionNumber}.1`;
+      }
     } else {
-      newQuestionNumber = `${questionNumber}`;
+      if (questions.length === 0) {
+        newQuestionNumber = "1";
+      } else {
+        newQuestionNumber = `${
+          parseInt(questions[questions.length - 1].questionNumber) + 1
+        }`;
+      }
       setSubQuestionNumber(1);
     }
     const newQuestion = {
@@ -159,8 +227,12 @@ const Text = () => {
       videoSrc: videoSrc ? videoSrc : null,
     };
     setQuestions([...questions, newQuestion]);
+
     if (!showSubEditor) {
-      setQuestionNumber(questionNumber + 1);
+      const nextQuestionNumber = showSubEditor
+        ? questionNumber
+        : parseInt(questionNumber) + 1;
+      setQuestionNumber(nextQuestionNumber);
     }
     setEditorState(EditorState.createEmpty());
     setAnswerKeyEditorState(EditorState.createEmpty());
@@ -172,7 +244,7 @@ const Text = () => {
     setImageSrc(null);
     setVideoSrc(null);
   };
-  
+
   const handleSubEditorChange = (newEditorState) => {
     setSubEditorState(newEditorState);
   };
@@ -180,23 +252,6 @@ const Text = () => {
   const toggleSubEditor = () => {
     setShowSubEditor(!showSubEditor);
   };
-
-  const handleCopy = (questionIndex) => {
-    const questionToCopy = questions[questionIndex];
-    navigator.clipboard.writeText(
-      convertToText(questionToCopy.editorState)
-    );
-    console.log(`Copy button clicked for Question ${questionIndex + 1}`);
-  };
-
-  const handleCopyQuestionContent = (index, questionIndex) => {
-    const questionToCopy = questions[questionIndex];
-
-    const copiedQuestion = { ...questions[index] };
-    setQuestions((prevQuestions) => [...prevQuestions, copiedQuestion]);
-    console.log(`Copy button clicked for Question ${questionIndex + 1}`);
-  };
-
   const handleDelete = (questionIndex) => {
     const updatedQuestions = [...questions];
     updatedQuestions.splice(questionIndex, 1);
@@ -206,16 +261,23 @@ const Text = () => {
 
   const handleEditQuestion = (index) => {
     const questionToEdit = questions[index];
-     
-    setEditorState(EditorState.createWithContent(convertFromRaw(questionToEdit.editorState)));
-    setAnswerKeyEditorState(EditorState.createWithContent(convertFromRaw(questionToEdit.answerKey)));
-    setMarkSchemeEditorState(EditorState.createWithContent(convertFromRaw(questionToEdit.markScheme)));
+
+    setEditorState(
+      EditorState.createWithContent(convertFromRaw(questionToEdit.editorState))
+    );
+    setAnswerKeyEditorState(
+      EditorState.createWithContent(convertFromRaw(questionToEdit.answerKey))
+    );
+    setMarkSchemeEditorState(
+      EditorState.createWithContent(convertFromRaw(questionToEdit.markScheme))
+    );
     setPdfFile(questionToEdit.pdfFile);
     setImageSrc(questionToEdit.imageSrc);
     setVideoSrc(questionToEdit.videoSrc);
-        
-    if (questionToEdit.questionNumber.includes('.')) {
-      const [questionNumber, subQuestionNumber] = questionToEdit.questionNumber.split('.');
+
+    if (questionToEdit.questionNumber.includes(".")) {
+      const [questionNumber, subQuestionNumber] =
+        questionToEdit.questionNumber.split(".");
       setQuestionNumber(parseInt(questionNumber));
       setSubQuestionNumber(parseFloat(subQuestionNumber));
       setShowSubEditor(true);
@@ -223,7 +285,7 @@ const Text = () => {
       setQuestionNumber(parseInt(questionToEdit.questionNumber));
       setShowSubEditor(false);
     }
-      setSelectedQuestionIndex(index);
+    setSelectedQuestionIndex(index);
   };
 
   const handleViewPage = (questionIndex) => {
@@ -249,45 +311,93 @@ const Text = () => {
 
   return (
     <Fragment>
-        {questions.map((question, index) => (
-          <Card key={index} className="text-start ml-4 mt-4 mb-4">
-            <div className="mb-3 ml-4">
-                <h5>Q{question.questionNumber}</h5>
-                <p>{question.editorState && question.editorState.blocks[0].text}</p>
-            </div>
+      {questions.map((question, index) => (
+        <Card key={index} className="text-start ml-4 mt-4 mb-4">
+          <div className="mb-3 ml-4">
+            <h5>
+              Q{question.questionNumber} {copyingQuestion && nextQuestionNumber}
+            </h5>{" "}
+             <p>{question.editorState && question.editorState.blocks[0].text}</p>
+          </div>
+          {question.criteria && <p>Criteria: {question.criteria.join(", ")}</p>}
+          {question.marks && <p>Marks: {question.marks}</p>}
+          <div className="mb-3 ml-4">
+            <h6> Answer Key:</h6>
+            <span>
+              {question.answerKey && convertToText(question.answerKey)}
+            </span>
+          </div>
+          <div className="mb-3 ml-4">
+            <h6>Mark Scheme:</h6>
+            <span>
+              {question.markScheme && convertToText(question.markScheme)}
+            </span>
+          </div>
+          {question.imageSrc && (
+            <img src={question.imageSrc} alt="Image" className="img-fluid" />
+          )}
 
-            {question.criteria && (
-                <p>Criteria: {question.criteria.join(", ")}</p>
-            )}
-            {question.marks && <p>Marks: {question.marks}</p>}
-            <div className="mb-3 ml-4">
-                <h6> Answer Key:</h6>
-                <span>{question.answerKey && convertToText(question.answerKey)}</span>
-            </div>
-            <div className="mb-3 ml-4">
-                <h6>Mark Scheme:</h6>
-                <span>{question.markScheme && convertToText(question.markScheme)}</span>
-            </div>
-            <div>
-                <Button onClick={() => handleCopyQuestionContent(index)} variant="outlined" sx={{ marginRight: 1 }}>Copy</Button>
-                <Button onClick={() => handleDelete(index)} variant="outlined" sx={{ marginRight: 1 }}>Delete</Button>
-                <Button onClick={() => handleEditQuestion(index)} variant="outlined" sx={{ marginRight: 1 }}>Edit</Button>
-                <Button onClick={() => handleViewPage(index)} variant="outlined" sx={{ marginRight: 1 }}>View Page</Button>
-            </div>
+          {question.pdfFile && (
+            <embed
+              src={question.pdfFile}
+              type="application/pdf"
+              width="100%"
+              height="600px"
+            />
+          )}
+
+          {question.videoSrc && (
+            <video controls width="100%">
+              <source src={question.videoSrc} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          )}
+          <div>
+            <Button
+              onClick={() => handleCopy(index)}
+              variant="outlined"
+              sx={{ marginRight: 1 }}
+            >
+              Copy
+            </Button>
+            <Button
+              onClick={() => handleDelete(index)}
+              variant="outlined"
+              sx={{ marginRight: 1 }}
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => handleEditQuestion(index)}
+              variant="outlined"
+              sx={{ marginRight: 1 }}
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => handleViewPage(index)}
+              variant="outlined"
+              sx={{ marginRight: 1 }}
+            >
+              View Page
+            </Button>
+          </div>
         </Card>
-       
       ))}
-    
-        <Container maxWidth="xxl" mt={44}>
+
+      <Container maxWidth="xxl" mt={44}>
         <div className="container mt-3 ">
           <h2 className="text-center mb-8">Text</h2>
           <Form onSubmit={handleSubmit}>
-          <AlertDialog open={openAlert} handleCloseAlert={handleCloseAlert} alertMessage={alertMessage} />
+            <AlertDialog
+              open={openAlert}
+              handleCloseAlert={handleCloseAlert}
+              alertMessage={alertMessage}
+            />
             <Grid container spacing={2}>
               <Grid item xs={12} className=" mt-4 mb-4">
                 <div className="flex flex-row justify-between">
                   <FormControlLabel
-                    sx={{ marginLeft: "10px", padding: "20px" }}
                     control={
                       <Switch
                         color="primary"
@@ -315,7 +425,6 @@ const Text = () => {
                     </div>
                   )}
                   <FormControlLabel
-                    sx={{ marginLeft: "10px", padding: "20px" }}
                     control={<Switch color="primary" onChange={handleMarks} />}
                     label="Marks"
                   />
@@ -326,7 +435,9 @@ const Text = () => {
                       label="Marks"
                       type="number"
                       value={marksValue}
-                      onChange={(e) => setMarksValue(parseInt(e.target.value, 10))}
+                      onChange={(e) =>
+                        setMarksValue(parseInt(e.target.value, 10))
+                      }
                     />
                   )}
                 </div>
@@ -342,26 +453,25 @@ const Text = () => {
                   placeholder="Enter text content"
                 />
               </Col>
-             
-            
+
               <Grid container spacing={2}>
-              <Grid item xs={12} className=" mt-4 mb-4">
-                <div className="flex flex-row justify-between">
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        color="primary"
-                        onChange={toggleSubEditor}
-                        checked={showSubEditor}
-                      />
-                    }
-                    label="Show Sub-Question"
-                  />
-                </div>
+                <Grid item xs={12} className=" mt-4 mb-4">
+                  <div className="flex flex-row justify-between">
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          color="primary"
+                          onChange={toggleSubEditor}
+                          checked={showSubEditor}
+                        />
+                      }
+                      label="Show Sub-Question"
+                    />
+                  </div>
+                </Grid>
               </Grid>
-            </Grid>
               <Grid container spacing={2}>
-                 <Grid item xs={24} className=" mt-4 mb-4">
+                <Grid item xs={24} className=" mt-4 mb-4">
                   <FormControlLabel
                     control={
                       <Switch
@@ -397,7 +507,10 @@ const Text = () => {
                   />
                   {showMarkSchemeEditor && (
                     <div>
-                      <div xs={12} className="border border-gray-500 bg-white mt-3">
+                      <div
+                        xs={12}
+                        className="border border-gray-500 bg-white mt-3"
+                      >
                         <Editor
                           editorState={markSchemeEditorState}
                           onEditorStateChange={(newEditorState) =>
@@ -407,38 +520,93 @@ const Text = () => {
                         />
                       </div>
                       <div className="mt-4 cursor-pointer text-blue-600">
-                        <div {...getRootProps({ className: "dropzone" })}>
+                        <div
+                          {...getRootProps({ className: "dropzone" })}
+                          style={dropzoneStyle}
+                        >
                           <input {...getInputProps()} />
-                          <p>Drag 'n' drop a PDF file here, or click to select a PDF file</p>
+                          <p>
+                            Drag 'n' drop a PDF file here, or click to select a
+                            PDF file
+                          </p>
                         </div>
                         {pdfFile && <PdfComponent pdfFile={pdfFile} />}
                       </div>
                       <div className="mt-4 cursor-pointer text-blue-600">
                         {imageSrc && (
-                          <img src={imageSrc} alt="Uploaded"  className="img-fluid"
-      style={{ maxWidth: "100%", height: "auto",width:'40%' }} />
+                          <div className="mt-2 mb-4">
+                            <img
+                              src={imageSrc}
+                              alt="Uploaded"
+                              className="img-fluid"
+                              style={{
+                                width: `${imageSize.width}px`,
+                                height: `${imageSize.height}px`,
+                              }}
+                              onLoad={handleImageLoaded}
+                            />
+                            <div className="mb-2">
+                              <label>Width: </label>
+                              <input
+                                className="border border-gray-500"
+                                type="number"
+                                name="width"
+                                value={imageSize.width}
+                                onChange={handleImageResize}
+                              />
+                            </div>
+                            <div className="mb-2">
+                              <label>Height: </label>
+                              <input
+                                className="border border-gray-500"
+                                type="number"
+                                name="height"
+                                value={imageSize.height}
+                                onChange={handleImageResize}
+                              />
+                            </div>
+                          </div>
                         )}
-                        <div {...getRootProps({ className: "dropzone" })}>
+                        <div
+                          {...getRootProps({ className: "dropzone" })}
+                          style={dropzoneStyle}
+                        >
                           <input {...getInputProps()} />
                           <p>
-                            Drag 'n' drop an image here, or click to select an image
+                            Drag 'n' drop an image here, or click to select an
+                            image
                           </p>
                         </div>
-                      </div>
-                      <div className="mt-4 cursor-pointer text-blue-600">
-                        {videoSrc && (
-                          <video controls src={videoSrc} className="video-fluid" />
-                        )}
-                        <div {...getRootProps({ className: "dropzone" })}>
-                          <input {...getInputProps()} />
-                          <p>
-                            Drag 'n' drop a video here, or click to select a video
-                          </p>
+                        <div className="mt-4 cursor-pointer text-blue-600">
+                          {videoSrc && (
+                            <video
+                              controls
+                              src={videoSrc}
+                              className="video-fluid"
+                            />
+                          )}
+                          <div
+                            {...getRootProps({ className: "dropzone" })}
+                            style={dropzoneStyle}
+                          >
+                            <input {...getInputProps()} />
+                            <p>
+                              Drag 'n' drop a video file here, or click to
+                              select a video file
+                            </p>
+                          </div>
+                          {file && (
+                            <div>
+                              <h4>File Details:</h4>
+                              <p>Name: {file.name}</p>
+                              <p>Size: {file.size} bytes</p>
+                              <p>Type: {file.type}</p>
+                            </div>
+                          )}
+                          {error && <p style={{ color: "red" }}>{error}</p>}
                         </div>
                       </div>
                     </div>
-                   
-                  
                   )}
                 </Grid>
               </Grid>
@@ -472,8 +640,15 @@ const Text = () => {
           </Form>
         </div>
       </Container>
-      </Fragment>
+    </Fragment>
   );
+};
+const dropzoneStyle = {
+  border: "2px dashed #cccccc",
+  borderRadius: "4px",
+  padding: "20px",
+  textAlign: "center",
+  cursor: "pointer",
 };
 
 export default Text;
