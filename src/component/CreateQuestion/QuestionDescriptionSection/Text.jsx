@@ -129,13 +129,7 @@ const Text = () => {
     },
   });
   
-  const handleImageResize = (e) => {
-    const { name, value } = e.target;
-    setImageSize((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  
   const handleSelectedCriteria = () => {
     setSelectChecked(!selectChecked);
   };
@@ -225,6 +219,7 @@ const Text = () => {
       pdfFile: pdfFile ? pdfFile : null,
       imageSrc: imageSrc ? imageSrc : null,
       videoSrc: videoSrc ? videoSrc : null,
+      imageSize: imageSize,
     };
     setQuestions([...questions, newQuestion]);
 
@@ -233,6 +228,7 @@ const Text = () => {
         ? questionNumber
         : parseInt(questionNumber) + 1;
       setQuestionNumber(nextQuestionNumber);
+    
     }
     setEditorState(EditorState.createEmpty());
     setAnswerKeyEditorState(EditorState.createEmpty());
@@ -244,7 +240,14 @@ const Text = () => {
     setImageSrc(null);
     setVideoSrc(null);
   };
-
+  const handleImageResize = (e) => {
+    const { name, value } = e.target;
+    setImageSize((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  
   const handleSubEditorChange = (newEditorState) => {
     setSubEditorState(newEditorState);
   };
@@ -334,9 +337,13 @@ const Text = () => {
             </span>
           </div>
           {question.imageSrc && (
-            <img src={question.imageSrc} alt="Image" className="img-fluid" />
-          )}
-
+  <img
+    src={question.imageSrc}
+    alt="Image"
+    className="img-fluid"
+    style={{ width: `${question.imageSize.width}px`, height: `${question.imageSize.height}px` }}
+  />
+)}
           {question.pdfFile && (
             <embed
               src={question.pdfFile}
