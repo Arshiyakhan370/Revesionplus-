@@ -73,6 +73,7 @@ const QuestionCard = ({ question, setQuestions,setMarkSchemeEditorState, questio
         <Card key={index}>
             <div className="mb-3 ml-4">
                 <h5>Q{question.questionNumber}</h5>
+                <p>{question.editorState && question.editorState.blocks[0].text}</p>
             </div>
 
             {question.criteria && (

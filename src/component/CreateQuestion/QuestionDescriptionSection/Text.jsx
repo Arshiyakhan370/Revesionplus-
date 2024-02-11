@@ -253,6 +253,7 @@ const Text = () => {
           <Card key={index} className="text-start ml-4 mt-4 mb-4">
             <div className="mb-3 ml-4">
                 <h5>Q{question.questionNumber}</h5>
+                <p>{question.editorState && question.editorState.blocks[0].text}</p>
             </div>
 
             {question.criteria && (
@@ -274,6 +275,7 @@ const Text = () => {
                 <Button onClick={() => handleViewPage(index)} variant="outlined" sx={{ marginRight: 1 }}>View Page</Button>
             </div>
         </Card>
+       
       ))}
     
         <Container maxWidth="xxl" mt={44}>
