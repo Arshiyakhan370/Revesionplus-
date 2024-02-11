@@ -416,7 +416,7 @@ const Text = () => {
                   />
                   {selectChecked && (
                     <div>
-                      {window.innerWidth > 1024 && (
+                      {/* {window.innerWidth > 1024 && ( */}
                         <Grid item xs={12} className="mt-4">
                           {Object.keys(checkboxesState).map((label) => (
                             <React.Fragment key={label}>
@@ -428,7 +428,7 @@ const Text = () => {
                             </React.Fragment>
                           ))}
                         </Grid>
-                      )}
+                      {/* )} */}
                     </div>
                   )}
                   <FormControlLabel

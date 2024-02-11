@@ -33,15 +33,20 @@ const Library = ({isSidebarClosed}) => {
   const goBack = () => {
     window.history.back();
   };
+  const sidebarWidth = isSidebarClosed ? "70px" : "270px";
+  const mainComponentWidth = isSmallScreen
+    ? "100%"
+    : `calc(100% - ${sidebarWidth})`;
+
   const styles = {
-    width: isSidebarClosed ?  (isSmallScreen ? '100%' : '94%') : (isSmallScreen ? '100%' : '79%'),
-    marginLeft: isSidebarClosed ? (isSmallScreen ? '0%' : '6%') : (isSmallScreen ? '0%' : '21%'),
-    transition: 'width 0.3s, margin-left 0.3s',
+    width: mainComponentWidth,
+    marginLeft: isSidebarClosed ? "79px" : isSmallScreen ? "0" : "270px",
+    transition: "width 0.3s, margin-left 0.3s",
   };
   return (
-    <Grid container spacing={3} justifyContent="center" style={styles}>
+    <Grid container spacing={3} justifyContent="center" style={styles} className='bg-gray-100'>
       <Grid item xs={12}>
-        <Card style={{ padding: 20, backgroundColor: '#fff' }}>
+       
           <CardContent>
             <h1 style={{ textAlign: 'left', fontSize: 24, marginLeft: 4 }}>
               Add from Library - Product Design
@@ -139,16 +144,17 @@ const Library = ({isSidebarClosed}) => {
                 </FormControl>
               </Grid>
             </Grid>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
+            <Grid item xs={12}>
         <Button variant="contained" onClick={goBack} sx={{color:'white', marginTop:'10px', background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important'}}>
           Back
         </Button>
       </Grid>
-      </CardContent>
+          </CardContent>
         </Card>
+      </Grid>
+      
+      </CardContent>
+        
       </Grid>
     </Grid>
   );

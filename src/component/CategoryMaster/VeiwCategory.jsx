@@ -24,17 +24,18 @@ import SubTopic from './SubTopic';
       const handleChange = (event, newValue) => {
         setValue(newValue);
       };
-      const sidebarWidth = isSidebarClosed ? '80px' : '299px';
+      const sidebarWidth = isSidebarClosed ? '79px' : '270px';
       const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
       
       const styles = {
         width: mainComponentWidth,
-        marginLeft: isSidebarClosed ? '90px' : (isSmallScreen ? '10px' : '299px'),
+        marginLeft: isSidebarClosed ? '79px' : (isSmallScreen ? '10px' : '270px'),
         transition: 'width 0.3s, margin-left 0.3s',
       };
       return (
-        <Container maxWidth="xxl" disableGutters >
-        <Paper  elevation={3}   style={styles} sx={{ p: 3,marginTop:'25px',background:'#f0f0f0', marginRight:'25px' }}>
+        <Container maxWidth="xxl" disableGutters style={styles} className='bg-gray-100'>
+        {/* <Paper  elevation={3}    sx={{ p: 3,marginTop:'25px',background:'#f0f0f0', marginRight:'25px' }}> */}
+        <div className='text-center flex justify-center'>
           <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" className='text-center'>
           <Tab icon={<Layers />} label="Subject" />
             {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
@@ -48,6 +49,7 @@ import SubTopic from './SubTopic';
             {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={< LibraryBooks/>} label="Subtopic" />
           </Tabs>
+          </div>
   <div className='border border-gray-500 mt-4 mb-2'></div>
        
           {value === 0 && (
@@ -68,7 +70,7 @@ import SubTopic from './SubTopic';
           {value === 5 && (
             <SubTopic/>
           )}
-        </Paper>
+        {/* </Paper> */}
         </Container>
     
       );

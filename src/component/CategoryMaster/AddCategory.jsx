@@ -40,18 +40,19 @@ const AddCategory = ({isSidebarClosed}) => {
     event.preventDefault();
     
   };
-  const sidebarWidth = isSidebarClosed ? '90px' : '290px';
+  const sidebarWidth = isSidebarClosed ? '79px' : '270px';
   const mainComponentWidth = isSmallScreen ? '100%' : `calc(100% - ${sidebarWidth})`;
   
   const styles = {
     width: mainComponentWidth,
-    marginLeft: isSidebarClosed ? '90px' : (isSmallScreen ? '10px' : '290px'),
+    marginLeft: isSidebarClosed ? '79px' : (isSmallScreen ? '10px' : '270px'),
     transition: 'width 0.3s, margin-left 0.3s',
   };
   const inputStyle = { height: '35px' };
   return (
-    <Container maxWidth="xxl" disableGutters >
-      <Paper elevation={3}   style={styles} sx={{ p: 3,marginTop:'25px',background:'#f0f0f0', marginRight:'25px' }}>
+    <Container maxWidth="xxl" disableGutters style={styles} className='bg-gray-100'>
+      {/* <Paper elevation={3}   style={styles} sx={{ p: 3,marginTop:'25px',background:'#f0f0f0', marginRight:'25px' }}> */}
+        <div className='text-center flex justify-center'>
         <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" className='text-center'>
         <Tab icon={<Layers />} label="Subject" />
           {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
@@ -65,7 +66,7 @@ const AddCategory = ({isSidebarClosed}) => {
           {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
           <Tab icon={< LibraryBooks/>} label="Subtopic" />
         </Tabs>
-
+</div>
         <Box sx={{ mt: 3, p: 3 }}>
         {value === 0 && (
           <form onSubmit={handleSubmit}>
@@ -474,7 +475,7 @@ const AddCategory = ({isSidebarClosed}) => {
           </form>
                   )}
         </Box>
-      </Paper>
+      {/* </Paper> */}
     </Container>
   );
 };

@@ -219,10 +219,10 @@ const Assignment = () => {
   };
 
   return (
-    <Container maxWidth="xxl" >
+    <Container maxWidth="xxl" className='bg-gray-100' >
       <Grid container spacing={2} >
         <Grid item xs={12} >
-          <Card elevation={2} >
+          {/* <Card elevation={2} > */}
             <CardContent>
       <Form onSubmit={handleSubmit} style={{ marginTop: '50px' }}>
         <Grid container mt={2} style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -417,7 +417,7 @@ const Assignment = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      </Card>
+      {/* </Card> */}
       </Grid>
       </Grid>
     </Container>

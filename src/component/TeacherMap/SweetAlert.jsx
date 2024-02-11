@@ -127,7 +127,7 @@ const SweetAlert = ({ onAddMapping }) => {
               id="teacher-select"
               value={selectedTeacher}
               onChange={handleTeacherChange}
-              sx={{ height: '35px', marginTop: '8px' }}
+              sx={{ height: '35px', marginTop: '8px' ,background:'white'}}
             >
               {teacherOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -146,7 +146,7 @@ const SweetAlert = ({ onAddMapping }) => {
               id="board-select"
               value={selectedBoard}
               onChange={handleBoardChange}
-              sx={{ height: '35px', marginTop: '8px' }}
+              sx={{ height: '35px', marginTop: '8px',background:'white' }}
             >
               {boardOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -165,7 +165,7 @@ const SweetAlert = ({ onAddMapping }) => {
               id="subject-select"
               value={selectedSubject}
               onChange={handleSubjectChange}
-              sx={{ height: '35px', marginTop: '8px' }}
+              sx={{ height: '35px', marginTop: '8px',background:'white' }}
             >
               {subjectOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>

@@ -17,18 +17,20 @@ const Nav = () => {
   }, []);
 
   return (
-    <div>
+    <div >
       {windowWidth > 1024 ? (
-        <nav className="navbar navbar-light bg-light flex flex-row" style={{ borderBottom: '1px solid #002b4f' }}>
+        <nav className="navbar navbar-light  flex flex-row justify-between  mt-[-20px]" style={{ borderBottom: '1px solid #002b4f'}}>
+        <div className='text-center mb-2 mt-2'>
         <span id="" className="pro-sidebar-logo ml-8">
   <div>M</div>
-  <h5 className='text-black mt-2' style={{color:'black'}}> My Revision<sup className="  text-blue-900 ">+</sup></h5>
+  <h5 className='text-black' style={{color:'black'}}> My Revision<sup className="  text-blue-900 ">+</sup></h5>
 </span>
-
-
+</div>
+   <div className='text-center mb-2 mt-2'>
           <Button
             variant='primary'
-            style={{
+            sx={{
+              height:'35px',
               marginRight: '30px',
               color: 'white',
               background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
@@ -36,6 +38,7 @@ const Nav = () => {
           >
             LogOut
           </Button>
+          </div>
         </nav>
       ) : null}
     </div>

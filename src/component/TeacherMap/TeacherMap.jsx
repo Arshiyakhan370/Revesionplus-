@@ -114,8 +114,8 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
     };
   return (
     <Fragment>
-    <Container maxWidth="xxl" style={styles}>
-    <Card sx={{marginTop:'15px',background:'#f0f0f0'}}>
+    <Container maxWidth="xxl" style={styles} className='bg-gray-100'>
+    {/* <Card sx={{marginTop:'15px',background:'#f0f0f0'}}> */}
     <CardContent>
           <div className="row2">
             <div className="col-md-12 col-12">
@@ -201,7 +201,7 @@ const sidebarWidth = isSidebarClosed ? '60px' : '280px';
             </div>
             </div>
            </CardContent>
-            </Card>
+            {/* </Card> */}
         
       
       </Container>

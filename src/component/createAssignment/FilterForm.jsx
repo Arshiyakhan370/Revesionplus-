@@ -62,7 +62,7 @@ const FilterForm = () => {
   const inputStyle = { height: '40px' };
   return (
     <Fragment>
-    <Container maxWidth='xxl' style={{}}>
+    <Container maxWidth='xxl' style={{}} className='bg-gray-100'>
       <div className=' mt-4 mb-4 text-black w-8 h-8'>
         <Button onClick={handleGoBack}>
           <ArrowLeft size={24} />

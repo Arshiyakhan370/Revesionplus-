@@ -179,8 +179,8 @@ const roles = ['Admin', 'Ib Facility'];
     return (
         <Fragment>
           
-        <Container maxWidth="xxl" style={styles}>
-      <Card  sx={{marginTop:'15px',background:'#f0f0f0'}}>
+        <Container maxWidth="xxl" style={styles} className='bg-gray-100'>
+      {/* <Card  sx={{marginTop:'15px',background:'#f0f0f0'}}> */}
       <CardContent>
       <section id="responsive-datatable">
         <div className="card-header border-bottom  flex flex-grow-0 justify-between">
@@ -588,7 +588,7 @@ Add User
                         
        </section>
        </CardContent>
-     </Card>
+     {/* </Card> */}
    </Container>
 
 

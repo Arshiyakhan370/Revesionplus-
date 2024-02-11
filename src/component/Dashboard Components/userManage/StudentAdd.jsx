@@ -115,10 +115,10 @@ const StudentAdd = ({ isSidebarClosed, addStudent}) => {
   };
   
   return (
-    <Container maxWidth="xxl" style={styles}>
+    <Container maxWidth="xxl" style={styles} className='bg-gray-100'>
       <div className="content-header row1"></div>
       <div className="content-body">
-        <Card sx={{ marginTop: "25px", background: "#f0f0f0" }}>
+        {/* <Card sx={{ marginTop: "25px", background: "#f0f0f0" }}> */}
           <CardContent>
             <h4 className="card-title mt-4 mb-4">Add User</h4>
 
@@ -302,7 +302,7 @@ const StudentAdd = ({ isSidebarClosed, addStudent}) => {
               </div>
             </form>
           </CardContent>
-        </Card>
+        {/* </Card> */}
       </div>
       <Dialog open={successDialogOpen} onClose={handleCloseDialogs}>
         <DialogTitle className="text-green-500"> Success </DialogTitle>

@@ -75,14 +75,14 @@ const CreateQuestion = ({ isSidebarClosed }) => {
 
   const styles = {
     width: mainComponentWidth,
-    marginLeft: isSidebarClosed ? "89px" : isSmallScreen ? "0" : "270px",
+    marginLeft: isSidebarClosed ? "79px" : isSmallScreen ? "0" : "270px",
     transition: "width 0.3s, margin-left 0.3s",
   };
 
   return (
     <Fragment>
-      <Container maxWidth="xxl" >
-      <Card sx={{ background: "#f0f0f0" }}  style={styles}>
+      <Container maxWidth="xxl"  style={styles} className="bg-gray-100 mt-[-40px]" >
+      {/* <Card sx={{ background: "#f0f0f0" }}  style={styles}> */}
       <FilterForm/>
         
           <CardContent>
@@ -193,7 +193,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "end",
                   margin: "16px 0",
                 }}
               >
@@ -208,7 +208,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                 >
                   Back
                 </Button>
-                <Button
+                {/* <Button
                   type="submit"
                   variant="contained"
                   onClick={handleSubmit}
@@ -219,11 +219,11 @@ const CreateQuestion = ({ isSidebarClosed }) => {
                   }}
                 >
                   Save
-                </Button>
+                </Button> */}
               </div>
             </Grid>
           </CardContent>
-        </Card>
+        {/* </Card> */}
       </Container>
     </Fragment>
   );

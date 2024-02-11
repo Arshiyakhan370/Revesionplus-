@@ -1,6 +1,7 @@
 body {
   font-family: 'poppins';
   overflow-x: hidden;
+  backgroundColor:'#f1f5f9';
 }
 
 .App {

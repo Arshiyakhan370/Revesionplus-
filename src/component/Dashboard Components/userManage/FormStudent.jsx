@@ -118,10 +118,10 @@ const FormStudent = ({isSidebarClosed}) => {
   };
   const inputStyle = { height: '35px' };
   return (
-    <Container maxWidth="xxl" style={styles}>
+    <Container maxWidth="xxl" style={styles} className='bg-gray-100'>
       <div className="content-header row1"></div>
       <div className="content-body">
-        <Card  sx={{marginTop:'25px',background:'#f0f0f0'}}>
+        {/* <Card  sx={{marginTop:'25px',background:'#f0f0f0'}}> */}
           <CardContent>
             <Typography variant="h4" gutterBottom className='mt-4 mb-4'>
               Add User
@@ -315,7 +315,7 @@ const FormStudent = ({isSidebarClosed}) => {
               </div>
             </form>
           </CardContent>
-        </Card>
+        {/* </Card> */}
       </div>
       <Dialog open={successDialogOpen} onClose={handleCloseDialogs}>
         <DialogTitle className="text-green-500">Success</DialogTitle>
