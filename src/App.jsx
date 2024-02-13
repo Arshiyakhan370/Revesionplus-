@@ -5,7 +5,7 @@ import Routing from './Routing/Routing';
 
 function App() {
   return (
-    <div className='' style={{fontFamily: "Almarai" }}>
+    <div className='' style={{  fontFamily: 'Almarai' }}>
       <Routing />
      
       <div className='w-screen p-6'>

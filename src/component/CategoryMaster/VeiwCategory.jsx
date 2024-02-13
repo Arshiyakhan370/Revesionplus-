@@ -29,7 +29,7 @@ import SubTopic from './SubTopic';
       
       const styles = {
         width: mainComponentWidth,
-        marginLeft: isSidebarClosed ? '79px' : (isSmallScreen ? '10px' : '270px'),
+        marginLeft: isSidebarClosed ? '79px' : (isSmallScreen ? '0' : '270px'),
         transition: 'width 0.3s, margin-left 0.3s',
       };
       return (

@@ -19,14 +19,14 @@ const Nav = () => {
   return (
     <div >
       {windowWidth > 1024 ? (
-        <nav className="navbar navbar-light  flex flex-row justify-between  mt-[-20px]" style={{ borderBottom: '1px solid #002b4f'}}>
-        <div className='text-center mb-2 mt-2'>
-        <span id="" className="pro-sidebar-logo ml-8">
+        <nav className="navbar navbar-light  flex flex-row justify-between h-12 text-center" style={{ borderBottom: '1px solid #002b4f'}}>
+        <div className='text-center mt-[-10px] mb-1'>
+        <span id="" className="pro-sidebar-logo ml-8 ">
   <div>M</div>
   <h5 className='text-black' style={{color:'black'}}> My Revision<sup className="  text-blue-900 ">+</sup></h5>
 </span>
 </div>
-   <div className='text-center mb-2 mt-2'>
+   <div className='text-center  mt-[-10px] mb-1'>
           <Button
             variant='primary'
             sx={{

@@ -81,7 +81,7 @@ const CreateQuestion = ({ isSidebarClosed }) => {
 
   return (
     <Fragment>
-      <Container maxWidth="xxl"  style={styles} className="bg-gray-100 mt-[-40px]" >
+      <Container maxWidth="xxl"  style={styles} className="bg-gray-100 lg:mt-[-40px] md:mt-[-20px] sm:mt-[-20px]" >
       {/* <Card sx={{ background: "#f0f0f0" }}  style={styles}> */}
       <FilterForm/>
         

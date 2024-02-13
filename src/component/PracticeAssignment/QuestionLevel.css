@@ -25,8 +25,7 @@ section {
 main h2 {
     font-size: 24px;
     color: #fff;
-    font-family: 'Roboto', sans-serif;
-    padding-top: 10px;
+      padding-top: 10px;
     padding-bottom: 10px;
     font-weight: bold;
     display: flex;

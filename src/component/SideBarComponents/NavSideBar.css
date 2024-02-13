@@ -21,7 +21,7 @@
 .header-navbar {
     padding: 0px;
     min-height: 4.45rem;
-    font-family: "Montserrat", Helvetica, Arial, serif;
+    /* font-family: "Montserrat", Helvetica, Arial, serif; */
     transition: 300ms ease all,;
     z-index: 997;
 }
@@ -486,7 +486,7 @@ ul {
 .header-navbar {
     padding: 0px;
     min-height: 4.45rem;
-    font-family: "Montserrat", Helvetica, Arial, serif;
+    /* font-family: "Montserrat", Helvetica, Arial, serif; */
     transition: 300ms ease all, background 0s;
     z-index: 997;
 } 
@@ -522,7 +522,7 @@ div {
 .header-navbar {
     padding: 0px;
     min-height: 4.45rem;
-    font-family: "Montserrat", Helvetica, Arial, serif;
+    /* font-family: "Montserrat", Helvetica, Arial, serif; */
     transition: 300ms ease all, background 0s;
     z-index: 997;
 } 

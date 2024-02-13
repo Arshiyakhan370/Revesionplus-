@@ -37,14 +37,14 @@ const PracticeQuestion= () => {
     <Fragment> 
 <Nav/>
      <Navbar1/>
-     <Container maxWidth='xl'>
+     <Container maxWidth='xxl' className='mt-6'>
     <Box style={{ backgroundColor: '#4b7dd4' ,height:'auto' ,borderBottom: '1px solid #002b4f'}}>
     <h1
             style={{
               fontSize: '7vw', 
               color: '#fff',
               textAlign: 'center',
-              margin: ' 0',
+              padding: ' 20px',
             }}
           >
         Best Assignment Practice Resources For

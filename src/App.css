@@ -1,5 +1,8 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap');
+
 body {
-  font-family: 'poppins';
+  font-family: 'Almarai' !important;
   overflow-x: hidden;
   backgroundColor:'#f1f5f9';
 }

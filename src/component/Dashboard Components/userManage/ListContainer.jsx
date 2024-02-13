@@ -498,7 +498,7 @@ Add User
       </Box>
     </Form>
   </Modal.Body>
-</Modal>;
+</Modal>
  <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
         
       <DialogTitle className='text-red-500'>Delete User</DialogTitle>

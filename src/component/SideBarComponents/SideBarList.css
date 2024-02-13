@@ -167,7 +167,7 @@ h4, .h4 {
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-family: inherit;
+    /* font-family: inherit; */
     font-weight: 500;
     line-height: 1.2;
     color: rgba(0, 0, 0, 0.88);
@@ -209,7 +209,7 @@ h4 {
 }
 .navigation {
     font-size: 1.1rem;
-    font-family: "Almarai";
+    /* font-family: "Almarai"; */
     font-weight: 400;
     overflow-y: hidden;
     padding-bottom: 20px;
@@ -348,7 +348,7 @@ svg:not(:root) {
     letter-spacing: 0.01rem;
 }
 .navigation .navigation-header {
-    font-family: "Montserrat", Helvetica, Arial, serif;
+    /* font-family: "Montserrat", Helvetica, Arial, serif; */
     font-weight: 500;
     line-height: 1.2;
     padding: 12px 22px;

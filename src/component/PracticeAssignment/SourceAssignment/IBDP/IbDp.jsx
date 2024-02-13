@@ -61,7 +61,7 @@ const IbDp = () => {
   <Fragment>
   <Nav/>
   <Navbar1/>
-      <Container maxWidth='xl'>
+      <Container maxWidth='xxl' className='mt-6'>
       <Box style={{ backgroundColor: '#4b7dd4' ,height:'auto' ,borderBottom: '1px solid #002b4f'}}>
     <h1
             style={{

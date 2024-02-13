@@ -563,7 +563,7 @@ const FormAddUser = ({ isSidebarClosed }) => {
       </Box>
     </Form>
   </Modal.Body>
-</Modal>;
+</Modal>
 
       
 

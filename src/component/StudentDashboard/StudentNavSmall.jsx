@@ -40,7 +40,7 @@ const StudentNavSmall = () => {
   );
 
   return (
-    <div>
+    <div className='mt-[-20px] mb-[-20px]'>
       <AppBar position="static" sx={{
         display: 'none',
         '@media (max-width:1024px)': {

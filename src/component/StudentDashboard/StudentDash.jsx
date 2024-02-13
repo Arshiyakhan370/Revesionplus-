@@ -34,8 +34,8 @@ const StudentDash = () => {
      <NavStudent/>
      {/* <Navbar1/> */}
      <StudentNavSmall/>
-      <Container maxWidth='xl'>
-      <div><h2 className='text-center text-sky-500 mt-8 mb-2'>Welcom to My Revesion</h2>
+      <Container maxWidth='xxl'>
+      <div><h2 className='text-center text-sky-500 mt-9 mb-2 text-lg'>Welcom to My Revesion</h2>
       <h4 className='text-center mb-16'>Aush Batra</h4></div>
         <Grid container spacing={2} styl e={{  marginTop:'5vh',paddingBottom: '12vh', paddingTop: '1vw', paddingLeft: '1vw',paddingRight:'1vw' }}>
           {imageUrls.map((imageUrl, index) => (
