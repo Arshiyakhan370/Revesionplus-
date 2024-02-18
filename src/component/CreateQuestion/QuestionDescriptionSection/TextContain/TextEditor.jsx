@@ -1,49 +1,48 @@
-import React, { useRef, useState } from "react";
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from "draft-js";
-import { useDropzone } from "react-dropzone";
+import React, { useState } from 'react';
 
-const TextEditor = () => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [file, setFile] = useState(null);
-  const editorRef = useRef(null);
+const TextEditor = ({ title }) => {
+  const [files, setFiles] = useState([]);
 
-  const handleEditorStateChange = (newEditorState) => {
-    setEditorState(newEditorState);
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const newFiles = Array.from(e.dataTransfer.files);
+    setFiles(newFiles);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: ".pdf, image/*",
-    onDrop: (acceptedFiles) => {
-      acceptedFiles.forEach((acceptedFile) => {
-        setFile(acceptedFile);
-      });
-    },
-  });
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
 
   return (
-    <div>
-      <h2>Text Editor</h2>
-      <Editor
-        editorState={editorState}
-        onEditorStateChange={handleEditorStateChange}
-        placeholder="Enter text content"
-        ref={editorRef}
-      />
-      <h2>File Upload</h2>
-      <div {...getRootProps({ className: "dropzone" })}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop a file here, or click to select a file</p>
-      </div>
-      {file && (
-        <div>
-          <h3>Uploaded File:</h3>
-          <p>{file.name}</p>
-          <p>File size: {file.size} bytes</p>
+    <div 
+      onDrop={handleDrop} 
+      onDragOver={handleDragOver}
+      style={{ border: '2px dashed #cccccc', borderRadius: '4px', padding: '10px' }}
+    >
+      <p>Drag and drop {title} files here</p>
+      {files.map((file, index) => (
+        <div key={index}>
+          <FilePreview file={file} />
         </div>
-      )}
+      ))}
     </div>
   );
 };
+
+const FilePreview = ({ file }) => {
+  const fileType = file.type.split('/')[0];
+
+  if (fileType === 'image') {
+    return <img src={URL.createObjectURL(file)} alt="Preview" />;
+  } else if (fileType === 'application' && file.type === 'application/pdf') {
+    return <embed src={URL.createObjectURL(file)} type="application/pdf" />;
+  } else if (fileType === 'video') {
+    return <video controls src={URL.createObjectURL(file)} />;
+  } else {
+    return <p>Unsupported file type</p>;
+  }
+};
+
+
 
 export default TextEditor

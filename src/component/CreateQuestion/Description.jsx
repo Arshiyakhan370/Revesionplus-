@@ -11,7 +11,7 @@ import Audio from './QuestionDescriptionSection/Audio';
 import SimulationComponent from './QuestionDescriptionSection/Simulation';
 ;
 
-const Description = ({ onSave }) => {
+const Description = ({ show ,onSave }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
   const [openModal3, setOpenModal3] = useState(false);
@@ -250,7 +250,7 @@ const Description = ({ onSave }) => {
      
     </Container>
 
-    {openModal && (
+    {show && (
       <Text onSave={handleSave} />
     )}
     </Fragment>

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemText } from '@mui/material';
+import React, { useState } from 'react';
+import { AppBar, Toolbar, Typography, Drawer, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 import { Home, Users, UserPlus, BookOpen, Clipboard, HelpCircle, Info, MessageCircle } from 'react-feather';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Menu, MenuItem, TextField } from '@mui/material';
+// import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Menu, MenuItem, TextField } from '@mui/material';
 
 import '.././AdminDashboard/Header.css';
 
@@ -74,12 +74,13 @@ const Navbar1 = () => {
             position="end"
             edge="start"
             aria-label="menu"
+            sx={{color:'white', marginBottom:'10px'}}
            className='text-white mr-4 '
             onClick={handleToggleDrawer(true)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className='text-white ml-4' component="div" sx={{ margineLeft:'5px' ,flexGrow: 1 }}>
+          <Typography variant="h6" className='text-white ml-4' component="div" sx={{ margineLeft:'5px' ,flexGrow: 1 , marginBottom:'10px'}}>
             My Revesion <sup>+</sup>
           </Typography>
         </Toolbar>
