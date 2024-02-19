@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
-import AlertDialog from "./TextContain/AlertDailog";
+import AlertDialog from "../QuestionComponnet/AlertDailog";
 
 
 import {

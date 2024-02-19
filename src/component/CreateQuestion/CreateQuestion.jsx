@@ -1,32 +1,27 @@
 import React, { useRef, useState, Suspense, Fragment } from "react";
-import { Form, Col, Row } from "react-bootstrap";
+import { Form, Col,} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
-import AlertDialog from "./QuestionDescriptionSection/TextContain/AlertDailog";
+import AlertDialog from "../CreateQuestion/QuestionComponnet/AlertDailog";
 import {
   Container,
   Card,
   Button,
-  FormControlLabel,
-  Grid,
-  Switch,
-  TextField,
-  Checkbox,
-  Alert,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  FormGroup,
-  CardContent,
+    Grid,
+    CardContent,
 } from "@mui/material";
 
 import { useDropzone } from "react-dropzone";
-import { XCircle } from "react-feather";
+
 import { useMediaQuery } from "react-responsive";
 import FilterForm from "../createAssignment/FilterForm";
+import AlertMessage from "./QuestionComponnet/AlertMessage";
+import CopyQuestionAlert from "./QuestionComponnet/CopyQuestionAlert";
+import EditDailog from "./QuestionComponnet/EditDailog";
+import SaveDailog from "./QuestionComponnet/SaveDailog";
+import SubQuestion from "./DispalyData/SubQuestion";
+import MainQuestion from "./DispalyData/MainQuestion";
 
 const PdfComponent = React.lazy(() => import("./QuestionDescriptionSection/PdfComponent"));
 const CreateQuestion = ({ isSidebarClosed }) => {
@@ -69,7 +64,8 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openCopyDialog, setOpenCopyDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
- 
+  const [acceptedAnswerKeyFiles, setAcceptedAnswerKeyFiles] = useState([]);
+  const [answerKeyDropzoneProps, setAnswerKeyDropzoneProps] = useState(null);
   const [subQuestions, setSubQuestions] = useState([
     {
       content: "",
@@ -82,10 +78,11 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
+  const [pdfFiles, setPdfFiles] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
   const [showSubQuestionSection, setShowSubQuestionSection] = useState(false);
- 
   const [uploadedFiles, setUploadedFiles] = useState([]);
-
   const [subQuestionFiles, setSubQuestionFiles] = useState(Array.from({ length: subQuestions.length }, () => null));
   const handleSubQuestionFileUpload = (file, subQuestionIndex) => {
       const updatedFiles = [...subQuestionFiles];
@@ -102,15 +99,24 @@ const CreateQuestion = ({ isSidebarClosed }) => {
   const handleCloseCopyDialog = () => {
     setOpenCopyDialog(false);
   };
-
+  const handleConfirmCopy = () => {
+    handleCloseCopyDialog();
+  };
+  
   const handleCloseEditDialog = () => {
     setOpenEditDialog(false);
   };
-  const handleConfirmEdit = () => {
-      handleCloseEditDialog();
-  };
-  const handleConfirmDelete = () => {
+
+  const handleConfirmDelete = (questionIndex) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions.splice(questionIndex, 1);
+    setQuestions(updatedQuestions);
+    console.log(`Delete button clicked for Question ${questionIndex + 1}`);
        handleCloseDeleteDialog();
+  };
+  const handleDelete = () => {
+    setOpenDeleteDialog(true);
+   
   };
   const handleImageLoaded = (e) => {
     const { naturalWidth, naturalHeight } = e.target;
@@ -138,45 +144,121 @@ const CreateQuestion = ({ isSidebarClosed }) => {
     onDrop: (acceptedFiles) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
-
+  
         reader.onload = () => {
           const fileType = file.type.split("/")[0];
           switch (fileType) {
             case "image":
-              if (file.size > 1024 * 1024) {
-                handleOpenAlert("Image size should be less than 1MB.");
-                return;
-              }
-              setImageSrc(reader.result);
+              handleImageDrop(file, reader.result);
               break;
             case "application":
               if (file.type === "application/pdf") {
-                if (file.size > 1024 * 1024) {
-                  handleOpenAlert("PDF size should be less than 1MB.");
-                  return;
-                }
-                setPdfFile(URL.createObjectURL(file));
+                handlePdfDrop(file, reader.result);
               } else {
-                handleOpenAlert("Unsupported file type.");
+                handleUnsupportedFileDrop();
               }
               break;
             case "video":
-              if (file.size > 1024 * 1024 * 100) { 
-                handleOpenAlert("Video size should be less than 100MB.");
-                return;
-              }
-              setVideoSrc(URL.createObjectURL(file));
+              handleVideoDrop(file, reader.result);
               break;
             default:
               console.log(`Unsupported file type: ${fileType}`);
           }
         };
-
+  
         reader.readAsDataURL(file);
       });
     },
   });
-
+  
+  const handleImageDrop = (file, result) => {
+    if (file.size > 1024 * 1024) {
+      handleOpenAlert("Image size should be less than 1MB.");
+      return;
+    }
+    setImageSrc(result);
+  };
+  
+  const handlePdfDrop = (file, result) => {
+    if (file.size > 1024 * 1024) {
+      handleOpenAlert("PDF size should be less than 1MB.");
+      return;
+    }
+    setPdfFile(URL.createObjectURL(file));
+  };
+  
+  const handleVideoDrop = (file, result) => {
+    if (file.size > 1024 * 1024 * 100) { 
+      handleOpenAlert("Video size should be less than 100MB.");
+      return;
+    }
+    setVideoSrc(URL.createObjectURL(file));
+  };
+  
+  const handleUnsupportedFileDrop = () => {
+    handleOpenAlert("Unsupported file type.");
+  };
+  const configureAnswerKeyDropzone = () => {
+    const props = {
+      accept: "video/*, .pdf, image/*",
+      onDrop: (acceptedFiles) => {
+        acceptedFiles.forEach((file) => {
+          const reader = new FileReader();
+    
+          reader.onload = () => {
+            const fileType = file.type.split("/")[0];
+            switch (fileType) {
+              case "image":
+                handleImageDropKey(file, reader.result);
+                break;
+              case "application":
+                if (file.type === "application/pdf") {
+                  handlePdfDropKey(file, reader.result);
+                } else {
+                  handleUnsupportedFileDropKey();
+                }
+                break;
+              case "video":
+                handleVideoDrop(file, reader.result);
+                break;
+              default:
+                console.log(`Unsupported file type: ${fileType}`);
+            }
+          };
+    
+          reader.readAsDataURL(file);
+        });
+      },
+    }
+  }
+    
+    const handleImageDropKey = (imageFile, imageResult) => {
+      if (imageFile.size > 1024 * 1024) {
+        handleOpenAlert("Image size should be less than 1MB.");
+        return;
+      }
+      setImageFile(imageResult);
+    };
+    
+    const handlePdfDropKey = (pdfFile, pdfResult) => {
+      if (pdfFile.size > 1024 * 1024) {
+        handleOpenAlert("PDF size should be less than 1MB.");
+        return;
+      }
+      setPdfFiles(pdfResult);
+    };
+    
+    const handleVideoDropKey = (videoFile, videoResult) => {
+      if (videoFile.size > 1024 * 1024 * 100) {
+        handleOpenAlert("Video size should be less than 100MB.");
+        return;
+      }
+      setVideoFile(videoResult);
+    };
+    
+    const handleUnsupportedFileDropKey = () => {
+      handleOpenAlert("Unsupported file type.");
+    };
   const handleRemoveSubQuestion = (indexToRemove) => {
     setSubQuestions((prevSubQuestions) =>
       prevSubQuestions.filter((_, index) => index !== indexToRemove)
@@ -365,6 +447,10 @@ const CreateQuestion = ({ isSidebarClosed }) => {
     updatedSubQuestions[index].markSchemeEditorState = newEditorState;
     setSubQuestions(updatedSubQuestions);
   };
+const handleConfirmEdit = () => {
+      handleCloseEditDialog();
+  };
+
 const handleEditQuestion = (index) => {
   const questionToEdit = questions[index];
   setShowAdditionalButtons(true)
@@ -413,13 +499,7 @@ const handleEditQuestion = (index) => {
   };
   
 
-  const handleDelete = (questionIndex) => {
-    setOpenDeleteDialog(true);
-    const updatedQuestions = [...questions];
-    updatedQuestions.splice(questionIndex, 1);
-    setQuestions(updatedQuestions);
-    console.log(`Delete button clicked for Question ${questionIndex + 1}`);
-  };
+ 
 
   
   const handleViewPage = (questionIndex) => {
@@ -637,6 +717,31 @@ const handleEditQuestion = (index) => {
             <span>
               {question.answerKey && convertToText(question.answerKey)}
             </span>
+            
+              {question.imageSrc && (
+  <img
+    src={question.imageSrc}
+    alt="Image"
+    className="img-fluid"
+    style={{ width: `${question.imageSize.width}px`, height: `${question.imageSize.height}px` }}
+  />
+)}
+          {question.pdfFile && (
+            <embed
+              src={question.pdfFile}
+              type="application/pdf"
+              width="100%"
+              height="600px"
+            />
+          )}
+
+          {question.videoSrc && (
+            <video controls width="100%">
+              <source src={question.videoSrc} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          )}
+      
           </div>
           <div className="mb-3 ml-4">
             <h6>Mark Scheme:</h6>
@@ -769,599 +874,126 @@ const handleEditQuestion = (index) => {
               handleCloseAlert={handleCloseAlert}
               alertMessage={alertMessage}
             />
-         
-            <Grid container spacing={2}>
-              <Grid item xs={12} className=" mt-4 mb-4">
-                <div className="flex flex-row justify-between">
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        color="primary"
-                        checked={selectChecked}
-                        onChange={handleSelectedCriteria}
-                      />
-                    }
-                    label="Select Criteria"
-                  />
-                  {selectChecked && (
-                    <div>
-                      {/* {window.innerWidth > 1024 && ( */}
-                        <Grid item xs={12} className="mt-4">
-                          {Object.keys(checkboxesState).map((label) => (
-                            <React.Fragment key={label}>
-                              <Checkbox
-                                checked={checkboxesState[label]}
-                                onChange={() => handleCheckboxChange(label)}
-                              />
-                              {label}
-                            </React.Fragment>
-                          ))}
-                        </Grid>
-                      {/* )} */}
-                    </div>
-                  )}
-                  <FormControlLabel
-                    control={<Switch color="primary" onChange={handleMarks} />}
-                    label="Marks"
-                  />
-                  {marks && (
-                    <TextField
-                      size="small"
-                      sx={{ width: "80px", marginTop: "25px" }}
-                      label="Marks"
-                      type="number"
-                      value={marksValue}
-                      onChange={(e) =>
-                        setMarksValue(parseInt(e.target.value, 10))
-                      }
-                    />
-                  )}
-                </div>
-              </Grid>
-            </Grid>
-            <Row>
-              <Col className="border border-gray-500 bg-white">
-                <Editor
-                  editorState={editorState}
-                  onEditorStateChange={(newEditorState) =>
-                    setEditorState(newEditorState)
-                  }
-                  placeholder="Enter text content"
-                />
-              </Col>
-              <div className='flex flex-row justify-between'>
-                      <div className="mt-4 cursor-pointer text-blue-600 ">
-                        <div
-                          {...getRootProps({ className: "dropzone" })}
-                          style={dropzoneStyle}
-                        >
-                          <input {...getInputProps()} />
-                          <p className="mb-[-1px]">
-                            Upload PDF
-                          </p>
-                        </div>
-                        {pdfFile && <PdfComponent pdfFile={pdfFile} />}
-                      </div>
-                      <div className="mt-4 cursor-pointer text-blue-600">
-                      <div>
-                        {imageSrc && (
-                          <div className="mt-2 mb-4">
-                            <img
-                              src={imageSrc}
-                              alt="Uploaded"
-                              className="img-fluid"
-                              style={{
-                                width: `${imageSize.width}px`,
-                                height: `${imageSize.height}px`,
-                              }}
-                              onLoad={handleImageLoaded}
-                            />
-                            <div className="mb-2">
-                              <label>Width: </label>
-                              <input
-                                className="border border-gray-500"
-                                type="number"
-                                name="width"
-                                value={imageSize.width}
-                                onChange={handleImageResize}
-                              />
-                            </div>
-                            <div className="mb-2">
-                              <label>Height: </label>
-                              <input
-                                className="border border-gray-500"
-                                type="number"
-                                name="height"
-                                value={imageSize.height}
-                                onChange={handleImageResize}
-                              />
-                            </div>
-                          </div>
-                        )}
-                        <div
-                          {...getRootProps({ className: "dropzone" })}
-                          style={dropzoneStyle}
-                        >
-                          <input {...getInputProps()} />
-                          <p className="mb-[-1px]">
-                           Upload images
-                          </p>
-                        </div>
-                        </div>
-                        </div>
-                        <div className="mt-4 cursor-pointer text-blue-600">
-                          {videoSrc && (
-                            <video
-                              controls
-                              src={videoSrc}
-                              className="video-fluid"
-                            />
-                          )}
-                          <div
-                            {...getRootProps({ className: "dropzone" })}
-                            style={dropzoneStyle}
-                          >
-                            <input {...getInputProps()} />
-                            <p className="mb-[-1px]">
-                          Upload video 
-                             
-                            </p>
-                          </div>
-                          {file && (
-                            <div>
-                              <h4>File Details:</h4>
-                              <p>Name: {file.name}</p>
-                              <p>Size: {file.size} bytes</p>
-                              <p>Type: {file.type}</p>
-                            </div>
-                          )}
-                          {error && <p style={{ color: "red" }}>{error}</p>}
-                        </div>
-                      </div>
-              
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={showAnswerKeyEditor}
-                        onChange={() =>
-                          setShowAnswerKeyEditor(!showAnswerKeyEditor)
-                        }
-                      />
-                    }
-                    label="Add Answer Key"
-                  />
-                  {showAnswerKeyEditor && (
-                    <div className="border border-gray-500 bg-white">
-                      <Editor
-                        editorState={answerKeyEditorState}
-                        onEditorStateChange={(newEditorState) =>
-                          setAnswerKeyEditorState(newEditorState)
-                        }
-                        placeholder="Enter Answer Key content"
-                      />
-                    </div>
-                  )}
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={showMarkSchemeEditor}
-                        onChange={() =>
-                          setShowMarkSchemeEditor(!showMarkSchemeEditor)
-                        }
-                      />
-                    }
-                    label="Add Mark Scheme "
-                  />
-                  {showMarkSchemeEditor && (
-                    <div className="border border-gray-500 bg-white mt-3"
-                      >
-                        <Editor
-                          editorState={markSchemeEditorState}
-                          onEditorStateChange={(newEditorState) =>
-                            setMarkSchemeEditorState(newEditorState)
-                          }
-                          placeholder="Enter Mark Scheme content"
-                        />
-                     
-                      <div className='flex flex-row justify-between'>
-                      <div className="mt-4 cursor-pointer text-blue-600 ">
-                        <div
-                          {...getRootProps({ className: "dropzone" })}
-                          style={dropzoneStyle}
-                        >
-                          <input {...getInputProps()} />
-                          <p className="mb-[-1px]">
-                            Upload PDF
-                          </p>
-                        </div>
-                        {pdfFile && <PdfComponent pdfFile={pdfFile} />}
-                      </div>
-                      <div className="mt-4 cursor-pointer text-blue-600">
-                      <div>
-                        {imageSrc && (
-                          <div className="mt-2 mb-4">
-                            <img
-                              src={imageSrc}
-                              alt="Uploaded"
-                              className="img-fluid"
-                              style={{
-                                width: `${imageSize.width}px`,
-                                height: `${imageSize.height}px`,
-                              }}
-                              onLoad={handleImageLoaded}
-                            />
-                            <div className="mb-2">
-                              <label>Width: </label>
-                              <input
-                                className="border border-gray-500"
-                                type="number"
-                                name="width"
-                                value={imageSize.width}
-                                onChange={handleImageResize}
-                              />
-                            </div>
-                            <div className="mb-2">
-                              <label>Height: </label>
-                              <input
-                                className="border border-gray-500"
-                                type="number"
-                                name="height"
-                                value={imageSize.height}
-                                onChange={handleImageResize}
-                              />
-                            </div>
-                          </div>
-                        )}
-                        <div
-                          {...getRootProps({ className: "dropzone" })}
-                          style={dropzoneStyle}
-                        >
-                          <input {...getInputProps()} />
-                          <p className="mb-[-1px]">
-                           Upload images
-                          </p>
-                        </div>
-                        </div>
-                        </div>
-                        <div className="mt-4 cursor-pointer text-blue-600">
-                          {videoSrc && (
-                            <video
-                              controls
-                              src={videoSrc}
-                              className="video-fluid"
-                            />
-                          )}
-                          <div
-                            {...getRootProps({ className: "dropzone" })}
-                            style={dropzoneStyle}
-                          >
-                            <input {...getInputProps()} />
-                            <p className="mb-[-1px]">
-                          Upload video 
-                             
-                            </p>
-                          </div>
-                          {file && (
-                            <div>
-                              <h4>File Details:</h4>
-                              <p>Name: {file.name}</p>
-                              <p>Size: {file.size} bytes</p>
-                              <p>Type: {file.type}</p>
-                            </div>
-                          )}
-                          {error && <p style={{ color: "red" }}>{error}</p>}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-              
-      
-      {showSubQuestionSection && (
-        <div className="mt-8 mb-8">
-          {subQuestions.map((subQuestion, index) => (
-            <div key={index} className="sub-question">
-              <h3 className="text-blue-600 mt-8">Sub Question {index + 1}</h3>
-              <div className=" flex flex-row justify-between" >
-              <FormControlLabel
-            control={
-              <Switch
-                checked={subQuestion.enableCriteria}
-                onChange={(e) => handleCriteriaSwitchChange(e, index)}
-              />
-            }
-            label="Enable Criteria"
+           <MainQuestion
+             handleSubQuestionEditorChange={handleSubQuestionEditorChange}
+           editorState={editorState} 
+           onEditorStateChange={setEditorState}
+        selectChecked={selectChecked}
+        handleSelectedCriteria={handleSelectedCriteria}
+        checkboxesState={checkboxesState}
+        handleCheckboxChange={handleCheckboxChange}
+        marks={marks}
+        handleMarks={handleMarks}
+        marksValue={marksValue}
+        setMarksValue={setMarksValue}
+        showAnswerKeyEditor={showAnswerKeyEditor}
+        setShowAnswerKeyEditor={setShowAnswerKeyEditor}
+        answerKeyEditorState={answerKeyEditorState}
+        setAnswerKeyEditorState={setAnswerKeyEditorState}
+        showMarkSchemeEditor={showMarkSchemeEditor}
+        setShowMarkSchemeEditor={setShowMarkSchemeEditor}
+        markSchemeEditorState={markSchemeEditorState}
+        setMarkSchemeEditorState={setMarkSchemeEditorState}
+        setEditorState={setEditorState}
+  getRootProps={getRootProps}
+  dropzoneStyle={dropzoneStyle}
+  getInputProps={getInputProps}
+  pdfFile={pdfFile}
+  imageSrc={imageSrc}
+  imageSize={imageSize}
+  handleImageLoaded={handleImageLoaded}
+  handleImageResize={handleImageResize}
+  videoSrc={videoSrc}
+  file={file}
+  error={error}
+  subQuestions={subQuestions}
+  handleAddSubQuestion={handleAddSubQuestion}
+  handleRemoveSubQuestion={handleRemoveSubQuestion}
+  showSubQuestionSection={showSubQuestionSection}
+  subQuestionFiles={subQuestionFiles}
+  acceptedAnswerKeyFiles={acceptedAnswerKeyFiles}
+        setAcceptedAnswerKeyFiles={setAcceptedAnswerKeyFiles}
+        answerKeyDropzoneProps={answerKeyDropzoneProps}
           />
-   
-          {subQuestion.enableCriteria && (
-            {/* <FormGroup className="flex flex-row justify-between">
-              <FormControlLabel control={<Checkbox name="A" onChange={(e) => handleCheckboxChange(e, index)} />} label="A" />
-              <FormControlLabel control={<Checkbox name="B" onChange={(e) => handleCheckboxChange(e, index)} />} label="B" />
-              <FormControlLabel control={<Checkbox name="C" onChange={(e) => handleCheckboxChange(e, index)} />} label="C" />
-              <FormControlLabel control={<Checkbox name="D" onChange={(e) => handleCheckboxChange(e, index)} />} label="D" />
-            </FormGroup> */}
-          )}
-          <FormControlLabel
-            control={
-              <Switch
-                checked={subQuestion.enableMarks}
-                onChange={(e) => handleMarksSwitchChange(e, index)}
-              />
-            }
-            label="Enable Marks"
-          />
-          {subQuestion.enableMarks && (
-            <TextField
-              type="number"
-              label="Marks"
-              value={subQuestion.marks}
-              sx={{width: "80px", height:'40px', marginTop:'10px'}}
-              onChange={(e) => handleMarksChange(e, index)}
-            />
-          )}
-          </div>
-         <div className="border border-gray-500 bg-white mt-3">
-              <Editor
-                editorState={subQuestion.editorState}
-                onEditorStateChange={(newEditorState) =>
-                  handleSubQuestionEditorChange(newEditorState, index)
-                }
-                placeholder="Enter subquestion content"
-              />
-              </div>
-           
- <div>
-   
- <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} />
+                 <SubQuestion
+subQuestions={subQuestions}
+handleAddSubQuestion={handleAddSubQuestion}
+handleRemoveSubQuestion={handleRemoveSubQuestion}
+handleCriteriaSwitchChange={handleCriteriaSwitchChange}
+handleMarksSwitchChange={ handleMarksSwitchChange}
+handleMarksChange={handleMarksChange}
+handleSubQuestionEditorChange={handleSubQuestionEditorChange}
+handleAnswerKeyEditorToggle={handleAnswerKeyEditorToggle}
+handleAnswerKeyEditorChange={ handleAnswerKeyEditorChange}
+handleMarkSchemeEditorToggle={handleMarkSchemeEditorToggle}
+handleMarkSchemeEditorChange={handleMarkSchemeEditorChange}
+handleSubQuestionFileUpload={handleSubQuestionFileUpload}
+showSubQuestionSection={showSubQuestionSection}
+subQuestionFiles={subQuestionFiles} 
+/>
 
-     
-      
-{subQuestionFiles[index] && (
-  <div>
-    
-    {subQuestionFiles[index].type.startsWith('image/') && (
-      <div>
-        <img src={URL.createObjectURL(subQuestionFiles[index])} alt="Uploaded" />
-        <p>{subQuestionFiles[index].name}</p>
+          <div className="text-center">
+<Button color="primary" onClick={handleAddSubQuestion} sx={{
+       width:'180px',
+        color: "white",
+        background:
+          "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
+      }}>
+Add Subquestion
+</Button>
+</div>
+    <Col xs={12} className="mt-3">
+      <div className="d-flex justify-content-between">
+      <Button
+      variant="outlined"
+      onClick={goBack}
+      sx={{
+        color: "white",
+        background:
+          "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
+      }}
+    >
+      Back
+    </Button>
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          sx={{
+            color: "white",
+            background:
+              "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
+          }}
+        >
+          Save
+        </Button>
       </div>
-    )}
-   
-    {subQuestionFiles[index].type.startsWith('video/') && (
-      <video controls>
-        <source src={URL.createObjectURL(subQuestionFiles[index])} type={subQuestionFiles[index].type} />
-        Your browser does not support the video tag.
-      </video>
-    )}
-   
-    {subQuestionFiles[index].type === 'application/pdf' && (
-      <embed src={URL.createObjectURL(subQuestionFiles[index])} type="application/pdf" width="400" height="400" />
-    )}
-
-    {!subQuestionFiles[index].type.startsWith('image/') &&
-      !subQuestionFiles[index].type.startsWith('video/') &&
-      subQuestionFiles[index].type !== 'application/pdf' && (
-        <p>{subQuestionFiles[index].name}</p>
-      )}
-  </div>
-)}
-
-    </div>
-    <FormControlLabel
-      control={
-        <Switch
-          checked={subQuestion.enableAnswerKeyEditor}
-          onChange={(e) => handleAnswerKeyEditorToggle(e, index)}
-        />
-      }
-      label="Add Answer Key"
-    />
-    {subQuestion.enableAnswerKeyEditor && (
-      <div>
-       <div className="answer-key-editor border border-gray-500 bg-white mt-3">
-        <Editor
-          editorState={subQuestion.answerKeyEditorState}
-          onEditorStateChange={(newEditorState) =>
-            handleAnswerKeyEditorChange(newEditorState, index)
-          }
-          placeholder="Enter answer key content"
-        />
-      </div>
-      <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} />
-      {subQuestionFiles[index] && (
-  <div>
-    
-    {subQuestionFiles[index].type.startsWith('image/') && (
-      <div>
-        <img src={URL.createObjectURL(subQuestionFiles[index])} alt="Uploaded" />
-        <p>{subQuestionFiles[index].name}</p>
-      </div>
-    )}
-   
-    {subQuestionFiles[index].type.startsWith('video/') && (
-      <video controls>
-        <source src={URL.createObjectURL(subQuestionFiles[index])} type={subQuestionFiles[index].type} />
-        Your browser does not support the video tag.
-      </video>
-    )}
-   
-    {subQuestionFiles[index].type === 'application/pdf' && (
-      <embed src={URL.createObjectURL(subQuestionFiles[index])} type="application/pdf" width="400" height="400" />
-    )}
-
-    {!subQuestionFiles[index].type.startsWith('image/') &&
-      !subQuestionFiles[index].type.startsWith('video/') &&
-      subQuestionFiles[index].type !== 'application/pdf' && (
-        <p>{subQuestionFiles[index].name}</p>
-      )}
-  </div>
-)}
-      
-      </div>
-      
-    )}
-    <FormControlLabel
-      control={
-        <Switch
-          checked={subQuestion.enableMarkSchemeEditor}
-          onChange={(e) => handleMarkSchemeEditorToggle(e, index)}
-        />
-      }
-      label="Add Mark Scheme"
-    />
-    {subQuestion.enableMarkSchemeEditor && (
-      <div>
-      <div className="mark-scheme-editor border border-gray-500 bg-white mt-3">
-        <Editor
-          editorState={subQuestion.markSchemeEditorState}
-          onEditorStateChange={(newEditorState) =>
-            handleMarkSchemeEditorChange(newEditorState, index)
-          }
-          placeholder="Enter mark scheme content"
-        />
-        </div>
-  <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} />
-  {subQuestionFiles[index] && (
-  <div>
-    
-    {subQuestionFiles[index].type.startsWith('image/') && (
-      <div>
-        <img src={URL.createObjectURL(subQuestionFiles[index])} alt="Uploaded" />
-        <p>{subQuestionFiles[index].name}</p>
-      </div>
-    )}
-   
-    {subQuestionFiles[index].type.startsWith('video/') && (
-      <video controls>
-        <source src={URL.createObjectURL(subQuestionFiles[index])} type={subQuestionFiles[index].type} />
-        Your browser does not support the video tag.
-      </video>
-    )}
-   
-    {subQuestionFiles[index].type === 'application/pdf' && (
-      <embed src={URL.createObjectURL(subQuestionFiles[index])} type="application/pdf" width="400" height="400" />
-    )}
-
-    {!subQuestionFiles[index].type.startsWith('image/') &&
-      !subQuestionFiles[index].type.startsWith('video/') &&
-      subQuestionFiles[index].type !== 'application/pdf' && (
-        <p>{subQuestionFiles[index].name}</p>
-      )}
-  </div>
-)}
-      
-      </div>
-      
-    )}
-    <div className="flex justify-content-end text-red-500 text-xxl">
-     <XCircle sx={{height:'40px',width:'40px'}} onClick={() => handleRemoveSubQuestion(index)}></XCircle>
-     </div>
-            </div>
-          ))}
-       
-        </div>
-      )}
-     <div className="text-center">
-      <Button color="primary" onClick={handleAddSubQuestion} sx={{
-                 width:'180px',
-                  color: "white",
-                  background:
-                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
-                }}>
-        Add Subquestion
-      </Button>
-    </div>
-              <Col xs={12} className="mt-3">
-                <div className="d-flex justify-content-between">
-                <Button
-                variant="outlined"
-                onClick={goBack}
-                sx={{
-                  color: "white",
-                  background:
-                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
-                }}
-              >
-                Back
-              </Button>
-                  <Button
-                    type="submit"
-                    onClick={handleSubmit}
-                    sx={{
-                      color: "white",
-                      background:
-                        "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
-                    }}
-                  >
-                    Save
-                  </Button>
-                </div>
-              </Col>
-            </Row>
+    </Col>
           </Form>
         </div>
       </Container>
      
     </Fragment>
             )}
-  
-
-
-
-          </div>
-       
-        </CardContent>
+            </div>
+               </CardContent>
       </Container>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle className="text-green-500">Data Saved</DialogTitle>
-        <DialogContent>
-          <p >Your data has been saved successfully.</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-        <DialogTitle className="text-red-500">Data Deleted</DialogTitle>
-            <DialogContent>
-          <p>Are you sure you want to delete the data?</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmDelete} color="primary">
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={openCopyDialog} onClose={handleCloseCopyDialog}>
-        <DialogTitle className="text-yellow-500">Data Copied</DialogTitle>
-        <DialogContent>
-          <p>Your data has been copied successfully.</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseCopyDialog} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
-        <DialogTitle className="text-blue-600">Confirm Edit</DialogTitle>
-        <DialogContent>
-          <p>Are you sure you want to edit?</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEditDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmEdit} color="primary">
-            Edit
-          </Button>
-        </DialogActions>
-      </Dialog>
+     <SaveDailog open={openDialog} onClose={handleCloseDialog} />
+      <AlertMessage
+        open={openDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        onConfirmDelete={handleConfirmDelete}
+      />
+      <CopyQuestionAlert
+  open={openCopyDialog}
+  onClose={handleCloseCopyDialog}
+ 
+/>
+<EditDailog
+  open={openEditDialog}
+  onClose={handleCloseEditDialog}
+  onConfirmEdit={handleConfirmEdit}
+/>
+    
     </Fragment>
   );
 };
