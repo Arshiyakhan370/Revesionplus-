@@ -73,7 +73,7 @@ const Golink= () => {
     <Fragment>
     <Nav />
     <Navbar1 />
-    <Container maxWidth="xl" sx={{backgroundColor: '#4b7dd4'}}>
+    <Container maxWidth="xxl" sx={{backgroundColor: '#4b7dd4',marginTop:"20px"}}>
     <Card>
     <ThemeProvider theme={theme}>
     <div className='text-center mb-8 lg:mb-12 mt-8 '>

@@ -10,7 +10,7 @@ import UserdataAdded from './Pages/UserdataAdded';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <BrowserRouter>
+    <BrowserRouter basename="/Revesionplus-">
    
   <Provider store={store}>
     {/* <UserdataAdded /> */}

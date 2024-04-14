@@ -34,19 +34,13 @@ import SubTopic from './SubTopic';
       };
       return (
         <Container maxWidth="xxl" disableGutters style={styles} className='bg-gray-100'>
-        {/* <Paper  elevation={3}    sx={{ p: 3,marginTop:'25px',background:'#f0f0f0', marginRight:'25px' }}> */}
         <div className='text-center flex justify-center'>
           <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" className='text-center'>
           <Tab icon={<Layers />} label="Subject" />
-            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={<Layers />} label="Subject Level" />
-            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={<Description/>} label="Source" />
-            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={< AddBox/>} label="Paper" />
-            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={<MenuBook/>} label="Topic" />
-            {/* <Tab icon={<ChevronRightIcon />} disabled /> */}
             <Tab icon={< LibraryBooks/>} label="Subtopic" />
           </Tabs>
           </div>
