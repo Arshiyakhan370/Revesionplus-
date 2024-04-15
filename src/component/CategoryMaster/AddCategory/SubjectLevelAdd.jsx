@@ -14,31 +14,46 @@ import {
 
 const SubjectLevelAdd = () => {
   const [boards, setBoards] = useState([]);
-  const [selectedBoard, setSelectedBoard] = useState('A');
+  const [selectedBoard, setSelectedBoard] = useState('');
+  const [selectedSubject1, setSelectedSubject1] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState([]);
+  const [subjectLevelName, setSubjectLevelName] = useState('');
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState(null);
   useEffect(() => {
     const fetchBoards = async () => {
       try {
         const response = await axios.get('https://staging.ibgakiosk.com/api/boardprogramme');
-        console.log('Response:', response.data);
-        if (Array.isArray(response.data)) {
-          setBoards(response.data);
-        } else {
-          console.error('Response data is not an array:', response.data);
-        }
+        const subject = await axios.get('https://staging.ibgakiosk.com/api/get_subject/1');
+        setBoards(response.data?.data);
+        setSelectedSubject(subject.data?.data)
         setLoading(false);
+        console.log('Response data:', response.data);
       } catch (error) {
-        console.error('Error fetching boards:', error);
-        setLoading(false); 
+        console.error('Error fetching boards:', error);   
+        setError(error.message);
       }
     };
 
     fetchBoards();
   }, []); 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      const response = await axios.post('https://staging.ibgakiosk.com/api/add_subject_level', {
+        "boardID":selectedBoard,
+        "subjectID":selectedSubject1,
+       "subjectlevelName":subjectLevelName,
+      });
+      console.log('Subject added:', response.data);
+    } catch (error) {
+      console.error('Error adding subject:', error);
+      setError(error.message);
+    }
+   setSelectedBoard("");
+   setSelectedSubject1("");
+   setSubjectLevelName("")
    
   };
 
@@ -60,10 +75,9 @@ const SubjectLevelAdd = () => {
   value={selectedBoard}
   onChange={(e) => setSelectedBoard(e.target.value)}
 >
-  <MenuItem value="">Select Board Type</MenuItem>
   {boards.map((board) => (
     <MenuItem key={board.id} value={board.id}>
-      {board.name}
+      {board.board_prog_name}
     </MenuItem>
   ))}
 </Select>
@@ -76,10 +90,15 @@ const SubjectLevelAdd = () => {
                     <Select
                       label="Subject Name"
                       id="subjectLevelID"
+                      value={selectedSubject1}
+  onChange={(e) => setSelectedSubject1(e.target.value)}
                       sx={{ height: '35px' }}
                     >
-                      <MenuItem value="">Select board Level</MenuItem>
-                      <MenuItem value="A">Select board first</MenuItem>
+                     {selectedSubject.map((subject) => (
+    <MenuItem key={subject.boardID} value={subject.boardID}>
+      {subject.subjectName}
+    </MenuItem>
+  ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -92,6 +111,8 @@ const SubjectLevelAdd = () => {
                     required
                     variant="outlined"
                     margin="normal"
+                    value={subjectLevelName}
+                    onChange={(e) =>  setSubjectLevelName(e.target.value)}
                     InputProps={{
                       style: { height: 'auto' },
                     }}
