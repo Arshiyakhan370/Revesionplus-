@@ -27,7 +27,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useMediaQuery } from "react-responsive";
 import { Container } from "@mui/system";
 
 const Subject = () => {
@@ -82,25 +81,28 @@ const Subject = () => {
     setOpenDeleteDialog(false);
   };
 
-  const handleDeleteClick = async (id) => {
+  const handleDeleteClick = async (id,boardID) => {
     try {
       console.log("facing issues",id)
+      
       await axios.post(
         `https://staging.ibgakiosk.com/api/delete_subject`,
         {
-          subject_id: id
+          subject_id: deleteTeacherId
         }
       );
-      setTeacherData((prevData) =>
-        prevData.filter((teacher) => teacher.id !== id)
-      );
+      const deletedData = subjects.filter((teacher) => teacher.id !== deleteTeacherId);
+      console.log(id,subjects,"deleted")
+    
+      setSubjects(deletedData)
+
       setOpenDeleteDialog(false);
       setDeleteSuccessDialogOpen(true);
     } catch (error) {
       console.error("Error deleting teacher:", error);
     }
   };
-
+  console.log(deleteTeacherId,"deleted tecacherid");
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
   };
@@ -144,20 +146,18 @@ const Subject = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {boards
+              {subjects
                 .slice((page - 1) * teachersPerPage, page * teachersPerPage)
                 .map((teacher, index) => (
                   <TableRow
-                    key={teacher.board_name}
+                    key={teacher.boardID}
                     sx={{
                       backgroundColor: index % 2 === 0 ? "#f5f5f5" : "inherit",
                     }}
                   >
-                    <TableCell>{teacher.board_name}</TableCell>
+                    <TableCell>{teacher.id}</TableCell>
                     <TableCell>
-                      {subjects.find(
-                        (subject) => subject.board_id === teacher.id
-                      )?.subjectName || "-"}
+                    {teacher.subjectName}
                     </TableCell>
                     <TableCell>
                       <Link
@@ -227,8 +227,23 @@ const Subject = () => {
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                       </Link>
+                       
                     </TableCell>
-                    <Dialog
+                   
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Stack spacing={2} justifyContent="center" className="mt-3">
+          <Pagination
+            count={Math.ceil(teacherData.length / teachersPerPage)}
+            page={page}
+            onChange={handleChangePage}
+          />
+        </Stack>
+      </Container>
+      <Dialog
                       open={openDeleteDialog}
                       onClose={handleDeleteDialogClose}
                     >
@@ -246,27 +261,13 @@ const Subject = () => {
                           Cancel
                         </Button>
                         <Button
-                          onClick={() => handleDeleteClick(teacher?.subject_id)}
+                          onClick={() => handleDeleteClick()}
                           color="primary"
                         >
                           Delete
                         </Button>
                       </DialogActions>
                     </Dialog>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Stack spacing={2} justifyContent="center" className="mt-3">
-          <Pagination
-            count={Math.ceil(teacherData.length / teachersPerPage)}
-            page={page}
-            onChange={handleChangePage}
-          />
-        </Stack>
-      </Container>
-
       <Dialog
         open={deleteSuccessDialogOpen}
         onClose={handleDeleteSuccessDialogClose}
@@ -315,9 +316,9 @@ const Subject = () => {
                   }
                   sx={{ height: "35px", marginTop: "8px" }}
                 >
-                  {boards.map((board) => (
+                  {subjects.map((board) => (
                     <MenuItem key={board.id} value={board.id}>
-                      {board.board_name}
+                      {board.boardID}
                     </MenuItem>
                   ))}
                 </Select>
