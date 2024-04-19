@@ -81,28 +81,23 @@ const Subject = () => {
     setOpenDeleteDialog(false);
   };
 
-  const handleDeleteClick = async (id,boardID) => {
+  const handleDeleteClick = async (deleteTeacherId) => {
     try {
-      console.log("facing issues",id)
-      
       await axios.post(
         `https://staging.ibgakiosk.com/api/delete_subject`,
         {
           subject_id: deleteTeacherId
         }
       );
-      const deletedData = subjects.filter((teacher) => teacher.id !== deleteTeacherId);
-      console.log(id,subjects,"deleted")
-    
-      setSubjects(deletedData)
-
+      const deletedData = subjects.filter((teacher) => teacher.subject_id !== deleteTeacherId);
+      setSubjects(deletedData);
       setOpenDeleteDialog(false);
       setDeleteSuccessDialogOpen(true);
     } catch (error) {
       console.error("Error deleting teacher:", error);
     }
   };
-  console.log(deleteTeacherId,"deleted tecacherid");
+
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
   };
@@ -113,13 +108,10 @@ const Subject = () => {
         `https://staging.ibgakiosk.com/api/update_subject`,
         selectedTeacher
       );
-      setTeacherData((prevData) =>
-        prevData.map((teacher) =>
-          teacher.id === selectedTeacher.id
-            ? { ...teacher, ...selectedTeacher }
-            : teacher
-        )
+      const updatedSubjects = subjects.map((subject) =>
+        subject.id === selectedTeacher.id ? selectedTeacher : subject
       );
+      setSubjects(updatedSubjects);
       setSelectedTeacher(null);
     } catch (error) {
       console.error("Error updating teacher:", error);
@@ -150,15 +142,13 @@ const Subject = () => {
                 .slice((page - 1) * teachersPerPage, page * teachersPerPage)
                 .map((teacher, index) => (
                   <TableRow
-                    key={teacher.boardID}
+                    key={teacher.board_name}
                     sx={{
                       backgroundColor: index % 2 === 0 ? "#f5f5f5" : "inherit",
                     }}
                   >
-                    <TableCell>{teacher.id}</TableCell>
-                    <TableCell>
-                    {teacher.subjectName}
-                    </TableCell>
+                    <TableCell>{teacher.board_name}</TableCell>
+                    <TableCell>{teacher.subject_name}</TableCell>
                     <TableCell>
                       <Link
                         to=""
@@ -184,10 +174,10 @@ const Subject = () => {
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          class="feather feather-trash"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="feather feather-trash"
                         >
                           <polyline points="3 6 5 6 21 6"></polyline>
                           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -218,18 +208,16 @@ const Subject = () => {
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          class="feather feather-edit"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="feather feather-edit"
                         >
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                       </Link>
-                       
                     </TableCell>
-                   
                   </TableRow>
                 ))}
             </TableBody>
@@ -237,37 +225,37 @@ const Subject = () => {
         </TableContainer>
         <Stack spacing={2} justifyContent="center" className="mt-3">
           <Pagination
-            count={Math.ceil(teacherData.length / teachersPerPage)}
+            count={Math.ceil(subjects.length / teachersPerPage)}
             page={page}
             onChange={handleChangePage}
           />
         </Stack>
       </Container>
       <Dialog
-                      open={openDeleteDialog}
-                      onClose={handleDeleteDialogClose}
-                    >
-                      <DialogTitle className="text-red-500">
-                        Delete Teacher
-                      </DialogTitle>
-                      <DialogContent>
-                        <p>Are you sure you want to delete this teacher?</p>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
-                          onClick={handleDeleteDialogClose}
-                          color="secondary"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          onClick={() => handleDeleteClick()}
-                          color="primary"
-                        >
-                          Delete
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
+        open={openDeleteDialog}
+        onClose={handleDeleteDialogClose}
+      >
+        <DialogTitle className="text-red-500">
+          Delete Teacher
+        </DialogTitle>
+        <DialogContent>
+          <p>Are you sure you want to delete this teacher?</p>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleDeleteDialogClose}
+            color="secondary"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleDeleteClick(deleteTeacherId)}
+            color="primary"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={deleteSuccessDialogOpen}
         onClose={handleDeleteSuccessDialogClose}
@@ -282,7 +270,6 @@ const Subject = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
       <Modal open={!!selectedTeacher} onClose={handleClose}>
         <Box
           sx={{
@@ -318,7 +305,7 @@ const Subject = () => {
                 >
                   {subjects.map((board) => (
                     <MenuItem key={board.id} value={board.id}>
-                      {board.boardID}
+                      {board.board_name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -341,7 +328,7 @@ const Subject = () => {
                 >
                   {subjects.map((subject) => (
                     <MenuItem key={subject.id} value={subject.id}>
-                      {subject.subjectName}
+                      {subject.subject_name}
                     </MenuItem>
                   ))}
                 </Select>
