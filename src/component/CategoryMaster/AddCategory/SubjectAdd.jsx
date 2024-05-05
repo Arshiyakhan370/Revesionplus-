@@ -11,19 +11,21 @@ import {
   Grid,
   CardContent,
 } from '@mui/material';
+import SuccessMsg from './SuccessMsg';
 
 const SubjectAdd = () => {
-  const [boards, setBoards] = useState([]);
   const [selectedBoard, setSelectedBoard] = useState('');
   const [subjectName, setSubjectName] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
 
   useEffect(() => {
     const fetchBoards = async () => {
       try {
-        const response = await axios.get('https://staging.ibgakiosk.com/api/boardprogramme');
-        setBoards(response.data?.data);
+        const response = await axios.get('https://staging.ibgakiosk.com/api/category_list');
+        setCategories(response.data?.data);
         setLoading(false);
         console.log('Response data:', response.data);
       } catch (error) {
@@ -34,23 +36,28 @@ const SubjectAdd = () => {
 
     fetchBoards();
   }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post('https://staging.ibgakiosk.com/api/add_subject', {
         "boardID":selectedBoard,
-       "subejctName":subjectName,
+        "subejctName":subjectName,
       });
       console.log('Subject added:', response.data);
+      setSuccessMessageOpen(true); 
     } catch (error) {
       console.error('Error adding subject:', error);
       setError(error.message);
     }
-   setSelectedBoard("");
-   setSubjectName("")
-   
+    setSelectedBoard("");
+    setSubjectName("");
   };
-console.log('board',selectedBoard)
+
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessageOpen(false);
+  };
+
   return (
     <div>
       {loading ? (
@@ -68,14 +75,12 @@ console.log('board',selectedBoard)
                     <Select
                       label="Board"
                       id="boardID"
-                       value={selectedBoard}
+                      value={selectedBoard}
                       onChange={(e) => setSelectedBoard(e.target.value)}
                     >
-                      {boards.map((board) => (
-    <MenuItem key={board.id} value={board.id}>
-      {board.board_prog_name}
-    </MenuItem>
-  ))}
+                      {categories.map(category => (
+                        <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -116,6 +121,12 @@ console.log('board',selectedBoard)
           </Card>
         </form>
       )}
+      
+      <SuccessMsg
+        open={successMessageOpen}
+        onClose={handleCloseSuccessMessage}
+        message="Data saved successfully"
+      />
     </div>
   );
 };

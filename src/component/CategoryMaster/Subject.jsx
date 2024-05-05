@@ -39,8 +39,10 @@ const Subject = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteTeacherId, setDeleteTeacherId] = useState(null);
   const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [subjectName, setSubjectName] = useState('');
   const [page, setPage] = useState(1);
-  const teachersPerPage = 100;
+  const teachersPerPage = 10;
 
   useEffect(() => {
     const fetchTeacherData = async () => {
@@ -49,10 +51,10 @@ const Subject = () => {
           "https://staging.ibgakiosk.com/api/view_subject"
         );
         const boardsResponse = await axios.get(
-          "https://staging.ibgakiosk.com/api/boards"
+          "https://staging.ibgakiosk.com/api/category_list"
         );
         setSubjects(subjectsResponse.data?.data);
-        setBoards(boardsResponse.data?.data);
+        setCategories(boardsResponse.data?.data);
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -66,11 +68,17 @@ const Subject = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
-  const handleEdit = (teacher) => {
-    setSelectedTeacher(teacher);
+  const handleEdit = async (teacher) => {
+    console.log(teacher,"teacher");
+    try {
+      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_subject/${teacher.subject_id}`);
+      const getData = responseGetById.data?.data;
+      const editData = {...teacher, boardID:getData.boardID}
+      setSelectedTeacher(editData);
+    } catch (error) {
+      console.error("Error occurred while fetching data:", error);
+    }
   };
-
   const handleDeleteDialogOpen = (teacherId) => {
     setDeleteTeacherId(teacherId);
     setOpenDeleteDialog(true);
@@ -83,6 +91,7 @@ const Subject = () => {
 
   const handleDeleteClick = async (deleteTeacherId) => {
     try {
+    
       await axios.post(
         `https://staging.ibgakiosk.com/api/delete_subject`,
         {
@@ -101,23 +110,45 @@ const Subject = () => {
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
   };
+console.log(boards,"board");
 
-  const handleSaveEdit = async () => {
-    try {
-      await axios.post(
-        `https://staging.ibgakiosk.com/api/update_subject`,
-        selectedTeacher
+
+const handleSaveEdit = async () => {
+  try {
+ 
+    const response = await axios.post(
+      `https://staging.ibgakiosk.com/api/update_subject`,
+      {
+        subject_id: selectedTeacher.subject_id,
+        boardID: selectedTeacher.boardID,
+        subejctName: subjectName
+        ,
+
+      }
+    );
+  
+    if (response.data && response.data.message === "Subejct updated successfully") {
+      
+      setSubjects(prevData =>
+        prevData.map(teacher =>
+          teacher.subject_id === selectedTeacher.subject_id ? { ...teacher, ...selectedTeacher ,subject_name:subjectName} : teacher
+        )
       );
-      const updatedSubjects = subjects.map((subject) =>
-        subject.id === selectedTeacher.id ? selectedTeacher : subject
-      );
-      setSubjects(updatedSubjects);
+ 
       setSelectedTeacher(null);
-    } catch (error) {
-      console.error("Error updating teacher:", error);
-    }
-  };
 
+      setDeleteSuccessDialogOpen(true);
+    } else {
+     
+      console.error("Edit API failed:", response.data?.message || "Unknown error");
+   
+    }
+  } catch (error) {
+    console.error("Error updating subject level:", error);
+  }
+};
+ console.log(setTeacherData,"data  AAAAAA");
+console.log(selectedTeacher,"check error")
   const handleClose = () => {
     setSelectedTeacher(null);
   };
@@ -156,7 +187,7 @@ const Subject = () => {
                         data-bs-toggle="tooltip"
                         title=""
                         data-bs-original-title="Delete"
-                        onClick={() => handleDeleteDialogOpen(teacher.id)}
+                        onClick={() => handleDeleteDialogOpen(teacher.subject_id)}
                         style={{
                           width: "50px",
                           height: "50px",
@@ -288,51 +319,54 @@ const Subject = () => {
             Edit Teacher
           </Typography>
           <Grid container spacing={2} mt={2}>
+          <Grid item xs={12} sm={4}>
+  <FormControl fullWidth>
+    <InputLabel id="board-label">Select Board</InputLabel>
+    <Select
+      labelId="board-label"
+      id="boardID"
+      value={selectedTeacher?.boardID|| ''}
+      onChange={(e) => {
+        const selectedBoardId = e.target.value;
+        const selectedBoard = categories.find(category => category.board_id === selectedBoardId);
+        // const selectedSubject = selectedBoard.subjects.find(subject => subject.board_id === selectedBoardId);
+        console.log(selectedBoard,"selectedboard AAAAAAAAA")
+        setSelectedTeacher(prev => ({
+          ...prev,
+          board_name: selectedBoard.board_name,
+          boardID: selectedBoard.board_id,
+          // subject: selectedSubject 
+        }));
+      }}
+      
+      sx={{ height: '35px', marginTop: '8px' }}
+    >
+      {categories.map(option => (
+        <MenuItem key={option.board_id} value={option.board_id}>
+          {option.board_name}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+</Grid>
             <Grid item xs={12} sm={4}>
-              <FormControl fullWidth>
-                <InputLabel id="board-label">Select Board</InputLabel>
-                <Select
-                  labelId="board-label"
-                  id="board-select"
-                  value={selectedTeacher?.board || ""}
-                  onChange={(e) =>
-                    setSelectedTeacher((prev) => ({
-                      ...prev,
-                      board: e.target.value,
-                    }))
-                  }
-                  sx={{ height: "35px", marginTop: "8px" }}
-                >
-                  {subjects.map((board) => (
-                    <MenuItem key={board.id} value={board.id}>
-                      {board.board_name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <FormControl fullWidth>
-                <InputLabel id="subject-label">Select Subject</InputLabel>
-                <Select
-                  labelId="subject-label"
-                  id="subject-select"
-                  value={selectedTeacher?.subject || ""}
-                  onChange={(e) =>
-                    setSelectedTeacher((prev) => ({
-                      ...prev,
-                      subject: e.target.value,
-                    }))
-                  }
-                  sx={{ height: "35px", marginTop: "8px" }}
-                >
-                  {subjects.map((subject) => (
-                    <MenuItem key={subject.id} value={subject.id}>
-                      {subject.subject_name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+            <TextField
+                  label="Subject"
+                  id="subejctName"
+                  fullWidth
+                  required
+                  variant="outlined"
+                  margin="normal"
+                  value={subjectName}
+                  onChange={(e) => setSubjectName(e.target.value)}
+                  InputProps={{
+                    style: { height: 'auto' },
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  size="small"
+                />
             </Grid>
           </Grid>
           <Box mt={2} className="flex flex-row justify-between">

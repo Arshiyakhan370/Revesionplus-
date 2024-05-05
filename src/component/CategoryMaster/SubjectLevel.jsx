@@ -1,89 +1,69 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions, CardContent, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
+import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const  SubjectLevel = () => {
- 
- 
-  const [teacherData, setTeacherData] = useState([
-   
-    { id: 2, board: 'IB DP', subject: 'Maths AI', subjectLevel:'SL' },
-    { id: 3, board: 'IB MYP', subject: 'Economic',subjectLevel:'HL' },
-    { id: 3, board: '', subject: '' },
-      { id: 4, board: '', subject: '' },
-      { id: 5,board: '', subject: '' },
-      { id: 6, board: '', subject: '' },
-      { id: 7, board: '', subject: '' },
-      { id: 8,board: '', subject: '' },
-      { id: 9,board: '', subject: '' },
-      { id: 10,board: '', subject: '' },
-      { id: 11, board: '', subject: '' },
-      { id: 12, board: '', subject: '' },
-      { id: 13, board: '', subject: '' },
-      { id: 14, board: '', subject: '' },
-      { id: 15, board: '', subject: '' },
-      { id:16 , board: '', subject: '' },
-      { id: 17, board: '', subject: '' },
-      { id:18,board: '', subject: '' },
-      { id:19,  board: '', subject: '' },
-      { id: 20, board: '', subject: '' },
-      { id: 21, board: '', subject: '' },
-      { id: 22,board: '', subject: '' },
-      { id:23 , board: '', subject: '' },
-      { id:24 , board: '', subject: '' },
-      { id:25 , board: '', subject: '' },
-      { id: 26,board: '', subject: '' },
-      { id:27 , board: '', subject: '' },
-      { id:28 , board: '', subject: '' },
-      { id: 29, board: '', subject: '' },
-       { id: 30, board: '', subject: '' },
-      { id:31 , board: '', subject: '' },
-      { id: 32, board: '', subject: '' },
-      { id:33 , board: '', subject: '' },
-      { id:34 , board: '', subject: '' },
-      { id:35,  board: '', subject: '' },
-      { id: 36,  board: '', subject: '' },
-      { id: 37 ,board: '', subject: '' },
-      { id: 39, board: '', subject: '' },
-      { id: 38, board: '', subject: '' },
-      { id:40 ,  board: '', subject: '' },
-      { id: 41,  board: '', subject: '' },
-      { id: 42,  board: '', subject: '' },
-      { id: 43,  board: '', subject: '' },
-  ])
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 const [deleteTeacherId, setDeleteTeacherId] = useState(null);
 const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
+const [teacherData, setTeacherData] = useState([]);
+const [subjectLevelName, setSubjectLevelName] = useState('');
+const [loading, setLoading] = useState(true);
+const [categories, setCategories] = useState([]);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('https://staging.ibgakiosk.com/api/view_subjectlevel');
+      const boardsResponse = await axios.get(
+        "https://staging.ibgakiosk.com/api/category_list"
+      );
+      setCategories(boardsResponse.data?.data);
+      setTeacherData(response.data?.data); 
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching teacher data:', error);
+      setLoading(false);
+    }
+  };
 
-const  boardOptions=[
-    { value: 'IB DP', label: 'IB DP' },
-    { value: 'IB MYP', label: 'IB MYP' },
-    { value: 'IGCSE', label: 'IGCSE' },
-]
-const subjectOptions=[
-    { value: 'Maths AI', label: 'Maths AI' },
-    { value: 'Economics', label: 'Economics' },
-    { value: 'Physics', label: 'Physics' },
-    { value: 'Business Management', label: 'Business Management'},
-    { value: 'Chemestry', label: 'Chemestry'},
-    { value: 'Maths AA', label: 'Maths AA' },
-]
- const subjectLevelOptions=[
-    { value: 'SL', label: 'SL' },
- { value: 'HL', label: 'HL' },]
+  fetchData();
+}, []);
+
   const [page, setPage] = useState(1);
   const teachersPerPage = 5;
+  const handleSnackbarOpen = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
+};
+const handleSnackbarClose = () => {
+  setSnackbarOpen(false);
+};
 
-  const handleEdit = (teacher) => {
-    setSelectedTeacher(teacher);
+  const handleEdit = async (teacher) => {
+    console.log(teacher,"teacher");
+    try {
+      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_subject_level/${teacher.subject_leve_id}`);
+      const getData = responseGetById.data?.data;
+      const editData = {...teacher, boardID:getData.boardID, subjectID:getData.subjectID}
+      setSelectedTeacher(editData);
+    } catch (error) {
+      console.error("Error occurred while fetching data:", error);
+    }
   };
+  
   const handleDeleteDialogOpen = (teacherId) => {
     setDeleteTeacherId(teacherId);
     setOpenDeleteDialog(true);
@@ -94,9 +74,21 @@ const subjectOptions=[
     setOpenDeleteDialog(false);
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async() => {
+    try {
+      await axios.post(
+        `https://staging.ibgakiosk.com/api/destroy_subject_level`,
+        {
+          subject_leve_id: deleteTeacherId
+        }
+      );
+    
+    } catch (error) {
+      console.error("Error deleting teacher:", error);
+  };
+
  
-    setTeacherData((prevData) => prevData.filter((teacher) => teacher.id !== deleteTeacherId));
+    setTeacherData((prevData) => prevData.filter((teacher) => teacher.subject_leve_id !== deleteTeacherId));
     setOpenDeleteDialog(false);
     setDeleteSuccessDialogOpen(true);
   };
@@ -109,18 +101,49 @@ const subjectOptions=[
   };
   const startIndex = (page - 1) * teachersPerPage;
   const endIndex = startIndex + teachersPerPage;
-  const handleSaveEdit = () => {
-    setTeacherData((prevData) =>
-      prevData.map((teacher) => (teacher.id === selectedTeacher.id ? { ...teacher, ...selectedTeacher } : teacher))
-    );
-    setSelectedTeacher(null);
+  const handleSaveEdit = async () => {
+    try {
+   
+      const response = await axios.post(
+        `https://staging.ibgakiosk.com/api/update_subject_level`,
+        {
+          subjectlevel_id: selectedTeacher.subject_leve_id,
+          boardID: selectedTeacher.boardID,
+          subjectID: selectedTeacher.subjectID,
+          subjectlevelName: subjectLevelName
+          ,
+
+        }
+      );
+    
+      if (response.data && response.data.message === "Subejct Level updated successfully") {
+        handleSnackbarOpen("Subject Level updated successfully");
+        setTeacherData(prevData =>
+          prevData.map(teacher =>
+            teacher.subject_leve_id === selectedTeacher.subject_leve_id ? { ...teacher, ...selectedTeacher ,subject_level_name: subjectLevelName} : teacher
+          )
+        );
+   
+        setSelectedTeacher(null);
+
+       
+      } else {
+       
+        console.error("Edit API failed:", response.data?.message || "Unknown error");
+     
+      }
+    } catch (error) {
+      console.error("Error updating subject level:", error);
+    }
   };
+console.log(selectedTeacher,"error check");
 const handleClose=()=>{
     setSelectedTeacher(null);
 }
 const handleAddMapping = (newMapping) => {
   setTeacherData((prevData) => [...prevData, newMapping]);
 };
+
 
   return (
     <Fragment>
@@ -140,12 +163,12 @@ const handleAddMapping = (newMapping) => {
                     </TableHead>
                     <TableBody>
                       {teacherData.slice(startIndex, endIndex).map((teacher, index) => (
-                        <TableRow key={teacher.id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
-                           <TableCell>{teacher.board}</TableCell>
+                        <TableRow key={teacher.subject_leve_id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
+                           <TableCell>{teacher.board_name}</TableCell>
                           {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.subject} </TableCell>)}
+                          <TableCell>{teacher.subject_name} </TableCell>)}
                           {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.subjectLevel} </TableCell>)}
+                          <TableCell>{teacher.subject_level_name} </TableCell>)}
                           <TableCell>
                             <Link to=""
                 className="item-trash text-danger circle"
@@ -153,7 +176,7 @@ const handleAddMapping = (newMapping) => {
                 title=""
                 data-bs-original-title="Delete"
                
-      onClick={() => handleDeleteDialogOpen(teacher.id)}
+      onClick={() => handleDeleteDialogOpen(teacher.subject_leve_id)}
                 style={{
     width: '50px',
     height: '50px',
@@ -242,59 +265,89 @@ const handleAddMapping = (newMapping) => {
           Edit Teacher
         </Typography>
         <Grid container spacing={2} mt={2}>
-       <Grid item xs={12} sm={4}>
-          <FormControl fullWidth>
-            <InputLabel id="board-label">Select Board</InputLabel>
-            <Select
-              labelId="board-label"
-              id="board-select"
-              value={selectedTeacher?.board || ''}
-          onChange={(e) => setSelectedTeacher((prev) => ({ ...prev, board: e.target.value }))}
-              sx={{ height: '35px', marginTop: '8px' }}
-            >
-              {boardOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-         <Grid item xs={12} sm={4}>
-          <FormControl fullWidth>
-            <InputLabel id="subject-label">Select Subject</InputLabel>
-            <Select
-              labelId="subject-label"
-              id="subject-select"
-              value={selectedTeacher?.subject || ''}
-          onChange={(e) => setSelectedTeacher((prev) => ({ ...prev, subject: e.target.value }))}
-              sx={{ height: '35px', marginTop: '8px' }}
-            >
-              {subjectOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
         <Grid item xs={12} sm={4}>
-          <FormControl fullWidth>
-            <InputLabel id="subject-label">Select SubjectLevel</InputLabel>
-            <Select
-              labelId="subject-label"
-              id="subjectLevel-select"
-              value={selectedTeacher?.subjectLevel || ''}
-          onChange={(e) => setSelectedTeacher((prev) => ({ ...prev, subjectLevel: e.target.value }))}
-              sx={{ height: '35px', marginTop: '8px' }}
-            >
-              {subjectLevelOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+  <FormControl fullWidth>
+    <InputLabel id="board-label">Select Board</InputLabel>
+    <Select
+      labelId="board-label"
+      id="boardID"
+      value={selectedTeacher?.boardID|| ''}
+      onChange={(e) => {
+        const selectedBoardId = e.target.value;
+        const selectedBoard = categories.find(category => category.board_id === selectedBoardId);
+        // const selectedSubject = selectedBoard.subjects.find(subject => subject.board_id === selectedBoardId);
+        console.log(selectedBoard,"selectedboard AAAAAAAAA")
+        setSelectedTeacher(prev => ({
+          ...prev,
+          board_name: selectedBoard.board_name,
+          boardID: selectedBoard.board_id,
+          // subject: selectedSubject 
+        }));
+      }}
+      
+      sx={{ height: '35px', marginTop: '8px' }}
+    >
+      {categories.map(option => (
+        <MenuItem key={option.board_id} value={option.board_id}>
+          {option.board_name}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+</Grid>
+
+<Grid item xs={12} sm={4}>
+  <FormControl fullWidth>
+    <InputLabel id="subject-label">Select Subject</InputLabel>
+    <Select
+      labelId="subject-label"
+      id="subjectID"
+      value={selectedTeacher?.subjectID || ''}
+      onChange={(e) => {
+        const selectedSubjectId = e.target.value;
+        const flattenedSubjects = categories.flatMap(category => category.subject);
+        const selectedSubject = flattenedSubjects.find(subject => subject.subject_id === selectedSubjectId);
+
+        console.log(flattenedSubjects, "flattenedSubjects");
+        setSelectedTeacher(prev => ({
+          ...prev,
+          subject_name: selectedSubject.subject_name,
+          subjectID: selectedSubject.subject_id,
+          subject: selectedSubject 
+        }));
+      }}
+      sx={{ height: '35px', marginTop: '8px' }}
+    >
+      {categories.map(category => (
+        category.subject.map(subject => (
+          <MenuItem key={subject.subject_id} value={subject.subject_id}>
+            {subject.subject_name}
+          </MenuItem>
+        ))
+      ))}
+    </Select>
+  </FormControl>
+</Grid>
+
+        <Grid item xs={12} sm={4}>
+        <TextField
+                  label="Subject Level"
+                  id="subjectlevelName"
+                  fullWidth
+                  required
+                  variant="outlined"
+                  margin="normal"
+                  value={subjectLevelName}
+                  onChange={(e) => setSubjectLevelName(e.target.value)}
+                  InputProps={{
+                    style: { height: 'auto' },
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  size="small"
+                />
+        
         </Grid>
         </Grid>
        
@@ -317,7 +370,32 @@ const handleAddMapping = (newMapping) => {
     </Box>
       </Box>
     </Modal>
-   
+    <Snackbar
+    open={snackbarOpen}
+    autoHideDuration={6000}
+    onClose={handleSnackbarClose}
+    message={snackbarMessage}
+    anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+    }}
+    ContentProps={{
+        sx: {
+          background: 'green',
+          color: 'white',
+          textAlign: 'center',
+          borderRadius: '8px',
+        },
+    }}
+    action={
+        <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
+            <CloseIcon fontSize="small" />
+        </IconButton>
+    }
+/>
+
+
+
     </Fragment>
   );
 };

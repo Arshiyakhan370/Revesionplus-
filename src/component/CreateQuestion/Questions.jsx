@@ -3,7 +3,7 @@ import { Button, Card, CardContent, Container ,Dialog,DialogContent,Grid} from '
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import Mcq from './QuestionSub/Mcq';
-import DrawingApp from './QuestionSub/Drwaing';
+import DrawingApp from './QuestionSub/';
 import Vdeo from './QuestionDescriptionSection/Vdeo';
 import Audio from './QuestionDescriptionSection/Audio';
 import SimulationComponent from './QuestionDescriptionSection/Simulation';
@@ -73,7 +73,7 @@ import LongAnswer from './QuestionSub/LongAnswer';
     <Container maxWidth='xxl' className='mt-4' >
         {/* <Card>
           <CardContent className='text-center'> */}
-          {/* <Link to="/createquestion" style={{ textDecoration: 'none', margin:'10px'  }}> */}
+          {/* <Link to="/" style={{ textDecoration: 'none', margin:'10px'  }}> */}
               <Button
                 type="button"
                 className="segment-type-button"
@@ -147,7 +147,7 @@ import LongAnswer from './QuestionSub/LongAnswer';
                   </svg>
               }
               >
-           Drwaing
+           
               </Button>
               <Dialog open={openModal3} onClose={handleCloseModal3} maxWidth="md">
             <DialogContent>
@@ -278,6 +278,6 @@ export default Questions
               // <div> Fill Dropdown </div>
             
    
-    
+  
                 
 

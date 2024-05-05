@@ -111,7 +111,7 @@ const VeiwCategoryPage =lazy (()=> import ('../Pages/VeiwCategoryPage'))
           <Route path='/image' element={<ImagePage/>} />
           <Route path='/pdf' element={<PdfPage/>} />
           <Route path='/vdo' element={<VdeoPage/>} />
-          <Route path='/audio' element={<AudioPage/>} />
+          <Route path='/audio' element={<AudioPage/>}/>
           <Route path='/simulation' element={<SimulationPage/>} />
           <Route path='/mcq' element={<McqPage/>} />
           <Route path='/drwing' element={<DrwaingPage/>} />
