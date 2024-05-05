@@ -3,7 +3,7 @@ import { Button, Card, CardContent, Container ,Dialog,DialogContent,Grid} from '
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import Mcq from './QuestionSub/Mcq';
-import DrawingApp from './QuestionSub/';
+import DrawingApp from './QuestionSub/Drwaing'
 import Vdeo from './QuestionDescriptionSection/Vdeo';
 import Audio from './QuestionDescriptionSection/Audio';
 import SimulationComponent from './QuestionDescriptionSection/Simulation';

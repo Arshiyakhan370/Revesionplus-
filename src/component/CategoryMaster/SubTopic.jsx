@@ -145,7 +145,7 @@ fetchData();
   
     
         setSelectedTeacher(null);
-        setTopicName1(''); 
+        setSubTopicName1("");
      
         setDeleteSuccessDialogOpen(true);
       } else {
