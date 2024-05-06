@@ -108,7 +108,7 @@ fetchData();
       if (response.data && response.data.message === "Paper updated successfully") {
         setTeacherData(prevData =>
           prevData.map(teacher =>
-            teacher.paper_id === selectedTeacher.paper_id ? { ...teacher, paper_name: paperName1} : teacher
+            teacher.paper_id === selectedTeacher.paper_id ? { ...teacher,...selectedTeacher, paper_name: paperName1} : teacher
           )
         );
         setSelectedTeacher(null);

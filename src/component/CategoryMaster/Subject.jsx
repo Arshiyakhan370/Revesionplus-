@@ -89,16 +89,16 @@ const Subject = () => {
     setOpenDeleteDialog(false);
   };
 
-  const handleDeleteClick = async (deleteTeacherId) => {
+  const handleDeleteClick = async (deleteId) => {
     try {
     
       await axios.post(
         `https://staging.ibgakiosk.com/api/delete_subject`,
         {
-          subject_id: deleteTeacherId
+          subject_id: deleteId
         }
       );
-      const deletedData = subjects.filter((teacher) => teacher.subject_id !== deleteTeacherId);
+      const deletedData = subjects.filter((teacher) => teacher.subject_id !== deleteId);
       setSubjects(deletedData);
       setOpenDeleteDialog(false);
       setDeleteSuccessDialogOpen(true);
