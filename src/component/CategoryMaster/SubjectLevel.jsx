@@ -9,6 +9,10 @@ import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useGetCategoryListQuery } from '../../Services/CategoryApi';
+import CategoryDeletedMsg from '../../Helpers/CategoryDeletedMsg';
+import DeletedSuccessMsg from '../../Helpers/DeletedSuccessMsg';
+import SuccessMsg from './AddCategory/SuccessMsg';
 
 
 const  SubjectLevel = () => {
@@ -21,35 +25,49 @@ const [deleteTeacherId, setDeleteTeacherId] = useState(null);
 const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
 const [teacherData, setTeacherData] = useState([]);
 const [subjectLevelName, setSubjectLevelName] = useState('');
-const [loading, setLoading] = useState(true);
-const [categories, setCategories] = useState([]);
+const [page, setPage] = useState(1);
+// const [loading, setLoading] = useState(true);
+// const [categories, setCategories] = useState([]);
+// const [error,setError]=useState();
+const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
+const { data:categories=[],error, isLoading } = useGetCategoryListQuery();
+
 useEffect(() => {
   const fetchData = async () => {
     try {
       const response = await axios.get('https://staging.ibgakiosk.com/api/view_subjectlevel');
-      const boardsResponse = await axios.get(
-        "https://staging.ibgakiosk.com/api/category_list"
-      );
-      setCategories(boardsResponse.data?.data);
+      // const boardsResponse = await axios.get(
+      //   "https://staging.ibgakiosk.com/api/category_list"
+      // );
+      // setCategories(boardsResponse.data?.data);
       setTeacherData(response.data?.data); 
-      setLoading(false);
+      // setLoading(false);
     } catch (error) {
       console.error('Error fetching teacher data:', error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
   fetchData();
 }, []);
-
-  const [page, setPage] = useState(1);
+if(isLoading){
+  return <div>
+    Loading
+  </div>
+}
+if(error){
+  return <div>
+    error
+  </div>
+}
+ 
   const teachersPerPage = 5;
   const handleSnackbarOpen = (message) => {
     setSnackbarMessage(message);
     setSnackbarOpen(true);
 };
-const handleSnackbarClose = () => {
-  setSnackbarOpen(false);
+const handleCloseSuccessMessage = () => {
+  setSuccessMessageOpen(false);
 };
 
   const handleEdit = async (teacher) => {
@@ -117,7 +135,7 @@ const handleSnackbarClose = () => {
       );
     
       if (response.data && response.data.message === "Subejct Level updated successfully") {
-        handleSnackbarOpen("Subject Level updated successfully");
+        setSuccessMessageOpen(true)
         setTeacherData(prevData =>
           prevData.map(teacher =>
             teacher.subject_leve_id === selectedTeacher.subject_leve_id ? { ...teacher, ...selectedTeacher ,subject_level_name: subjectLevelName} : teacher
@@ -147,6 +165,7 @@ const handleAddMapping = (newMapping) => {
 
   return (
     <Fragment>
+       
     <Container maxWidth="xxl" sx={{marginTop:'15px',background:'#f0f0f0'}}>
    
                 <TableContainer>
@@ -221,6 +240,7 @@ const handleAddMapping = (newMapping) => {
 
                 </Stack>
                   </Container>
+      
                   <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
         <DialogTitle className='text-red-500'>Delete Teacher</DialogTitle>
         <DialogContent>
@@ -274,7 +294,7 @@ const handleAddMapping = (newMapping) => {
       value={selectedTeacher?.boardID|| ''}
       onChange={(e) => {
         const selectedBoardId = e.target.value;
-        const selectedBoard = categories.find(category => category.board_id === selectedBoardId);
+        const selectedBoard = categories.data.find(category => category.board_id === selectedBoardId);
         // const selectedSubject = selectedBoard.subjects.find(subject => subject.board_id === selectedBoardId);
         console.log(selectedBoard,"selectedboard AAAAAAAAA")
         setSelectedTeacher(prev => ({
@@ -287,9 +307,9 @@ const handleAddMapping = (newMapping) => {
       
       sx={{ height: '35px', marginTop: '8px' }}
     >
-      {categories.map(option => (
-        <MenuItem key={option.board_id} value={option.board_id}>
-          {option.board_name}
+       {categories?.data.map(option => (
+        <MenuItem key={option .board_id} value={option .board_id}>
+          {option .board_name}
         </MenuItem>
       ))}
     </Select>
@@ -305,7 +325,7 @@ const handleAddMapping = (newMapping) => {
       value={selectedTeacher?.subjectID || ''}
       onChange={(e) => {
         const selectedSubjectId = e.target.value;
-        const flattenedSubjects = categories.flatMap(category => category.subject);
+        const flattenedSubjects = categories?.data.flatMap(category => category.subject);
         const selectedSubject = flattenedSubjects.find(subject => subject.subject_id === selectedSubjectId);
 
         console.log(flattenedSubjects, "flattenedSubjects");
@@ -318,7 +338,7 @@ const handleAddMapping = (newMapping) => {
       }}
       sx={{ height: '35px', marginTop: '8px' }}
     >
-      {categories.map(category => (
+      {categories?.data.map(category => (
         category.subject.map(subject => (
           <MenuItem key={subject.subject_id} value={subject.subject_id}>
             {subject.subject_name}
@@ -370,32 +390,22 @@ const handleAddMapping = (newMapping) => {
     </Box>
       </Box>
     </Modal>
-    <Snackbar
-    open={snackbarOpen}
-    autoHideDuration={6000}
-    onClose={handleSnackbarClose}
-    message={snackbarMessage}
-    anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-    }}
-    ContentProps={{
-        sx: {
-          background: 'green',
-          color: 'white',
-          textAlign: 'center',
-          borderRadius: '8px',
-        },
-    }}
-    action={
-        <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
-            <CloseIcon fontSize="small" />
-        </IconButton>
-    }
+    
+     
+<CategoryDeletedMsg
+  open={openDeleteDialog}
+  onClose={handleDeleteDialogClose}
+  handleDeleteClick={handleDeleteClick}
 />
-
-
-
+<DeletedSuccessMsg
+  open={deleteSuccessDialogOpen}
+  onClose={handleDeleteSuccessDialogClose}
+/>
+<SuccessMsg
+        open={successMessageOpen}
+        onClose={handleCloseSuccessMessage}
+        message="Data Edited  successfully"
+      />
     </Fragment>
   );
 };

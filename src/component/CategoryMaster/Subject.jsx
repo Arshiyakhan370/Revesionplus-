@@ -28,20 +28,23 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Container } from "@mui/system";
+import { useGetCategoryListQuery, useGetViewSubjectListQuery } from "../../Services/CategoryApi";
+import SuccessMsg from "./AddCategory/SuccessMsg";
 
 const Subject = () => {
   const [teacherData, setTeacherData] = useState([]);
   const [boards, setBoards] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteTeacherId, setDeleteTeacherId] = useState(null);
   const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
   const [subjectName, setSubjectName] = useState('');
   const [page, setPage] = useState(1);
+  // const [categories, setCategories] = useState([]);
+  const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
+  const { data:{data:categories}={},  error, isLoading ,} = useGetCategoryListQuery();
+  // const { data:{data:subjects}={},  error:subjectError, isLoading:subjectIsLoading ,} = useGetViewSubjectListQuery()
   const teachersPerPage = 10;
 
   useEffect(() => {
@@ -50,21 +53,36 @@ const Subject = () => {
         const subjectsResponse = await axios.get(
           "https://staging.ibgakiosk.com/api/view_subject"
         );
-        const boardsResponse = await axios.get(
-          "https://staging.ibgakiosk.com/api/category_list"
-        );
+        // const boardsResponse = await axios.get(
+        //   "https://staging.ibgakiosk.com/api/category_list"
+        // );
+        // setCategories(boardsResponse.data?.data);
         setSubjects(subjectsResponse.data?.data);
-        setCategories(boardsResponse.data?.data);
-        setLoading(false);
+       
       } catch (error) {
-        setError(error.message);
-        setLoading(false);
+      
+        
       }
     };
 
     fetchTeacherData();
   }, []);
-
+  // if(isLoading || subjectIsLoading){
+    if(isLoading ){
+    return <div>
+      Loading
+    </div>
+  }
+  // if(error || subjectError){
+    if(error ){
+    return <div>
+      error
+    </div>
+  }
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessageOpen(false);
+  };
+console.log(categories,"arsh")
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -136,8 +154,8 @@ const handleSaveEdit = async () => {
       );
  
       setSelectedTeacher(null);
-
-      setDeleteSuccessDialogOpen(true);
+      setSuccessMessageOpen(true)
+     
     } else {
      
       console.error("Edit API failed:", response.data?.message || "Unknown error");
@@ -155,6 +173,7 @@ console.log(selectedTeacher,"check error")
 
   return (
     <Fragment>
+     
       <Container
         maxWidth="xxl"
         sx={{ marginTop: "15px", background: "#f0f0f0" }}
@@ -262,6 +281,11 @@ console.log(selectedTeacher,"check error")
           />
         </Stack>
       </Container>
+      {/* {isLoading  ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error.error}</p>
+      ) : ( */}
       <Dialog
         open={openDeleteDialog}
         onClose={handleDeleteDialogClose}
@@ -396,6 +420,12 @@ console.log(selectedTeacher,"check error")
           </Box>
         </Box>
       </Modal>
+    {/* )} */}
+    <SuccessMsg
+        open={successMessageOpen}
+        onClose={handleCloseSuccessMessage}
+        message="Data Edited  successfully"
+      />
     </Fragment>
   );
 };

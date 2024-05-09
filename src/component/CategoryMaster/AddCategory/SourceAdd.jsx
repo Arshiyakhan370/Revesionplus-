@@ -12,32 +12,17 @@ import {
   CardContent,
 } from '@mui/material';
 import SuccessMsg from './SuccessMsg';
+import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 
 const SourceAdd = () => {
-  const [categories, setCategories] = useState([]);
+  
   const [selectedBoard, setSelectedBoard] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [subjectLevelName1, setSubjectLevelName1] = useState('');
   const [selectedSource, setSelectedSource] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [submitted, setSubmitted] = useState(false); // State to track form submission
   
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('https://staging.ibgakiosk.com/api/category_list');
-        setCategories(response.data?.data);
-        setLoading(false);
-        console.log('Response data:', response.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-        setError(error.message);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+  const [submitted, setSubmitted] = useState(false); 
+  const { data:categories=[], error, isLoading ,} = useGetCategoryListQuery();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -49,19 +34,23 @@ const SourceAdd = () => {
         "sourceName": selectedSource,
       });
       console.log('Source added:', response.data);
-      setSubmitted(true); // Set submitted to true upon successful form submission
+      setSubmitted(true); 
       setSelectedBoard('');
       setSelectedSubject('');
       setSubjectLevelName1('');
       setSelectedSource('');
     } catch (error) {
       console.error('Error adding source:', error);
-      setError(error.message);
     }
   };
 
   return (
     <div>
+     {isLoading  ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error.error}</p>
+      ) : (
       <form onSubmit={handleSubmit}>
         <Card>
           <CardContent>
@@ -75,7 +64,7 @@ const SourceAdd = () => {
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
                   >
-                    {categories.map(category => (
+                   {categories?.data.map(category => (
                       <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
                     ))}
                   </Select>
@@ -90,7 +79,7 @@ const SourceAdd = () => {
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
                   >
-                    {categories.map(category => (
+                    {categories?.data.map(category => (
                       category.subject.map(subject => (
                         <MenuItem key={subject.subject_id} value={subject.subject_id}>
                           {subject.subject_name}
@@ -109,7 +98,7 @@ const SourceAdd = () => {
                     value={subjectLevelName1}
                     onChange={(e) => setSubjectLevelName1(e.target.value)}
                   >
-                    {categories.map(category => (
+                    {categories?.data.map(category => (
                       category.subject.map(subject => (
                         subject.subject_level.map(level => (
                           <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
@@ -146,7 +135,7 @@ const SourceAdd = () => {
           </CardContent>
         </Card>
       </form>
-      {/* Display success message when form is submitted successfully */}
+      )}
       <SuccessMsg message="Data saved successfully!" open={submitted} onClose={() => setSubmitted(false)} />
     </div>
   );

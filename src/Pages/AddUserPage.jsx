@@ -114,7 +114,7 @@ const AddUserPage = () => {
         <Fragment>
       <Header toggleSidebar={toggleSidebar}/>
    <Navbar1/>
-   <StudentAdd isSidebarClosed={isSidebarClosed}  addStudent={addStudent} />
+   {/* <StudentAdd isSidebarClosed={isSidebarClosed}  addStudent={addStudent} /> */}
    {userListData && userListData.length > 0 && (
         <ListContainer isSidebarClosed={isSidebarClosed} userListData={userListData} setUserListData={setUserListData} />
   )}

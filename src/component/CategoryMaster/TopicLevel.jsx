@@ -11,6 +11,7 @@ import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
 import { boardOptions ,subjectOptions, teacherOptions}  from '../TeacherMap/SweetAlert';
 import axios from 'axios';
+import SuccessMsg from './AddCategory/SuccessMsg';
 
 const TopicLevel = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
@@ -21,6 +22,7 @@ const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
 const [categories, setCategories] = useState([]);
 const [teacherData, setTeacherData] = useState([]);
 const [loading, setLoading] = useState(true);
+const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
 const [topicName1, setTopicName1] = useState('');
 useEffect(() => {
 const fetchData = async () => {
@@ -93,7 +95,9 @@ fetchData();
 
   const startIndex = (page - 1) * teachersPerPage;
   const endIndex = startIndex + teachersPerPage;
- 
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessageOpen(false);
+  };
   const handleSaveEdit = async () => {
     try {
       const response = await axios.post(
@@ -121,7 +125,7 @@ fetchData();
         setTopicName1(''); 
   
     
-        setDeleteSuccessDialogOpen(true);
+        setSuccessMessageOpen(true);
       } else {
         console.error("Edit API failed:", response.data?.message || "Unknown error");
       }
@@ -503,7 +507,11 @@ console.log(selectedTeacher,"AAAAAAdelete");
     </Box>
       </Box>
     </Modal>
-   
+    <SuccessMsg
+        open={successMessageOpen}
+        onClose={handleCloseSuccessMessage}
+        message="Data Edited  successfully"
+      />
     </Fragment>
   );
 };

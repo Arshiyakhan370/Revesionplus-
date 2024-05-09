@@ -1,4 +1,3 @@
-// import React from 'react'
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -14,10 +13,11 @@ import {
     CardContent,
 } from '@mui/material';
 import SuccessMsg from './SuccessMsg';
+import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 
 const TopicAdd = () => {
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // const [categories, setCategories] = useState([]);
+    // const [loading, setLoading] = useState(true);
     const [successMessageOpen, setSuccessMessageOpen] = useState(false);
     const [formData, setFormData] = useState({
         boardID: '',
@@ -27,21 +27,8 @@ const TopicAdd = () => {
         paperID: '',
         topicName:'',
     });
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('https://staging.ibgakiosk.com/api/category_list');
-                setCategories(response.data?.data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
+    const { data:categories=[], error, isLoading ,} = useGetCategoryListQuery();
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -72,6 +59,11 @@ const TopicAdd = () => {
 
     return (
         <div>
+             {isLoading  ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error.error}</p>
+      ) : (
             <form onSubmit={handleSubmit}>
                 <Card>
                     <CardContent>
@@ -88,7 +80,7 @@ const TopicAdd = () => {
                                         sx={{ height: '35px' }}
                                     >
                                         <MenuItem value="">Select Board Type</MenuItem>
-                                        {categories.map(category => (
+                                        {categories?.data.map(category => (
                                                 <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
                                             ))} 
                                     </Select>
@@ -106,7 +98,7 @@ const TopicAdd = () => {
                                         sx={{ height: '35px' }}
                                     >
                                         <MenuItem value="">Select Subject Name</MenuItem>
-                                        {categories.map(category => (
+       {categories?.data.map(category => (
     category.subject.map(subject => (
         <MenuItem key={subject.subject_id} value={subject.subject_id}>
             {subject.subject_name}
@@ -129,7 +121,7 @@ const TopicAdd = () => {
                                         sx={{ height: '35px' }}
                                     >
                                         <MenuItem value="">Select Subject Level</MenuItem>
-                                        {categories.map(category => (
+           {categories?.data.map(category => (
     category.subject.map(subject => (
         subject.subject_level.map(level => (
             <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
@@ -155,7 +147,7 @@ const TopicAdd = () => {
                                     >
                                        
                                        
-          {categories.map(category => (
+                                       {categories?.data.map(category => (
     category.subject.map(subject => (
         subject.subject_level.map(level => (
             level.source.map(source => (
@@ -182,7 +174,7 @@ const TopicAdd = () => {
                                         sx={{ height: '35px' }}
                                     >
                             
-                                        {categories.map(category => (
+                                        {categories?.data.map(category => (
     category.subject.map(subject => (
         subject.subject_level.map(level => (
             level.source.map(source => (
@@ -223,7 +215,8 @@ const TopicAdd = () => {
                         </Grid>
                     </CardContent>
                 </Card>
-            </form>
+      </form>
+      )}
             <SuccessMsg message="Data saved successfully!" open={successMessageOpen} onClose={handleCloseSuccessMessage} />
         </div>
     );

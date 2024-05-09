@@ -12,31 +12,15 @@ import {
   CardContent,
 } from '@mui/material';
 import SuccessMsg from './SuccessMsg';
+import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 
 const SubjectAdd = () => {
   const [selectedBoard, setSelectedBoard] = useState('');
   const [subjectName, setSubjectName] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [categories, setCategories] = useState([]);
   const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
-
-  useEffect(() => {
-    const fetchBoards = async () => {
-      try {
-        const response = await axios.get('https://staging.ibgakiosk.com/api/category_list');
-        setCategories(response.data?.data);
-        setLoading(false);
-        console.log('Response data:', response.data);
-      } catch (error) {
-        console.error('Error fetching boards:', error);   
-        setError(error.message);
-      }
-    };
-
-    fetchBoards();
-  }, []);
-
+  
+  const { data:categories=[], error, isLoading ,} = useGetCategoryListQuery();
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -48,22 +32,22 @@ const SubjectAdd = () => {
       setSuccessMessageOpen(true); 
     } catch (error) {
       console.error('Error adding subject:', error);
-      setError(error.message);
+      // setError(error.message);
     }
     setSelectedBoard("");
     setSubjectName("");
   };
-
+console.log(error,"check");
   const handleCloseSuccessMessage = () => {
     setSuccessMessageOpen(false);
   };
 
   return (
     <div>
-      {loading ? (
+      {isLoading  ? (
         <p>Loading...</p>
       ) : error ? (
-        <p>Error: {error}</p>
+        <p>Error: {error.error}</p>
       ) : (
         <form onSubmit={handleSubmit}>
           <Card>
@@ -78,7 +62,7 @@ const SubjectAdd = () => {
                       value={selectedBoard}
                       onChange={(e) => setSelectedBoard(e.target.value)}
                     >
-                      {categories.map(category => (
+                      {categories?.data.map(category => (
                         <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
                       ))}
                     </Select>

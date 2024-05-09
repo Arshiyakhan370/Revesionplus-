@@ -8,6 +8,7 @@ import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
 import { boardOptions ,subjectOptions, teacherOptions}  from '../TeacherMap/SweetAlert';
 import axios from 'axios';
+import SuccessMsg from './AddCategory/SuccessMsg';
 
 const Source = () => {
  
@@ -15,6 +16,7 @@ const Source = () => {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 const [deleteTeacherId, setDeleteTeacherId] = useState(null);
+const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
 const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
 const [teacherData, setTeacherData] = useState([]);
 const [loading, setLoading] = useState(true);
@@ -89,7 +91,9 @@ useEffect(() => {
   const startIndex = (page - 1) * teachersPerPage;
   const endIndex = startIndex + teachersPerPage;
   
-   
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessageOpen(false);
+  };
       const handleSaveEdit = async () => {
         try {
           const response = await axios.post(
@@ -116,7 +120,7 @@ useEffect(() => {
             setSourceName1('');
       
            
-            setDeleteSuccessDialogOpen(true);
+            setSuccessMessageOpen(true);
           } else {
             console.error("Edit API failed:", response.data?.message || "Unknown error");
           }
@@ -402,7 +406,11 @@ const handleAddMapping = (newMapping) => {
     </Box>
       </Box>
     </Modal>
-   
+    <SuccessMsg
+        open={successMessageOpen}
+        onClose={handleCloseSuccessMessage}
+        message="Data Edited  successfully"
+      />
     </Fragment>
   );
 };

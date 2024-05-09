@@ -45,13 +45,14 @@ import SubTopic from './SubTopic';
           </Tabs>
           </div>
   <div className='border border-gray-500 mt-4 mb-2'></div>
-       
-          {value === 0 && (
+     
+      {value === 0 && (
             <Subject/>
-          )}
+          )} 
+              
           {value === 1 && (
             <SubjectLevel/>
-          )}
+          )} 
           {value === 2 && (
             <Source/>
           )}

@@ -13,25 +13,26 @@ import {
   CardContent,
 } from '@mui/material';
 import SuccessMsg from './SuccessMsg';
+import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 
 const SubjectLevelAdd = () => {
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
   const [subjectLevelName, setSubjectLevelName] = useState('');
   const [selectedBoard, setSelectedBoard] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('https://staging.ibgakiosk.com/api/category_list');
-        setCategories(response.data?.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-    fetchCategories();
-  }, []);
+  const { data:categories=[], error, isLoading ,} = useGetCategoryListQuery();
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const response = await axios.get('https://staging.ibgakiosk.com/api/category_list');
+  //       setCategories(response.data?.data);
+  //     } catch (error) {
+  //       console.error('Error fetching categories:', error);
+  //     }
+  //   };
+  //   fetchCategories();
+  // }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -53,6 +54,12 @@ const SubjectLevelAdd = () => {
 
   return (
     <div>
+      {isLoading  ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error.error}</p>
+      ) : (
+
       <form onSubmit={handleSubmit}>
         <Card>
           <CardContent>
@@ -66,7 +73,7 @@ const SubjectLevelAdd = () => {
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
                   >
-                    {categories.map(category => (
+                    {categories?.data.map(category => (
                       <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
                     ))}
                   </Select>
@@ -80,7 +87,7 @@ const SubjectLevelAdd = () => {
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
                   >
-                    {categories.map(category => (
+                    {categories?.data.map(category => (
                       category.subject.map(subject => (
                         <MenuItem key={subject.subject_id} value={subject.subject_id}>
                           {subject.subject_name}
@@ -118,6 +125,7 @@ const SubjectLevelAdd = () => {
           </CardContent>
         </Card>
       </form>
+      )}
       {/* Render SuccessMsg component if form is submitted successfully */}
       <SuccessMsg message="Data saved successfully!" open={submitted} onClose={() => setSubmitted(false)} />
     </div>

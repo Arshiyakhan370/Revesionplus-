@@ -12,10 +12,9 @@ import {
     CardContent,
 } from '@mui/material';
 import SuccessMsg from './SuccessMsg';
+import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 
 const PaperAdd = () => {
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
       boardID: '',
       subjectID: '',
@@ -24,21 +23,8 @@ const PaperAdd = () => {
       paperName: ''
     });
     const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get('https://staging.ibgakiosk.com/api/category_list');
-          setCategories(response.data?.data);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-          setLoading(false);
-        }
-      };
-  
-      fetchData();
-    }, []);
+    const { data:categories=[], error, isLoading ,} = useGetCategoryListQuery();
+   
   
     const handleChange = (e) => {
       const { name, value } = e.target;
@@ -68,9 +54,11 @@ const PaperAdd = () => {
     };
     return (
         <div>
-            {loading ? (
-                <p>Loading...</p>
-            ) : (
+          {isLoading  ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error.error}</p>
+      ) : (
                 <form onSubmit={handleSubmit}>
                     <Card>
                         <CardContent>
@@ -86,7 +74,7 @@ const PaperAdd = () => {
                                             onChange={handleChange}
                                             sx={{ height: '35px' }}
                                         >
-                                            {categories.map(category => (
+                                        {categories?.data.map(category => (
                                                 <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
                                             ))}
                                         </Select>
@@ -103,7 +91,7 @@ const PaperAdd = () => {
             onChange={handleChange}
             sx={{ height: '35px' }}
         >
-{categories.map(category => (
+{categories?.data.map(category => (
     category.subject.map(subject => (
         <MenuItem key={subject.subject_id} value={subject.subject_id}>
             {subject.subject_name}
@@ -126,7 +114,7 @@ const PaperAdd = () => {
             onChange={handleChange}
             sx={{ height: '35px' }}
         >
-      {categories.map(category => (
+      {categories?.data.map(category => (
     category.subject.map(subject => (
         subject.subject_level.map(level => (
             <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
@@ -151,7 +139,7 @@ const PaperAdd = () => {
             sx={{ height: '35px' }}
         >
           
-          {categories.map(category => (
+          {categories?.data.map(category => (
     category.subject.map(subject => (
         subject.subject_level.map(level => (
             level.source.map(source => (
