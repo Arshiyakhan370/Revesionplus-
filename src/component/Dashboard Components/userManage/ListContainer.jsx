@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import {
@@ -7,6 +7,9 @@ import {
    IconButton,
   InputAdornment,
   CardContent,
+  Select,
+  InputLabel,
+  FormControl,
  
 } from '@mui/material';
 import { Eye, EyeOff } from 'react-feather';
@@ -20,20 +23,23 @@ import LockIcon from '@mui/icons-material/Lock';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_green.css';
 import { Box } from '@mui/system';
+import axios from 'axios';
+import ProfileDailoge from './ProfileDailoge';
+import UserProfileDialog from './ProfileDailoge';
 
 
 const ListContainer = ({ isSidebarClosed ,userListData,setUserListData}) => {
   const [selectedValue, setSelectedValue] = useState(10);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(selectedValue);
- 
+  const [selectedUserId, setSelectedUserId] = useState(null);
 const [searchQuery, setSearchQuery] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
   const [editUserName, setEditUserName] = useState('');
   const [editUserEmail, setEditUserEmail] = useState('');
   const [editUserMobile, setEditUserMobile]=useState('');
-  const [editUserExpiryDate, setEditUserExpiryDate] = useState('');
+  // const [editUserExpiryDate, setEditUserExpiryDate] = useState('');
   const [editUserRole,setEditUserRole]=useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
@@ -43,11 +49,47 @@ const [searchQuery, setSearchQuery] = useState('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 const [deleteUserId, setDeleteUserId] = useState(null);
 const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
+const [editUserExpiryDate, setEditUserExpiryDate] = useState(new Date());
+const [openDialog, setOpenDialog] = useState(false);
+const [editAction,setEditAction]=useState('')
+const flatpickrRef = useRef(null);
+const [open, setOpen] = useState(false);
+const [profileData, setProfileData] = useState(null);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState(null);
+const [dialogOpen, setDialogOpen] = useState(false);
+
+const fetchProfileData = async (userId) => {
+  try {
+    const response = await axios.get(`https://staging.ibgakiosk.com/api/profile_view/${userId}`);
+    setProfileData(response.data);
+    setDialogOpen(true);
+  } catch (error) {
+    console.error('Error fetching profile data:', error);
+   
+  }
+};
+const handleCloseDialog = () => {
+  setDialogOpen(false);
+  setProfileData(null); 
+}
+const handleClick = (event, userId) => {
+  setAnchorEl(event.currentTarget);
+  if (userId) {
+    fetchProfileData(userId);
+  }
+};
+const handleProfileClick = (userId) => {
+  setDialogOpen((prevState) => ({
+    ...prevState,
+    [userId]: true,
+  }));
+  fetchProfileData(userId); 
+};
+
 const roles = ['Admin', 'Ib Facility'];
+
  
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
     console.log('Visibility toggled. New state:', !showPassword);
@@ -90,9 +132,27 @@ const roles = ['Admin', 'Ib Facility'];
   };
  
 
-  const handleDeleteClick = () => {
-        const updatedUserList = userListData.filter((user) => user.id !== deleteUserId);
-           setUserListData(updatedUserList);
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  
+ const handleSuccessDialogClose = () => {
+    setOpenSuccessDialog(false);
+  };
+  const handleDeleteClick = async() => {
+    try {
+      await axios.post(
+        `https://staging.ibgakiosk.com/api/delete_user`,
+        {
+          user_id: deleteUserId
+        }
+      );
+    
+    } catch (error) {
+      console.error("Error deleting teacher:", error);
+  };
+  setUserListData((userListData)=> userListData.filter((user) => user.user_id !== deleteUserId));
          setOpenDeleteDialog(false);
       setOpenSuccessDialog(true);
   };
@@ -105,63 +165,126 @@ const roles = ['Admin', 'Ib Facility'];
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(1); 
   };
-  const handleProfileClick = (userId) => {
-        console.log(`View profile for user ${userId}`);
-      };
+
     
-      const handleUpdatePasswordClick = (userId) => {
-        console.log(`Update password for user ${userId}`);
-      };
      
-      const handleUpdatePassword = () => {
-        setOpenPasswordModal(true);
-        handleClose();
+      const handleUpdatePasswordClick = async (user) => {
+        try {
+          const response = await axios.post(`https://staging.ibgakiosk.com/api/update_auth`, {
+            user_id: user.id,
+            password: newPassword
+          });
+          console.log('Password updated successfully:', response.data);
+          setOpenPasswordModal(false);
+        } catch (error) {
+          console.error("Error updating password:", error);
+        }
       };
-    
-      const handleUpdatePasswordConfirm = () => {
-       
-        handleUpdatePasswordClick(newPassword);
+      
+      const handleUpdatePassword = (user) => {
+        setOpenPasswordModal(true);
+        setEditUserId(user.id); 
+        handleClose(); 
+      };
+      const handleUpdatePasswordConfirm = (user) => {
+        handleUpdatePasswordClick(user.id);
         setOpenPasswordModal(false);
       };
+      
+      
     
       const handlePasswordModalClose = () => {
         setOpenPasswordModal(false);
       };
     
     
-  const handleEditClick = (userId, userName, userEmail,userMobileNo,userRole,userExpiryDate) => {
-    setEditUserId(userId);
-    setEditUserName(userName);
-    setEditUserEmail(userEmail);
-    setEditUserMobile(userMobileNo);
-    setEditUserExpiryDate(userExpiryDate);
-    setEditUserRole(userRole)
-    setShowEditModal(true);
-  };
+      const handleEditClick = async (user) => {
+        try {
+          const response = await axios.post(`https://staging.ibgakiosk.com/api/add_user`, {
+            user_id: user.user_id,
+            action: editAction,
+          });
+          const userData = response.data?.data;
+          
+         
+          const updatedUser = {
+            ...user,
+            user_id: userData.user_id,
+            name: userData.name,
+            usertype: userData.usertype,
+            email: userData.email,
+            mobile: userData.mobile,
+            expire_date: userData.expire_date
+          };
+      
+       
+          setUserListData((prevData) =>
+            prevData.map((item) =>
+              item.user_id === user.user_id ? { ...item, ...updatedUser } : item
+            )
+          );
+          
+       
+          setAnchorEl(updatedUser);
+        } catch (error) {
+          console.error("Error occurred while fetching data:", error);
+        }
+        
+        setShowEditModal(true);
+      };
+      
   const userListLength = userListData ? userListData.length : 0;
-  const handleSaveEdit = () => {
-        const updatedUserList = userListData.map((user) =>
-      user.id === editUserId
-        ? { ...user, name: editUserName, email: editUserEmail, role: editUserRole, mobile: editUserMobile, expiryDate: editUserExpiryDate }
-        : user
-    );
-         setUserListData(updatedUserList);
-         setShowEditModal(false);
+  const handleSaveEdit = async () => {
+    try {
+      const response = await axios.post('https://staging.ibgakiosk.com/api/update_user', {
+        user_id: editUserId,
+        name: editUserName,
+        email: editUserEmail,
+        usertype: editUserRole,
+        mobile: editUserMobile,
+        expire_date: editUserExpiryDate.toISOString().slice(0, 10) 
+      });
+      
+      console.log('User data updated successfully:', response.data);
+    
+      if (response.data && response.data.message === " updated successfully") {
+     
+        setAnchorEl(prevData =>
+          prevData.map(user =>
+            user. user_id === anchorEl. user_id ? { ...user, ...anchorEl,  name: editUserName,
+              email: editUserEmail,
+              usertype: editUserRole,
+              mobile: editUserMobile,
+              expire_date: editUserExpiryDate.toISOString().slice(0, 10)} : user
+          )
+        );
+      setAnchorEl(null)
+      
+      setShowEditModal(false);
+    } else {
+      console.error("Edit API failed:", response.data?.message || "Unknown error");
+    }
+  } catch (error) {
+    console.error("Error updating topic:", error);
+  }
+};
+  console.log(setAnchorEl,"dta")
+  const handleDateChange = (selectedDates) => {
+    const selectedDate = selectedDates[0];
   };
-
   const handleCloseEditModal = () => {
     setShowEditModal(false);
   };
   if (!userListData) {
     return <div>Loading...</div>;
   }
-  const filteredUserList = userListData.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.mobile.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.expiryDate.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredUserList = userListData.filter((user) =>
+  //   user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   user.mobile.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   user.expiryDate.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
     const handleScrollToTop = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -172,10 +295,27 @@ const roles = ['Admin', 'Ib Facility'];
     
     const styles = {
       width: mainComponentWidth,
-      marginLeft: isSidebarClosed ? '65px' : (isSmallScreen ? '0' : '262px'),
+      marginLeft: isSidebarClosed ? '65px' : (isSmallScreen ? '0' : '250px'), 
       transition: 'width 0.3s, margin-left 0.3s',
     };
-    
+   
+
+    const user1 = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      avatar: 'https://ui-avatars.com/api/?name=B+Y&color=7F9CF5&background=EBF4FF',
+      role: "Assignment Editor/IB Facilitator",
+        mobile: "9798356204",
+        expire_date: "2025-01-31",
+    };
+  
+    const handleOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose1 = () => {
+      setOpen(false);
+    };
     return (
         <Fragment>
           
@@ -184,7 +324,7 @@ const roles = ['Admin', 'Ib Facility'];
       <CardContent>
       <section id="responsive-datatable">
         <div className="card-header border-bottom  flex flex-grow-0 justify-between">
-                  <h4 className="card-title text-black font-400 ">User List</h4>
+                  <h4 className="card-title text-black font-400 mt-6">User List</h4>
                                   </div>
                
                 <div className="card-datatable">
@@ -249,7 +389,7 @@ Add User
                                 aria-controls="datatable"
                                 rowspan="1"
                                 colspan="1"
-                                style={{ width: '285px' }}
+                                style={{ width: '95px' }}
                                 aria-label="Name: activate to sort column ascending"
                               >
                                 Name
@@ -261,7 +401,7 @@ Add User
                                 aria-controls="datatable"
                                 rowspan="1"
                                 colspan="1"
-                                style={{ width: '241px' }}
+                                style={{ width: '85px' }}
                                 aria-label="Email: activate to sort column descending"
                                 aria-sort="ascending"
                               >
@@ -321,9 +461,9 @@ Add User
                             </tr>
                           </thead>
                           <tbody>
-                          {filteredUserList.slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage).map((user, index) => (
+                          {userListData.slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage).map((user, index) => (
                         <tr key={user.id} className={index % 2 === 0 ? 'even' : 'odd'}>
-    <td className="dtr-control" tabIndex="0">
+                        <td className="dtr-control" tabIndex="0" onClick={() => handleProfileClick(user.id)}>
       {user.name}
     </td>
 
@@ -342,7 +482,7 @@ Add User
       <td>{user.mobile}</td>
     )}
     {window.innerWidth > 1024 && (
-    <td>{user.expiryDate}</td>
+    <td>{user.expire_date}</td>
   
     )}
     <td>
@@ -367,15 +507,18 @@ Add User
           vertical: 'top',
           horizontal: 'right',
         }}
-      >
-        <MenuItem onClick={() => { handleProfileClick(); handleClose(); }}>
+      >   
+        <MenuItem onClick={(e) => handleClick(e, user.id)}>
           <User sx={{ marginRight: 1 }} />
           Profile
         </MenuItem>
-        <MenuItem  onClick={handleUpdatePassword}>
-          <LockIcon sx={{ marginRight: 1 }} />
-          Update Password
-        </MenuItem>
+        {profileData && (
+        <UserProfileDialog data={profileData} open={dialogOpen} onClose={handleCloseDialog}/>
+      )}
+        <MenuItem onClick={() => handleUpdatePassword(user)}>
+  <LockIcon sx={{ marginRight: 1 }} />
+  Update Password
+</MenuItem>
         <MenuItem    onClick={() => handleDeleteDialogOpen(user.id)}>
           <DeleteIcon sx={{ marginRight: 1 }} />
           Delete
@@ -409,96 +552,67 @@ Add User
       </table>
      </div>
    </div>
-                          
-   <Modal show={showEditModal} onHide={handleCloseEditModal}>
-  <Modal.Header closeButton>
-    <Modal.Title>Edit User</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Form>
-      <Form.Group className="mb-3" controlId="editFormName">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter name"
-          value={editUserName}
-          onChange={(e) => setEditUserName(e.target.value)}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="editFormEmail">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          type="email"
-          placeholder="Enter email"
-          value={editUserEmail}
-          onChange={(e) => setEditUserEmail(e.target.value)}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="editFormMobile">
-        <Form.Label>Mobile Number</Form.Label>
-        <Form.Control
-          type="tel"
-          placeholder="Enter mobile number"
-          value={editUserMobile}
-          onChange={(e) => setEditUserMobile(e.target.value)}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="editFormExpiry">
-  <Form.Label>Expiry Date</Form.Label>
-  <Flatpickr
-    className='form-select'
-    value={editUserExpiryDate}
-    placeholder='date'
-    options={{ dateFormat: 'Y-m-d', enableTime: false }}
-    onChange={(selectedDates) => {
-      const selectedDate = selectedDates[0];
-      setEditUserExpiryDate(selectedDate instanceof Date ? selectedDate.toISOString() : selectedDate);
-    }}
-  />
-</Form.Group>
-      <Form.Group className="mb-3" controlId="editFormRole">
-        <Form.Label>Role</Form.Label>
-        <Form.Select
-          value={editUserRole}
+   <Dialog open={showEditModal} onClose={handleCloseEditModal}>
+  <DialogTitle>Edit User</DialogTitle>
+  <DialogContent>
+    <form>
+      <TextField
+        label="Name"
+        variant="outlined"
+        fullWidth
+        sx={{ marginBottom: '1rem', marginTop:'1rem'}}
+        value={editUserName?.name|| ''}
+        onChange={(e) => setEditUserName(e.target.value)}
+      />
+      <TextField
+        label="Email"
+        variant="outlined"
+        fullWidth
+        sx={{ marginBottom: '1rem' }}
+        value={editUserEmail?.email|| ''}
+        onChange={(e) => setEditUserEmail(e.target.value)}
+      />
+      <TextField
+        label="Mobile Number"
+        variant="outlined"
+        fullWidth
+        sx={{ marginBottom: '1rem' }}
+        value={editUserMobile?.mobile|| ''}
+        onChange={(e) => setEditUserMobile(e.target.value)}
+      />
+      <FormControl fullWidth sx={{ marginBottom: '1rem' }}>
+        <InputLabel>Role</InputLabel>
+        <Select
+          value={editUserRole?.role|| ''}
           onChange={(e) => setEditUserRole(e.target.value)}
         >
-          {roles.map((role) => (
-            <option key={role} value={role}>
-              {role}
-            </option>
-          ))}
-        </Form.Select>
-      </Form.Group>
-<Box className="flex flex-row justify-between">
-      <Button
-        variant="outline"
-        sx={{
-          background:
-            'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
-          color: 'white',
-        }}
-        onClick={handleCloseEditModal}
-      >
-       Close
-      </Button>
-      <Button
-        variant="outline"
-        sx={{
-          background:
-            'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
-          color: 'white',
-        }}
-        onClick={handleSaveEdit}
-      >
-        Save
-      </Button>
-      </Box>
-    </Form>
-  </Modal.Body>
-</Modal>
+          <MenuItem value="Admin">Admin</MenuItem>
+          <MenuItem value="Teacher">Teacher</MenuItem>
+       
+        </Select>
+      </FormControl>
+      <FormControl fullWidth sx={{ marginBottom: '1rem' }}>
+  <InputLabel>Expiry Date</InputLabel>
+  <Flatpickr
+   className="flatpickr h-16"
+  style={{ border: '1px solid #ccc', width: '100%' ,borderRadius:'4px'}}
+            ref={flatpickrRef}
+            options={{ dateFormat: 'Y-m-d', enableTime: false }}
+            onChange={handleDateChange}
+          />
+    
+ 
+
+</FormControl>
+
+    </form>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleCloseEditModal}>Close</Button>
+    <Button onClick={handleSaveEdit} variant="contained" color="primary">Save</Button>
+  </DialogActions>
+</Dialog>
+
  <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
         
       <DialogTitle className='text-red-500'>Delete User</DialogTitle>
@@ -554,7 +668,7 @@ Add User
           <Button onClick={handlePasswordModalClose} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleUpdatePasswordConfirm} color="primary">
+          <Button onClick={() => handleUpdatePasswordConfirm()}color="primary">
             Update Password
           </Button>
         </DialogActions>

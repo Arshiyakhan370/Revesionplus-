@@ -28,13 +28,13 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Container } from "@mui/system";
-import { useGetCategoryListQuery, useGetViewSubjectListQuery } from "../../Services/CategoryApi";
+import { useDeleteSubjectMutation, useGetCategoryListQuery, useGetViewSubjectListQuery, useUpdateSubjectMutation } from "../../Services/CategoryApi";
 import SuccessMsg from "./AddCategory/SuccessMsg";
 
 const Subject = () => {
   const [teacherData, setTeacherData] = useState([]);
   const [boards, setBoards] = useState([]);
-  const [subjects, setSubjects] = useState([]);
+  // const [subjects, setSubjects] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteTeacherId, setDeleteTeacherId] = useState(null);
@@ -44,37 +44,39 @@ const Subject = () => {
   // const [categories, setCategories] = useState([]);
   const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
   const { data:{data:categories}={},  error, isLoading ,} = useGetCategoryListQuery();
-  // const { data:{data:subjects}={},  error:subjectError, isLoading:subjectIsLoading ,} = useGetViewSubjectListQuery()
+  const { data:{data:subjects}={},  error:subjectError, isLoading:subjectIsLoading ,} = useGetViewSubjectListQuery()
+  const [updatePost] = useDeleteSubjectMutation()
+  const [editedData,result] =useUpdateSubjectMutation()
   const teachersPerPage = 10;
 
-  useEffect(() => {
-    const fetchTeacherData = async () => {
-      try {
-        const subjectsResponse = await axios.get(
-          "https://staging.ibgakiosk.com/api/view_subject"
-        );
-        // const boardsResponse = await axios.get(
-        //   "https://staging.ibgakiosk.com/api/category_list"
-        // );
-        // setCategories(boardsResponse.data?.data);
-        setSubjects(subjectsResponse.data?.data);
+  // useEffect(() => {
+  //   const fetchTeacherData = async () => {
+  //     try {
+  //       const subjectsResponse = await axios.get(
+  //         "https://staging.ibgakiosk.com/api/view_subject"
+  //       );
+  //       // const boardsResponse = await axios.get(
+  //       //   "https://staging.ibgakiosk.com/api/category_list"
+  //       // );
+  //       // setCategories(boardsResponse.data?.data);
+  //       setSubjects(subjectsResponse.data?.data);
        
-      } catch (error) {
+  //     } catch (error) {
       
         
-      }
-    };
+  //     }
+  //   };
 
-    fetchTeacherData();
-  }, []);
-  // if(isLoading || subjectIsLoading){
-    if(isLoading ){
+  //   fetchTeacherData();
+  // }, []);
+  if(isLoading || subjectIsLoading){
+    // if(isLoading ){
     return <div>
       Loading
     </div>
   }
-  // if(error || subjectError){
-    if(error ){
+  if(error || subjectError){
+    // if(error ){
     return <div>
       error
     </div>
@@ -108,21 +110,28 @@ console.log(categories,"arsh")
   };
 
   const handleDeleteClick = async (deleteId) => {
-    try {
-    
-      await axios.post(
-        `https://staging.ibgakiosk.com/api/delete_subject`,
-        {
-          subject_id: deleteId
-        }
-      );
-      const deletedData = subjects.filter((teacher) => teacher.subject_id !== deleteId);
-      setSubjects(deletedData);
+    try{
+      await updatePost(deleteId)
       setOpenDeleteDialog(false);
-      setDeleteSuccessDialogOpen(true);
-    } catch (error) {
-      console.error("Error deleting teacher:", error);
     }
+      catch(error){
+      }
+    
+    // try {
+    
+    //   await axios.post(
+    //     `https://staging.ibgakiosk.com/api/delete_subject`,
+    //     {
+    //       subject_id: deleteId
+    //     }
+    //   );
+    //   const deletedData = subjects.filter((teacher) => teacher.subject_id !== deleteId);
+    //   // setSubjects(deletedData);
+    //   setOpenDeleteDialog(false);
+    //   setDeleteSuccessDialogOpen(true);
+    // } catch (error) {
+    //   console.error("Error deleting teacher:", error);
+    // }
   };
 
   const handleDeleteSuccessDialogClose = () => {
@@ -130,37 +139,49 @@ console.log(categories,"arsh")
   };
 console.log(boards,"board");
 
-
+// const handleSaveEdit = async () => {
+//   try {
+//     const response = await useUpdateSubjectMutation({ subject_id: selectedTeacher.subject_id, boardID: selectedTeacher.boardID, subjectName });
+//     if (response.data && response.data.message === "Subject updated successfully") {
+//       setSelectedTeacher(null);
+//       setSuccessMessageOpen(true);
+//     } else {
+//       console.error("Edit API failed:", response.data?.message || "Unknown error");
+//     }
+//   } catch (error) {
+//     console.error("Error editing subject:", error);
+//   }
+// }
 const handleSaveEdit = async () => {
   try {
- 
-    const response = await axios.post(
-      `https://staging.ibgakiosk.com/api/update_subject`,
-      {
-        subject_id: selectedTeacher.subject_id,
-        boardID: selectedTeacher.boardID,
-        subejctName: subjectName
-        ,
+   await editedData(selectedTeacher,subjectName)
+    // const response = await axios.post(
+    //   `https://staging.ibgakiosk.com/api/update_subject`,
+    //   {
+    //     subject_id: selectedTeacher.subject_id,
+    //     boardID: selectedTeacher.boardID,
+    //     subejctName: subjectName
+    //     ,
 
-      }
-    );
+    //   }
+    // );
   
-    if (response.data && response.data.message === "Subejct updated successfully") {
+    // if (response.data && response.data.message === "Subejct updated successfully") {
       
-      setSubjects(prevData =>
-        prevData.map(teacher =>
-          teacher.subject_id === selectedTeacher.subject_id ? { ...teacher, ...selectedTeacher ,subject_name:subjectName} : teacher
-        )
-      );
+      // setSubjects(prevData =>
+        // prevData.map(teacher =>
+        //   teacher.subject_id === selectedTeacher.subject_id ? { ...teacher, ...selectedTeacher ,subject_name:subjectName} : teacher
+        // )
+      // );
  
       setSelectedTeacher(null);
       setSuccessMessageOpen(true)
      
-    } else {
+    // } else {
      
-      console.error("Edit API failed:", response.data?.message || "Unknown error");
+      // console.error("Edit API failed:", response.data?.message || "Unknown error");
    
-    }
+    // }
   } catch (error) {
     console.error("Error updating subject level:", error);
   }

@@ -19,8 +19,8 @@ const SubjectAdd = () => {
   const [subjectName, setSubjectName] = useState('');
   const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
   
-  const { data:categories=[], error, isLoading ,} = useGetCategoryListQuery();
- 
+  const { data:{data:categories}={},  error, isLoading ,} = useGetCategoryListQuery();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -28,14 +28,15 @@ const SubjectAdd = () => {
         "boardID":selectedBoard,
         "subejctName":subjectName,
       });
+      setSelectedBoard("");
+      setSubjectName("");
       console.log('Subject added:', response.data);
       setSuccessMessageOpen(true); 
     } catch (error) {
       console.error('Error adding subject:', error);
-      // setError(error.message);
+      
     }
-    setSelectedBoard("");
-    setSubjectName("");
+   
   };
 console.log(error,"check");
   const handleCloseSuccessMessage = () => {
@@ -62,7 +63,7 @@ console.log(error,"check");
                       value={selectedBoard}
                       onChange={(e) => setSelectedBoard(e.target.value)}
                     >
-                      {categories?.data.map(category => (
+                      {categories.map(category => (
                         <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
                       ))}
                     </Select>

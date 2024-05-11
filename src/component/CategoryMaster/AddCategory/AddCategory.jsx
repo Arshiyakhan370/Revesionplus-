@@ -45,9 +45,9 @@ const AddCategory = ({isSidebarClosed}) => {
   };
   const inputStyle = { height: '35px' };
   return (
-    <Container maxWidth="xxl" disableGutters style={styles} className='bg-gray-100'>
+    <Container maxWidth="xxl" disableGutters style={styles} className='bg-gray-100 '>
         <div className='text-center flex justify-center'>
-        <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" className='text-center'>
+        <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" className='text-center mt-16'>
         <Tab icon={<Layers />} label="Subject" />
           <Tab icon={<Layers />} label="Subject Level" />          
           <Tab icon={<Description/>} label="Source" />      
@@ -56,7 +56,7 @@ const AddCategory = ({isSidebarClosed}) => {
           <Tab icon={< LibraryBooks/>} label="Subtopic" />
         </Tabs>
 </div>
-        <Box sx={{ mt: 3, p: 3 }}>
+        <Box sx={{ mt: 3 , p: 3 }}>
         {value === 0 && (
          <SubjectAdd/>
                   )}

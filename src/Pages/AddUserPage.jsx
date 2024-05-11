@@ -1,109 +1,26 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Header from '../component/AdminDashboard/Header'
 import Navbar1 from '../component/Dashboard Components/Buttons1';
 import ListContainer from '../component/Dashboard Components/userManage/ListContainer';
 import StudentAdd from '../component/Dashboard Components/userManage/StudentAdd';
+import axios from 'axios';
 
 const AddUserPage = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(false);
-  const [userListData, setUserListData] = useState([
-    {
-      name: 'aarabbanisadiq',
-      email: 'AArabbanisadiq@hotmail.com',
-      role: 'IB Facilitator',
-      mobile: '9667989159',
-      expiryDate: '2023-10-14',
-      id: 310,
-    },
-    {
-        name: 'Dr. Abhay',
-        email: 'Abhay.singh91286@gmail.com',
-        role: 'IB Facilitator',
-        mobile: '',
-        expiryDate: '2023-10-14',
-        id: 311,
-      },
-      {
-        name: 'Afroz',
-        email: 'afroz@ibglobalacademy.org',
-        role: 'IB Facilitator',
-        mobile: '9818805721',
-        expiryDate: '2030-10-31',
-        id: 312,
-      },
-      {
-        name: 'Afroz',
-        email: 'afroz@ibglobalacademy.org',
-        role: 'IB Facilitator',
-        mobile: '9818805721',
-        expiryDate: '2030-10-31',
-        id: 313,
-      },
-      {
-        name: 'Dr. Abhay',
-        email: 'Abhay.singh91286@gmail.com',
-        role: 'IB Facilitator',
-        mobile: '',
-        expiryDate: '2023-10-14',
-        id: 314,
-      },
-      {
-        name: 'Dr. Abhay',
-        email: 'Abhay.singh91286@gmail.com',
-        role: 'IB Facilitator',
-        mobile: '',
-        expiryDate: '2023-10-14',
-        id: 315,
-      },
-      {
-        name: 'aarabbanisadiq',
-        email: 'AArabbanisadiq@hotmail.com',
-        role: 'IB Facilitator',
-        mobile: '9667989159',
-        expiryDate: '2023-10-14',
-        id: 316,
-      },
-      {
-          name: 'Dr. Abhay',
-          email: 'Abhay.singh91286@gmail.com',
-          role: 'IB Facilitator',
-          mobile: '',
-          expiryDate: '2023-10-14',
-          id: 317,
-        },
-        {
-            name: 'aarabbanisadiq',
-            email: 'AArabbanisadiq@hotmail.com',
-            role: 'IB Facilitator',
-            mobile: '9667989159',
-            expiryDate: '2023-10-14',
-            id: 318,
-          },
-          {
-              name: 'Dr. Abhay',
-              email: 'Abhay.singh91286@gmail.com',
-              role: 'IB Facilitator',
-              mobile: '',
-              expiryDate: '2023-10-14',
-              id: 319,
-            },
-            {
-                name: 'aarabbanisadiq',
-                email: 'AArabbanisadiq@hotmail.com',
-                role: 'IB Facilitator',
-                mobile: '9667989159',
-                expiryDate: '2023-10-14',
-                id: 320,
-              },
-              {
-                  name: 'Dr. Abhay',
-                  email: 'Abhay.singh91286@gmail.com',
-                  role: 'IB Facilitator',
-                  mobile: '',
-                  expiryDate: '2023-10-14',
-                  id: 321,
-                },
-  ]);
+  const [userListData, setUserListData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://staging.ibgakiosk.com/api/view_user');
+        setUserListData(response?.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }; 
+
+    fetchData();
+  }, []);
+   
   const addStudent = (userListDataAdd) => {
     setUserListData([...userListData, { ...userListDataAdd, id: userListData.length + 1 }]);
   };
@@ -118,6 +35,7 @@ const AddUserPage = () => {
    {userListData && userListData.length > 0 && (
         <ListContainer isSidebarClosed={isSidebarClosed} userListData={userListData} setUserListData={setUserListData} />
   )}
+  <ListContainer isSidebarClosed={isSidebarClosed}/>
         </Fragment>
     )
 }

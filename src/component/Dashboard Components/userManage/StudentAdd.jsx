@@ -22,14 +22,17 @@ import { useMediaQuery } from "react-responsive";
 import { Eye, EyeOff } from "react-feather";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import axios from "axios";
 
-const StudentAdd = ({ isSidebarClosed, addStudent}) => {
-  const [role, setRole] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [password, setPassword] = useState("");
+const StudentAdd = ({ isSidebarClosed, addStudent }) => {
+  const [formData, setFormData] = useState({
+    usertype: "",
+    name: "",
+    email: "",
+    mobile: "",
+    expire_date: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
@@ -38,47 +41,35 @@ const StudentAdd = ({ isSidebarClosed, addStudent}) => {
     setShowPassword((prev) => !prev);
   };
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const userData = {
-      role,
-      name,
-      email,
-      mobile,
-      expiryDate,
-      password,
-    };
-    addStudent(userData);
-    const validationErrors = [];
-    if (!role) validationErrors.push("Role");
-    if (!name) validationErrors.push("User Name");
-    if (!email) validationErrors.push("User Email");
-    if (!mobile) validationErrors.push("User Mobile");
-    if (!expiryDate) validationErrors.push("ExpiryDate");
-    if (!password) validationErrors.push("User Password");
-    if (!isStrongPassword(password)) {
-      setErrorDialogOpen(true);
-      setErrorFields(["Password must be strong."]);
-      return;
-    }
+    
+    try {
+      const response = await axios.post("https://staging.ibgakiosk.com/api/add_user", formData);
 
-    if (validationErrors.length > 0) {
+      if (response.status === 200) {
+        setSuccessDialogOpen(true);
+        setErrorDialogOpen(false);
+        setFormData({
+          usertype: "",
+          name: "",
+          email: "",
+          mobile: "",
+          expire_date: "",
+          password: "",
+        });
+        setShowPassword(false);
+      } else {
+        throw new Error("Failed to add user");
+      }
+    } catch (error) {
       setErrorDialogOpen(true);
-      setErrorFields(validationErrors);
-      return;
+      setErrorFields([error.message]);
+      setSuccessDialogOpen(false);
     }
-
-    setSuccessDialogOpen(true);
-    setErrorDialogOpen(false);
-    setRole("");
-    setName("");
-    setEmail("");
-    setMobile("");
-    setExpiryDate("");
-    setPassword("");
-    setShowPassword(false);
   };
-
+console.log(setFormData,"datashow");
   const handleCloseDialogs = () => {
     setSuccessDialogOpen(false);
     setErrorDialogOpen(false);
@@ -99,210 +90,179 @@ const StudentAdd = ({ isSidebarClosed, addStudent}) => {
     transition: "width 0.3s, margin-left 0.3s",
   };
   const inputStyle = { height: "35px" };
-  const isStrongPassword = (password) => {
-    const minLength = 8;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasDigit = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    return (
-      password.length >= minLength &&
-      hasUpperCase &&
-      hasLowerCase &&
-      hasDigit &&
-      hasSpecialChar
-    );
-  };
-  
+
   return (
-    <Container maxWidth="xxl" style={styles} className='bg-gray-100'>
+    <Container maxWidth="xxl" style={styles} className="bg-gray-100">
       <div className="content-header row1"></div>
       <div className="content-body">
-        {/* <Card sx={{ marginTop: "25px", background: "#f0f0f0" }}> */}
-          <CardContent>
-            <h4 className="card-title mt-4 mb-4">Add User</h4>
+        <CardContent>
+          <h4 className="card-title mt-4 mb-4">Add User</h4>
 
-            <form
-              className="needs-validation"
-              noValidate
-              onSubmit={handleSubmit}
-            >
-              <Grid container spacing={2}>
-              <Grid item xs={12} md={4} sx={{marginTop:'16px'}}>
-  <FormControl fullWidth size="small" >
-    <InputLabel id="usertype-label">Role</InputLabel>
-    <Select
-      labelId="usertype-label"
-      id="select-usertype"
-      className="bg-white"
-      name="role"
-      value={role}
-      onChange={(e) => setRole(e.target.value)}
-      required
-      aria-labelledby="usertype-label"
-    >
-      <MenuItem value="" disabled>
-        Select User Type
-      </MenuItem>
-      <MenuItem value="SuperAdmin">SuperAdmin</MenuItem>
-      <MenuItem value="Admin">Admin</MenuItem>
-      <MenuItem value="IB Facilitator">IB Facilitator</MenuItem>
-      <MenuItem value="Assignment Editor/IB Facilitator">
-        Assignment Editor/IB Facilitator
-      </MenuItem>
-    </Select>
-  </FormControl>
-</Grid>
-
-
-                <Grid item xs={12} md={4}>
-                  <TextField
-                    fullWidth
-                    label="User Name"
-                    className="bg-white"
-                    placeholder="Name"
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                      variant="outlined"
-                    margin="normal"
-                  InputProps={{
-                
-                    }}
-                  InputLabelProps={{
-                    shrink: true, 
-                    }}
-                     size="small" 
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <TextField
-                    fullWidth
-                    type="email"
-                    label="User Email"
-                    className="bg-white"
-                    placeholder="john.doe@email.com"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required                                
-                variant="outlined"
-                    margin="normal"
-                  InputProps={{
-                
-                    }}
-                  InputLabelProps={{
-                    shrink: true, 
-                    }}
-                     size="small" 
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <TextField
-                    fullWidth
-                    label="User Mobile"
-                    className="bg-white"
-                    placeholder="9145780000"
-                    name="mobile"
-                    value={mobile}
-                    onChange={(e) => setMobile(e.target.value)}
-                       variant="outlined"
-                    margin="normal"
-                  InputProps={{
-                
-                    }}
-                  InputLabelProps={{
-                    shrink: true, 
-                    }}
-                     size="small" 
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                <Flatpickr
-  className="form-control flatpickr-basic flatpickr-input h-12 mt-3"
-  placeholder="Set Inactivation Date"
-  label="Date"
-  options={{ dateFormat: "Y-m-d" }}
-  value={expiryDate ? [new Date(expiryDate)] : []} 
-  onChange={(date) => setExpiryDate(date[0]?.toISOString() || "")} 
-
-/>
-                </Grid>
-
-                <Grid item xs={12} md={4}>
-                  <TextField
-                    fullWidth
-                    type={showPassword ? "text" : "password"}
-                    label="User Password"
-                    className="bg-white"
-                    placeholder="············"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  required
-                variant="outlined"
-                    margin="normal"
-                  InputLabelProps={{
-                    shrink: true, 
-                    }}
-                     size="small" 
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleTogglePasswordVisibility}
-                            edge="end"
-                            style={{ width: "24px", height: "24px" }}
-                          >
-                            {showPassword ? (
-                              <Eye style={{ width: "30px", height: "30px" }} />
-                            ) : (
-                              <EyeOff
-                                style={{ width: "30px", height: "30px" }}
-                              />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
+          <form className="needs-validation" noValidate onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={4} sx={{ marginTop: "16px" }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel id="usertype-label">Role</InputLabel>
+                  <Select
+  labelId="usertype-label"
+  id="select-usertype"
+  className="bg-white"
+  name=" usertype"
+  value={formData.usertype} 
+  onChange={(e) => setFormData({ ...formData,  usertype: e.target.value })} 
+  aria-labelledby="usertype-label"
+>
+                    <MenuItem value="" disabled>
+                      Select User Type
+                    </MenuItem>
+                    <MenuItem value="SuperAdmin">SuperAdmin</MenuItem>
+                    <MenuItem value="Admin">Admin</MenuItem>
+                    <MenuItem value="IB Facilitator">IB Facilitator</MenuItem>
+                    <MenuItem value="Assignment Editor/IB Facilitator">
+                      Assignment Editor/IB Facilitator
+                    </MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  margin: "16px 0",
+
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="User Name"
+                  className="bg-white"
+                  placeholder="Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  variant="outlined"
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  type="email"
+                  label="User Email"
+                  className="bg-white"
+                  placeholder="john.doe@email.com"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  variant="outlined"
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="User Mobile"
+                  className="bg-white"
+                  placeholder="9145780000"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                  variant="outlined"
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Flatpickr
+                  className="form-control flatpickr-basic flatpickr-input h-12 mt-3"
+                  placeholder="Set Inactivation Date"
+                  label="Date"
+                  options={{ dateFormat: "Y-m-d" }}
+                  value={formData.expire_date ? [new Date(formData.expire_date)] : []}
+                  onChange={(date) => setFormData({ ...formData, expire_date: date[0]?.toISOString() || "" })}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  type={showPassword ? "text" : "password"}
+                  label="User Password"
+                  className="bg-white"
+                  placeholder="············"
+                  name="password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  required
+                  variant="outlined"
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  size="small"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleTogglePasswordVisibility}
+                          edge="end"
+                          style={{ width: "24px", height: "24px" }}
+                        >
+                          {showPassword ? (
+                            <Eye
+                              style={{ width: "30px", height: "30px" }}
+                            />
+                          ) : (
+                            <EyeOff
+                              style={{ width: "30px", height: "30px" }}
+                            />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+            </Grid>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                margin: "16px 0",
+              }}
+            >
+              <Button
+                variant="outlined"
+                onClick={goBack}
+                sx={{
+                  color: "white",
+                  background:
+                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
                 }}
               >
-                <Button
-                  variant="outlined"
-                  onClick={goBack}
-                  sx={{
-                    color: "white",
-                    background:
-                      "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
-                  }}
-                >
-                  Back
-                </Button>
-                <Button
-                  type="submit"
-                  onClick={handleSubmit}
-                  variant="contained"
-                  sx={{
-                    color: "white",
-                    background:
-                      "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
-                  }}
-                >
-               Add
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        {/* </Card> */}
+                Back
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  color: "white",
+                  background:
+                    "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
+                }}
+              >
+                Add
+              </Button>
+            </div>
+          </form>
+        </CardContent>
       </div>
       <Dialog open={successDialogOpen} onClose={handleCloseDialogs}>
         <DialogTitle className="text-green-500"> Success </DialogTitle>
@@ -330,4 +290,3 @@ const StudentAdd = ({ isSidebarClosed, addStudent}) => {
 };
 
 export default StudentAdd;
-
