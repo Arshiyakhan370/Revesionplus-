@@ -139,22 +139,12 @@ console.log(categories,"arsh")
   };
 console.log(boards,"board");
 
-// const handleSaveEdit = async () => {
-//   try {
-//     const response = await useUpdateSubjectMutation({ subject_id: selectedTeacher.subject_id, boardID: selectedTeacher.boardID, subjectName });
-//     if (response.data && response.data.message === "Subject updated successfully") {
-//       setSelectedTeacher(null);
-//       setSuccessMessageOpen(true);
-//     } else {
-//       console.error("Edit API failed:", response.data?.message || "Unknown error");
-//     }
-//   } catch (error) {
-//     console.error("Error editing subject:", error);
-//   }
-// }
+
 const handleSaveEdit = async () => {
   try {
-   await editedData(selectedTeacher,subjectName)
+    console.log(selectedTeacher,subjectName,"Harshit");
+   await editedData({selectedTeacher:selectedTeacher,subjectName:subjectName})
+  
     // const response = await axios.post(
     //   `https://staging.ibgakiosk.com/api/update_subject`,
     //   {
@@ -168,18 +158,18 @@ const handleSaveEdit = async () => {
   
     // if (response.data && response.data.message === "Subejct updated successfully") {
       
-      // setSubjects(prevData =>
-        // prevData.map(teacher =>
-        //   teacher.subject_id === selectedTeacher.subject_id ? { ...teacher, ...selectedTeacher ,subject_name:subjectName} : teacher
-        // )
-      // );
+    //   setSubjects(prevData =>
+    //     prevData.map(teacher =>
+    //       teacher.subject_id === selectedTeacher.subject_id ? { ...teacher, ...selectedTeacher ,subject_name:subjectName} : teacher
+    //     )
+    //   );
  
       setSelectedTeacher(null);
       setSuccessMessageOpen(true)
-     
+     setSubjectName("")
     // } else {
      
-      // console.error("Edit API failed:", response.data?.message || "Unknown error");
+    //   console.error("Edit API failed:", response.data?.message || "Unknown error");
    
     // }
   } catch (error) {
@@ -187,7 +177,8 @@ const handleSaveEdit = async () => {
   }
 };
  console.log(setTeacherData,"data  AAAAAA");
-console.log(selectedTeacher,"check error")
+// console.log(selectedTeacher,"check error")
+// console.log(selectedTeacher,subjectName,"swale")
   const handleClose = () => {
     setSelectedTeacher(null);
   };

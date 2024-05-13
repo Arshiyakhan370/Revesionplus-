@@ -23,6 +23,7 @@ import { Eye, EyeOff } from "react-feather";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
+import SuccessMsg from "../../CategoryMaster/AddCategory/SuccessMsg";
 
 const StudentAdd = ({ isSidebarClosed, addStudent }) => {
   const [formData, setFormData] = useState({
@@ -34,9 +35,8 @@ const StudentAdd = ({ isSidebarClosed, addStudent }) => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
-  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
-  const [errorFields, setErrorFields] = useState([]);
+  const [successMsgOpen, setSuccessMsgOpen] = useState(false);
+
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -44,36 +44,31 @@ const StudentAdd = ({ isSidebarClosed, addStudent }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    try {
-      const response = await axios.post("https://staging.ibgakiosk.com/api/add_user", formData);
 
-      if (response.status === 200) {
-        setSuccessDialogOpen(true);
-        setErrorDialogOpen(false);
-        setFormData({
-          usertype: "",
-          name: "",
-          email: "",
-          mobile: "",
-          expire_date: "",
-          password: "",
-        });
-        setShowPassword(false);
-      } else {
-        throw new Error("Failed to add user");
-      }
+    try {
+      const response = await axios.post(
+        "https://staging.ibgakiosk.com/api/add_user",
+        formData
+      );
+          console.log(response.data)
+      setSuccessMsgOpen(true);
+
+      setFormData({
+        usertype: "",
+        name: "",
+        email: "",
+        mobile: "",
+        expire_date: "",
+        password: "",
+      });
+      setShowPassword(false);
     } catch (error) {
-      setErrorDialogOpen(true);
-      setErrorFields([error.message]);
-      setSuccessDialogOpen(false);
+      setSuccessMsgOpen(false);
     }
   };
-console.log(setFormData,"datashow");
-  const handleCloseDialogs = () => {
-    setSuccessDialogOpen(false);
-    setErrorDialogOpen(false);
-    setErrorFields([]);
+  console.log(setFormData, "datashow");
+  const handleSuccessMsgClose = () => {
+    setSuccessMsgOpen(false);
   };
 
   const goBack = () => {
@@ -104,14 +99,16 @@ console.log(setFormData,"datashow");
                 <FormControl fullWidth size="small">
                   <InputLabel id="usertype-label">Role</InputLabel>
                   <Select
-  labelId="usertype-label"
-  id="select-usertype"
-  className="bg-white"
-  name=" usertype"
-  value={formData.usertype} 
-  onChange={(e) => setFormData({ ...formData,  usertype: e.target.value })} 
-  aria-labelledby="usertype-label"
->
+                    labelId="usertype-label"
+                    id="select-usertype"
+                    className="bg-white"
+                    name=" usertype"
+                    value={formData.usertype}
+                    onChange={(e) =>
+                      setFormData({ ...formData, usertype: e.target.value })
+                    }
+                    aria-labelledby="usertype-label"
+                  >
                     <MenuItem value="" disabled>
                       Select User Type
                     </MenuItem>
@@ -133,7 +130,9 @@ console.log(setFormData,"datashow");
                   placeholder="Name"
                   name="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   required
                   variant="outlined"
                   margin="normal"
@@ -152,7 +151,9 @@ console.log(setFormData,"datashow");
                   placeholder="john.doe@email.com"
                   name="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   required
                   variant="outlined"
                   margin="normal"
@@ -170,7 +171,9 @@ console.log(setFormData,"datashow");
                   placeholder="9145780000"
                   name="mobile"
                   value={formData.mobile}
-                  onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, mobile: e.target.value })
+                  }
                   variant="outlined"
                   margin="normal"
                   InputLabelProps={{
@@ -184,9 +187,16 @@ console.log(setFormData,"datashow");
                   className="form-control flatpickr-basic flatpickr-input h-12 mt-3"
                   placeholder="Set Inactivation Date"
                   label="Date"
-                  options={{ dateFormat: "Y-m-d" }}
-                  value={formData.expire_date ? [new Date(formData.expire_date)] : []}
-                  onChange={(date) => setFormData({ ...formData, expire_date: date[0]?.toISOString() || "" })}
+                  options={{ dateFormat: "Y-m-d", enableTime: false }}
+                  value={
+                    formData.expire_date ? [new Date(formData.expire_date)] : []
+                  }
+                  onChange={(date) =>
+                    setFormData({
+                      ...formData,
+                      expire_date: date[0]?.toISOString().split("T")[0] || "",
+                    })
+                  }
                 />
               </Grid>
 
@@ -199,7 +209,9 @@ console.log(setFormData,"datashow");
                   placeholder="············"
                   name="password"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                   required
                   variant="outlined"
                   margin="normal"
@@ -216,13 +228,9 @@ console.log(setFormData,"datashow");
                           style={{ width: "24px", height: "24px" }}
                         >
                           {showPassword ? (
-                            <Eye
-                              style={{ width: "30px", height: "30px" }}
-                            />
+                            <Eye style={{ width: "30px", height: "30px" }} />
                           ) : (
-                            <EyeOff
-                              style={{ width: "30px", height: "30px" }}
-                            />
+                            <EyeOff style={{ width: "30px", height: "30px" }} />
                           )}
                         </IconButton>
                       </InputAdornment>
@@ -263,28 +271,13 @@ console.log(setFormData,"datashow");
             </div>
           </form>
         </CardContent>
-      </div>
-      <Dialog open={successDialogOpen} onClose={handleCloseDialogs}>
-        <DialogTitle className="text-green-500"> Success </DialogTitle>
-        <DialogContent>
-          <DialogContentText>Data added successfully!</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialogs}>OK</Button>
-        </DialogActions>
-      </Dialog>
 
-      <Dialog open={errorDialogOpen} onClose={handleCloseDialogs}>
-        <DialogTitle className="text-red-500">Error</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please fill in the following fields: {errorFields.join(", ")}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialogs}>OK</Button>
-        </DialogActions>
-      </Dialog>
+        <SuccessMsg
+          open={successMsgOpen}
+          onClose={handleSuccessMsgClose}
+          message="Teacher Data saved successfully!"
+        />
+      </div>
     </Container>
   );
 };

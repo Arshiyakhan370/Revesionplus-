@@ -10,17 +10,20 @@ export const CategoryApi = createApi({
     }),
     getViewSubjectList: builder.query({
       query: () => `view_subject`,
+      providesTags: ['Post'],
     }),
+   
     updateSubject: builder.mutation({
-      query: (selectedTeacher,subjectName) => ({
+    
+      query: ({selectedTeacher,subjectName}) => ({
         url: `update_subject`,
         method: 'POST',
+        
         body:  {
           subject_id: selectedTeacher.subject_id,
           boardID: selectedTeacher.boardID,
-          subejctName: subjectName
-          ,
-   
+          subejctName: subjectName,
+          
         },
       }),
       invalidatesTags: ['Post'],

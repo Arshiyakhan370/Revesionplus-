@@ -1,10 +1,15 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Grid, Avatar, Paper, Backdrop } from '@mui/material';
+import { useGetProfileDataListQuery } from '../../../Services/UserTeacherDataListApi';
 
 const UserProfileDialog = ({ data, open, onClose }) => {
-  const { success, user } = data;
+  const { data:{user} = {} ,isLoading,error} = useGetProfileDataListQuery(data);
+  console.log(user,"aaaaaaaaaaaaaaaaaaa",data,"ssssssssssssssssss")
+if(isLoading){
+  return <div>Loading...</div>
+}
 
-  if (!success || !user) {
+  if (error) {
     return <div>Error: Unable to fetch data</div>;
   }
 
@@ -38,5 +43,58 @@ const UserProfileDialog = ({ data, open, onClose }) => {
     </Dialog>
   );
 };
+// import React, { useEffect, useState } from 'react';
+// import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+// import axios from 'axios';
+
+// const UserProfileDialog = ({ userId, onClose }) => {
+//   const [profileData, setProfileData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     const fetchProfileData = async () => {
+//       try {
+//         const response = await axios.get(`https://staging.ibgakiosk.com/api/profile_view/${userId}`);
+//         setProfileData(response.data.data);
+//         setLoading(false);
+//       } catch (error) {
+//         setError(error);
+//         setLoading(false);
+//       }
+//     };
+
+//     if (userId) {
+//       fetchProfileData();
+//     }
+//   }, [userId]);
+
+//   return (
+//     <Dialog open={Boolean(userId)} onClose={onClose}>
+//       <DialogTitle>User Profile</DialogTitle>
+//       <DialogContent>
+//         {loading ? (
+//           <p>Loading...</p>
+//         ) : error ? (
+//           <p>Error: {error.message}</p>
+//         ) : (
+//           <>
+//             <p>ID: {profileData.id}</p>
+//             <p>Name: {profileData.name}</p>
+//             <p>Email: {profileData.email}</p>
+//             <p>Role: {profileData.role}</p>
+//             <p>Mobile: {profileData.mobile}</p>
+//             <p>Expire Date: {profileData.expire_date}</p>
+//             {/* Add more profile details as needed */}
+//           </>
+//         )}
+//       </DialogContent>
+//       <DialogActions>
+//         <Button onClick={onClose}>Close</Button>
+//       </DialogActions>
+//     </Dialog>
+//   );
+// };
+
 
 export default UserProfileDialog;

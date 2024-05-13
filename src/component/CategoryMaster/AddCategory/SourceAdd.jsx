@@ -22,7 +22,7 @@ const SourceAdd = () => {
   const [selectedSource, setSelectedSource] = useState('');
   
   const [submitted, setSubmitted] = useState(false); 
-  const { data:categories=[], error, isLoading ,} = useGetCategoryListQuery();
+  const { data:{data:categories}={}, error, isLoading ,} = useGetCategoryListQuery();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -64,52 +64,65 @@ const SourceAdd = () => {
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
                   >
-                   {categories?.data.map(category => (
+                   {categories.map(category => (
                       <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
-                <FormControl fullWidth size="small">
-                  <InputLabel htmlFor="subject">Subject Name</InputLabel>
-                  <Select
-                    label="Subject Name"
-                    id="subjectID"
-                    value={selectedSubject}
-                    onChange={(e) => setSelectedSubject(e.target.value)}
-                  >
-                    {categories?.data.map(category => (
-                      category.subject.map(subject => (
-                        <MenuItem key={subject.subject_id} value={subject.subject_id}>
-                          {subject.subject_name}
-                        </MenuItem>
-                      ))
-                    ))}
-                  </Select>
-                </FormControl>
+             
+  <FormControl fullWidth size="small">
+    <InputLabel htmlFor="subject">Subject</InputLabel>
+    <Select
+      label="Subject"
+      value={selectedSubject}
+      onChange={(e) => setSelectedSubject(e.target.value)}
+    >
+      {categories.map(category => {
+        if (category.board_id === selectedBoard) {
+          return category.subject.map(subject => (
+            <MenuItem key={subject.subject_id} value={subject.subject_id}>
+              {subject.subject_name}
+            </MenuItem>
+          ));
+        }
+        return null; 
+      })}
+    </Select>
+  </FormControl>
+
               </Grid>
               <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
-                <FormControl fullWidth size="small">
-                  <InputLabel htmlFor="subjectLevel">Subject Level</InputLabel>
-                  <Select
-                    label="Subject Level"
-                    id="subjectLevelID"
-                    value={subjectLevelName1}
-                    onChange={(e) => setSubjectLevelName1(e.target.value)}
-                  >
-                    {categories?.data.map(category => (
-                      category.subject.map(subject => (
-                        subject.subject_level.map(level => (
-                          <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
-                            {level.subject_lev_name}
-                          </MenuItem>
-                        ))
-                      ))
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+  <FormControl fullWidth size="small">
+    <InputLabel htmlFor="subjectLevel">Subject Level</InputLabel>
+    <Select
+      label="Subject Level"
+      id="subjectLevelID"
+      value={subjectLevelName1}
+      onChange={(e) => setSubjectLevelName1(e.target.value)}
+    >
+      {categories.map(category => {
+        
+        if (category.board_id === selectedBoard) {
+          return category.subject.map(subject => {
+          
+            if (subject.subject_id === selectedSubject) {
+              return subject.subject_level.map(level => (
+                <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
+                  {level.subject_lev_name}
+                </MenuItem>
+              ));
+            }
+            return null; 
+          });
+        }
+        return null; 
+      })}
+    </Select>
+  </FormControl>
+</Grid>
+
               <Grid item xs={12} md={4} ms={6}>
                 <TextField
                   label="Source Name"

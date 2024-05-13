@@ -26,12 +26,63 @@ const SubTopicAdd = () => {
         topicID: '', 
         subtopicName: '', 
     });
-  const { data:categories=[], error, isLoading ,} = useGetCategoryListQuery();
+  const { data:{data:categories}={}, error, isLoading ,} = useGetCategoryListQuery();
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const [filteredLevels, setFilteredLevels] = useState([]);
+  const [filteredSources, setFilteredSources] = useState([]);
+  const [filteredPapers, setFilteredPapers] = useState([]);
+  const [filteredTopic, setFilteredTopic] = useState([]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
   
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+    if (name === 'boardID') {
+        const selectedBoard = categories.find(category => category.board_id === value);
+        if (selectedBoard) {
+            setFilteredSubjects(selectedBoard.subject);
+            setFilteredLevels([]);
+            setFilteredSources([]);
+            setFilteredPapers([]);
+            setFilteredTopic([]);
+        }
+    }
+
+    else if (name === 'subjectID') {
+        const selectedSubject = filteredSubjects.find(subject => subject.subject_id === value);
+        if (selectedSubject) {
+            setFilteredLevels(selectedSubject.subject_level);
+            setFilteredSources([]);
+            setFilteredPapers([]);
+            setFilteredTopic([]);
+        }
+    }
+    
+    else if (name === 'subjectlevelID') {
+        const selectedLevel = filteredLevels.find(level => level.subject_lev_id === value);
+        if (selectedLevel) {
+            setFilteredSources(selectedLevel.source);
+            setFilteredPapers([]);
+            setFilteredTopic([]);
+        }
+    }
+  
+    else if (name === 'sourceID') {
+        const selectedSource = filteredSources.find(source => source.source_id === value);
+        if (selectedSource) {
+            setFilteredPapers(selectedSource.paper);
+            setFilteredTopic([]);
+        }
+    }
+    else if (name === 'paperID') {
+        const selectedPaper = filteredPapers.find(paper => paper.paper_id=== value);
+        if (selectedPaper) {
+            setFilteredTopic(selectedPaper.topic);
+           
+        }
+    }
+};
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -79,7 +130,7 @@ console.log(formData,"check")
                                         sx={{ height: '35px' }}
                                     >
                                      
-                                     {categories?.data.map(category => (
+                                     {categories.map(category => (
                                                 <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
                                             ))}
                                     </Select>
@@ -96,13 +147,9 @@ console.log(formData,"check")
                                         onChange={handleChange}
                                         sx={{ height: '35px' }}
                                     >
-                                         {categories?.data.map(category => (
-    category.subject.map(subject => (
-        <MenuItem key={subject.subject_id} value={subject.subject_id}>
-            {subject.subject_name}
-        </MenuItem>
-    ))
-))}
+                                        {filteredSubjects.map(subject => (
+                                                <MenuItem key={subject.subject_id} value={subject.subject_id}>{subject.subject_name}</MenuItem>
+                                            ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -118,15 +165,9 @@ console.log(formData,"check")
                                         sx={{ height: '35px' }}
                                     >
                                         
-                                        {categories?.data.map(category => (
-    category.subject.map(subject => (
-        subject.subject_level.map(level => (
-            <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
-                {level.subject_lev_name}
-            </MenuItem>
-        ))
-    ))
-))}
+                                        {filteredLevels.map(level => (
+                                                <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>{level.subject_lev_name}</MenuItem>
+                                            ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -142,18 +183,9 @@ console.log(formData,"check")
                                         sx={{ height: '35px' }}
                                     >
                                        
-                                       {categories?.data.map(category => (
-    category.subject.map(subject => (
-        subject.subject_level.map(level => (
-            level.source.map(source => (
-                <MenuItem key={source.source_id} value={source.source_id}>
-                    {source.source_name}
-                </MenuItem>
-            ))
-        ))
-    ))
-))}
-                                    </Select>
+                                       {filteredSources.map(source => (
+                                                <MenuItem key={source.source_id} value={source.source_id}>{source.source_name}</MenuItem>
+                                            ))}                              </Select>
                                 </FormControl>
                             </Grid>
                       <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
@@ -168,20 +200,9 @@ console.log(formData,"check")
                                         sx={{ height: '35px' }}
                                     >
                                        
-                                       {categories?.data.map(category => (
-    category.subject.map(subject => (
-        subject.subject_level.map(level => (
-            level.source.map(source => (
-                source.paper.map(paper => (
-                    <MenuItem key={paper.paper_id} value={paper.paper_id}>
-                        {paper.paper_name}
-                    </MenuItem>
-                ))
-            ))
-        ))
-    ))
-))}
-
+                                       {filteredPapers.map(paper => (
+                                                <MenuItem key={paper.paper_id} value={paper.paper_id}>{paper.paper_name}</MenuItem>
+                                            ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -197,22 +218,11 @@ console.log(formData,"check")
                                         sx={{ height: '35px' }}
                                     >
                                        
-                                       {categories?.data.map(category => (
-    category.subject.map(subject => (
-        subject.subject_level.map(level => (
-            level.source.map(source => (
-                source.paper.map(paper => (
-                    paper.topic.map(topic => (
+                                       {filteredTopic.map(topic => (
                         <MenuItem key={topic.topic_id} value={topic.topic_id}>
                             {topic.topicName}
                         </MenuItem>
-                    ))
-                ))
-            ))
-        ))
-    ))
-))}
-
+                    ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
