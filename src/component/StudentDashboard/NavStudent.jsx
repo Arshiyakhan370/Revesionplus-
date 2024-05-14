@@ -127,7 +127,7 @@ const NavStudent = () => {
     <div>
       {windowWidth > 1024 ? (
         <nav style={{ backgroundColor: '#f8f9fa', display: 'flex', flexDirection: 'row',justifyContent:'space-between', borderBottom: '1px solid #002b4f' }}>
-          <div>
+          <div className='mt-2'>
           <span id="" className="pro-sidebar-logo ml-8 ">
             <div>M</div>
             <h5 style={{color:'black'}}> My Revision<sup className="  text-blue-900 ">+</sup></h5>

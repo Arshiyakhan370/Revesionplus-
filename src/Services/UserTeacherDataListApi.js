@@ -13,6 +13,14 @@ export const UserTeacherDataListApi = createApi({
       query: (id) => `profile_view/${id}`,
       providesTags: ["user"],
     }),
+    addTeacherData: builder.mutation({
+        query: (formData) => ({
+          url: 'add_user',
+          method: 'POST',
+          body: formData,
+        }),
+      invalidatesTags: ["user"],
+    }),
     updateTeacher: builder.mutation({
       query: ({
         id,
@@ -63,6 +71,7 @@ export const {
   useGetTeacherDataListQuery,
   useDeleteTeacherMutation,
   useUpdateTeacherMutation,
+  useAddTeacherDataMutation,
   useUpdatePasswordMutation,
   useGetUserProfileQuery,
   useGetProfileDataListQuery,

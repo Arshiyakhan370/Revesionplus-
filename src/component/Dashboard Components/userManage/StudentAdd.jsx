@@ -24,6 +24,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import SuccessMsg from "../../CategoryMaster/AddCategory/SuccessMsg";
+import { useAddTeacherDataMutation } from "../../../Services/UserTeacherDataListApi";
 
 const StudentAdd = ({ isSidebarClosed, addStudent }) => {
   const [formData, setFormData] = useState({
@@ -36,36 +37,88 @@ const StudentAdd = ({ isSidebarClosed, addStudent }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [successMsgOpen, setSuccessMsgOpen] = useState(false);
-
+  const [addTeacherData] = useAddTeacherDataMutation();
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "https://staging.ibgakiosk.com/api/add_user",
-        formData
-      );
-          console.log(response.data)
-      setSuccessMsgOpen(true);
+  //   try {
+  //     // const response = await axios.post(
+  //     //   "https://staging.ibgakiosk.com/api/add_user",
+  //     //   formData
+  //     // );
+  //         // console.log(response.data)
+  //         await addTeacherData(formData);
 
-      setFormData({
-        usertype: "",
-        name: "",
-        email: "",
-        mobile: "",
-        expire_date: "",
-        password: "",
-      });
-      setShowPassword(false);
-    } catch (error) {
-      setSuccessMsgOpen(false);
+       
+  //     setSuccessMsgOpen(true);
+
+  //     setFormData({
+  //       usertype: "",
+  //       name: "",
+  //       email: "",
+  //       mobile: "",
+  //       expire_date: "",
+  //       password: "",
+  //     });
+  //     setShowPassword(false);
+  //   } catch (error) {
+  //     setSuccessMsgOpen(false);
+  //   }
+  // };
+
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  // Password validation regex
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+
+  // Check if password meets criteria
+  if (!passwordRegex.test(formData.password)) {
+    // If password does not meet criteria, show alert message
+    alert("Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number.");
+    return;
+  }
+
+  try {
+    const { data, error } = await addTeacherData(formData).unwrap();
+
+    if (error) {
+      
+      if (error.status !== 400 && error.data && error.data.message === 'Duplicate email') {
+       
+        alert("Email already exists. Please use a different email.");
+      } else {
+     
+        alert("An error occurred. Please try again later.");
+      }
+      return;
     }
-  };
+
+  
+    setSuccessMsgOpen(true);
+    setFormData({
+      usertype: "",
+      name: "",
+      email: "",
+      mobile: "",
+      expire_date: "",
+      password: "",
+    });
+    setShowPassword(false);
+  } catch (error) {
+    
+    alert("Email already exists. Please use a different email.");
+    setSuccessMsgOpen(false);
+  }
+};
+
   console.log(setFormData, "datashow");
   const handleSuccessMsgClose = () => {
     setSuccessMsgOpen(false);

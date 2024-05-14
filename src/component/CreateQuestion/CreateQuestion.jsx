@@ -640,7 +640,7 @@ const handleEditQuestion = (index) => {
       <Container
         maxWidth="xxl"
         style={styles}
-        className="bg-gray-100 lg:mt-[-40px] md:mt-[-20px] sm:mt-[-20px]"
+        className="bg-gray-100 lg:mt-[-20px] md:mt-[-20px] sm:mt-[-20px]"
       >
         <FilterForm />
 

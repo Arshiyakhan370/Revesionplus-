@@ -60,7 +60,7 @@ const Navbar1 = () => {
   );
 
   return (
-    <div className='mt-[-20px] mb-[-20px]'>
+    <div className=' mb-[-15px]'>
       <AppBar position="static" sx={{
         display: 'none',
         '@media (max-width:1024px)': {

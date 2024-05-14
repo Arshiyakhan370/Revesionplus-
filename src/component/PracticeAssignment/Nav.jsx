@@ -17,27 +17,33 @@ const Nav = () => {
   }, []);
 
   return (
-    <div >
+    <div className="">
       {windowWidth > 1024 ? (
-        <nav className="navbar navbar-light  flex flex-row justify-between h-12 text-center" style={{ borderBottom: '1px solid #002b4f'}}>
-        <div className='text-center mt-[-10px] mb-1'>
-        <span id="" className="pro-sidebar-logo ml-8 ">
-  <div>M</div>
-  <h5 className='text-black' style={{color:'black'}}> My Revision<sup className="  text-blue-900 ">+</sup></h5>
-</span>
-</div>
-   <div className='text-center  mt-[-10px] mb-1'>
-          <Button
-            variant='primary'
-            sx={{
-              height:'35px',
-              marginRight: '30px',
-              color: 'white',
-              background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)',
-            }}
-          >
-            LogOut
-          </Button>
+        <nav
+          className="navbar navbar-light flex flex-row justify-between text-center"
+          style={{ borderBottom: "1px solid #002b4f", height: "65px" }}
+        >
+          <div className="d-flex mt-4  align-items-center">
+            <span id="" className="pro-sidebar-logo ml-8">
+              <div>M</div>
+              <h5 className="text-black" style={{ color: "black" }}>
+                My Revision<sup className="text-blue-900">+</sup>
+              </h5>
+            </span>
+          </div>
+          <div className="d-flex mt-4 align-items-center">
+            <Button
+              variant="contained"
+              sx={{
+                height: "35px",
+                marginRight: "30px",
+                color: "white",
+                background:
+                  "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F)",
+              }}
+            >
+              LogOut
+            </Button>
           </div>
         </nav>
       ) : null}

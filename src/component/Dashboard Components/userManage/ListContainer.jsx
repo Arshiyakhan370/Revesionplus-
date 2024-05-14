@@ -12,6 +12,8 @@ import {
   FormControl,
 } from "@mui/material";
 import { Eye, EyeOff } from "react-feather";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { User } from "react-feather";
 import {
   Button,
@@ -168,6 +170,7 @@ const ListContainer = ({ isSidebarClosed, userId }) => {
   const handleDeleteClick = async () => {
     try {
       await deletedPost(deleteUserId.id);
+      // toast.success("User deleted successfully!");
       setOpenSuccessDialog(true);
       setDeleteUserId(null);
     } catch (error) {}
@@ -194,10 +197,13 @@ const ListContainer = ({ isSidebarClosed, userId }) => {
       };
 
       await passwordUpdate(passwordData);
+      toast.success("Password updated successfully!");
+      setNewPassword("");
     } catch (error) {
       console.error("Error updating password:", error);
     }
     setOpenPasswordModal(false);
+    
   };
 
   const handlePasswordModalClose = () => {
@@ -212,7 +218,7 @@ const ListContainer = ({ isSidebarClosed, userId }) => {
   const handleSaveEdit = async () => {
     try {
       await editedData(userSlectedData);
-
+      toast.success("User data updated successfully!");
       setUserSelectedData({});
 
       setShowEditModal(false);
@@ -695,7 +701,7 @@ const ListContainer = ({ isSidebarClosed, userId }) => {
             </div>
           </section>
         </CardContent>
-        {/* </Card> */}
+        <ToastContainer />
       </Container>
     </Fragment>
   );
