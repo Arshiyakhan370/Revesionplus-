@@ -44,7 +44,7 @@ const TopicAdd = () => {
                 setFilteredPapers([]);
             }
         }
-        // Filter subject levels based on subject ID
+       
         else if (name === 'subjectID') {
             const selectedSubject = filteredSubjects.find(subject => subject.subject_id === value);
             if (selectedSubject) {
@@ -53,7 +53,7 @@ const TopicAdd = () => {
                 setFilteredPapers([]);
             }
         }
-        // Filter sources based on subject level ID
+        
         else if (name === 'subjectlevelID') {
             const selectedLevel = filteredLevels.find(level => level.subject_lev_id === value);
             if (selectedLevel) {
@@ -61,7 +61,7 @@ const TopicAdd = () => {
                 setFilteredPapers([]);
             }
         }
-        // Filter papers based on source ID
+     
         else if (name === 'sourceID') {
             const selectedSource = filteredSources.find(source => source.source_id === value);
             if (selectedSource) {
@@ -152,7 +152,7 @@ const TopicAdd = () => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={4}>
+                                <Grid item xs={12} md={4} sx={{  mt: 2 }}>
                                     <FormControl fullWidth size="small">
                                         <InputLabel htmlFor="sourceID">Source</InputLabel>
                                         <Select
@@ -168,7 +168,7 @@ const TopicAdd = () => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={4}>
+                                <Grid item xs={12} md={4} sx={{  mt: 2 }}>
                                     <FormControl fullWidth size="small">
                                         <InputLabel htmlFor="paperID">Paper/Book</InputLabel>
                                         <Select
@@ -193,6 +193,10 @@ const TopicAdd = () => {
                                         required
                                         variant="outlined"
                                         margin="normal"
+                                        InputLabelProps={{
+                                        shrink: true,
+                                            }}
+                                       size="small"
                                         value={formData.topicName}
                                         onChange={handleChange}
                                     />

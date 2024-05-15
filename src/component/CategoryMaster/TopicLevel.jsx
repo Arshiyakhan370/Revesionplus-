@@ -286,13 +286,11 @@ console.log(selectedTeacher,"AAAAAAdelete");
         onChange={(e) => {
           const selectedBoardId = e.target.value;
           const selectedBoard = categories.find(category => category.board_id === selectedBoardId);
-          // const selectedSubject = selectedBoard.subjects.find(subject => subject.board_id === selectedBoardId);
           console.log(selectedBoard,"selectedboard AAAAAAAAA")
           setSelectedTeacher(prev => ({
             ...prev,
             board_name: selectedBoard.board_name,
             boardID: selectedBoard.board_id,
-            // subject: selectedSubject 
           }));
         }}
         

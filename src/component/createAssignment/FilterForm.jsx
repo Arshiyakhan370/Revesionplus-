@@ -105,10 +105,11 @@ const FilterForm = () => {
       onChange={handleBoardChange}
      
     >
-      <MenuItem value="">Select board</MenuItem>
-      <MenuItem value="1">IB</MenuItem>
-      <MenuItem value="2">IGCSE</MenuItem>
+      {/* <MenuItem value="">Select board</MenuItem> */}
       <MenuItem value="3">IB MYP</MenuItem>
+      <MenuItem value="1">IB DP</MenuItem>
+      {/* <MenuItem value="2">IGCSE</MenuItem> */}
+    
     </Select>
   </FormControl>
 </Grid>
