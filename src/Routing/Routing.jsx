@@ -1,6 +1,12 @@
 import React, { Suspense, lazy } from 'react';
 import { CircularProgress } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
+import Help from '../component/CreateQuestion/DispalyData/Help';
+import Previwe from '../component/CreateQuestion/DispalyData/Previwe';
+import SendComponent from '../component/CreateQuestion/DispalyData/SendComponent';
+import Assess from '../component/CreateQuestion/DispalyData/Assess';
+// import Previwe from '../component/CreateQuestion/DispalyData/Previwe';
+
 
 
 const Routing = () => {
@@ -83,10 +89,9 @@ const IBMYPComponent =lazy (()=> import ('../component/PracticeAssignment/Source
 const AddCategoryPage =lazy (()=> import ( '../Pages/AddCategoryPage'))
 const  TableComponent =lazy (()=> import ( '../component/Dashboard Components/TableComponent'))
 const VeiwCategoryPage =lazy (()=> import ('../Pages/VeiwCategoryPage')) 
-
-
-
-
+const DisplayQuesionpage =lazy(()=> import ('../Pages/DisplayQuesionpage'))
+const Track = lazy(()=> import ('../component/CreateQuestion/DispalyData/Track'))
+// const Preview =lazy(()=>import('../component/CreateQuestion/DispalyData/Previwe'))
   return (
    
     <Suspense fallback={<div className="flex h-screen items-center justify-center">
@@ -170,6 +175,12 @@ const VeiwCategoryPage =lazy (()=> import ('../Pages/VeiwCategoryPage'))
 <Route path='/Add-category' element={<AddCategoryPage/>}/>
 <Route path='/View-category' element={<VeiwCategoryPage/>}/>
 <Route path='/Add' element={<TableComponent/>}/>
+<Route path='DisplayQuestion' element={<DisplayQuesionpage/>}/>
+<Route path='/help' element={<Help/>}/>
+<Route path='/track' element={<Track/>}/>
+<Route path='/previwe' element={<Previwe/>}/>
+<Route path='/send' element={<SendComponent/>}/>
+<Route path='/assess' element={<Assess/>}/>
                   </Routes>
     </Suspense>
   )
