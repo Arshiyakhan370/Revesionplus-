@@ -28,8 +28,8 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Container } from "@mui/system";
-import { useDeleteSubjectMutation, useGetCategoryListQuery, useGetViewSubjectListQuery, useUpdateSubjectMutation } from "../../Services/CategoryApi";
-import SuccessMsg from "./AddCategory/SuccessMsg";
+import { useDeleteSubjectMutation, useGetCategoryListQuery, useGetViewSubjectListQuery, useUpdateSubjectMutation } from "../../../Services/CategoryApi";
+import SuccessMsg from "../AddCategory/SuccessMsg";
 
 const Subject = () => {
   const [teacherData, setTeacherData] = useState([]);
@@ -142,7 +142,7 @@ console.log(boards,"board");
 
 const handleSaveEdit = async () => {
   try {
-    console.log(selectedTeacher,subjectName,"Harshit");
+    console.log(selectedTeacher,subjectName,);
    await editedData({selectedTeacher:selectedTeacher,subjectName:subjectName})
   
     // const response = await axios.post(

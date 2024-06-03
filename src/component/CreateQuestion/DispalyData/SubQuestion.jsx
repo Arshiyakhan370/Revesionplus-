@@ -273,7 +273,101 @@ const SubQuestion = ({
                       placeholder="Enter answer key content"
                     />
                   </div>
-                  <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} />
+                  <div className="flex flex-row justify-start items-center ml-4 mt-4 mb-4">
+            <Tooltip title="Insert Image" arrow>
+          <IconButton
+            onClick={() => handleIconClick('image')}
+            sx={{
+              color: 'white',
+              background:
+                'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              width: '2em',
+              height: '2em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid black',
+              marginRight: '3px',
+              '&:hover': {
+                background:
+                  'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              },
+            }}
+          >
+            <ImageIcon sx={{ fontSize: '1em' }} />
+          </IconButton>
+        </Tooltip>
+        <input
+          type="file"
+          id="image"
+          style={{ display: 'none' }}
+          accept="image/*"
+          onChange={(e) => handleFileChange('image', e)}
+        />
+
+        <Tooltip title="Insert Video" arrow>
+          <IconButton
+            onClick={() => handleIconClick('video')}
+            sx={{
+              color: 'white',
+              background:
+                'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              width: '2em',
+              height: '2em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid black',
+              marginRight: '3px',
+              '&:hover': {
+                background:
+                  'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              },
+            }}
+          >
+            <VideoIcon sx={{ fontSize: '1em' }} />
+          </IconButton>
+        </Tooltip>
+        <input
+          type="file"
+          id="video"
+          style={{ display: 'none' }}
+          accept="video/*"
+          onChange={(e) => handleFileChange('video', e)}
+        />
+
+        <Tooltip title="Insert PDF" arrow>
+          <IconButton
+            onClick={() => handleIconClick('pdf')}
+            sx={{
+              color: 'white',
+              background:
+                'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              width: '2em',
+              height: '2em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid black',
+              marginRight: '3px',
+              '&:hover': {
+                background:
+                  'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              },
+            }}
+          >
+            <PdfIcon sx={{ fontSize: '1em' }} />
+          </IconButton>
+        </Tooltip>
+        <input
+          type="file"
+          id="pdf"
+          style={{ display: 'none' }}
+          accept="application/pdf"
+          onChange={(e) => handleFileChange('pdf', e)}
+        />
+      </div>
+                  {/* <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} /> */}
                   {subQuestionFiles[index] && (
                     <div>
                       {subQuestionFiles[index].type.startsWith('image/') && (
@@ -320,7 +414,101 @@ const SubQuestion = ({
                       placeholder="Enter mark scheme content"
                     />
                   </div>
-                  <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} />
+                  <div className="flex flex-row justify-start items-center ml-4 mt-4 mb-4">
+            <Tooltip title="Insert Image" arrow>
+          <IconButton
+            onClick={() => handleIconClick('image')}
+            sx={{
+              color: 'white',
+              background:
+                'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              width: '2em',
+              height: '2em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid black',
+              marginRight: '3px',
+              '&:hover': {
+                background:
+                  'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              },
+            }}
+          >
+            <ImageIcon sx={{ fontSize: '1em' }} />
+          </IconButton>
+        </Tooltip>
+        <input
+          type="file"
+          id="image"
+          style={{ display: 'none' }}
+          accept="image/*"
+          onChange={(e) => handleFileChange('image', e)}
+        />
+
+        <Tooltip title="Insert Video" arrow>
+          <IconButton
+            onClick={() => handleIconClick('video')}
+            sx={{
+              color: 'white',
+              background:
+                'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              width: '2em',
+              height: '2em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid black',
+              marginRight: '3px',
+              '&:hover': {
+                background:
+                  'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              },
+            }}
+          >
+            <VideoIcon sx={{ fontSize: '1em' }} />
+          </IconButton>
+        </Tooltip>
+        <input
+          type="file"
+          id="video"
+          style={{ display: 'none' }}
+          accept="video/*"
+          onChange={(e) => handleFileChange('video', e)}
+        />
+
+        <Tooltip title="Insert PDF" arrow>
+          <IconButton
+            onClick={() => handleIconClick('pdf')}
+            sx={{
+              color: 'white',
+              background:
+                'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              width: '2em',
+              height: '2em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid black',
+              marginRight: '3px',
+              '&:hover': {
+                background:
+                  'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important',
+              },
+            }}
+          >
+            <PdfIcon sx={{ fontSize: '1em' }} />
+          </IconButton>
+        </Tooltip>
+        <input
+          type="file"
+          id="pdf"
+          style={{ display: 'none' }}
+          accept="application/pdf"
+          onChange={(e) => handleFileChange('pdf', e)}
+        />
+      </div>
+                  {/* <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} /> */}
                   {subQuestionFiles[index] && (
                     <div>
                       {subQuestionFiles[index].type.startsWith('image/') && (

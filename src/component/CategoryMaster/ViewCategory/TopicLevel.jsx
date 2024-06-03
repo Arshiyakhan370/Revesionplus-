@@ -1,31 +1,33 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions, CardContent, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
-
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PrintIcon from '@mui/icons-material/Print';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
-import { boardOptions ,subjectOptions, teacherOptions}  from '../TeacherMap/SweetAlert';
-import axios, { getAdapter } from 'axios';
-import SuccessMsg from './AddCategory/SuccessMsg';
+import { boardOptions ,subjectOptions, teacherOptions}  from '../../TeacherMap/SweetAlert';
+import axios from 'axios';
+import SuccessMsg from '../AddCategory/SuccessMsg';
 
-const PaperLevel = () => {
- 
+const TopicLevel = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 const [deleteTeacherId, setDeleteTeacherId] = useState(null);
 const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
+const [categories, setCategories] = useState([]);
 const [teacherData, setTeacherData] = useState([]);
 const [loading, setLoading] = useState(true);
-const [categories, setCategories] = useState([]);
 const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
-const [paperName1, setPaperName1] = useState('');
+const [topicName1, setTopicName1] = useState('');
 useEffect(() => {
 const fetchData = async () => {
   try {
-    const response = await axios.get('https://staging.ibgakiosk.com/api/view_paper');
+    const response = await axios.get('https://staging.ibgakiosk.com/api/view_topic');
     const boardsResponse = await axios.get(
       "https://staging.ibgakiosk.com/api/category_list"
     );
@@ -44,97 +46,102 @@ fetchData();
   const [page, setPage] = useState(1);
   const teachersPerPage = 5;
 
+  const handleDeleteSuccessDialogClose = () => {
+    setDeleteSuccessDialogOpen(false);
+  };
+  
   const handleEdit = async (teacher) => {
     console.log(teacher,"teacher");
     try {
-      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_paper/${teacher.paper_id}`);
+      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_topic/${teacher.topic_id}`);
       const getData = responseGetById.data?.data;
-      const editData = {...teacher, boardID:getData.boardID, subjectID:getData.subjectID,subjectlevelID:getData.subjectlevelID,sourceID:getData.sourceID}
+      const editData = {...teacher, boardID:getData.boardID, subjectID:getData.subjectID,subjectlevelID:getData.subjectlevelID,sourceID:getData.sourceID,paperID:getData.paperID}
       setSelectedTeacher(editData);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     }
   };
-  
   const handleDeleteDialogOpen = (teacherId) => {
     setDeleteTeacherId(teacherId);
     setOpenDeleteDialog(true);
+    console.log(teacherId,"check undefine");
   };
 
   const handleDeleteDialogClose = () => {
     setDeleteTeacherId(null);
     setOpenDeleteDialog(false);
+    
   };
 
   const handleDeleteClick = async() => {
     try {
       await axios.post(
-        `https://staging.ibgakiosk.com/api/destroy_paper`,
+        `https://staging.ibgakiosk.com/api/delete_topic`,
         {
-          paper_id: deleteTeacherId
+          topic_id: deleteTeacherId
         }
       );
     
     } catch (error) {
       console.error("Error deleting teacher:", error);
   };
-
-    setDeleteSuccessDialogOpen(true);
-    setTeacherData((prevData) => prevData.filter((teacher) => teacher.paper_id!== deleteTeacherId));
-    setOpenDeleteDialog(false);
-  };
-  const handleDeleteSuccessDialogClose = () => {
-    setDeleteSuccessDialogOpen(false);
-  };
-  
+  setTeacherData((prevData) => prevData.filter((teacher) => teacher.topic_id!== deleteTeacherId));
+  setOpenDeleteDialog(false);
+  setDeleteSuccessDialogOpen(true);
+};
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
   const startIndex = (page - 1) * teachersPerPage;
   const endIndex = startIndex + teachersPerPage;
-
   const handleCloseSuccessMessage = () => {
     setSuccessMessageOpen(false);
   };
   const handleSaveEdit = async () => {
     try {
       const response = await axios.post(
-        `https://staging.ibgakiosk.com/api/update_paper`,
+        `https://staging.ibgakiosk.com/api/update_topic`,
         {
-          paper_id: selectedTeacher.paper_id,
+          topic_id: selectedTeacher.topic_id,
           boardID: selectedTeacher.boardID,
           subjectID: selectedTeacher.subjectID,
           subjectlevelID: selectedTeacher.subjectlevelID,
           sourceID: selectedTeacher.sourceID,
-          paperName: paperName1
+          paperID: selectedTeacher.paperID,
+          topicName: topicName1
         }
       );
   
-      if (response.data && response.data.message === "Paper updated successfully") {
+      if (response.data && response.data.message === "Topic updated successfully") {
+     
         setTeacherData(prevData =>
           prevData.map(teacher =>
-            teacher.paper_id === selectedTeacher.paper_id ? { ...teacher,...selectedTeacher, paper_name: paperName1} : teacher
+            teacher.topic_id === selectedTeacher.topic_id ? { ...teacher, ...selectedTeacher, topic_name: topicName1 } : teacher
           )
         );
+
         setSelectedTeacher(null);
-        setPaperName1("");
+        setTopicName1(''); 
+  
+    
         setSuccessMessageOpen(true);
       } else {
         console.error("Edit API failed:", response.data?.message || "Unknown error");
       }
     } catch (error) {
-      console.error("Error updating paper:", error);
+      console.error("Error updating topic:", error);
     }
   };
   
-  
+   
 const handleClose=()=>{
-  setSelectedTeacher(null);
+    setSelectedTeacher(null);
 }
 const handleAddMapping = (newMapping) => {
   setTeacherData((prevData) => [...prevData, newMapping]);
 };
+console.log(selectedTeacher,"AAAAAAdelete");
 
   return (
     <Fragment>
@@ -153,12 +160,14 @@ const handleAddMapping = (newMapping) => {
                         <TableCell>Source</TableCell>)}
                         {window.innerWidth > 1024 && (
                         <TableCell>Paper/Book</TableCell>)}
+                        {window.innerWidth > 1024 && (
+                        <TableCell>Topic</TableCell>)}
                         <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {teacherData.slice(startIndex, endIndex).map((teacher, index) => (
-                        <TableRow key={teacher.paper_id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
+                        <TableRow key={teacher.topic_id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
                            <TableCell>{teacher.board_name}</TableCell>
                           {window.innerWidth > 1024 && (
                           <TableCell>{teacher.subject_name} </TableCell>)}
@@ -168,6 +177,8 @@ const handleAddMapping = (newMapping) => {
                           <TableCell>{teacher.source_name} </TableCell>)}
                           {window.innerWidth > 1024 && (
                           <TableCell>{teacher.paper_name} </TableCell>)}
+                          {window.innerWidth > 1024 && (
+                          <TableCell>{teacher.topic_name} </TableCell>)}
                           <TableCell>
                             <Link to=""
                 className="item-trash text-danger circle"
@@ -175,7 +186,7 @@ const handleAddMapping = (newMapping) => {
                 title=""
                 data-bs-original-title="Delete"
                
-      onClick={() => handleDeleteDialogOpen(teacher.paper_id)}
+      onClick={() => handleDeleteDialogOpen(teacher.topic_id)}
                 style={{
     width: '50px',
     height: '50px',
@@ -251,7 +262,7 @@ const handleAddMapping = (newMapping) => {
         sx={{
           position: 'absolute',
           top: '50%',
-          left: '50%', 
+          left: '50%',
           transform: 'translate(-50%, -50%)',
           width: '40%',
           gap:'10px',
@@ -275,13 +286,11 @@ const handleAddMapping = (newMapping) => {
         onChange={(e) => {
           const selectedBoardId = e.target.value;
           const selectedBoard = categories.find(category => category.board_id === selectedBoardId);
-          // const selectedSubject = selectedBoard.subjects.find(subject => subject.board_id === selectedBoardId);
           console.log(selectedBoard,"selectedboard AAAAAAAAA")
           setSelectedTeacher(prev => ({
             ...prev,
             board_name: selectedBoard.board_name,
             boardID: selectedBoard.board_id,
-            // subject: selectedSubject 
           }));
         }}
         
@@ -411,16 +420,60 @@ const handleAddMapping = (newMapping) => {
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={4}>
-          
-          <TextField
+  <FormControl fullWidth>
+    <InputLabel id="paper-label">Select Paper</InputLabel>
+    <Select
+      labelId="paper-label"
+      id="paperID"
+      value={selectedTeacher?.paperID || ''}
+      onChange={(e) => {
+        const selectedPaperId = e.target.value;
+        const selectedPaper = categories
+          .flatMap(category => category.subject)
+          .flatMap(subject => subject.subject_level)
+          .flatMap(level => level.source)
+          .flatMap(source => source.paper)
+          .find(paper => paper.paper_id === selectedPaperId);
+
+        if (selectedPaper) {
+          setSelectedTeacher(prevState => ({
+            ...prevState,
+            paper_name: selectedPaper.paper_name,
+            paperID: selectedPaperId,
+          }));
+        } else {
+          console.error("Selected paper not found.");
+        }
+      }}
+      sx={{ height: '35px', marginTop: '8px' }}
+    >
+      {categories.map(category => (
+        category.subject.map(subject => (
+          subject.subject_level.map(level => (
+            level.source.map(source => (
+              source.paper.map(paper => (
+                <MenuItem key={paper.paper_id} value={paper.paper_id}>
+                  {paper.paper_name}
+                </MenuItem>
+              ))
+            ))
+          ))
+        ))
+      ))}
+    </Select>
+  </FormControl>
+</Grid>
+
+        <Grid item xs={12} sm={4}>
+        <TextField
                     label="Subject Level"
-                    id="paperName"
+                    id="topicName"
                     fullWidth
                     required
                     variant="outlined"
                     margin="normal"
-                    value={paperName1}
-                    onChange={(e) => setPaperName1(e.target.value)}
+                    value={topicName1}
+                    onChange={(e) => setTopicName1(e.target.value)}
                     InputProps={{
                       style: { height: 'auto' },
                     }}
@@ -429,8 +482,8 @@ const handleAddMapping = (newMapping) => {
                     }}
                     size="small"
                   />
-          
-          </Grid>
+     
+        </Grid>
         </Grid>
        
         <Box mt={2} className='flex flex-row justify-between'>
@@ -461,7 +514,4 @@ const handleAddMapping = (newMapping) => {
   );
 };
 
-
-
-
-export default PaperLevel;
+export default TopicLevel

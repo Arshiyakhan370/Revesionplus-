@@ -3,7 +3,7 @@ import { Form, Col,} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
-import AlertDialog from "../QuestionComponnet/AlertDailog";
+import AlertDialog from "../QuestionComponnet/AlertDailog";  
 import {
   Container,
   Card,
@@ -23,7 +23,7 @@ import SubQuestion from "./SubQuestion";
 import AlertMessage from "../QuestionComponnet/AlertMessage";
 import CopyQuestionAlert from "../QuestionComponnet/CopyQuestionAlert";
 import EditDailog from "../QuestionComponnet/EditDailog";
-import SaveDailog from "../QuestionComponnet/SaveDailog";
+import SaveDailog from "../QuestionComponnet/SaveDailog"; 
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from "@mui/system";
 const PdfComponent = React.lazy(() => import("../QuestionDescriptionSection/PdfComponent"));
@@ -102,7 +102,6 @@ const LongQuestion = () => {
   };
 
   const handleCheckboxChange = (label) => {
-    // Correcting the update of state to ensure it treats state as an object
     setCheckboxesState((prevState) => ({
       ...prevState,
       [label]: !prevState[label],
@@ -663,11 +662,11 @@ const handleEditQuestion = (index) => {
               onClick={handleAddItem}
               variant="outlined"
               sx={{
-                width: "4em",
+                width: "8em",
                 height: "4em",
                 minWidth: "4em", 
                 minHeight: "4em",
-                borderRadius: "50%",
+                borderRadius: "20px",
                 border:"1px solid black",
                 background:
                   "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
@@ -681,7 +680,8 @@ const handleEditQuestion = (index) => {
                 },
               }}
             >
-              <AddIcon />
+              <AddIcon /> 
+              New
             </Button>
             {/* <Button>Add Question</Button> */}
           </Tooltip>

@@ -28,6 +28,20 @@ export const CategoryApi = createApi({
       }),
       invalidatesTags: ['Post'],
     }),
+    saveSubject: builder.mutation({
+    
+      query: ({selectedBoard,subjectName}) => ({
+        url: `add_subject`,
+        method: 'POST',
+        
+        body:  {
+          boardID:selectedBoard,
+        subejctName:subjectName,
+          
+        },
+      }),
+      invalidatesTags: ['Post'],
+    }),
     deleteSubject: builder.mutation({
       query: (subject_id) => ({
         url: `delete_subject`,
@@ -40,4 +54,4 @@ export const CategoryApi = createApi({
 })
  
 
-export const { useGetCategoryListQuery, useGetViewSubjectListQuery, useUpdateSubjectMutation, useDeleteSubjectMutation } = CategoryApi
+export const { useGetCategoryListQuery, useGetViewSubjectListQuery, useUpdateSubjectMutation, useDeleteSubjectMutation,useSaveSubjectMutation } = CategoryApi

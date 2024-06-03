@@ -6,9 +6,9 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
-import { boardOptions ,subjectOptions, teacherOptions}  from '../TeacherMap/SweetAlert';
+import { boardOptions ,subjectOptions, teacherOptions}  from '../../TeacherMap/SweetAlert';
 import axios from 'axios';
-import SuccessMsg from './AddCategory/SuccessMsg';
+import SuccessMsg from '../AddCategory/SuccessMsg';
 
 const Source = () => {
  

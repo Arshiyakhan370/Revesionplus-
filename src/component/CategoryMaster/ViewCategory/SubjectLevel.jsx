@@ -9,10 +9,10 @@ import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { useGetCategoryListQuery } from '../../Services/CategoryApi';
-import CategoryDeletedMsg from '../../Helpers/CategoryDeletedMsg';
-import DeletedSuccessMsg from '../../Helpers/DeletedSuccessMsg';
-import SuccessMsg from './AddCategory/SuccessMsg';
+import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import CategoryDeletedMsg from '../../../Helpers/CategoryDeletedMsg';
+import DeletedSuccessMsg from '../../../Helpers/DeletedSuccessMsg';
+import SuccessMsg from '../AddCategory/SuccessMsg';
 
 
 const  SubjectLevel = () => {

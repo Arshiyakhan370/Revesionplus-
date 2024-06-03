@@ -1,33 +1,35 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions, CardContent, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions, CardContent, Grid, FormControl, InputLabel, Select, MenuItem, Menu } from '@mui/material';
 import { Link } from 'react-router-dom';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PrintIcon from '@mui/icons-material/Print';
+
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
-import { boardOptions ,subjectOptions, teacherOptions}  from '../TeacherMap/SweetAlert';
+import { boardOptions ,subjectOptions, teacherOptions}  from '../../TeacherMap/SweetAlert';
 import axios from 'axios';
-import SuccessMsg from './AddCategory/SuccessMsg';
+import SuccessMsg from '../AddCategory/SuccessMsg';
 
-const TopicLevel = () => {
+const SubTopic = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 const [deleteTeacherId, setDeleteTeacherId] = useState(null);
+const [viewPageModalOpen, setViewPageModalOpen] = useState(false);
 const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
-const [categories, setCategories] = useState([]);
 const [teacherData, setTeacherData] = useState([]);
 const [loading, setLoading] = useState(true);
+const [categories, setCategories] = useState([]);
 const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
-const [topicName1, setTopicName1] = useState('');
+const [subTopicName1,setSubTopicName1]=useState([]);
 useEffect(() => {
 const fetchData = async () => {
   try {
-    const response = await axios.get('https://staging.ibgakiosk.com/api/view_topic');
+    const response = await axios.get('https://staging.ibgakiosk.com/api/view_subtopic');
     const boardsResponse = await axios.get(
       "https://staging.ibgakiosk.com/api/category_list"
     );
@@ -42,20 +44,45 @@ const fetchData = async () => {
 
 fetchData();
 }, []);
+ 
 
   const [page, setPage] = useState(1);
   const teachersPerPage = 5;
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClickMore = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMore = () => {
+    setAnchorEl(null);
+  };
+  const handleViewPage = () => {
+    setViewPageModalOpen(true);
+    handleCloseMore();
+  };
+
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
   };
-  
+
+
+  const handlePrintPage = () => {
+       window.print();
+    handleCloseMore();
+  };
+
+  const handleCloseViewPageModal = () => {
+    setViewPageModalOpen(false);
+  };
+
   const handleEdit = async (teacher) => {
     console.log(teacher,"teacher");
     try {
-      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_topic/${teacher.topic_id}`);
+      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_subtopic/${teacher.subtopic_id}`);
       const getData = responseGetById.data?.data;
-      const editData = {...teacher, boardID:getData.boardID, subjectID:getData.subjectID,subjectlevelID:getData.subjectlevelID,sourceID:getData.sourceID,paperID:getData.paperID}
+      const editData = {...teacher, boardID:getData.boardID, subjectID:getData.subjectID,subjectlevelID:getData.subjectlevelID,sourceID:getData.sourceID,paperID:getData.paperID,topicID:getData.topicID}
       setSelectedTeacher(editData);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
@@ -64,84 +91,83 @@ fetchData();
   const handleDeleteDialogOpen = (teacherId) => {
     setDeleteTeacherId(teacherId);
     setOpenDeleteDialog(true);
-    console.log(teacherId,"check undefine");
   };
 
   const handleDeleteDialogClose = () => {
     setDeleteTeacherId(null);
     setOpenDeleteDialog(false);
-    
   };
 
   const handleDeleteClick = async() => {
     try {
       await axios.post(
-        `https://staging.ibgakiosk.com/api/delete_topic`,
+        `https://staging.ibgakiosk.com/api/delete_subtopic`,
         {
-          topic_id: deleteTeacherId
+          subtopic_id: deleteTeacherId
         }
       );
     
     } catch (error) {
       console.error("Error deleting teacher:", error);
   };
-  setTeacherData((prevData) => prevData.filter((teacher) => teacher.topic_id!== deleteTeacherId));
-  setOpenDeleteDialog(false);
-  setDeleteSuccessDialogOpen(true);
-};
+     setTeacherData((prevData) => prevData.filter((teacher) => teacher.subtopic_id !== deleteTeacherId));
+    setOpenDeleteDialog(false);
+    setDeleteSuccessDialogOpen(true);
+    handleCloseMore();
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
   const startIndex = (page - 1) * teachersPerPage;
   const endIndex = startIndex + teachersPerPage;
+
   const handleCloseSuccessMessage = () => {
     setSuccessMessageOpen(false);
   };
   const handleSaveEdit = async () => {
     try {
       const response = await axios.post(
-        `https://staging.ibgakiosk.com/api/update_topic`,
+        `https://staging.ibgakiosk.com/api/update_subtopic`,
         {
-          topic_id: selectedTeacher.topic_id,
+          subtopic_id: selectedTeacher.subtopic_id,
           boardID: selectedTeacher.boardID,
           subjectID: selectedTeacher.subjectID,
           subjectlevelID: selectedTeacher.subjectlevelID,
           sourceID: selectedTeacher.sourceID,
           paperID: selectedTeacher.paperID,
-          topicName: topicName1
+          topicID: selectedTeacher.topicID,
+          subtopicName: subTopicName1
         }
       );
   
-      if (response.data && response.data.message === "Topic updated successfully") {
-     
+      if (response.data && response.data.message === "Subtopic updated successfully") {
+    
         setTeacherData(prevData =>
           prevData.map(teacher =>
-            teacher.topic_id === selectedTeacher.topic_id ? { ...teacher, ...selectedTeacher, topic_name: topicName1 } : teacher
+            teacher.subtopic_id === selectedTeacher.subtopic_id ? { ...teacher, ...selectedTeacher, subtopicName: subTopicName1 } : teacher
           )
         );
-
-        setSelectedTeacher(null);
-        setTopicName1(''); 
   
     
+        setSelectedTeacher(null);
+        setSubTopicName1("");
+     
         setSuccessMessageOpen(true);
       } else {
         console.error("Edit API failed:", response.data?.message || "Unknown error");
       }
     } catch (error) {
-      console.error("Error updating topic:", error);
+      console.error("Error updating subtopic:", error);
     }
   };
   
-   
 const handleClose=()=>{
     setSelectedTeacher(null);
 }
 const handleAddMapping = (newMapping) => {
   setTeacherData((prevData) => [...prevData, newMapping]);
 };
-console.log(selectedTeacher,"AAAAAAdelete");
 
   return (
     <Fragment>
@@ -162,12 +188,14 @@ console.log(selectedTeacher,"AAAAAAdelete");
                         <TableCell>Paper/Book</TableCell>)}
                         {window.innerWidth > 1024 && (
                         <TableCell>Topic</TableCell>)}
+                        {window.innerWidth > 1024 && (
+                        <TableCell>SubTopic</TableCell>)}
                         <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {teacherData.slice(startIndex, endIndex).map((teacher, index) => (
-                        <TableRow key={teacher.topic_id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
+                        <TableRow key={teacher.subtopic_id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
                            <TableCell>{teacher.board_name}</TableCell>
                           {window.innerWidth > 1024 && (
                           <TableCell>{teacher.subject_name} </TableCell>)}
@@ -179,14 +207,12 @@ console.log(selectedTeacher,"AAAAAAdelete");
                           <TableCell>{teacher.paper_name} </TableCell>)}
                           {window.innerWidth > 1024 && (
                           <TableCell>{teacher.topic_name} </TableCell>)}
+                          {window.innerWidth > 1024 && (
+                          <TableCell>{teacher.subtopicName} </TableCell>)}
                           <TableCell>
-                            <Link to=""
-                className="item-trash text-danger circle"
-                data-bs-toggle="tooltip"
-                title=""
-                data-bs-original-title="Delete"
-               
-      onClick={() => handleDeleteDialogOpen(teacher.topic_id)}
+                          <Link to=""
+               className="item-edit text-info circle "
+               onClick={() => handleDeleteDialogOpen(teacher.subtopic_id)}
                 style={{
     width: '50px',
     height: '50px',
@@ -197,8 +223,13 @@ console.log(selectedTeacher,"AAAAAAdelete");
     background: 'rgb(244 237 201)',
 }}
               >
-               <svg xmlns="http://www.w3.org/2000/svg" width="100" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" 
+            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+             class="feather feather-more-vertical font-small-4">
+             <circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
               </Link>
+              
               &nbsp;&nbsp;
               <Link
                 to=''
@@ -220,6 +251,33 @@ console.log(selectedTeacher,"AAAAAAdelete");
               <svg xmlns="http://www.w3.org/2000/svg" width="100" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
          
                             </Link>
+
+                            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMore}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MenuItem onClick={handleViewPage}>
+                  <VisibilityIcon sx={{ marginRight: 1 }} />
+                  View Page
+                </MenuItem>
+                <MenuItem  onClick={() => handleDeleteDialogOpen(teacher.subtopic_id)}>
+                  <DeleteIcon sx={{ marginRight: 1 }} />
+                  Delete
+                </MenuItem>
+                <MenuItem onClick={handlePrintPage}>
+                  <PrintIcon sx={{ marginRight: 1 }} />
+                  Print
+                </MenuItem>
+              </Menu>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -286,11 +344,13 @@ console.log(selectedTeacher,"AAAAAAdelete");
         onChange={(e) => {
           const selectedBoardId = e.target.value;
           const selectedBoard = categories.find(category => category.board_id === selectedBoardId);
+          // const selectedSubject = selectedBoard.subjects.find(subject => subject.board_id === selectedBoardId);
           console.log(selectedBoard,"selectedboard AAAAAAAAA")
           setSelectedTeacher(prev => ({
             ...prev,
             board_name: selectedBoard.board_name,
             boardID: selectedBoard.board_id,
+            // subject: selectedSubject 
           }));
         }}
         
@@ -464,16 +524,65 @@ console.log(selectedTeacher,"AAAAAAdelete");
   </FormControl>
 </Grid>
 
+       
+<Grid item xs={12} sm={4}>
+  <FormControl fullWidth>
+    <InputLabel id="topic-label">Select Topic</InputLabel>
+    <Select
+      labelId="topic-label"
+      id="topicID"
+      value={selectedTeacher?.paperID || ''}
+      onChange={(e) => {
+        const selectedTopicId = e.target.value;
+        const selectedTopic = categories
+          .flatMap(category => category.subject)
+          .flatMap(subject => subject.subject_level)
+          .flatMap(level => level.source)
+          .flatMap(source => source.paper)
+          .flatMap(paper => paper.topic)
+          .find(topic => topic.topic_id === selectedTopicId);
+
+        if (selectedTopic) {
+          setSelectedTeacher(prevState => ({
+            ...prevState,
+            topic_name: selectedTopic.topicName,
+            topicID: selectedTopicId,
+          }));
+        } else {
+          console.error("Selected topic not found.");
+        }
+      }}
+      sx={{ height: '35px', marginTop: '8px' }}
+    >
+      {categories.map(category => (
+        category.subject.map(subject => (
+          subject.subject_level.map(level => (
+            level.source.map(source => (
+              source.paper.map(paper => (
+                paper.topic.map(topic => (
+                  <MenuItem key={topic.topic_id} value={topic.topic_id}>
+                    {topic.topicName}
+                  </MenuItem>
+                ))
+              ))
+            ))
+          ))
+        ))
+      ))}
+    </Select>
+  </FormControl>
+</Grid>
+
         <Grid item xs={12} sm={4}>
         <TextField
                     label="Subject Level"
-                    id="topicName"
+                    id="subtopicName"
                     fullWidth
                     required
                     variant="outlined"
                     margin="normal"
-                    value={topicName1}
-                    onChange={(e) => setTopicName1(e.target.value)}
+                    value={subTopicName1}
+                    onChange={(e) => setSubTopicName1(e.target.value)}
                     InputProps={{
                       style: { height: 'auto' },
                     }}
@@ -505,7 +614,26 @@ console.log(selectedTeacher,"AAAAAAdelete");
     </Box>
       </Box>
     </Modal>
-    <SuccessMsg
+    <Modal open={viewPageModalOpen} onClose={handleCloseViewPageModal}>
+         <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '40%',
+            gap: '10px',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h4" mb={2}>
+            View Page
+          </Typography>
+                </Box>
+      </Modal>
+      <SuccessMsg
         open={successMessageOpen}
         onClose={handleCloseSuccessMessage}
         message="Data Edited  successfully"
@@ -514,4 +642,6 @@ console.log(selectedTeacher,"AAAAAAdelete");
   );
 };
 
-export default TopicLevel
+
+
+export default SubTopic

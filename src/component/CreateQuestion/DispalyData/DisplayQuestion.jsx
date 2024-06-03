@@ -16,9 +16,27 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import LongQuestion from './LongQuestion';
 import Upload from './Upload';
-
+import CheckIcon from '@mui/icons-material/Check';
 const DisplayQuestion = () => {
     const [showUploadComponent, setShowUploadComponent] = useState(false); 
+    const [published, setPublished] = useState(false);
+    const [filters, setFilters] = useState({
+        boardID: 'IB DP',
+        sourceID: '',
+        grade: '',
+        subjectLevelID: '',
+        paperID: '',
+        subjectIDs: '',
+        topicID: '',
+        subtopicID: '',
+        rubricsID: ''
+      });
+      const handleSave = () => {
+        console.log('Filters saved:', filters);
+      };
+    const handleClick = () => {
+      setPublished(!published);
+    };
     const handleBack = () => {
         window.history.back(); 
     };
@@ -33,7 +51,8 @@ const DisplayQuestion = () => {
                 <Toolbar>
                     <IconButton color="inherit" onClick={handleBack} sx={{ borderRadius: '50%', backgroundColor: 'transparent', border: '1px solid white', marginRight: '1em','&:hover': { color: 'black' } }}>
                         <Tooltip title="Back" arrow>
-                            <ArrowBackIcon sx={{ color: 'white', '&:hover': { color: 'black' } }} />
+                        <ArrowBackIcon sx={{ color: 'white', fontSize: '30px', '&:hover': { color: 'black' } }} />
+
                         </Tooltip>
                     </IconButton>
                     <Typography variant="h6" style={{ flexGrow: 1, color: 'white', textAlign: 'center' }}>
@@ -58,11 +77,21 @@ const DisplayQuestion = () => {
                             </Button>
                         </Tooltip>
                     </Typography>
-                    <Tooltip title="Drafts" arrow>
-                        <IconButton component={Link} to="/drafts" color="inherit" sx={{ '&:hover .MuiSvgIcon-root': { color: 'black' } , borderRadius: '50%', backgroundColor: 'transparent', border: '2px solid white', marginRight:"10px"}}>
-                            <DraftsIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <Tooltip title={published ? "Published" : "Draft"} arrow>
+      <IconButton
+        onClick={handleClick}
+        color="inherit"
+        sx={{
+          '&:hover .MuiSvgIcon-root': { color: 'black' },
+          borderRadius: '50%',
+          backgroundColor: 'transparent',
+          border: '2px solid white',
+          marginRight: '10px'
+        }}
+      >
+        {published ? <CheckIcon /> : <DraftsIcon />}
+      </IconButton>
+    </Tooltip>
                     <Tooltip title="Preview" arrow>
                         <IconButton component={Link} to="/preview" color="inherit" sx={{  borderRadius: '50%', backgroundColor: 'transparent', border: '2px solid white', '&:hover .MuiSvgIcon-root': { color: 'black' } ,marginRight:"10px"}}>
                             <PreviewIcon />

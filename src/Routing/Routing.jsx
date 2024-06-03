@@ -5,6 +5,8 @@ import Help from '../component/CreateQuestion/DispalyData/Help';
 import Previwe from '../component/CreateQuestion/DispalyData/Previwe';
 import SendComponent from '../component/CreateQuestion/DispalyData/SendComponent';
 import Assess from '../component/CreateQuestion/DispalyData/Assess';
+import MypSection from '../Pages/MypSectionpage';
+import MypSectionpage from '../Pages/MypSectionpage';
 // import Previwe from '../component/CreateQuestion/DispalyData/Previwe';
 
 
@@ -181,6 +183,7 @@ const Track = lazy(()=> import ('../component/CreateQuestion/DispalyData/Track')
 <Route path='/previwe' element={<Previwe/>}/>
 <Route path='/send' element={<SendComponent/>}/>
 <Route path='/assess' element={<Assess/>}/>
+<Route path='/mypSection' element={<MypSectionpage/>}/>
                   </Routes>
     </Suspense>
   )

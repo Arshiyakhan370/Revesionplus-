@@ -10,6 +10,8 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import ExportModal from './ExportModal';
 import ExportExelModal from './ExportExelModal';
+import AchievementLevelModel from './AchievementLevelModel';
+import CreateSubmitModel from './CreateSubmitModel';
 const Assess = () => {
   const [search, setSearch] = React.useState('');
   const [status, setStatus] = React.useState('');
@@ -18,8 +20,15 @@ const Assess = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isExportModalOpen1, setIsExportModalOpen1] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [submitModel ,setSubmitModel]  = useState(false);
 
-  
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleSubmitModelOpen =() => setSubmitModel(true);
+  const handleSubmitModelClose =()=> setSubmitModel(false);
+
   const handleOpenExportModal1 = () => {
     setIsExportModalOpen1(true);
   };
@@ -202,17 +211,20 @@ const Assess = () => {
 <ExportExelModal open={isExportModalOpen1} handleClose={handleCloseExportModal1} handleExport={handleExportToExcel1} />
 
           </div>
-          <div>
-          <Button variant="text" onClick={handleConvertToNewSubmit}>
+          <>
+          <Button variant="text" onClick={handleSubmitModelOpen}>
             <AssignmentTurnedInIcon />
             Convert to new submit
           </Button>
-          </div>
+          <CreateSubmitModel open={submitModel } handleClose={handleSubmitModelClose} />
+        
+          </>
           <div>
-          <Button variant="text" onClick={handleConvertToAchievementLevel}>
+          <Button variant="text" onClick={handleOpen}>
             <AssignmentTurnedInIcon />
             Convert to achievement level
           </Button>
+      <AchievementLevelModel open={open} handleClose={handleClose} />
           </div>
         </Typography>
       </Popover>       
