@@ -7,22 +7,28 @@ import Description from '../Description';
 import Questions from '../Questions';
 
 const MypAddQuestion = () => {
-  const [showDescription, setShowDescription] = useState(false);
-  const [showQuestion, setShowQuestion] = useState(false);
-  
+  const [activeComponent, setActiveComponent] = useState('');
+
   const handleDescriptionClick = () => {
-    setShowDescription(true);
-    setShowQuestion(false);
+    setActiveComponent(prev => (prev === 'Description' ? '' : 'Description'));
   };
 
   const handleQuestionsClick = () => {
-    setShowQuestion(true);
-    setShowDescription(false);
+    setActiveComponent(prev => (prev === 'Questions' ? '' : 'Questions'));
   };
 
   return (
     <Box sx={{ width: '100%', display: 'block', textAlign: 'center' }}>
-      <IconButton color="error" size="large" sx={{ margin: 2 }}>
+      <IconButton
+        color="error"
+        size="large"
+        sx={{
+          margin: 2,
+          border: '2px solid red',
+          borderRadius: '50%',
+          padding: 1,
+        }}
+      >
         <CloseIcon />
       </IconButton>
       <Box sx={{ mt: 2 }}>
@@ -46,24 +52,11 @@ const MypAddQuestion = () => {
           >
             Questions
           </Button>
-          {/* Uncomment and implement the library button if needed */}
-          {/* <Button
-            variant="outlined"
-            startIcon={<DatabaseIcon />}
-          >
-            From Library
-          </Button> */}
         </Stack>
       </Box>
       <Box sx={{ mt: 2 }}>
-        {showDescription && (
-          <Description/>
-        ) 
-        }
-        {showQuestion && (
-          <Questions/>
-        ) 
-        }
+        {activeComponent === 'Description' && <Description />}
+        {activeComponent === 'Questions' && <Questions />}
       </Box>
     </Box>
   );
