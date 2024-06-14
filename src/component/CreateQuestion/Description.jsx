@@ -355,6 +355,7 @@ const Description = ({ show, onSave }) => {
   return (
     <Fragment>
       <Container maxWidth="xxl" className="mt-4 text-center">
+      <div className='flex justify-between '>
         <div style={largeCircleStyle}>
           {positions.map((pos, index) => (
             <div key={index} style={{ ...avatarWrapperStyle, ...pos }}>
@@ -406,6 +407,9 @@ const Description = ({ show, onSave }) => {
             </div>
           ))}
         </div>
+        
+
+        </div>
       </Container>
 
       <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="lg">
@@ -428,7 +432,7 @@ const Description = ({ show, onSave }) => {
 
       <Dialog open={openModal4} onClose={handleCloseModal4} fullWidth maxWidth="lg">
         <DialogContent>
-          <Pdf onSave={handleSave} />
+        <Pdf onSave={handleSave} />
         </DialogContent>
       </Dialog>
 
@@ -448,3 +452,127 @@ const Description = ({ show, onSave }) => {
 };
 
 export default Description;
+// import React, { Fragment, useState } from 'react';
+// import { Avatar, Container, Dialog, DialogContent } from '@mui/material';
+// import { InsertDriveFile, Videocam, Audiotrack, Image as ImageIcon } from '@mui/icons-material';
+// import Text from './QuestionDescriptionSection/Text';
+// import According from './QuestionDescriptionSection/According';
+// import Image from './QuestionDescriptionSection/Image';
+// import Pdf from './QuestionDescriptionSection/Pdf';
+// import Vdeo from './QuestionDescriptionSection/Vdeo';
+// import Audio from './QuestionDescriptionSection/Audio';
+// import SimulationComponent from './QuestionDescriptionSection/Simulation';
+
+// const Description = ({ show, onSave }) => {
+//   const [openModal, setOpenModal] = useState(false);
+//   const [openModal2, setOpenModal2] = useState(false);
+//   const [openModal3, setOpenModal3] = useState(false);
+//   const [openModal4, setOpenModal4] = useState(false);
+//   const [openModal5, setOpenModal5] = useState(false);
+//   const [openModal6, setOpenModal6] = useState(false);
+//   const [openModal7, setOpenModal7] = useState(false);
+
+//   const handleSave = (textContent) => {
+//     onSave(textContent);
+//   }
+
+//   const handleOpenModal = () => setOpenModal(!openModal);
+//   const handleCloseModal = () => setOpenModal(false);
+//   const handleOpenModal2 = () => setOpenModal2(true);
+//   const handleCloseModal2 = () => setOpenModal2(false);
+//   const handleOpenModal3 = () => setOpenModal3(true);
+//   const handleCloseModal3 = () => setOpenModal3(false);
+//   const handleOpenModal4 = () => setOpenModal4(true);
+//   const handleCloseModal4 = () => setOpenModal4(false);
+//   const handleOpenModal5 = () => setOpenModal5(true);
+//   const handleCloseModal5 = () => setOpenModal5(false);
+//   const handleOpenModal6 = () => setOpenModal6(true);
+//   const handleCloseModal6 = () => setOpenModal6(false);
+//   const handleOpenModal7 = () => setOpenModal7(true);
+//   const handleCloseModal7 = () => setOpenModal7(false);
+
+//   const circleStyle = {
+//     background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%)',
+//     backgroundColor: '#002B4F',
+//     border: '1px solid #002B4F',
+//     color: '#fff',
+//     margin: '10px',
+//     cursor: 'pointer'
+//   };
+
+//   return (
+//     <Fragment>
+//       <Container maxWidth='xxl' className='mt-4 text-center'>
+//         <Avatar style={circleStyle} onClick={handleOpenModal}>
+//           <InsertDriveFile />
+//         </Avatar>
+//         <Avatar style={circleStyle} onClick={handleOpenModal2}>
+//           <InsertDriveFile />
+//         </Avatar>
+//         <Avatar style={circleStyle} onClick={handleOpenModal3}>
+//           <ImageIcon />
+//         </Avatar>
+//         <Avatar style={circleStyle} onClick={handleOpenModal4}>
+//           <InsertDriveFile />
+//         </Avatar>
+//         <Avatar style={circleStyle} onClick={handleOpenModal5}>
+//           <Videocam />
+//         </Avatar>
+//         <Avatar style={circleStyle} onClick={handleOpenModal6}>
+//           <Audiotrack />
+//         </Avatar>
+//         <Avatar style={circleStyle} onClick={handleOpenModal7}>
+//           <InsertDriveFile />
+//         </Avatar>
+//       </Container>
+
+//       {show && (
+//         <Text onSave={handleSave} />
+//       )}
+
+//       <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md">
+//         <DialogContent>
+//           <Text handleCloseModal={handleCloseModal} />
+//         </DialogContent>
+//       </Dialog>
+
+//       <Dialog open={openModal2} onClose={handleCloseModal2} maxWidth="md">
+//         <DialogContent>
+//           <According handleCloseModal={handleCloseModal2} />
+//         </DialogContent>
+//       </Dialog>
+
+//       <Dialog open={openModal3} onClose={handleCloseModal3} maxWidth="md">
+//         <DialogContent>
+//           <Image handleCloseModal={handleCloseModal3} />
+//         </DialogContent>
+//       </Dialog>
+
+//       <Dialog open={openModal4} onClose={handleCloseModal4} maxWidth="md">
+//         <DialogContent>
+//           <Pdf handleCloseModal={handleCloseModal4} />
+//         </DialogContent>
+//       </Dialog>
+
+//       <Dialog open={openModal5} onClose={handleCloseModal5} maxWidth="md">
+//         <DialogContent>
+//           <Vdeo handleCloseModal={handleCloseModal5} />
+//         </DialogContent>
+//       </Dialog>
+
+//       <Dialog open={openModal6} onClose={handleCloseModal6} maxWidth="md">
+//         <DialogContent>
+//           <Audio handleCloseModal={handleCloseModal6} />
+//         </DialogContent>
+//       </Dialog>
+
+//       <Dialog open={openModal7} onClose={handleCloseModal7} maxWidth="md">
+//         <DialogContent>
+//           <SimulationComponent handleCloseModal={handleCloseModal7} />
+//         </DialogContent>
+//       </Dialog>
+//     </Fragment>
+//   );
+// };
+
+// export default Description;

@@ -68,7 +68,7 @@ const SubQuestion = ({
               <h3 className="text-blue-600 mt-8">Sub Question {index + 1}</h3>
 
               <Grid container>
-           <Grid item xs={12} md={2} lg={1.8} style={{ flexBasis: '15%', maxWidth: '15%'}}>
+           {/* <Grid item xs={12} md={2} lg={1.8} style={{ flexBasis: '15%', maxWidth: '15%'}}>
   <FormControlLabel style={{ marginLeft: '20px' }}
     control={
       <Switch
@@ -107,9 +107,9 @@ const SubQuestion = ({
       ))}
     </Grid>
   )}
-</Grid>
+</Grid> */}
 
-                <Grid item xs={12} md={10} lg={10.2} style={{ flexBasis: '85%', maxWidth: '85%' }}>
+                <Grid item xs={12} md={10} lg={10.2} style={{ padding: '2%',flexBasis: '100%', maxWidth: '100%' }}>
                   <Editor
                     apiKey='sxjoo3xgjqdbipeju9chepopxxf7467it66w6puv0sv5ysse'
                     init={{
@@ -264,7 +264,7 @@ const SubQuestion = ({
               />
               {subQuestion.enableAnswerKeyEditor && (
                 <div>
-                  <div className="answer-key-editor border border-gray-500 bg-white mt-3">
+                  <div className="answer-key-editor border border-gray-500 bg-white mt-3 p-5" >
                     <Editor
                       editorState={subQuestion.answerKeyEditorState}
                       onEditorStateChange={(newEditorState) =>
@@ -405,7 +405,7 @@ const SubQuestion = ({
               />
               {subQuestion.enableMarkSchemeEditor && (
                 <div>
-                  <div className="mark-scheme-editor border border-gray-500 bg-white mt-3">
+                  <div className="mark-scheme-editor border border-gray-500 bg-white mt-3 p-10">
                     <Editor
                       editorState={subQuestion.markSchemeEditorState}
                       onEditorStateChange={(newEditorState) =>

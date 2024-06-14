@@ -15,23 +15,45 @@ import SuccessMsg from './SuccessMsg';
 import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 
 const SourceAdd = () => {
-  
   const [selectedBoard, setSelectedBoard] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [subjectLevelName1, setSubjectLevelName1] = useState('');
   const [selectedSource, setSelectedSource] = useState('');
-  
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const [filteredSubjectLevels, setFilteredSubjectLevels] = useState([]);
   const [submitted, setSubmitted] = useState(false); 
-  const { data:{data:categories}={}, error, isLoading ,} = useGetCategoryListQuery();
+  const { data: { data: { categories } = {} } = {}, error, isLoading } = useGetCategoryListQuery();
+
+  useEffect(() => {
+    if (selectedBoard !== '') {
+      const board = categories.find(category => category._id === selectedBoard);
+      if (board) {
+        setFilteredSubjects(board.subjects || []);
+        setSelectedSubject('');
+        setFilteredSubjectLevels([]);
+        setSubjectLevelName1('');
+      }
+    }
+  }, [selectedBoard, categories]);
+
+  useEffect(() => {
+    if (selectedSubject !== '') {
+      const subject = filteredSubjects.find(subject => subject._id === selectedSubject);
+      if (subject) {
+        setFilteredSubjectLevels(subject.subjectlevels || []);
+        setSubjectLevelName1('');
+      }
+    }
+  }, [selectedSubject, filteredSubjects]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post('https://staging.ibgakiosk.com/api/add_source', {
-        "boardID": selectedBoard,
-        "subjectID": selectedSubject,
-        "subjectlevelID": subjectLevelName1,
-        "sourceName": selectedSource,
+        boardID: selectedBoard,
+        subjectID: selectedSubject,
+        subjectlevelID: subjectLevelName1,
+        sourceName: selectedSource,
       });
       console.log('Source added:', response.data);
       setSubmitted(true); 
@@ -46,108 +68,88 @@ const SourceAdd = () => {
 
   return (
     <div>
-     {isLoading  ? (
+      {isLoading ? (
         <p>Loading...</p>
       ) : error ? (
-        <p>Error: {error.error}</p>
+        <p>Error: {error.message}</p>
       ) : (
-      <form onSubmit={handleSubmit}>
-        <Card>
-          <CardContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
-                <FormControl fullWidth size="small">
-                  <InputLabel htmlFor="board">Board</InputLabel>
-                  <Select
-                    label="Board"
-                    id="boardID"
-                    value={selectedBoard}
-                    onChange={(e) => setSelectedBoard(e.target.value)}
-                  >
-                   {categories.map(category => (
-                      <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+        <form onSubmit={handleSubmit}>
+          <Card>
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel htmlFor="board">Board</InputLabel>
+                    <Select
+                      label="Board"
+                      id="boardID"
+                      value={selectedBoard}
+                      onChange={(e) => setSelectedBoard(e.target.value)}
+                    >
+                      {categories.map(category => (
+                        <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel htmlFor="subject">Subject</InputLabel>
+                    <Select
+                      label="Subject"
+                      value={selectedSubject}
+                      onChange={(e) => setSelectedSubject(e.target.value)}
+                    >
+                      {filteredSubjects.map(subject => (
+                        <MenuItem key={subject._id} value={subject._id}>
+                          {subject.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel htmlFor="subjectLevel">Subject Level</InputLabel>
+                    <Select
+                      label="Subject Level"
+                      id="subjectLevelID"
+                      value={subjectLevelName1}
+                      onChange={(e) => setSubjectLevelName1(e.target.value)}
+                    >
+                      {filteredSubjectLevels.map(level => (
+                        <MenuItem key={level._id} value={level._id}>
+                          {level.subject_level_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={4} ms={6}>
+                  <TextField
+                    label="Source Name"
+                    id="sourceNameID"
+                    fullWidth
+                    required
+                    variant="outlined"
+                    margin="normal"
+                    value={selectedSource}
+                    onChange={(e) => setSelectedSource(e.target.value)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    size="small"
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ textAlign: 'right', mt: 2 }}>
+                  <Button type="submit" variant="contained" color="primary">
+                    Save
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
-             
-  <FormControl fullWidth size="small">
-    <InputLabel htmlFor="subject">Subject</InputLabel>
-    <Select
-      label="Subject"
-      value={selectedSubject}
-      onChange={(e) => setSelectedSubject(e.target.value)}
-    >
-      {categories.map(category => {
-        if (category.board_id === selectedBoard) {
-          return category.subject.map(subject => (
-            <MenuItem key={subject.subject_id} value={subject.subject_id}>
-              {subject.subject_name}
-            </MenuItem>
-          ));
-        }
-        return null; 
-      })}
-    </Select>
-  </FormControl>
-
-              </Grid>
-              <Grid item xs={12} md={4} ms={6} sx={{ marginTop: '16px' }}>
-  <FormControl fullWidth size="small">
-    <InputLabel htmlFor="subjectLevel">Subject Level</InputLabel>
-    <Select
-      label="Subject Level"
-      id="subjectLevelID"
-      value={subjectLevelName1}
-      onChange={(e) => setSubjectLevelName1(e.target.value)}
-    >
-      {categories.map(category => {
-        
-        if (category.board_id === selectedBoard) {
-          return category.subject.map(subject => {
-          
-            if (subject.subject_id === selectedSubject) {
-              return subject.subject_level.map(level => (
-                <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
-                  {level.subject_lev_name}
-                </MenuItem>
-              ));
-            }
-            return null; 
-          });
-        }
-        return null; 
-      })}
-    </Select>
-  </FormControl>
-</Grid>
-
-              <Grid item xs={12} md={4} ms={6}>
-                <TextField
-                  label="Source Name"
-                  id="sourceNameID"
-                  fullWidth
-                  required
-                  variant="outlined"
-                  margin="normal"
-                  value={selectedSource}
-                  onChange={(e) => setSelectedSource(e.target.value)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  size="small"
-                />
-              </Grid>
-              <Grid item xs={12} sx={{ textAlign: 'right', mt: 2 }}>
-                <Button type="submit" variant="contained" color="primary">
-                  Save
-                </Button>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      </form>
+            </CardContent>
+          </Card>
+        </form>
       )}
       <SuccessMsg message="Data saved successfully!" open={submitted} onClose={() => setSubmitted(false)} />
     </div>

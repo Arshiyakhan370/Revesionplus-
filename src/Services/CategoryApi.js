@@ -2,11 +2,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const CategoryApi = createApi({
   reducerPath: 'CategoryApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://staging.ibgakiosk.com/api/' }),
+  // baseQuery: fetchBaseQuery({ baseUrl: 'https://staging.ibgakiosk.com/api/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://13.235.206.253/api/v1/categorys/' }),
   tagTypes: ['Post'],
   endpoints: (builder) => ({
     getCategoryList: builder.query({
-      query: () => `category_list/`,
+      // query: () => `category_list/`,
+      query: () => `allcategory`,
     }),
     getViewSubjectList: builder.query({
       query: () => `view_subject`,
@@ -31,14 +33,12 @@ export const CategoryApi = createApi({
     saveSubject: builder.mutation({
     
       query: ({selectedBoard,subjectName}) => ({
-        url: `add_subject`,
+        url: `subject/create`, 
         method: 'POST',
-        
         body:  {
-          boardID:selectedBoard,
+          board_id:selectedBoard,
         subejctName:subjectName,
-          
-        },
+       }, 
       }),
       invalidatesTags: ['Post'],
     }),

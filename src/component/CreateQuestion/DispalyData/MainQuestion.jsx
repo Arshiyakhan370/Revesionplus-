@@ -118,7 +118,7 @@ const MainQuestion = ({
     <div>
       <Paper variant="outlined" className="p-4 mb-4">
       <Grid container spacing={2}>
-        <Grid item xs={12} className="mt-4 mb-4">
+        {/* <Grid item xs={12} className="mt-4 mb-4">
           <div className="flex flex-row justify-between text-left">
             <FormControlLabel
               control={
@@ -131,10 +131,9 @@ const MainQuestion = ({
               label="Select Criteria"
             />
           </div>
-        </Grid>
+        </Grid> */}
 
-        <Grid container>
-          <Grid item xs={12} md={2} lg={1.8} style={{ flexBasis: '15%', maxWidth: '15%', marginTop: '20px' }}>
+          {/* <Grid item xs={12} md={2} lg={1.8} style={{ flexBasis: '15%', maxWidth: '15%', marginTop: '20px' }}>
             {selectChecked && (
               <Grid container direction="column">
                 {Object.keys(checkboxesState).map((label) => (
@@ -164,15 +163,15 @@ const MainQuestion = ({
                 ))}
               </Grid>
             )}
-          </Grid>
-          <Grid item xs={12} md={10} lg={10.2} style={{ flexBasis: '85%', maxWidth: '85%' }}>
+          </Grid> */}
+          <Grid  item xs={12} md={10} lg={10.2} style={{ flexBasis: '100%', maxWidth: '100%' }}>
             <Editor
               apiKey='sxjoo3xgjqdbipeju9chepopxxf7467it66w6puv0sv5ysse'
               init={{
                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
                 toolbar: 'undo redo | blocks fontfamily fontsize | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                 tinycomments_mode: 'embedded',
-                tinycomments_author: 'Author name',
+                tinycomments_author: 'Author name', 
                 mergetags_list: [
                   { value: 'First.Name', title: 'First Name' },
                   { value: 'Email', title: 'Email' },
@@ -187,7 +186,7 @@ const MainQuestion = ({
               }
             />
           </Grid>
-        </Grid>
+       
       {/* )} */}
     </Grid>
         <Grid>

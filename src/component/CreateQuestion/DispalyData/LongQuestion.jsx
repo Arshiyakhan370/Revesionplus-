@@ -662,7 +662,7 @@ const handleEditQuestion = (index) => {
               onClick={handleAddItem}
               variant="outlined"
               sx={{
-                width: "8em",
+                width: "10em",
                 height: "4em",
                 minWidth: "4em", 
                 minHeight: "4em",
@@ -680,9 +680,10 @@ const handleEditQuestion = (index) => {
                 },
               }}
             >
-              <AddIcon /> 
-              New
+              <AddIcon  style={{fontSize:"30px"}}/> 
+             <h4 className="text-white mt-2">New</h4> 
             </Button>
+      
             {/* <Button>Add Question</Button> */}
           </Tooltip>
         </div>

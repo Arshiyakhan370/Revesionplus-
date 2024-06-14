@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
@@ -20,15 +19,16 @@ const SubjectLevelAdd = () => {
   const [subjectLevelName, setSubjectLevelName] = useState('');
   const [selectedBoard, setSelectedBoard] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const { data:{data:categories}={},  error, isLoading } = useGetCategoryListQuery();
   const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const { data, error, isLoading } = useGetCategoryListQuery();
+
+  const categories = data?.data?.categories ?? [];
 
   useEffect(() => {
-    
     if (selectedBoard !== '') {
-      const board = categories.find(category => category.board_id === selectedBoard);
+      const board = categories.find(category => category._id === selectedBoard);
       if (board) {
-        setFilteredSubjects(board.subjects || []); 
+        setFilteredSubjects(board.subjects || []);
         setSelectedSubject('');
       }
     }
@@ -38,13 +38,13 @@ const SubjectLevelAdd = () => {
     event.preventDefault();
     try {
       const response = await axios.post('https://staging.ibgakiosk.com/api/add_subject_level', {
-        "boardID": selectedBoard,
-        "subjectID": selectedSubject,
-        "subjectlevelName": subjectLevelName,
+        boardID: selectedBoard,
+        subjectID: selectedSubject,
+        subjectlevelName: subjectLevelName,
       });
       console.log('Subject added:', response.data);
       setSubmitted(true);
-      setSelectedBoard('');
+       setSelectedBoard('');
       setSelectedSubject('');
       setSubjectLevelName('');
     } catch (error) {
@@ -52,88 +52,80 @@ const SubjectLevelAdd = () => {
     }
   };
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <div>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>Error: {error.error}</p>
-      ) : (
-            <form onSubmit={handleSubmit}>
-              <Card>
-                <CardContent>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} md={4} sx={{ marginTop: '16px' }}>
-                      <FormControl fullWidth size="small">
-                        <InputLabel htmlFor="board">Board</InputLabel>
-                        <Select
-                          label="Board"
-                          id="boardID"
-                          value={selectedBoard}
-                          onChange={(e) => setSelectedBoard(e.target.value)}
-                        >
-                          {categories.map(category => (
-                            <MenuItem key={category.board_id} value={category.board_id}>{category.board_name}</MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} md={4} sx={{ marginTop: '16px' }}>
-  <FormControl fullWidth size="small">
-    <InputLabel htmlFor="subject">Subject</InputLabel>
-    <Select
-      label="Subject"
-      value={selectedSubject}
-      onChange={(e) => setSelectedSubject(e.target.value)}
-    >
-      {categories.map(category => {
-        if (category.board_id === selectedBoard) {
-          return category.subject.map(subject => (
-            <MenuItem key={subject.subject_id} value={subject.subject_id}>
-              {subject.subject_name}
-            </MenuItem>
-          ));
-        }
-        return null; 
-      })}
-    </Select>
-  </FormControl>
-</Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <TextField
-                        label="Subject Level"
-                        id="subjectLevel"
-                        fullWidth
-                        required
-                        variant="outlined"
-                        margin="normal"
-                        value={subjectLevelName}
-                        onChange={(e) => setSubjectLevelName(e.target.value)}
-                        InputProps={{
-                          style: { height: 'auto' },
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        size="small"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sx={{ textAlign: 'right', mt: 2 }}>
-                      <Button type="submit" variant="contained" color="primary">
-                        Save
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </form>
-          )}
-      {/* Render SuccessMsg component if form is submitted successfully */}
+      <form onSubmit={handleSubmit}>
+        <Card>
+          <CardContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={4} sx={{ marginTop: '16px' }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel htmlFor="board">Board</InputLabel>
+                  <Select
+                    label="Board"
+                    id="boardID"
+                    value={selectedBoard}
+                    onChange={(e) => setSelectedBoard(e.target.value)}
+                  >
+                    {categories.map(category => (
+                      <MenuItem key={category._id} value={category._id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={4} sx={{ marginTop: '16px' }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel htmlFor="subject">Subject</InputLabel>
+                  <Select
+                    label="Subject"
+                    id="subjectID"
+                    value={selectedSubject}
+                    onChange={(e) => setSelectedSubject(e.target.value)}
+                  >
+                    {filteredSubjects.map(subject => (
+                      <MenuItem key={subject._id} value={subject._id}>
+                        {subject.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  label="Subject Level"
+                  id="subjectLevel"
+                  fullWidth
+                  required
+                  variant="outlined"
+                  margin="normal"
+                  value={subjectLevelName}
+                  onChange={(e) => setSubjectLevelName(e.target.value)}
+                  InputProps={{
+                    style: { height: 'auto' },
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} sx={{ textAlign: 'right', mt: 2 }}>
+                <Button type="submit" variant="contained" color="primary">
+                  Save
+                </Button>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      </form>
       <SuccessMsg message="Data saved successfully!" open={submitted} onClose={() => setSubmitted(false)} />
     </div>
   );
 };
 
 export default SubjectLevelAdd;
-

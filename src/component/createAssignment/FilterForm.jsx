@@ -589,7 +589,7 @@ const FilterForm = ({ setBoardID }) => {
               <Accordion defaultExpanded>
                 <AccordionSummary>
                   <div className='flex flex-row justify-between'>
-                    <Typography className='text-lg'>Question Filter</Typography>
+                    <Typography className='text-lg mb-[-20px]'>Question Filter</Typography>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -607,7 +607,7 @@ const FilterForm = ({ setBoardID }) => {
                   </div>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Grid container spacing={2} style={{ padding: '20px' }}>
+                  <Grid container spacing={2} style={{  }}>
                     <Grid item xs={6} md={4}>
                       <FormControl fullWidth size="small" className="mt-3">
                         <InputLabel htmlFor="boardID">Boards</InputLabel>
