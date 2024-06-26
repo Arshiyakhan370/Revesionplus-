@@ -8,12 +8,12 @@ import {
   LibraryBooks,
 } from '@mui/icons-material';
 import { useMediaQuery } from 'react-responsive';
-import Subject from './Subject';
 import SubjectLevel from './SubjectLevel';
 import Source from './Source';
 import PaperLevel from './PaperLevel';
 import TopicLevel from './TopicLevel';
 import SubTopic from './SubTopic';
+import Subject from '../SubjectComponent/SubjectListView';
 
 const tabData = [
   { icon: <Layers />, label: "Subject", component: <Subject /> },

@@ -12,12 +12,17 @@ import {
     CardContent,
     Tooltip,
     Paper,
+    Typography,
+    List,
+    ListItem,
+    Collapse,
+    IconButton,
 } from "@mui/material";
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useDropzone } from "react-dropzone";
 
 import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; 
 import MainQuestion from "./MainQuestion";
 import SubQuestion from "./SubQuestion";
 import AlertMessage from "../QuestionComponnet/AlertMessage";
@@ -26,6 +31,7 @@ import EditDailog from "../QuestionComponnet/EditDailog";
 import SaveDailog from "../QuestionComponnet/SaveDailog"; 
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from "@mui/system";
+import QuestionPaper from "./QuestionPaper";
 const PdfComponent = React.lazy(() => import("../QuestionDescriptionSection/PdfComponent"));
 const LongQuestion = () => {
   
@@ -50,7 +56,7 @@ const LongQuestion = () => {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [savedData, setSavedData] = useState(null);
   const [showAnswerKeyEditor, setShowAnswerKeyEditor] = useState(false);
-  const [showMarkSchemeEditor, setShowMarkSchemeEditor] = useState(false);
+  const [showMarkSchemeEditor, setShowMarkSchemeEditor] = useState(false);  
   const [selectChecked, setSelectChecked] = useState(false);
   const [marksValue, setMarksValue] = useState(0);
   const [checkboxesState, setCheckboxesState] = useState({ A: false, B: false, C: false, D: false });
@@ -71,6 +77,7 @@ const LongQuestion = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [acceptedAnswerKeyFiles, setAcceptedAnswerKeyFiles] = useState([]);
   const [answerKeyDropzoneProps, setAnswerKeyDropzoneProps] = useState(null);
+  const [showComponent, setShowComponent] = useState(false);
   const [subQuestions, setSubQuestions] = useState([
     {
       enableCriteria: false,
@@ -90,8 +97,22 @@ const LongQuestion = () => {
   const [showSubQuestionSection, setShowSubQuestionSection] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [subQuestionFiles, setSubQuestionFiles] = useState(Array.from({ length: subQuestions.length }, () => null));
-  
+  const [expandedQuestions, setExpandedQuestions] = useState({});
+  const [expandedSubQuestions, setExpandedSubQuestions] = useState({});
 
+  const handleExpandClick = (index) => {
+    setExpandedQuestions((prevExpanded) => ({
+      ...prevExpanded,
+      [index]: !prevExpanded[index],
+    }));
+  };
+
+  const handleSubExpandClick = (qIndex, subIndex) => {
+    setExpandedSubQuestions((prevExpanded) => ({
+      ...prevExpanded,
+      [`${qIndex}-${subIndex}`]: !prevExpanded[`${qIndex}-${subIndex}`],
+    }));
+  };
 
   const handleCriteriaSwitchChange = (e, index) => {
     setSubQuestions(prevState => {
@@ -164,7 +185,7 @@ const LongQuestion = () => {
   }; 
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    accept: "video/*, .pdf, image/*",
+    accept: "video/*, .pdf, image/*",  
     onDrop: (acceptedFiles) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
@@ -328,6 +349,7 @@ const LongQuestion = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowAdditionalButtons(false)
+    setShowComponent(true);
     setOpenDialog(true);
     if (
       !editorState ||
@@ -583,14 +605,6 @@ const handleEditQuestion = (index) => {
     });
   };
 
-  // const handleCriteriaSwitchChange = (event, index) => {
-  //   const { checked } = event.target;
-  //   setSubQuestions((prevSubQuestions) => {
-  //     const updatedSubQuestions = [...prevSubQuestions];
-  //     updatedSubQuestions[index].enableCriteria = checked;
-  //     return updatedSubQuestions;
-  //   });
-  // };
 
   const handleMarksSwitchChange = (event, index) => {
     const { checked } = event.target;
@@ -608,39 +622,33 @@ const handleEditQuestion = (index) => {
   };
 
 
-//   const handleSaveTextContent = (rawContentState) => {
-//     setTextData(rawContentState);
-//     setShowAdditionalButtons(false); 
-//   };
-
-//   const handleToggleAdditionalButtons = () => {
-//     setShowAdditionalButtons(!showAdditionalButtons);
-//     setShowQuestion(false);
-//   };
-
-//   const handleQuestion = () => {
-//     setShowQuestion(!showQuestion);
-//     setShowAdditionalButtons(false);
-//   };
-
-//   const handleDeleteItem = (index) => {
-//     const updatedItems = [...items];
-//     updatedItems.splice(index, 1);
-//     setItems(updatedItems);
-//   };
-
   const handleAddItem = () => {
     setShowAdditionalButtons(!showAdditionalButtons); 
     setShowQuestion(false);
     setItems([...items, { isVisible: true }]);
   };
 
-//   const handleToggleItem = (index) => {
-//     const updatedItems = [...items];
-//     updatedItems[index].isVisible = !updatedItems[index].isVisible;
-//     setItems(updatedItems);
-//   };
-
+  const buttons = [
+    { onClick: handleCopy, label: 'Copy' },
+    { onClick: handleDelete, label: 'Delete' },
+    { onClick: handleEditQuestion, label: 'Edit' },
+    { onClick: handleViewPage, label: 'View Page' },
+  ];
+  
+  const buttonStyle = {
+    background: 'linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%)',
+    backgroundColor: '#002B4F',
+    border: '1px solid black',
+    color: 'white',
+    cursor: 'pointer',
+    width: '60px',
+    height: '60px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    marginRight: 1,
+  };
   return (
     
     <Fragment>
@@ -683,203 +691,171 @@ const handleEditQuestion = (index) => {
               <AddIcon  style={{fontSize:"30px"}}/> 
              <h4 className="text-white mt-2">New</h4> 
             </Button>
-      
-            {/* <Button>Add Question</Button> */}
           </Tooltip>
         </div>
       </div>
     </Grid>
-          {questions.map((question, index) => (
-        <Paper key={index} className="text-start ml-4 mt-4 mb-4">
-          <div className="mb-3 ml-4">
-            <h5>
-              Q{question.questionNumber} {copyingQuestion && nextQuestionNumber}
-            </h5>{" "}
-            {question.imageSrc && (
-  <img
-    src={question.imageSrc}
-    alt="Image"
-    className="img-fluid"
-    style={{ width: `${question.imageSize.width}px`, height: `${question.imageSize.height}px` }}
-  />
-)}
-          {question.pdfFile && (
-            <embed
-              src={question.pdfFile}
-              type="application/pdf"
-              width="100%"
-              height="600px"
-            />
-          )}
+    <Container>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <List>
+            {questions.map((question, index) => (
+              <ListItem key={index}>
+                <Paper className="text-start ml-4 mt-4 mb-4" style={{ width: '100%', padding: '20px' }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={10}>
+                          <Typography variant="h5">
+                            Q{question.questionNumber} {copyingQuestion && nextQuestionNumber}
+                          </Typography>
+                          {question.imageSrc && (
+                            <img
+                              src={question.imageSrc}
+                              alt="Image"
+                              className="img-fluid"
+                              style={{ width: `${question.imageSize.width}px`, height: `${question.imageSize.height}px` }}
+                            />
+                          )}
+                          {question.pdfFile && (
+                            <embed
+                              src={question.pdfFile}
+                              type="application/pdf"
+                              width="100%"
+                              height="600px"
+                            />
+                          )}
+                          {question.videoSrc && (
+                            <video controls width="100%">
+                              <source src={question.videoSrc} type="video/mp4" />
+                              Your browser does not support the video tag.
+                            </video>
+                          )}
+                          <p>{question.editorState && question.editorState.blocks[0].text}</p>
+                          {imageSrc && <img src={imageSrc} alt="Dropped Image" />}
+                          {question.pdfFile && (<embed src={pdfFile} type="application/pdf" width="600" height="400" />)}
+                          {videoSrc && (
+                            <video width="600" height="400" controls>
+                              <source src={videoSrc} type="video/mp4" />
+                              Your browser does not support the video tag.
+                            </video>
+                          )}
+                          {question.criteria && <p>Criteria: {question.criteria.join(", ")}</p>}
+                          {question.marks && <p>Marks: {question.marks}</p>}
+                          <Typography variant="h6">Answer Key:</Typography>
+                          <span>{question.answerKey && convertToText(question.answerKey)}</span>
+                          {question.markScheme && (
+                            <div>
+                              <Typography variant="h6">Mark Scheme:</Typography>
+                              <span>{question.markScheme && convertToText(question.markScheme)}</span>
+                            </div>
+                          )}
+                        </Grid>
+                        <Grid item xs={2} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                          {buttons.map((button, btnIndex) => (
+                            <Button
+                              key={button.label}
+                              onClick={() => button.onClick(btnIndex)}
+                              variant="outlined"
+                              sx={buttonStyle}
+                              style={{ marginBottom: '10px' }}
+                            >
+                              {button.label}
+                            </Button>
+                          ))}
+                          <IconButton
+                            onClick={() => handleExpandClick(index)}
+                            aria-expanded={expandedQuestions[index]}
+                            aria-label="show more"
+                          >
+                            <ExpandMoreIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                      <Collapse in={expandedQuestions[index]} timeout="auto" unmountOnExit>
+                        <CardContent>
+                          <Typography paragraph>Teacher's explanation for question goes here.</Typography>
+                        </CardContent>
+                      </Collapse>
+                    </Grid>
 
-          {question.videoSrc && (
-            <video controls width="100%">
-              <source src={question.videoSrc} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          )}
-          
-             <p>{question.editorState && question.editorState.blocks[0].text}</p>
-             {imageSrc && <img src={imageSrc} alt="Dropped Image" />}
-   
-             {question.pdfFile && ( <embed src={pdfFile} type="application/pdf" width="600" height="400" />)}
-           {videoSrc && (
-        <video width="600" height="400" controls>
-          <source src={videoSrc} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      )}
-          </div>
-          {question.criteria && <p>Criteria: {question.criteria.join(", ")}</p>}
-          {question.marks && <p>Marks: {question.marks}</p>}
-          <div className="mb-3 ml-4">
-            <h6> Answer Key:</h6>
-            <span>
-              {question.answerKey && convertToText(question.answerKey)}
-            </span>
-            
-              {question.imageSrc && (
-  <img
-    src={question.imageSrc}
-    alt="Image"
-    className="img-fluid"
-    style={{ width: `${question.imageSize.width}px`, height: `${question.imageSize.height}px` }}
-  />
-)}
-          {question.pdfFile && (
-            <embed
-              src={question.pdfFile}
-              type="application/pdf"
-              width="100%"
-              height="600px"
-            />
-          )}
-
-          {question.videoSrc && (
-            <video controls width="100%">
-              <source src={question.videoSrc} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          )}
-      
-          </div>
-          <div className="mb-3 ml-4">
-            <h6>Mark Scheme:</h6>
-            <span>
-              {question.markScheme && convertToText(question.markScheme)}
-            </span>
-          </div>
-          {question.imageSrc && (
-  <img
-    src={question.imageSrc}
-    alt="Image"
-    className="img-fluid"
-    style={{ width: `${question.imageSize.width}px`, height: `${question.imageSize.height}px` }}
-  />
-)}
-          {question.pdfFile && (
-            <embed
-              src={question.pdfFile}
-              type="application/pdf"
-              width="100%"
-              height="600px"
-            />
-          )}
-
-          {question.videoSrc && (
-            <video controls width="100%">
-              <source src={question.videoSrc} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          )}
-          
-          {question.subQuestions.map((subQuestion, subIndex) => (
-  <Paper key={subIndex} className="sub-question-card">
-    <h5>Q{question.questionNumber}.{subIndex + 1}: {convertToText(subQuestion.editorState)}</h5>
-    {subQuestionFiles[index] && (
-  <div>
-    
-    {subQuestionFiles[index].type.startsWith('image/') && (
-      <div>
-        <img src={URL.createObjectURL(subQuestionFiles[index])} alt="Uploaded" />
-        <p>{subQuestionFiles[index].name}</p>
-      </div>
-    )}
-   
-    {subQuestionFiles[index].type.startsWith('video/') && (
-      <video controls>
-        <source src={URL.createObjectURL(subQuestionFiles[index])} type={subQuestionFiles[index].type} />
-        Your browser does not support the video tag.
-      </video>
-    )}
-   
-    {subQuestionFiles[index].type === 'application/pdf' && (
-      <embed src={URL.createObjectURL(subQuestionFiles[index])} type="application/pdf" width="200" height="200" />
-    )}
-
-    {!subQuestionFiles[index].type.startsWith('image/') &&
-      !subQuestionFiles[index].type.startsWith('video/') &&
-      subQuestionFiles[index].type !== 'application/pdf' && (
-        <p>{subQuestionFiles[index].name}</p>
-      )}
-  </div>
-)}
-    {subQuestion.enableCriteria && subQuestion.criteria && (
-      <p>Criteria: {subQuestion.criteria.join(", ")}</p>
-    )}
-    {subQuestion.enableMarks && (
-      <h6>Marks: {subQuestion.marks}</h6>
-    )}
-    {subQuestion.markScheme && (
-      <div>
-        <h6>Mark Scheme:</h6>
-        {subQuestion.markScheme && convertToText(subQuestion.markScheme)}
-        
-       
-      </div>
-    )}
-    {subQuestion.answerKey && (
-      <div>
-        <h6>Answer Key:</h6>
-        {subQuestion.answerKey && convertToText(subQuestion.answerKey)}
-        
-      </div>
-    )}
-   
-  </Paper>
-))}
-<div>
-            <Button
-              onClick={() => handleCopy(index)}
-              variant="outlined"
-              sx={{ marginRight: 1 }}
-            >
-              Copy
-            </Button>
-            <Button
-              onClick={() => handleDelete(index)}
-              variant="outlined"
-              sx={{ marginRight: 1 }}
-            >
-              Delete
-            </Button>
-            <Button
-              onClick={() => handleEditQuestion(index)}
-              variant="outlined"
-              sx={{ marginRight: 1 }}
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => handleViewPage(index)}
-              variant="outlined"
-              sx={{ marginRight: 1 }}
-            >
-              View Page
-            </Button>
-          </div>
-        </Paper>
-      ))}
+                    {question.subQuestions.map((subQuestion, subIndex) => (
+                      <Grid item xs={12} key={subIndex}>
+                        <Paper className="sub-question-card" style={{ margin: '10px 0', padding: '10px' }}>
+                          <Grid container spacing={2}>
+                            <Grid item xs={10}>
+                              <Typography variant="h6">
+                                Q{question.questionNumber}.{subIndex + 1}: {convertToText(subQuestion.editorState)}
+                              </Typography>
+                              {subQuestionFiles[index] && (
+                                <div>
+                                  {subQuestionFiles[index].type.startsWith('image/') && (
+                                    <div>
+                                      <img src={URL.createObjectURL(subQuestionFiles[index])} alt="Uploaded" />
+                                      <p>{subQuestionFiles[index].name}</p>
+                                    </div>
+                                  )}
+                                  {subQuestionFiles[index].type.startsWith('video/') && (
+                                    <video controls>
+                                      <source src={URL.createObjectURL(subQuestionFiles[index])} type={subQuestionFiles[index].type} />
+                                      Your browser does not support the video tag.
+                                    </video>
+                                  )}
+                                  {subQuestionFiles[index].type === 'application/pdf' && (
+                                    <embed src={URL.createObjectURL(subQuestionFiles[index])} type="application/pdf" width="200" height="200" />
+                                  )}
+                                  {!subQuestionFiles[index].type.startsWith('image/') &&
+                                    !subQuestionFiles[index].type.startsWith('video/') &&
+                                    subQuestionFiles[index].type !== 'application/pdf' && (
+                                      <p>{subQuestionFiles[index].name}</p>
+                                    )}
+                                </div>
+                              )}
+                              {subQuestion.enableCriteria && subQuestion.criteria && (
+                                <p>Criteria: {subQuestion.criteria.join(", ")}</p>
+                              )}
+                              {subQuestion.enableMarks && (
+                                <Typography variant="h6">Marks: {subQuestion.marks}</Typography>
+                              )}
+                              {subQuestion.markScheme && (
+                                <div>
+                                  <Typography variant="h6">Mark Scheme:</Typography>
+                                  {subQuestion.markScheme && convertToText(subQuestion.markScheme)}
+                                </div>
+                              )}
+                              {subQuestion.answerKey && (
+                                <div>
+                                  <Typography variant="h6">Answer Key:</Typography>
+                                  {subQuestion.answerKey && convertToText(subQuestion.answerKey)}
+                                </div>
+                              )}
+                            </Grid>
+                            <Grid item xs={2} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                              <IconButton
+                                onClick={() => handleSubExpandClick(index, subIndex)}
+                                aria-expanded={expandedSubQuestions[`${index}-${subIndex}`]}
+                                aria-label="show more"
+                              >
+                                <ExpandMoreIcon />
+                              </IconButton>
+                            </Grid>
+                          </Grid>
+                          <Collapse in={expandedSubQuestions[`${index}-${subIndex}`]} timeout="auto" unmountOnExit>
+                            <CardContent>
+                              <Typography paragraph>Teacher's explanation for subquestion goes here.</Typography>
+                            </CardContent>
+                          </Collapse>
+                        </Paper>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Paper>
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+      </Grid>
+    </Container>
           <div className="text-center">
             {showAdditionalButtons && (
             <Fragment>
@@ -887,7 +863,6 @@ const handleEditQuestion = (index) => {
       
       <Container maxWidth="xxl" mt={44}>
         <div className="container mt-3 ">
-          {/* <h2 className="text-center mb-8">Text</h2> */}
           <Form onSubmit={handleSubmit}>
             <AlertDialog
               open={openAlert}
@@ -1001,7 +976,7 @@ subQuestionFiles={subQuestionFiles}
     <Col xs={12} className="mt-3">
       <div className="d-flex justify-content-between">
       <Button
-      variant="outlined"
+      variant="outlined"   
       onClick={goBack}
       sx={{
         color: "white",
@@ -1022,10 +997,13 @@ subQuestionFiles={subQuestionFiles}
         >
           Save
         </Button>
+      
       </div>
     </Col>
           </Form>
+
         </div>
+        {showComponent && <QuestionPaper/>}
       </Container>
      
     </Fragment>
@@ -1042,12 +1020,11 @@ subQuestionFiles={subQuestionFiles}
       <CopyQuestionAlert 
   open={openCopyDialog}
   onClose={handleCloseCopyDialog}
- 
 />
 <EditDailog
   open={openEditDialog}
   onClose={handleCloseEditDialog}
-  onConfirmEdit={handleConfirmEdit}
+  onConfirmEdit={handleConfirmEdit} 
 />
     
     </Fragment>
@@ -1059,7 +1036,6 @@ const dropzoneStyle = {
   padding: "5px",
   textAlign: "center",
   cursor: "pointer",
-
 };
 
-export default LongQuestion
+export default LongQuestion 

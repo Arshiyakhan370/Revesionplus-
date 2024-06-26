@@ -726,7 +726,7 @@ const FilterForm = ({ setBoardID }) => {
                             >
                               <MenuItem value="">Select Rubrics</MenuItem>
                               <MenuItem value="Comments Only">Comments Only</MenuItem>
-                              <MenuItem value="Achievement Level">Achievement Level</MenuItem>
+                              <MenuItem value="Achievement Level">Criteria</MenuItem>
                               <MenuItem value="Criteria with Points">Criteria with Points</MenuItem>
                             </Select>
                           </FormControl>

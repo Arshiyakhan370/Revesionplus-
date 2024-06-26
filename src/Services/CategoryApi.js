@@ -3,27 +3,29 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const CategoryApi = createApi({
   reducerPath: 'CategoryApi',
   // baseQuery: fetchBaseQuery({ baseUrl: 'https://staging.ibgakiosk.com/api/' }),
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://13.235.206.253/api/v1/categorys/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://13.235.206.253/api/v1/' }),
   tagTypes: ['Post'],
   endpoints: (builder) => ({
     getCategoryList: builder.query({
-      // query: () => `category_list/`,
-      query: () => `allcategory`,
+      query: () => `categorys/allcategory`,
     }),
     getViewSubjectList: builder.query({
-      query: () => `view_subject`,
+      query: () => `categorys/subject`,
       providesTags: ['Post'],
     }),
-   
+  //  getViewSubjectLevelList: builder.query({
+  //  query: () => `categorys/subjectlevel`,
+  //  providesTags: ['Post'],
+  //  }),
     updateSubject: builder.mutation({
     
       query: ({selectedTeacher,subjectName}) => ({
-        url: `update_subject`,
-        method: 'POST',
+        url: `categorys/subject/`,
+        method: 'PATCH',
         
         body:  {
           subject_id: selectedTeacher.subject_id,
-          boardID: selectedTeacher.boardID,
+          board_id: selectedTeacher.boardID,
           subejctName: subjectName,
           
         },
@@ -31,22 +33,21 @@ export const CategoryApi = createApi({
       invalidatesTags: ['Post'],
     }),
     saveSubject: builder.mutation({
-    
       query: ({selectedBoard,subjectName}) => ({
-        url: `subject/create`, 
+        url: `categorys/subject/create`, 
         method: 'POST',
         body:  {
-          board_id:selectedBoard,
-        subejctName:subjectName,
+          "board_id":selectedBoard,
+        "subject_name":subjectName,
        }, 
       }),
       invalidatesTags: ['Post'],
     }),
     deleteSubject: builder.mutation({
-      query: (subject_id) => ({
-        url: `delete_subject`,
-        method: 'POST',
-        body:{subject_id}
+      query: (_id) => ({
+        url: `categorys/subject`,
+        method: 'DELETE',
+        body:{_id}
       }),
       invalidatesTags: ['Post'],
     }),
@@ -54,4 +55,4 @@ export const CategoryApi = createApi({
 })
  
 
-export const { useGetCategoryListQuery, useGetViewSubjectListQuery, useUpdateSubjectMutation, useDeleteSubjectMutation,useSaveSubjectMutation } = CategoryApi
+export const { useGetCategoryListQuery, useGetViewSubjectListQuery,useGetViewSubjectLevelListQuery, useUpdateSubjectMutation, useDeleteSubjectMutation,useSaveSubjectMutation } = CategoryApi

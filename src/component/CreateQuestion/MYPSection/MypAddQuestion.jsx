@@ -62,7 +62,7 @@ const MypAddQuestion = () => {
                 startIcon={<AddIcCallOutlined />}
                 onClick={handleDescriptionClick}
               >
-                Description
+              Statement
               </Button>
               <Button
                 variant="outlined"

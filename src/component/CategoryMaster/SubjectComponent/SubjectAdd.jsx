@@ -101,34 +101,38 @@
 
 // export default SubjectAdd;
 
-import React, { useState } from 'react';
-import { TextField, Card, Grid, CardContent } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { TextField, Card, Grid, CardContent, Snackbar } from '@mui/material';
 import SuccessMsg from '../AddCategory/SuccessMsg';
 import BoardCustom from '../CustomComponent/BoardCustom';
 import { useSaveSubjectMutation } from '../../../Services/CategoryApi';
 import CustomSaveButton from '../CustomComponent/CustomSaveButton';
 
-const SubjectAdd = () => {
-  const [selectedBoard, setSelectedBoard] = useState('');
+const SubjectAdd = ({ selectedBoard, handleBoardChange }) => {
   const [subjectName, setSubjectName] = useState('');
   const [successMessageOpen, setSuccessMessageOpen] = useState(false);
+  const [duplicateErrorOpen, setDuplicateErrorOpen] = useState(false);
   const [saveSubject, { isSuccess, isError, error }] = useSaveSubjectMutation();
-
-  const handleBoardChange = (board) => {
-    setSelectedBoard(board);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log(selectedBoard, subjectName);
       await saveSubject({ selectedBoard, subjectName });
-      setSelectedBoard('');
       setSubjectName('');
       setSuccessMessageOpen(true);
     } catch (error) {
-      console.error('Error adding subject:', error);
+      if (error.code === 11000) {
+        setDuplicateErrorOpen(true);
+      } else {
+        console.error('Error adding subject:', error);
+      }
     }
+  };
+console.log(error,"checkstatus");
+  const getLabel = () => {
+    if (selectedBoard === '665fffe9e02ec586b271fba1') return "Subject Name";
+    if (selectedBoard === '665fffe9e02ec586b271fba2') return "Grade";
+    return "Subject Name";
   };
 
   return (
@@ -142,7 +146,7 @@ const SubjectAdd = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label={selectedBoard === 'DP' ? "DP Subject Name" : selectedBoard === 'MYP' ? "MYP Subject Name" : "Subject Name"}
+                  label={getLabel()}
                   id="subjectName"
                   fullWidth
                   required
@@ -170,6 +174,12 @@ const SubjectAdd = () => {
         open={successMessageOpen}
         onClose={() => setSuccessMessageOpen(false)}
         message="Data saved successfully"
+      />
+      <Snackbar
+        open={duplicateErrorOpen}
+        onClose={() => setDuplicateErrorOpen(false)}
+        message="Duplicate entry error: Subject already exists."
+        autoHideDuration={6000}
       />
     </div>
   );

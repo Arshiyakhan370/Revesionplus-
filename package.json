@@ -2,10 +2,11 @@
   "name": "revesion",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://13.235.206.253",
   "homepage": "/Revesionplus-",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^40.2.0",
-    "@ckeditor/ckeditor5-react": "^6.2.0",
+    "@ckeditor/ckeditor5-react": "^6.3.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.3",
@@ -24,6 +25,7 @@
     "@uppy/dashboard": "^3.7.1",
     "@uppy/drag-drop": "^3.0.3",
     "@uppy/react": "^3.2.1",
+    "@wiris/mathtype-ckeditor5": "^8.9.2",
     "@wiris/mathtype-tinymce5": "^8.9.2",
     "antd": "^5.12.5",
     "autoprefixer": "^10.4.16",
@@ -76,7 +78,7 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts  start ",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -5,6 +5,7 @@ import Vdeo from './QuestionDescriptionSection/Vdeo';
 import Audio from './QuestionDescriptionSection/Audio';
 import SimulationComponent from './QuestionDescriptionSection/Simulation';
 import LongAnswer from './QuestionSub/LongAnswer';
+import { borderRadius } from '@mui/system';
 
 const Questions = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -38,12 +39,13 @@ const Questions = () => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius:'10%',
   };
 
   const squareStyle = {
     display: 'grid',
     gridTemplateColumns: 'repeat(5, 1fr)',
-    gap: '2px',
+    gap: '8px',
     width: '250px',
     height: '150px',
     margin: '0 auto',

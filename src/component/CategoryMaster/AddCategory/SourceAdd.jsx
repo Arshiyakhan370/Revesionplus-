@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
   FormControl,
@@ -17,49 +17,36 @@ import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 const SourceAdd = () => {
   const [selectedBoard, setSelectedBoard] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
-  const [subjectLevelName1, setSubjectLevelName1] = useState('');
+  const [selectedSubjectLevel, setSelectedSubjectLevel] = useState('');
   const [selectedSource, setSelectedSource] = useState('');
-  const [filteredSubjects, setFilteredSubjects] = useState([]);
-  const [filteredSubjectLevels, setFilteredSubjectLevels] = useState([]);
-  const [submitted, setSubmitted] = useState(false); 
-  const { data: { data: { categories } = {} } = {}, error, isLoading } = useGetCategoryListQuery();
+  const [submitted, setSubmitted] = useState(false);
+  const { data: { data: categories } = {}, error, isLoading } = useGetCategoryListQuery();
 
-  useEffect(() => {
-    if (selectedBoard !== '') {
-      const board = categories.find(category => category._id === selectedBoard);
-      if (board) {
-        setFilteredSubjects(board.subjects || []);
-        setSelectedSubject('');
-        setFilteredSubjectLevels([]);
-        setSubjectLevelName1('');
-      }
-    }
-  }, [selectedBoard, categories]);
+  const handleBoardChange = (boardId) => {
+    setSelectedBoard(boardId);
+    setSelectedSubject('');
+    setSelectedSubjectLevel('');
+  };
 
-  useEffect(() => {
-    if (selectedSubject !== '') {
-      const subject = filteredSubjects.find(subject => subject._id === selectedSubject);
-      if (subject) {
-        setFilteredSubjectLevels(subject.subjectlevels || []);
-        setSubjectLevelName1('');
-      }
-    }
-  }, [selectedSubject, filteredSubjects]);
+  const handleSubjectChange = (subjectId) => {
+    setSelectedSubject(subjectId);
+    setSelectedSubjectLevel('');
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://staging.ibgakiosk.com/api/add_source', {
-        boardID: selectedBoard,
-        subjectID: selectedSubject,
-        subjectlevelID: subjectLevelName1,
-        sourceName: selectedSource,
+      const response = await axios.post('http://13.235.206.253/api/v1/categorys/source/create', {
+        "board_id": selectedBoard,
+       " subject_id": selectedSubject,
+        "subject_level_id": selectedSubjectLevel,
+       'source_name': selectedSource,
       });
       console.log('Source added:', response.data);
-      setSubmitted(true); 
+      setSubmitted(true);
       setSelectedBoard('');
       setSelectedSubject('');
-      setSubjectLevelName1('');
+      setSelectedSubjectLevel('');
       setSelectedSource('');
     } catch (error) {
       console.error('Error adding source:', error);
@@ -84,10 +71,10 @@ const SourceAdd = () => {
                       label="Board"
                       id="boardID"
                       value={selectedBoard}
-                      onChange={(e) => setSelectedBoard(e.target.value)}
+                      onChange={(e) => handleBoardChange(e.target.value)}
                     >
-                      {categories.map(category => (
-                        <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
+                      {categories.categories.map(category => (
+                        <MenuItem key={category._id} value={category._id}>{category.board_prog_name}</MenuItem>
                       ))}
                     </Select>
                   </FormControl>
@@ -98,11 +85,11 @@ const SourceAdd = () => {
                     <Select
                       label="Subject"
                       value={selectedSubject}
-                      onChange={(e) => setSelectedSubject(e.target.value)}
+                      onChange={(e) => handleSubjectChange(e.target.value)}
                     >
-                      {filteredSubjects.map(subject => (
+                      {(categories.categories.find(category => category._id === selectedBoard)?.subjects || []).map(subject => (
                         <MenuItem key={subject._id} value={subject._id}>
-                          {subject.name}
+                          {subject.subject_name}
                         </MenuItem>
                       ))}
                     </Select>
@@ -114,10 +101,10 @@ const SourceAdd = () => {
                     <Select
                       label="Subject Level"
                       id="subjectLevelID"
-                      value={subjectLevelName1}
-                      onChange={(e) => setSubjectLevelName1(e.target.value)}
+                      value={selectedSubjectLevel}
+                      onChange={(e) => setSelectedSubjectLevel(e.target.value)}
                     >
-                      {filteredSubjectLevels.map(level => (
+                      {(categories.categories.find(category => category._id === selectedBoard)?.subjects.find(subject => subject._id === selectedSubject)?.subjectlevels || []).map(level => (
                         <MenuItem key={level._id} value={level._id}>
                           {level.subject_level_name}
                         </MenuItem>

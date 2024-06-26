@@ -11,25 +11,19 @@ const SubQuestion = ({
   subQuestionFiles,
   showSubQuestionSection,
   subQuestions,
-  handleAddSubQuestion,
   handleRemoveSubQuestion,
-  handleCriteriaSwitchChange,
-  handleMarksSwitchChange,
-  handleMarksChange,
+ 
   handleSubQuestionEditorChange,
   handleAnswerKeyEditorToggle,
   handleAnswerKeyEditorChange,
   handleMarkSchemeEditorToggle,
   handleMarkSchemeEditorChange,
-  handleSubQuestionFileUpload,
-  checkboxesState,
-  handleCheckboxChange,
+
 }) => {
   const [points, setPoints] = useState({});
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedVideo, setUploadedVideo] = useState(null);
   const [uploadedPdf, setUploadedPdf] = useState(null);
-  // const [points, setPoints] = useState({});
   const handleIconClick = (type) => {
     document.getElementById(type).click();
   };
@@ -68,46 +62,6 @@ const SubQuestion = ({
               <h3 className="text-blue-600 mt-8">Sub Question {index + 1}</h3>
 
               <Grid container>
-           {/* <Grid item xs={12} md={2} lg={1.8} style={{ flexBasis: '15%', maxWidth: '15%'}}>
-  <FormControlLabel style={{ marginLeft: '20px' }}
-    control={
-      <Switch
-        checked={subQuestion.enableCriteria}
-        onChange={(e) => handleCriteriaSwitchChange(e, index)}
-      />
-    }
-    label="Enable Criteria"
-  />
-  {subQuestion.enableCriteria && (
-    <Grid container direction="column">
-      {checkboxesState[index] && Object.keys(checkboxesState[index]).map((label) => (
-        <Grid item key={label} style={{ marginBottom: '10px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', marginLeft: '15px' }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={checkboxesState[index][label]}
-                  onChange={() => handleCheckboxChange(index, label)}
-                />
-              }
-              label={label}
-            />
-            <TextField
-              placeholder="pts"
-              variant="outlined"
-              size="small"
-              value={points[index]?.[label] || ''}
-              onChange={(e) => handlePointsChange(index, label, e.target.value)}
-              disabled={!checkboxesState[index][label]}
-              InputProps={{ inputProps: { min: 0 } }}
-              style={{ marginLeft: '8px', width: '50px' }}
-            />
-          </div>
-        </Grid>
-      ))}
-    </Grid>
-  )}
-</Grid> */}
 
                 <Grid item xs={12} md={10} lg={10.2} style={{ padding: '2%',flexBasis: '100%', maxWidth: '100%' }}>
                   <Editor
@@ -227,7 +181,7 @@ const SubQuestion = ({
           onChange={(e) => handleFileChange('pdf', e)}
         />
       </div>
-                {/* <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} /> */}
+               
                 {subQuestionFiles[index] && (
                   <div>
                     {subQuestionFiles[index].type.startsWith('image/') && (
@@ -348,7 +302,7 @@ const SubQuestion = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              border: '1px solid black',
+              border: '1px solid black',         
               marginRight: '3px',
               '&:hover': {
                 background:
@@ -367,7 +321,6 @@ const SubQuestion = ({
           onChange={(e) => handleFileChange('pdf', e)}
         />
       </div>
-                  {/* <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} /> */}
                   {subQuestionFiles[index] && (
                     <div>
                       {subQuestionFiles[index].type.startsWith('image/') && (
@@ -469,7 +422,7 @@ const SubQuestion = ({
             <VideoIcon sx={{ fontSize: '1em' }} />
           </IconButton>
         </Tooltip>
-        <input
+        <input 
           type="file"
           id="video"
           style={{ display: 'none' }}
@@ -479,7 +432,7 @@ const SubQuestion = ({
 
         <Tooltip title="Insert PDF" arrow>
           <IconButton
-            onClick={() => handleIconClick('pdf')}
+            onClick={() => handleIconClick('pdf')} 
             sx={{
               color: 'white',
               background:
@@ -508,7 +461,7 @@ const SubQuestion = ({
           onChange={(e) => handleFileChange('pdf', e)}
         />
       </div>
-                  {/* <input type="file" onChange={(e) => handleSubQuestionFileUpload(e.target.files[0], index)} /> */}
+                 
                   {subQuestionFiles[index] && (
                     <div>
                       {subQuestionFiles[index].type.startsWith('image/') && (
@@ -535,12 +488,6 @@ const SubQuestion = ({
                   )}
                 </div>
               )}
-              {/* <div className="flex justify-content-end text-red-500 text-xxl mr-4 mb-4">
-  <XCircle 
-    sx={{ fontSize: '40px', cursor: 'pointer', marginBottom:'20px' }} 
-    onClick={() => handleRemoveSubQuestion(index)}
-  />
-</div> */}
 <div className="flex justify-content-end text-red-500 text-xxl ">
       <button 
         type="button" 

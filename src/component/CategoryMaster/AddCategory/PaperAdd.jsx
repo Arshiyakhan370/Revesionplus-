@@ -215,69 +215,37 @@ import SuccessMsg from './SuccessMsg';
 import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 
 const PaperAdd = () => {
+    const { data: { data: categories } = {}, error, isLoading } = useGetCategoryListQuery();
     const [formData, setFormData] = useState({
-        boardID: '',
-        subjectID: '',
-        subjectlevelID: '',
-        sourceID: '',
-        paperName: ''
+        board_id: '',
+        subject_id: '',
+        subject_level_id: '',
+        source_id: '',
+        paper_name: ''
     });
     const [successMessageOpen, setSuccessMessageOpen] = useState(false);
-    const { data, error, isLoading } = useGetCategoryListQuery();
-
-    const [filteredSubjects, setFilteredSubjects] = useState([]);
-    const [filteredLevels, setFilteredLevels] = useState([]);
-    const [filteredSources, setFilteredSources] = useState([]);
-
-    // Extract categories safely
-    const categories = Array.isArray(data?.categories) ? data.categories : [];
-
-    useEffect(() => {
-        if (!Array.isArray(data?.categories)) {
-            console.error('Expected categories to be an array, but got:', data?.categories);
-        }
-    }, [data]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-
-        if (name === 'boardID') {
-            const selectedBoard = categories.find(category => category._id === value);
-            if (selectedBoard) {
-                setFilteredSubjects(selectedBoard.subjects || []);
-                setFilteredLevels([]);
-                setFilteredSources([]);
-            }
-        } else if (name === 'subjectID') {
-            const selectedSubject = filteredSubjects.find(subject => subject._id === value);
-            if (selectedSubject) {
-                setFilteredLevels(selectedSubject.subjectlevels || []);
-                setFilteredSources([]);
-            }
-        }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('https://staging.ibgakiosk.com/api/add_paper', formData);
+            const response = await axios.post('http://13.235.206.253/api/v1/categorys/paper/create', formData);
             console.log('Response from server:', response.data);
             setFormData({
-                boardID: '',
-                subjectID: '',
-                subjectlevelID: '',
-                sourceID: '',
-                paperName: ''
+                board_id: '',
+                subject_id: '',
+                subject_level_id: '',
+                source_id: '',
+                paper_name: ''
             });
             setSuccessMessageOpen(true);
         } catch (error) {
             console.error('Error submitting form:', error);
         }
-    };
-
-    const handleCloseSuccessMessage = () => {
-        setSuccessMessageOpen(false);
     };
 
     if (isLoading) return <p>Loading...</p>;
@@ -291,80 +259,81 @@ const PaperAdd = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={4}>
                                 <FormControl fullWidth size="small">
-                                    <InputLabel htmlFor="board">Board</InputLabel>
+                                    <InputLabel htmlFor="board_id">Board</InputLabel>
                                     <Select
                                         label="Board"
-                                        id="boardID"
-                                        name="boardID"
-                                        value={formData.boardID}
+                                        id="board_id"
+                                        name="board_id"
+                                        value={formData.board_id}
                                         onChange={handleChange}
                                     >
-                                         {categories.map((category) => (
-          <MenuItem key={category._id} value={category._id}>
-            {category.name}
-          </MenuItem>
-        ))}
+                                        {categories.categories.map(category => (
+                                            <MenuItem key={category._id} value={category._id}>{category.board_prog_name}
+                                            </MenuItem>
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} md={4}>
                                 <FormControl fullWidth size="small">
-                                    <InputLabel htmlFor="subjectID">Subject Name</InputLabel>
+                                    <InputLabel htmlFor="subject_id">Subject Name</InputLabel>
                                     <Select
                                         label="Subject Name"
-                                        id="subjectID"
-                                        name="subjectID"
-                                        value={formData.subjectID}
+                                        id="subject_id"
+                                        name="subject_id"
+                                        value={formData.subject_id}
                                         onChange={handleChange}
                                     >
-                                        {filteredSubjects.map(subject => (
-                                            <MenuItem key={subject._id} value={subject._id}>{subject.name}</MenuItem>
+                                        {formData.board_id && categories. categories.find(cat => cat._id === formData.board_id)?.subjects.map(subject => (
+                                            <MenuItem key={subject._id} value={subject._id}>
+                                            {subject.subject_name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} md={4}>
                                 <FormControl fullWidth size="small">
-                                    <InputLabel htmlFor="subjectlevelID">Subject Level</InputLabel>
+                                    <InputLabel htmlFor="subject_level_id">Subject Level</InputLabel>
                                     <Select
                                         label="Subject Level"
-                                        id="subjectlevelID"
-                                        name="subjectlevelID"
-                                        value={formData.subjectlevelID}
+                                        id="subject_level_id"
+                                        name="subject_level_id"
+                                        value={formData.subject_level_id}
                                         onChange={handleChange}
                                     >
-                                        {filteredLevels.map(level => (
-                                            <MenuItem key={level._id} value={level._id}>{level.subject_level_name}</MenuItem>
+                                        {formData.subject_id && categories. categories.find(cat => cat._id === formData.board_id)?.subjects.find(sub => sub._id === formData.subject_id)?.subjectlevels.map(level => (
+                                            <MenuItem key={level._id} value={level._id}>
+                                            {level.subject_level_name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} md={4} sx={{ mt: 2 }}>
+                            <Grid item xs={12} md={4}>
                                 <FormControl fullWidth size="small">
-                                    <InputLabel htmlFor="sourceID">Source</InputLabel>
+                                    <InputLabel htmlFor="source_id">Source</InputLabel>
                                     <Select
                                         label="Source"
-                                        id="sourceID"
-                                        name="sourceID"
-                                        value={formData.sourceID}
+                                        id="source_id"
+                                        name="source_id"
+                                        value={formData.source_id}
                                         onChange={handleChange}
                                     >
-                                        {filteredSources.map(source => (
-                                            <MenuItem key={source.source_id} value={source.source_id}>{source.source_name}</MenuItem>
+                                        {formData.subject_level_id && categories. categories.find(cat => cat._id === formData.board_id)?.subjects.find(sub => sub._id === formData.subject_id)?.subjectlevels.find(level => level._id === formData.subject_level_id)?.sources.map(source => (
+                                            <MenuItem key={source._id} value={source._id}>{source.source_name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} md={4} ms={6}>
+                            <Grid item xs={12} md={4}>
                                 <TextField
                                     label="Paper/Book"
-                                    id="paperName"
-                                    name="paperName"
+                                    id="paper_name"
+                                    name="paper_name"
                                     fullWidth
                                     required
                                     variant="outlined"
                                     margin="normal"
-                                    value={formData.paperName}
+                                    value={formData.paper_name}
                                     onChange={handleChange}
                                     InputProps={{
                                         style: { height: 'auto' },
@@ -386,7 +355,7 @@ const PaperAdd = () => {
             </form>
             <SuccessMsg
                 open={successMessageOpen}
-                onClose={handleCloseSuccessMessage}
+                onClose={() => setSuccessMessageOpen(false)}
                 message="Data saved successfully"
             />
         </div>
@@ -394,6 +363,7 @@ const PaperAdd = () => {
 };
 
 export default PaperAdd;
+
 
 
 

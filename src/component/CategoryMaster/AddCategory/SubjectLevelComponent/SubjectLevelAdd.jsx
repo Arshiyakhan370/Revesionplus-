@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
   FormControl,
@@ -19,39 +19,25 @@ const SubjectLevelAdd = () => {
   const [subjectLevelName, setSubjectLevelName] = useState('');
   const [selectedBoard, setSelectedBoard] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [filteredSubjects, setFilteredSubjects] = useState([]);
-  const { data, error, isLoading } = useGetCategoryListQuery();
-
-  const categories = data?.data?.categories ?? [];
-
-  useEffect(() => {
-    if (selectedBoard !== '') {
-      const board = categories.find(category => category._id === selectedBoard);
-      if (board) {
-        setFilteredSubjects(board.subjects || []);
-        setSelectedSubject('');
-      }
-    }
-  }, [selectedBoard, categories]);
+  const { data: { data: categories } = {}, error, isLoading } = useGetCategoryListQuery();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://staging.ibgakiosk.com/api/add_subject_level', {
-        boardID: selectedBoard,
-        subjectID: selectedSubject,
-        subjectlevelName: subjectLevelName,
+      const response = await axios.post('http://13.235.206.253/api/v1/categorys/subjectlevel/create', {
+        board_id: selectedBoard,
+        subject_id: selectedSubject,
+        subject_level_name: subjectLevelName,
       });
-      console.log('Subject added:', response.data);
+      console.log('Subject level added:', response.data);
       setSubmitted(true);
-       setSelectedBoard('');
       setSelectedSubject('');
       setSubjectLevelName('');
     } catch (error) {
-      console.error('Error adding subject:', error);
+      console.error('Error adding subject level:', error);
     }
   };
-
+console.log(selectedBoard,selectedSubject,subjectLevelName,);
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -66,13 +52,13 @@ const SubjectLevelAdd = () => {
                   <InputLabel htmlFor="board">Board</InputLabel>
                   <Select
                     label="Board"
-                    id="boardID"
+                    id="board_id"
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
                   >
-                    {categories.map(category => (
+                    {categories.categories.map(category => (
                       <MenuItem key={category._id} value={category._id}>
-                        {category.name}
+                        {category.board_prog_name}
                       </MenuItem>
                     ))}
                   </Select>
@@ -83,13 +69,13 @@ const SubjectLevelAdd = () => {
                   <InputLabel htmlFor="subject">Subject</InputLabel>
                   <Select
                     label="Subject"
-                    id="subjectID"
+                    id="subject_id"
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
                   >
-                    {filteredSubjects.map(subject => (
+                    {(categories.categories.find(cat => cat._id === selectedBoard)?.subjects || []).map(subject => (
                       <MenuItem key={subject._id} value={subject._id}>
-                        {subject.name}
+                        {subject.subject_name}
                       </MenuItem>
                     ))}
                   </Select>

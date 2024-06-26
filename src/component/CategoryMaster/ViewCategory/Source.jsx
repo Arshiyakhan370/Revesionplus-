@@ -1,59 +1,86 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Typography, Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, TextField, Card, Dialog, DialogTitle, DialogContent, DialogActions, CardContent, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import axios from 'axios';
+import {
+  Typography,
+  Box,
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Modal,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Grid,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
-
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
-import { boardOptions ,subjectOptions, teacherOptions}  from '../../TeacherMap/SweetAlert';
-import axios from 'axios';
 import SuccessMsg from '../AddCategory/SuccessMsg';
 
 const Source = () => {
- 
-  const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-const [deleteTeacherId, setDeleteTeacherId] = useState(null);
-const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
-const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
-const [teacherData, setTeacherData] = useState([]);
-const [loading, setLoading] = useState(true);
-const [sourceName1, setSourceName1] = useState('');
-const [categories, setCategories] = useState([]);
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('https://staging.ibgakiosk.com/api/view_source');
-      const boardsResponse = await axios.get(
-        "https://staging.ibgakiosk.com/api/category_list"
-      );
-      setCategories(boardsResponse.data?.data);
-      setTeacherData(response.data?.data); 
-      setLoading(false);
-    } catch (error ) { 
-      console.error('Error fetching teacher data:', error);
-      setLoading(false);
-    }
-  };
-
-  fetchData();
-}, []);
+  const [teacherData, setTeacherData] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const teachersPerPage = 5;
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deleteTeacherId, setDeleteTeacherId] = useState(null);
+  const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
+  const [successMessageOpen, setSuccessMessageOpen] = useState(false);
+  const [sourceName1, setSourceName1] = useState('');
+
+  const isSmallScreen = window.innerWidth <= 1024;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://13.235.206.253/api/v1/categorys/source');
+        const boardsResponse = await axios.get('https://staging.ibgakiosk.com/api/category_list');
+        setTeacherData(response.data?.data?.sources || []);
+        setCategories(boardsResponse.data?.data || []);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
   const handleEdit = async (teacher) => {
-    console.log(teacher,"teacher");
     try {
-      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_source/${teacher.source_id}`);
+      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_source/${teacher._id}`);
       const getData = responseGetById.data?.data;
-      const editData = {...teacher, boardID:getData.boardID, subjectID:getData.subjectID,subjectlevelID:getData.subjectlevelID}
+      const editData = {
+        ...teacher,
+        boardID: getData.board_info?._id,
+        subjectID: getData.subject_info?._id,
+        subjectlevelID: getData.subjectlevel_info?._id,
+      };
       setSelectedTeacher(editData);
     } catch (error) {
-      console.error("Error occurred while fetching data:", error);
+      console.error('Error occurred while fetching data:', error);
     }
   };
+
   const handleDeleteDialogOpen = (teacherId) => {
     setDeleteTeacherId(teacherId);
     setOpenDeleteDialog(true);
@@ -63,159 +90,157 @@ useEffect(() => {
     setDeleteTeacherId(null);
     setOpenDeleteDialog(false);
   };
- 
-  const handleDeleteClick = async() => {
+
+  const handleDeleteClick = async () => {
     try {
-      await axios.post(
-        `https://staging.ibgakiosk.com/api/delete_source`,
-        {
-          source_id: deleteTeacherId
-        }
-      );
-    
+      await axios.post('https://staging.ibgakiosk.com/api/delete_source', {
+        source_id: deleteTeacherId,
+      });
+
+      setDeleteSuccessDialogOpen(true);
+      setTeacherData((prevData) => prevData.filter((teacher) => teacher._id !== deleteTeacherId));
+      setOpenDeleteDialog(false);
     } catch (error) {
-      console.error("Error deleting teacher:", error);
+      console.error('Error deleting teacher:', error);
+    }
   };
 
-    setDeleteSuccessDialogOpen(true);
-    setTeacherData((prevData) => prevData.filter((teacher) => teacher.source_id!== deleteTeacherId));
-    setOpenDeleteDialog(false);
-  };
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessageOpen(false);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await axios.post(`https://staging.ibgakiosk.com/api/update_source`, {
+        source_id: selectedTeacher._id,
+        boardID: selectedTeacher.boardID,
+        subjectID: selectedTeacher.subjectID,
+        subjectlevelID: selectedTeacher.subjectlevelID,
+        sourceName: sourceName1,
+      });
+
+      if (response.data && response.data.message === 'Source updated successfully') {
+        setTeacherData((prevData) =>
+          prevData.map((teacher) =>
+            teacher._id === selectedTeacher._id ? { ...teacher, source_name: sourceName1 } : teacher
+          )
+        );
+
+        setSelectedTeacher(null);
+        setSourceName1('');
+        setSuccessMessageOpen(true);
+      } else {
+        console.error('Edit API failed:', response.data?.message || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Error updating source:', error);
+    }
+  };
+
+  const handleClose = () => {
+    setSelectedTeacher(null);
   };
 
   const startIndex = (page - 1) * teachersPerPage;
   const endIndex = startIndex + teachersPerPage;
-  
-  const handleCloseSuccessMessage = () => {
-    setSuccessMessageOpen(false);
-  };
-      const handleSaveEdit = async () => {
-        try {
-          const response = await axios.post(
-            `https://staging.ibgakiosk.com/api/update_source`,
-            {
-              source_id: selectedTeacher.source_id,
-              boardID: selectedTeacher.boardID,
-              subjectID: selectedTeacher.subjectID,
-              subjectlevelID: selectedTeacher.subjectlevelID,
-              sourceName: sourceName1
-            }
-          );
-      
-          if (response.data && response.data.message === "Source updated successfully") {
-         
-            setTeacherData(prevData =>
-              prevData.map(teacher =>
-                teacher.source_id === selectedTeacher.source_id ? { ...teacher, ...selectedTeacher, source_name: sourceName1 } : teacher
-              )
-            );
-      
-         
-            setSelectedTeacher(null);
-            setSourceName1('');
-      
-           
-            setSuccessMessageOpen(true);
-          } else {
-            console.error("Edit API failed:", response.data?.message || "Unknown error");
-          }
-        } catch (error) {
-          console.error("Error updating source:", error);
-        }
-      };
-      
-const handleClose=()=>{
-    setSelectedTeacher(null);
-}
-const handleAddMapping = (newMapping) => {
-  setTeacherData((prevData) => [...prevData, newMapping]);
-};
 
   return (
     <Fragment>
-    <Container maxWidth="xxl" sx={{marginTop:'15px',background:'#f0f0f0'}}>
-   
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Board Name</TableCell>
-                        {window.innerWidth > 1024 && (
-                        <TableCell>Subject Name</TableCell>)}
-                        {window.innerWidth > 1024 && (
-                        <TableCell>Subject Level</TableCell>)}
-                        {window.innerWidth > 1024 && (
-                        <TableCell>Source</TableCell>)}
-                        <TableCell>Action</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {teacherData.slice(startIndex, endIndex).map((teacher, index) => (
-                        <TableRow key={teacher.source_id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
-                           <TableCell>{teacher.board_name}</TableCell>
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.subject_name} </TableCell>)}
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.subject_lev_name} </TableCell>)}
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.source_name} </TableCell>)}
-                          <TableCell>
-                            <Link to=""
-                className="item-trash text-danger circle"
-                data-bs-toggle="tooltip"
-                title=""
-                data-bs-original-title="Delete"
-               
-      onClick={() => handleDeleteDialogOpen(teacher.source_id)}
-                style={{
-    width: '50px',
-    height: '50px',
-    borderRadius: '30px',
-    border: '1px solid #9ba4a4',
-    padding: '5px 5px 5px 5px',
-    fontSize: '16px',
-    background: 'rgb(244 237 201)',
-}}
-              >
-               <svg xmlns="http://www.w3.org/2000/svg" width="100" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-              </Link>
-              &nbsp;&nbsp;
-              <Link
-                to=''
-           className="item-edit text-info circle  text-blue-400" 
-                style={{
-    width: '50px',
-    height: '50px',
-    borderRadius: '30px',
-    border: '1px solid #9ba4a4',
-    padding: '5px 5px 5px 5px',
-    fontSize: '16px',
-    background: 'rgb(244 237 201)',
-}}
-                data-bs-toggle="tooltip"
-                title=""
-                data-bs-original-title="Edit"
-                onClick={() => handleEdit(teacher)}>
-              
-              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-         
-                            </Link>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <Stack spacing={2} justifyContent="center" className="mt-3">
-                <Pagination count={Math.ceil(teacherData.length / teachersPerPage)} page={page} onChange={handleChangePage} />
-
-                </Stack>
-                  </Container>
+      <Container maxWidth="xl" sx={{ marginTop: '15px', background: '#f0f0f0' }}>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Board Name</TableCell>
+                {!isSmallScreen && <TableCell>Subject Name</TableCell>}
+                {!isSmallScreen && <TableCell>Subject Level</TableCell>}
+                {!isSmallScreen && <TableCell>Source</TableCell>}
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {teacherData.slice(startIndex, endIndex).map((teacher, index) => (
+                <TableRow key={teacher._id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
+                  <TableCell>{teacher.board_info?.board_prog_name}</TableCell>
+                  {!isSmallScreen && <TableCell>{teacher.subject_info?.subject_name}</TableCell>}
+                  {!isSmallScreen && <TableCell>{teacher.subjectlevel_info?.subject_level_name}</TableCell>}
+                  {!isSmallScreen && <TableCell>{teacher.source_name}</TableCell>}
+                  <TableCell>
+                    <Link
+                      to=""
+                      className="item-trash text-danger circle"
+                      onClick={() => handleDeleteDialogOpen(teacher._id)}
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '30px',
+                        border: '1px solid #9ba4a4',
+                        padding: '5px 5px 5px 5px',
+                        fontSize: '16px',
+                        background: 'rgb(244 237 201)',
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="100"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="feather feather-trash"
+                      >
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
+                    </Link>
+                    &nbsp;&nbsp;
+                    <Link
+                      to=""
+                      className="item-edit text-info circle text-blue-400"
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '30px',
+                        border: '1px solid #9ba4a4',
+                        padding: '5px 5px 5px 5px',
+                        fontSize: '16px',
+                        background: 'rgb(244 237 201)',
+                      }}
+                      onClick={() => handleEdit(teacher)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="100"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="feather feather-edit"
+                      >
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                      </svg>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Stack spacing={2} justifyContent="center" className="mt-3">
+          <Pagination count={Math.ceil(teacherData.length / teachersPerPage)} page={page} onChange={handleChangePage} />
+        </Stack>
+      </Container>
                   <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
         <DialogTitle className='text-red-500'>Delete Teacher</DialogTitle>
         <DialogContent>
