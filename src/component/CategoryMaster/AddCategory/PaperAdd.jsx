@@ -233,7 +233,7 @@ const PaperAdd = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://13.235.206.253/api/v1/categorys/paper/create', formData);
+            const response = await axios.post('/api/v1/categorys/paper/create', formData);
             console.log('Response from server:', response.data);
             setFormData({
                 board_id: '',

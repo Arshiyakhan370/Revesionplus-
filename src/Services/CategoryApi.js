@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const CategoryApi = createApi({
   reducerPath: 'CategoryApi',
   // baseQuery: fetchBaseQuery({ baseUrl: 'https://staging.ibgakiosk.com/api/' }),
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://13.235.206.253/api/v1/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1/' }),
   tagTypes: ['Post'],
   endpoints: (builder) => ({
     getCategoryList: builder.query({
@@ -13,10 +13,7 @@ export const CategoryApi = createApi({
       query: () => `categorys/subject`,
       providesTags: ['Post'],
     }),
-  //  getViewSubjectLevelList: builder.query({
-  //  query: () => `categorys/subjectlevel`,
-  //  providesTags: ['Post'],
-  //  }),
+  
     updateSubject: builder.mutation({
     
       query: ({selectedTeacher,subjectName}) => ({
@@ -44,10 +41,10 @@ export const CategoryApi = createApi({
       invalidatesTags: ['Post'],
     }),
     deleteSubject: builder.mutation({
-      query: (_id) => ({
+      query: (deleteId) => ({
         url: `categorys/subject`,
         method: 'DELETE',
-        body:{_id}
+        body:{deleteId}
       }),
       invalidatesTags: ['Post'],
     }),

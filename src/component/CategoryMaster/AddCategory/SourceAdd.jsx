@@ -36,7 +36,7 @@ const SourceAdd = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://13.235.206.253/api/v1/categorys/source/create', {
+      const response = await axios.post('/api/v1/categorys/source/create', {
         "board_id": selectedBoard,
        " subject_id": selectedSubject,
         "subject_level_id": selectedSubjectLevel,

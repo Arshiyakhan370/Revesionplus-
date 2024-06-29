@@ -36,7 +36,7 @@ const TopicAdd = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('{{base_url}}categorys/topic/create', {
+      const response = await axios.post('/api/v1/categorys/topic/create', {
         board_id: formData.boardID,
         subject_id: formData.subjectID,
         subject_level_id: formData.subjectlevelID,
@@ -74,8 +74,7 @@ const TopicAdd = () => {
                       onChange={handleChange}
                     >
                       {categories.categories.map((category) => (
-                        <MenuItem key={category.board_id} value={category.board_id}>
-                          {category.board_name}
+                        <MenuItem key={category._id} value={category._id}>{category.board_prog_name}
                         </MenuItem>
                       ))}
                     </Select>
@@ -91,13 +90,14 @@ const TopicAdd = () => {
                       value={formData.subjectID}
                       onChange={handleChange}
                     >
-                      {categories.categories.map((category) =>
-                        category.subject.map((subject) => (
-                          <MenuItem key={subject.subject_id} value={subject.subject_id}>
+                      {formData.boardID &&
+                        categories.categories
+                          .find((category) => category._id === formData.boardID)
+                          ?.subjects.map((subject) => (
+                            <MenuItem key={subject._id} value={subject._id}>
                             {subject.subject_name}
-                          </MenuItem>
-                        ))
-                      )}
+                            </MenuItem>
+                          ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -111,15 +111,15 @@ const TopicAdd = () => {
                       value={formData.subjectlevelID}
                       onChange={handleChange}
                     >
-                      {categories.categories.map((category) =>
-                        category.subject.map((subject) =>
-                          subject.subject_level.map((level) => (
-                            <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
-                              {level.subject_lev_name}
+                      {formData.subjectID &&
+                        categories.categories
+                          .find((category) => category._id === formData.boardID)
+                          ?.subjects.find((subject) => subject._id === formData.subjectID)
+                          ?.subjectlevels.map((level) => (
+                            <MenuItem key={level._id} value={level._id}>
+                              {level.subject_level_name}
                             </MenuItem>
-                          ))
-                        )
-                      )}
+                          ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -133,17 +133,16 @@ const TopicAdd = () => {
                       value={formData.sourceID}
                       onChange={handleChange}
                     >
-                      {categories.categories.map((category) =>
-                        category.subject.map((subject) =>
-                          subject.subject_level.map((level) =>
-                            level.source.map((source) => (
-                              <MenuItem key={source.source_id} value={source.source_id}>
-                                {source.source_name}
-                              </MenuItem>
-                            ))
-                          )
-                        )
-                      )}
+                      {formData.subjectlevelID &&
+                        categories.categories
+                          .find((category) => category._id === formData.boardID)
+                          ?.subjects.find((subject) => subject._id === formData.subjectID)
+                          ?.subjectlevels.find((level) => level._id === formData.subjectlevelID)
+                          ?.sources.map((source) => (
+                            <MenuItem key={source._id} value={source._id}>
+                              {source.source_name}
+                            </MenuItem>
+                          ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -157,19 +156,17 @@ const TopicAdd = () => {
                       value={formData.paperID}
                       onChange={handleChange}
                     >
-                      {categories.categories.map((category) =>
-                        category.subject.map((subject) =>
-                          subject.subject_level.map((level) =>
-                            level.source.map((source) =>
-                              source.paper.map((paper) => (
-                                <MenuItem key={paper.paper_id} value={paper.paper_id}>
-                                  {paper.paper_name}
-                                </MenuItem>
-                              ))
-                            )
-                          )
-                        )
-                      )}
+                      {formData.sourceID &&
+                        categories.categories
+                          .find((category) => category._id === formData.boardID)
+                          ?.subjects.find((subject) => subject._id === formData.subjectID)
+                          ?.subjectlevels.find((level) => level._id === formData.subjectlevelID)
+                          ?.sources.find((source) => source._id === formData.sourceID)
+                          ?.papers.map((paper) => (
+                            <MenuItem key={paper._id} value={paper._id}>
+                              {paper.paper_name}
+                            </MenuItem>
+                          ))}
                     </Select>
                   </FormControl>
                 </Grid>

@@ -13,6 +13,7 @@ import { Container } from '@mui/system';
 import { boardOptions ,subjectOptions, teacherOptions}  from '../../TeacherMap/SweetAlert';
 import axios from 'axios';
 import SuccessMsg from '../AddCategory/SuccessMsg';
+import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
 
 const SubTopic = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
@@ -23,17 +24,17 @@ const [viewPageModalOpen, setViewPageModalOpen] = useState(false);
 const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
 const [teacherData, setTeacherData] = useState([]);
 const [loading, setLoading] = useState(true);
-const [categories, setCategories] = useState([]);
+// const [categories, setCategories] = useState([]);
 const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
 const [subTopicName1,setSubTopicName1]=useState([]);
+const { data: { data: categories } = {}, error, isLoading } = useGetCategoryListQuery();
+
 useEffect(() => {
 const fetchData = async () => {
   try {
-    const response = await axios.get('https://staging.ibgakiosk.com/api/view_subtopic');
-    const boardsResponse = await axios.get(
-      "https://staging.ibgakiosk.com/api/category_list"
-    );
-    setCategories(boardsResponse.data?.data);
+    const response = await axios.get('/api/v1/categorys/subtopic');
+    
+
     setTeacherData(response.data?.data); 
     setLoading(false);
   } catch (error) {
@@ -76,18 +77,23 @@ fetchData();
   const handleCloseViewPageModal = () => {
     setViewPageModalOpen(false);
   };
-
-  const handleEdit = async (teacher) => {
-    console.log(teacher,"teacher");
-    try {
-      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_subtopic/${teacher.subtopic_id}`);
-      const getData = responseGetById.data?.data;
-      const editData = {...teacher, boardID:getData.boardID, subjectID:getData.subjectID,subjectlevelID:getData.subjectlevelID,sourceID:getData.sourceID,paperID:getData.paperID,topicID:getData.topicID}
-      setSelectedTeacher(editData);
-    } catch (error) {
-      console.error("Error occurred while fetching data:", error);
-    }
+  const handleEdit = (teacher) => {
+    setSelectedTeacher({
+      ...teacher,
+      boardID: teacher.board_info._id,
+      subjectID: teacher.subject_info._id,
+      subjectlevelID: teacher.subjectlevel_info?._id,
+      sourceID: teacher.source_info?._id,
+      paperID: teacher.paper_info?._id,
+      topicID: teacher.topic_info?._id,
+      subtopicID: teacher.subtopic_info?._id,
+    });
+    setSubTopicName1(teacher.subtopic_name);
   };
+
+  
+
+  
   const handleDeleteDialogOpen = (teacherId) => {
     setDeleteTeacherId(teacherId);
     setOpenDeleteDialog(true);
@@ -101,12 +107,9 @@ fetchData();
   const handleDeleteClick = async() => {
     try {
       await axios.post(
-        `https://staging.ibgakiosk.com/api/delete_subtopic`,
-        {
-          subtopic_id: deleteTeacherId
-        }
+       ` /api/v1/categorys/subtopic/${deleteTeacherId}`
       );
-    
+      
     } catch (error) {
       console.error("Error deleting teacher:", error);
   };
@@ -127,8 +130,8 @@ fetchData();
   };
   const handleSaveEdit = async () => {
     try {
-      const response = await axios.post(
-        `https://staging.ibgakiosk.com/api/update_subtopic`,
+      const response = await axios.patch(
+       ` /api/v1/categorys/subtopic/${selectedTeacher._id}`,
         {
           subtopic_id: selectedTeacher.subtopic_id,
           boardID: selectedTeacher.boardID,
@@ -165,8 +168,24 @@ fetchData();
 const handleClose=()=>{
     setSelectedTeacher(null);
 }
-const handleAddMapping = (newMapping) => {
-  setTeacherData((prevData) => [...prevData, newMapping]);
+const getFilteredSubjects = (boardID) => {
+  return categories?.categories.find(category => category._id === boardID)?.subjects || [];
+};
+
+const getFilteredSubjectLevels = (boardID, subjectID) => {
+  return getFilteredSubjects(boardID).find(subject => subject._id === subjectID)?.subjectlevels || [];
+};
+
+const getFilteredSources = (boardID, subjectID, subjectlevelID) => {
+  return getFilteredSubjectLevels(boardID, subjectID).find(level => level._id === subjectlevelID)?.sources || [];
+};
+
+const getFilteredPapers = (boardID, subjectID, subjectlevelID, sourceID) => {
+  return getFilteredSources(boardID, subjectID, subjectlevelID).find(source => source._id === sourceID)?.papers || [];
+};
+
+const getFilteredTopics = (boardID, subjectID, subjectlevelID, sourceID, paperID) => {
+  return getFilteredPapers(boardID, subjectID, subjectlevelID, sourceID).find(paper => paper._id === paperID)?.topics || [];
 };
 
   return (
@@ -194,22 +213,17 @@ const handleAddMapping = (newMapping) => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {teacherData.slice(startIndex, endIndex).map((teacher, index) => (
-                        <TableRow key={teacher.subtopic_id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
-                           <TableCell>{teacher.board_name}</TableCell>
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.subject_name} </TableCell>)}
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.subject_lev_name} </TableCell>)}
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.source_name} </TableCell>)}
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.paper_name} </TableCell>)}
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.topic_name} </TableCell>)}
-                          {window.innerWidth > 1024 && (
-                          <TableCell>{teacher.subtopicName} </TableCell>)}
-                          <TableCell>
+                    {teacherData && teacherData.subtopics ? teacherData.subtopics.slice(startIndex, endIndex).map((teacher, index) => (
+                <TableRow key={teacher.subtopic_id} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : 'inherit' }}>
+                  <TableCell>{teacher.board_info.board_prog_name}</TableCell>
+                  {!isSmallScreen && <TableCell>{teacher.subject_info.subject_name}</TableCell>}
+                  {!isSmallScreen && <TableCell>{teacher.subjectlevel_info.subject_level_name}</TableCell>}
+                  {!isSmallScreen && <TableCell>{teacher.source_info.source_name}</TableCell>}
+                  {!isSmallScreen && <TableCell>{teacher.paper_info.paper_name}</TableCell>}
+                  {!isSmallScreen && <TableCell>{teacher.topic_info.topic_name}</TableCell>}
+                  {window.innerWidth > 1024 && <TableCell>{teacher.subtopic_name}</TableCell>}
+                  <TableCell>
+                    
                           <Link to=""
                className="item-edit text-info circle "
                onClick={() => handleDeleteDialogOpen(teacher.subtopic_id)}
@@ -280,7 +294,7 @@ const handleAddMapping = (newMapping) => {
               </Menu>
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )) : null}
                     </TableBody>
                   </Table>
                 </TableContainer>
@@ -333,245 +347,111 @@ const handleAddMapping = (newMapping) => {
           Edit Teacher
         </Typography>
         <Grid container spacing={2} mt={2}>
-        <Grid item xs={12} sm={4}>
+        
     
-    <FormControl fullWidth>
-      <InputLabel id="board-label">Select Board</InputLabel>
-      <Select
-        labelId="board-label"
-        id="boardID"
-        value={selectedTeacher?.boardID|| ''}
-        onChange={(e) => {
-          const selectedBoardId = e.target.value;
-          const selectedBoard = categories.find(category => category.board_id === selectedBoardId);
-          // const selectedSubject = selectedBoard.subjects.find(subject => subject.board_id === selectedBoardId);
-          console.log(selectedBoard,"selectedboard AAAAAAAAA")
-          setSelectedTeacher(prev => ({
-            ...prev,
-            board_name: selectedBoard.board_name,
-            boardID: selectedBoard.board_id,
-            // subject: selectedSubject 
-          }));
-        }}
-        
-        sx={{ height: '35px', marginTop: '8px' }}
-      >
-        {categories.map(option => (
-          <MenuItem key={option.board_id} value={option.board_id}>
-            {option.board_name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  </Grid>
-  
-           <Grid item xs={12} sm={4}>
-            <FormControl fullWidth>
-              <InputLabel id="subject-label">Select Subject</InputLabel>
-              <Select
-                labelId="subject-label"
-                id="subjectID"
-                value={selectedTeacher?.subjectID || ''}
-                onChange={(e) => {
-          const selectedSubjectId = e.target.value;
-          const selectedBoard = categories.map(category => category.subject).flat()
-          const selectedSubject = selectedBoard.find(subject => subject.subject_id === selectedSubjectId);
-          console.log(selectedBoard,"selectedboard AAAAAAAAA")
-          setSelectedTeacher(prev => ({
-            ...prev,
-            subject_name:selectedSubject.subject_name,
-            subjectID:selectedSubject.subject_id,
-            subject: selectedSubject 
-          }));
-        }}
-        
-                sx={{ height: '35px', marginTop: '8px' }}
-              >
-             {categories.map(category => (
-                        category.subject.map(subject => (
-                          <MenuItem key={subject.subject_id} value={subject.subject_id}>
-                            {subject.subject_name}
-                          </MenuItem>
-                        ))
-                      ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-    <FormControl fullWidth>
-      <InputLabel id="subject-label">Select Subject Level</InputLabel>
-      <Select
-        labelId="subject-label"
-        id="subjectlevelID"
-        value={selectedTeacher?.subjectlevelID || ''}
-        onChange={(e) => {
-    const selectedSourceId = e.target.value;
-    const selectedSubject = categories
-      .flatMap(category => category.subject) 
-      .flatMap(subject => subject.subject_level) 
-      .find(level => level.subject_lev_id === selectedSourceId); 
-  
-    if (selectedSubject) {
-      setSelectedTeacher(prevState => ({
-        ...prevState,
-        subject_lev_name: selectedSubject.subject_lev_name,
-        subjectlevelID: selectedSourceId,
-      }));
-    } else {
-      console.error("Selected subject level not found.");
-    }
-  }}
-  
-        sx={{ height: '35px', marginTop: '8px' }}
-      >
-        {categories.map(category => (
-          category.subject.map(subject => (
-            subject.subject_level.map(level => (
-              <MenuItem key={level.subject_lev_id} value={level.subject_lev_id}>
-                {level.subject_lev_name}
-              </MenuItem>
-            ))
-          ))
-        ))}
-      </Select>
-    </FormControl>
-  </Grid>
-  
-        <Grid item xs={12} sm={4}>
-          <FormControl fullWidth>
-            <InputLabel id="subject-label">Select Source</InputLabel>
-            <Select
-              labelId="subject-label"
-              id="sourceID"
-              value={selectedTeacher?.sourceID || ''}
-              onChange={(e) => {
-    const selectedPaperId = e.target.value;
-    const selectedSubject = categories
-      .flatMap(category => category.subject) 
-      .flatMap(subject => subject.subject_level) 
-      .flatMap(level=> level.source) 
-      .find(source => source.source_id === selectedPaperId); 
-  
-    if (selectedSubject) {
-      setSelectedTeacher(prevState => ({
-        ...prevState,
-        source_name: selectedSubject.source_name,
-        sourceID: selectedPaperId,
-      }));
-    } else {
-      console.error("Selected subject level not found.");
-    }
-  }}
-  
-              sx={{ height: '35px', marginTop: '8px' }}
-            >
-             {categories.map(category => (
-    category.subject.map(subject => (
-        subject.subject_level.map(level => (
-            level.source.map(source => (
-                <MenuItem key={source.source_id} value={source.source_id}>
-                    {source.source_name}
-                </MenuItem>
-            ))
-        ))
-    ))
-))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-  <FormControl fullWidth>
-    <InputLabel id="paper-label">Select Paper</InputLabel>
-    <Select
-      labelId="paper-label"
-      id="paperID"
-      value={selectedTeacher?.paperID || ''}
-      onChange={(e) => {
-        const selectedPaperId = e.target.value;
-        const selectedPaper = categories
-          .flatMap(category => category.subject)
-          .flatMap(subject => subject.subject_level)
-          .flatMap(level => level.source)
-          .flatMap(source => source.paper)
-          .find(paper => paper.paper_id === selectedPaperId);
+        <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Board</InputLabel>
+                  <Select
+                    label="Board"
+                    value={selectedTeacher?.boardID || ''}
+                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, boardID: e.target.value }))}
+                  >
+                    {categories?.categories.map((category) => (
+                      <MenuItem key={category._id} value={category._id}>
+                        {category.board_prog_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Subject</InputLabel>
+                  <Select
+                    label="Subject"
+                    value={selectedTeacher?.subjectID || ''}
+                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, subjectID: e.target.value }))}
+                  >
+                    {getFilteredSubjects(selectedTeacher?.boardID).map((subject) => (
+                      <MenuItem key={subject._id} value={subject._id}>
+                        {subject.subject_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Subject Level</InputLabel>
+                  <Select
+                    label="Subject Level"
+                    value={selectedTeacher?.subjectlevelID || ''}
+                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, subjectlevelID: e.target.value }))}
+                  >
+                    {getFilteredSubjectLevels(selectedTeacher?.boardID, selectedTeacher?.subjectID).map((level) => (
+                      <MenuItem key={level._id} value={level._id}>
+                        {level.subject_level_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Source</InputLabel>
+                  <Select
+                    label="Source"
+                    value={selectedTeacher?.sourceID || ''}
+                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, sourceID: e.target.value }))}
+                  >
+                    {getFilteredSources(selectedTeacher?.boardID, selectedTeacher?.subjectID, selectedTeacher?.subjectlevelID).map((source) => (
+                      <MenuItem key={source._id} value={source._id}>
+                        {source.source_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Paper</InputLabel>
+                  <Select
+                    label="Paper"
+                    value={selectedTeacher?.paperID || ''}
+                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, paperID: e.target.value }))}
+                  >
+                    {getFilteredPapers(selectedTeacher?.boardID, selectedTeacher?.subjectID, selectedTeacher?.subjectlevelID, selectedTeacher?.sourceID).map((paper) => (
+                      <MenuItem key={paper._id} value={paper._id}>
+                        {paper.paper_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Topic</InputLabel>
+                  <Select
+  label="Paper"
+  value={selectedTeacher?.topicID ?? ''}
+  onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, topicID: e.target.value }))}
+>
+  {getFilteredTopics(
+    selectedTeacher?.boardID, 
+    selectedTeacher?.subjectID, 
+    selectedTeacher?.subjectlevelID, 
+    selectedTeacher?.sourceID,
+    selectedTeacher?.paperID
+  ).map((topic) => (
+    <MenuItem key={topic._id} value={topic._id}>
+      {topic.topic_name}
+    </MenuItem>
+  ))}
+</Select>
 
-        if (selectedPaper) {
-          setSelectedTeacher(prevState => ({
-            ...prevState,
-            paper_name: selectedPaper.paper_name,
-            paperID: selectedPaperId,
-          }));
-        } else {
-          console.error("Selected paper not found.");
-        }
-      }}
-      sx={{ height: '35px', marginTop: '8px' }}
-    >
-      {categories.map(category => (
-        category.subject.map(subject => (
-          subject.subject_level.map(level => (
-            level.source.map(source => (
-              source.paper.map(paper => (
-                <MenuItem key={paper.paper_id} value={paper.paper_id}>
-                  {paper.paper_name}
-                </MenuItem>
-              ))
-            ))
-          ))
-        ))
-      ))}
-    </Select>
-  </FormControl>
-</Grid>
-
-       
-<Grid item xs={12} sm={4}>
-  <FormControl fullWidth>
-    <InputLabel id="topic-label">Select Topic</InputLabel>
-    <Select
-      labelId="topic-label"
-      id="topicID"
-      value={selectedTeacher?.paperID || ''}
-      onChange={(e) => {
-        const selectedTopicId = e.target.value;
-        const selectedTopic = categories
-          .flatMap(category => category.subject)
-          .flatMap(subject => subject.subject_level)
-          .flatMap(level => level.source)
-          .flatMap(source => source.paper)
-          .flatMap(paper => paper.topic)
-          .find(topic => topic.topic_id === selectedTopicId);
-
-        if (selectedTopic) {
-          setSelectedTeacher(prevState => ({
-            ...prevState,
-            topic_name: selectedTopic.topicName,
-            topicID: selectedTopicId,
-          }));
-        } else {
-          console.error("Selected topic not found.");
-        }
-      }}
-      sx={{ height: '35px', marginTop: '8px' }}
-    >
-      {categories.map(category => (
-        category.subject.map(subject => (
-          subject.subject_level.map(level => (
-            level.source.map(source => (
-              source.paper.map(paper => (
-                paper.topic.map(topic => (
-                  <MenuItem key={topic.topic_id} value={topic.topic_id}>
-                    {topic.topicName}
-                  </MenuItem>
-                ))
-              ))
-            ))
-          ))
-        ))
-      ))}
-    </Select>
-  </FormControl>
-</Grid>
+                </FormControl>
+              </Grid>
 
         <Grid item xs={12} sm={4}>
         <TextField

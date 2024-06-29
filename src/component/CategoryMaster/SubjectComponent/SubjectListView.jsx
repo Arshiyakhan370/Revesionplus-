@@ -48,34 +48,14 @@ const Subject = () => {
   const [editedData,result] =useUpdateSubjectMutation()
   const teachersPerPage = 10;
 
-  // useEffect(() => {
-  //   const fetchTeacherData = async () => {
-  //     try {
-  //       const subjectsResponse = await axios.get(
-  //         "https://staging.ibgakiosk.com/api/view_subject"
-  //       );
-  //       // const boardsResponse = await axios.get(
-  //       //   "https://staging.ibgakiosk.com/api/category_list"
-  //       // );
-  //       // setCategories(boardsResponse.data?.data);
-  //       setSubjects(subjectsResponse.data?.data);
-       
-  //     } catch (error) {
-      
-        
-  //     }
-  //   };
-
-  //   fetchTeacherData();
-  // }, []);
   if(isLoading || subjectIsLoading){
-    // if(isLoading){
+  
     return <div>
       Loading
     </div>
   }
   if(error || subjectError){
-    // if(error){
+
     return <div>
       error
     </div>
@@ -87,16 +67,15 @@ const Subject = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const handleEdit = async (teacher) => {
-    console.log(teacher,"teacher");
-    try {
-      const responseGetById = await axios.get(`https://staging.ibgakiosk.com/api/edit_subject/${teacher.subject_id}`);
-      const getData = responseGetById.data?.data;
-      const editData = {...teacher, boardID:getData.boardID}
-      setSelectedTeacher(editData);
-    } catch (error) {
-      console.error("Error occurred while fetching data:", error);
-    }
+ 
+
+  const handleEdit = (teacher) => {
+    setSelectedTeacher({
+      ...teacher,
+      boardID: teacher.board_info._id,
+
+    });
+    setSubjectName(teacher.subject_name);
   };
   const handleDeleteDialogOpen = (teacherId) => {
     setDeleteTeacherId(teacherId);
@@ -108,74 +87,60 @@ const Subject = () => {
     setOpenDeleteDialog(false);
   };
 
-  const handleDeleteClick = async (deleteId) => {
-    try{
-      await updatePost(deleteId)
-      setOpenDeleteDialog(false);
-    }
-      catch(error){
+  
+   
+    
+    const handleDeleteClick = async (deleteId) => {
+      try{
+        await updatePost(deleteId)
+        setOpenDeleteDialog(false);
       }
+        catch(error){
+        }
+
+      // try {
+      //   await axios.delete(`/api/v1/categorys/subject/${deleteId}`);
+      //   const updatedSubjects = subjects.data.filter(subject => subject._id !== deleteId);
+      //   setSelectedTeacher({ ...subjects, data: updatedSubjects });
     
-    // try {
+      //   setOpenDeleteDialog(false);
+      //   setDeleteSuccessDialogOpen(true);
+      // } catch (error) {
+      //   console.error("Error deleting subject:", error);
+      // }
+    };
     
-    //   await axios.post(
-    //     `https://staging.ibgakiosk.com/api/delete_subject`,
-    //     {
-    //       subject_id: deleteId
-    //     }
-    //   );
-    //   const deletedData = subjects.filter((teacher) => teacher.subject_id !== deleteId);
-    //   // setSubjects(deletedData);
-    //   setOpenDeleteDialog(false);
-    //   setDeleteSuccessDialogOpen(true);
-    // } catch (error) {
-    //   console.error("Error deleting teacher:", error);
-    // }
-  };
+    
 
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
   };
 console.log(subjects,"board");
-
-
 const handleSaveEdit = async () => {
   try {
-    console.log(selectedTeacher,subjectName,);
-   await editedData({selectedTeacher:selectedTeacher,subjectName:subjectName})
-  
-    // const response = await axios.post(
-    //   `https://staging.ibgakiosk.com/api/update_subject`,
-    //   {
-    //     subject_id: selectedTeacher.subject_id,
-    //     boardID: selectedTeacher.boardID,
-    //     subejctName: subjectName
-    //     ,
+    const response = await axios.patch(
+      `/api/v1/categorys/subjectl/${selectedTeacher._id}`,
+      {
+        board_id: selectedTeacher.boardID,
+        subject_nmae: subjectName,
+        
+      }
+    );
 
-    //   }
-    // );
-  
-    // if (response.data && response.data.message === "Subejct updated successfully") {
-      
-    //   setSubjects(prevData =>
-    //     prevData.map(teacher =>
-    //       teacher.subject_id === selectedTeacher.subject_id ? { ...teacher, ...selectedTeacher ,subject_name:subjectName} : teacher
-    //     )
-    //   );
- 
+      if (response.data && response.data.status === 'success') {
+        setTeacherData((prevData) =>
+          prevData.map((teacher) =>
+            teacher._id === selectedTeacher._id ? { ...teacher, subject_name: subjectName } : teacher
+          )
+        );
       setSelectedTeacher(null);
-      setSuccessMessageOpen(true)
-     setSubjectName("")
-    // } else {
-     
-    //   console.error("Edit API failed:", response.data?.message || "Unknown error");
-   
-    // }
+    } else {
+      console.error("Edit API failed:", response.data?.message || "Unknown error");
+    }
   } catch (error) {
     console.error("Error updating subject level:", error);
   }
 };
- console.log(setTeacherData,"data  AAAAAA");
 
   const handleClose = () => {
     setSelectedTeacher(null);
@@ -354,35 +319,21 @@ const handleSaveEdit = async () => {
           </Typography>
           <Grid container spacing={2} mt={2}>
           <Grid item xs={12} sm={4}>
-  <FormControl fullWidth>
-    <InputLabel id="board-label">Select Board</InputLabel>
-    <Select
-      labelId="board-label"
-      id="boardID"
-      value={selectedTeacher?.boardID|| ''}
-      onChange={(e) => {
-        const selectedBoardId = e.target.value;
-        const selectedBoard = categories.find(category => category.board_id === selectedBoardId);
-        // const selectedSubject = selectedBoard.subjects.find(subject => subject.board_id === selectedBoardId);
-        console.log(selectedBoard,"selectedboard AAAAAAAAA")
-        setSelectedTeacher(prev => ({
-          ...prev,
-          board_name: selectedBoard.board_name,
-         board_id: selectedBoard.board_id,
-          // subject: selectedSubject 
-        }));
-      }}
-      
-      sx={{ height: '35px', marginTop: '8px' }}
-    >
-      {categories.categories.map(option => (
-        <MenuItem key={option.board_id} value={option.board_id}>
-          {option.board_prog_name}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-</Grid>
+         
+              <FormControl fullWidth>
+                <InputLabel>Board</InputLabel>
+                <Select
+                  value={selectedTeacher?.boardID || ''}
+                  onChange={(e) => setSelectedTeacher({ ...selectedTeacher, boardID: e.target.value })}
+                >
+                  {categories.categories.map(category => (
+                    <MenuItem key={category._id} value={category._id}>
+                      {category.board_prog_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
             <Grid item xs={12} sm={4}>
             <TextField
                   label="Subject"
@@ -443,184 +394,3 @@ const handleSaveEdit = async () => {
 
 export default Subject;
 
-// import React, { Fragment, useState } from "react";
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer,
-//   TableHead,
-//   TableRow,
-//   Container,
-//   Pagination,
-//   Stack,
-//   Link,
-//   Box,
-//   Button,
-// } from "@mui/material";
-// import { useGetCategoryListQuery, useGetViewSubjectListQuery, useDeleteSubjectMutation, useUpdateSubjectMutation } from "../../../Services/CategoryApi";
-// import SuccessMsg from "../AddCategory/SuccessMsg";
-// import SubjectDelete from "./SubjectDelete";
-// import SubjectEdit from "./SubjectEdit";
-
-// const Subject = () => {
-//   const [page, setPage] = useState(1);
-//   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-//   const [editDialogOpen, setEditDialogOpen] = useState(false);
-//   const [selectedSubject, setSelectedSubject] = useState(null);
-//   const [deleteTeacherId, setDeleteTeacherId] = useState(null);
-//   const [successMessageOpen, setSuccessMessageOpen] = useState(false);
-
-//   const { data: { data: categories } = {}, error, isLoading } = useGetCategoryListQuery();
-//   const { data: { data: subjects } = {}, error: subjectError, isLoading: subjectIsLoading } = useGetViewSubjectListQuery();
-//   const [deleteSubject] = useDeleteSubjectMutation();
-//   const [updateSubject] = useUpdateSubjectMutation();
-
-//   const teachersPerPage = 10;
-
-//   if (isLoading || subjectIsLoading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (error || subjectError) {
-//     return <div>Error...</div>;
-//   }
-
-//   const handleChangePage = (event, newPage) => {
-//     setPage(newPage);
-//   };
-
-//   const handleDeleteDialogOpen = (subjectId) => {
-//     setDeleteTeacherId(subjectId);
-//     setDeleteDialogOpen(true);
-//   };
-
-//   const handleDeleteDialogClose = () => {
-//     setDeleteDialogOpen(false);
-//   };
-
-//   const handleEditDialogOpen = (subject) => {
-//     setSelectedSubject(subject);
-//     setEditDialogOpen(true);
-//   };
-
-//   const handleEditDialogClose = () => {
-//     setEditDialogOpen(false);
-//   };
-
-//   const handleDelete = async (subjectId) => {
-//     try {
-//       await deleteSubject(subjectId);
-//       setDeleteDialogOpen(false);
-//       setSuccessMessageOpen(true);
-//     } catch (error) {
-//       console.error("Error deleting subject:", error);
-//     }
-//   };
-
-//   const handleSaveEdit = async (subjectId, boardId, subjectName) => {
-//     try {
-//       await updateSubject({ subjectId, boardId, subjectName });
-//       setEditDialogOpen(false);
-//       setSuccessMessageOpen(true);
-//     } catch (error) {
-//       console.error("Error updating subject:", error);
-//     }
-//   };
-
-//   const handleCloseSuccessMessage = () => {
-//     setSuccessMessageOpen(false);
-//   };
-
-//   return (
-//     <Fragment>
-//       <Container maxWidth="xxl" sx={{ marginTop: "15px", background: "#f0f0f0" }}>
-//         <TableContainer>
-//           <Table>
-//             <TableHead>
-//               <TableRow>
-//                 <TableCell>Board Name</TableCell>
-//                 <TableCell>Subject Name</TableCell>
-//                 <TableCell>Action</TableCell>
-//               </TableRow>
-//             </TableHead>
-//             <TableBody>
-//               {subjects.subjects.slice((page - 1) * teachersPerPage, page * teachersPerPage).map((subject, index) => (
-//                 <TableRow key={subject.board_name} sx={{ backgroundColor: index % 2 === 0 ? "#f5f5f5" : "inherit" }}>
-//                   <TableCell>{subject.board_info.board_prog_name}</TableCell>
-//                   <TableCell>{subject.subject_name}</TableCell>
-//                   <TableCell>
-//                     <Link
-//                       component="button"
-//                       onClick={() => handleDeleteDialogOpen(subject.subject_id)}
-//                       sx={{ ...actionLinkStyles, background: "rgb(244 237 201)" }}
-//                     >
-//                       <TrashIcon />
-//                     </Link>
-//                     &nbsp;&nbsp;
-//                     <Link
-//                       component="button"
-//                       onClick={() => handleEditDialogOpen(subject)}
-//                       sx={{ ...actionLinkStyles, background: "rgb(244 237 201)" }}
-//                     >
-//                       <EditIcon />
-//                     </Link>
-//                   </TableCell>
-//                 </TableRow>
-//               ))}
-//             </TableBody>
-//           </Table>
-//         </TableContainer>
-//         <Stack spacing={2} justifyContent="center" className="mt-3">
-//           <Pagination count={Math.ceil(subjects.length / teachersPerPage)} page={page} onChange={handleChangePage} />
-//         </Stack>
-//       </Container>
-//       <SubjectDelete
-//         open={deleteDialogOpen}
-//         onClose={handleDeleteDialogClose}
-//         onDelete={() => handleDelete(deleteTeacherId)}
-//       />
-
-//       {/* Editsubject component  */}
-//       <SubjectEdit
-//         open={editDialogOpen}
-//         onClose={handleEditDialogClose}
-//         categories={categories}
-//         selectedSubject={selectedSubject}
-       
-//         onSave={handleSaveEdit}
-//       />
-//       {/* successmsg componnet  */}
-//       <SuccessMsg
-//         open={successMessageOpen}
-//         onClose={handleCloseSuccessMessage}
-//         message="Data Edited successfully"
-//       />
-//     </Fragment>
-//   );
-// };
-
-// const actionLinkStyles = {
-//   width: "50px",
-//   height: "50px",
-//   borderRadius: "30px",
-//   border: "1px solid #9ba4a4",
-//   padding: "5px",
-//   fontSize: "16px",
-// };
-
-// const TrashIcon = () => (
-//   <svg xmlns="http://www.w3.org/2000/svg" width="100" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-trash">
-//     <polyline points="3 6 5 6 21 6"></polyline>
-//     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-//   </svg>
-// );
-
-// const EditIcon = () => (
-//   <svg xmlns="http://www.w3.org/2000/svg" width="100" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-edit">
-//     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-//     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-//   </svg>
-// );
-
-// export default Subject;
