@@ -33,8 +33,6 @@ import SuccessMsg from "../AddCategory/SuccessMsg";
 
 const Subject = () => {
   const [teacherData, setTeacherData] = useState([]);
-  const [boards, setBoards] = useState([]);
-  // const [subjects, setSubjects] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteTeacherId, setDeleteTeacherId] = useState(null);
@@ -42,24 +40,32 @@ const Subject = () => {
   const [subjectName, setSubjectName] = useState('');
   const [page, setPage] = useState(1);
   const [successMessageOpen, setSuccessMessageOpen] = useState(false); 
-  const { data:{data:categories}={},  error, isLoading ,} = useGetCategoryListQuery();
-  const { data: { data: subjects } = {}, error: subjectError, isLoading: subjectIsLoading } = useGetViewSubjectListQuery()
-  const [updatePost] = useDeleteSubjectMutation()
-  const [editedData,result] =useUpdateSubjectMutation()
+  const { data: { data: categories } = {}, error, isLoading } = useGetCategoryListQuery();
+  const [updatePost] = useDeleteSubjectMutation();
+  const [editedData, result] = useUpdateSubjectMutation();
   const teachersPerPage = 10;
 
-  if(isLoading || subjectIsLoading){
-  
-    return <div>
-      Loading
-    </div>
-  }
-  if(error || subjectError){
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/v1/categorys/subject');
+        setTeacherData(response.data?.data?.subjects || []);
+      } catch (error) {
+        console.error('Error fetching teacher data:', error);
+      }
+    };
 
-    return <div>
-      error
-    </div>
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading</div>;
   }
+
+  if (error) {
+    return <div>Error</div>;
+  }
+
   const handleCloseSuccessMessage = () => {
     setSuccessMessageOpen(false);
   };
@@ -67,16 +73,15 @@ const Subject = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
- 
 
   const handleEdit = (teacher) => {
     setSelectedTeacher({
       ...teacher,
       boardID: teacher.board_info._id,
-
     });
     setSubjectName(teacher.subject_name);
   };
+
   const handleDeleteDialogOpen = (teacherId) => {
     setDeleteTeacherId(teacherId);
     setOpenDeleteDialog(true);
@@ -87,45 +92,30 @@ const Subject = () => {
     setOpenDeleteDialog(false);
   };
 
-  
-   
-    
-    const handleDeleteClick = async (deleteId) => {
-      try{
-        await updatePost(deleteId)
-        setOpenDeleteDialog(false);
-      }
-        catch(error){
-        }
-
-      // try {
-      //   await axios.delete(`/api/v1/categorys/subject/${deleteId}`);
-      //   const updatedSubjects = subjects.data.filter(subject => subject._id !== deleteId);
-      //   setSelectedTeacher({ ...subjects, data: updatedSubjects });
-    
-      //   setOpenDeleteDialog(false);
-      //   setDeleteSuccessDialogOpen(true);
-      // } catch (error) {
-      //   console.error("Error deleting subject:", error);
-      // }
-    };
-    
-    
+  const handleDeleteClick = async () => {
+    try {
+      await axios.delete(`/api/v1/categorys/subject/${deleteTeacherId}`);
+      setTeacherData((prevData) => prevData.filter((teacher) => teacher._id !== deleteTeacherId));
+      setOpenDeleteDialog(false);
+      setDeleteSuccessDialogOpen(true);
+    } catch (error) {
+      console.error("Error deleting teacher:", error);
+    }
+  };
 
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
   };
-console.log(subjects,"board");
-const handleSaveEdit = async () => {
-  try {
-    const response = await axios.patch(
-      `/api/v1/categorys/subjectl/${selectedTeacher._id}`,
-      {
-        board_id: selectedTeacher.boardID,
-        subject_nmae: subjectName,
-        
-      }
-    );
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await axios.patch(
+        `/api/v1/categorys/subject/${selectedTeacher._id}`,
+        {
+          board_id: selectedTeacher.boardID,
+          subject_name: subjectName,
+        }
+      );
 
       if (response.data && response.data.status === 'success') {
         setTeacherData((prevData) =>
@@ -133,14 +123,15 @@ const handleSaveEdit = async () => {
             teacher._id === selectedTeacher._id ? { ...teacher, subject_name: subjectName } : teacher
           )
         );
-      setSelectedTeacher(null);
-    } else {
-      console.error("Edit API failed:", response.data?.message || "Unknown error");
+        setSuccessMessageOpen(true);
+        setSelectedTeacher(null);
+      } else {
+        console.error("Edit API failed:", response.data?.message || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Error updating subject level:", error);
     }
-  } catch (error) {
-    console.error("Error updating subject level:", error);
-  }
-};
+  };
 
   const handleClose = () => {
     setSelectedTeacher(null);
@@ -148,11 +139,7 @@ const handleSaveEdit = async () => {
 
   return (
     <Fragment>
-     
-      <Container
-        maxWidth="xxl"
-        sx={{ marginTop: "15px", background: "#f0f0f0" }}
-      >
+      <Container maxWidth="xxl" sx={{ marginTop: "15px", background: "#f0f0f0" }}>
         <TableContainer>
           <Table>
             <TableHead>
@@ -163,15 +150,10 @@ const handleSaveEdit = async () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {subjects.subjects
+              {teacherData
                 .slice((page - 1) * teachersPerPage, page * teachersPerPage)
                 .map((teacher, index) => (
-                  <TableRow
-                    key={teacher.board_name}
-                    sx={{
-                      backgroundColor: index % 2 === 0 ? "#f5f5f5" : "inherit",
-                    }}
-                  >
+                  <TableRow key={teacher._id} sx={{ backgroundColor: index % 2 === 0 ? "#f5f5f5" : "inherit" }}>
                     <TableCell>{teacher.board_info.board_prog_name}</TableCell>
                     <TableCell>{teacher.subject_name}</TableCell>
                     <TableCell>
@@ -179,9 +161,8 @@ const handleSaveEdit = async () => {
                         to=""
                         className="item-trash text-danger circle"
                         data-bs-toggle="tooltip"
-                        title=""
                         data-bs-original-title="Delete"
-                        onClick={() => handleDeleteDialogOpen(teacher.subject_id)}
+                        onClick={() => handleDeleteDialogOpen(teacher._id)}
                         style={{
                           width: "50px",
                           height: "50px",
@@ -222,7 +203,6 @@ const handleSaveEdit = async () => {
                           background: "rgb(244 237 201)",
                         }}
                         data-bs-toggle="tooltip"
-                        title=""
                         data-bs-original-title="Edit"
                         onClick={() => handleEdit(teacher)}
                       >
@@ -250,147 +230,98 @@ const handleSaveEdit = async () => {
         </TableContainer>
         <Stack spacing={2} justifyContent="center" className="mt-3">
           <Pagination
-            count={Math.ceil(subjects.length / teachersPerPage)}
+            count={Math.ceil(teacherData.length / teachersPerPage)}
             page={page}
             onChange={handleChangePage}
           />
         </Stack>
       </Container>
-      {/* {isLoading  ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>Error: {error.error}</p>
-      ) : ( */}
-      <Dialog
-        open={openDeleteDialog}
-        onClose={handleDeleteDialogClose}
-      >
-        <DialogTitle className="text-red-500">
-          Delete Teacher
-        </DialogTitle>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
-          <p>Are you sure you want to delete this teacher?</p>
+          <Typography>Are you sure you want to delete this subject?</Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleDeleteDialogClose}
-            color="secondary"
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => handleDeleteClick(deleteTeacherId)}
-            color="primary"
-          >
-            Delete
-          </Button>
+          <Button onClick={handleDeleteDialogClose}>Cancel</Button>
+          <Button onClick={handleDeleteClick} color="error">Delete</Button>
         </DialogActions>
       </Dialog>
-      <Dialog
-        open={deleteSuccessDialogOpen}
-        onClose={handleDeleteSuccessDialogClose}
-      >
-        <DialogTitle className="text-green-500">Delete Successful</DialogTitle>
-        <DialogContent>
-          <p>The teacher has been successfully deleted.</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteSuccessDialogClose} color="primary">
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Modal open={!!selectedTeacher} onClose={handleClose}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "40%",
-            gap: "10px",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography variant="h4" mb={2}>
-            Edit Teacher
-          </Typography>
-          <Grid container spacing={2} mt={2}>
-          <Grid item xs={12} sm={4}>
-         
+
+      {/* Edit Modal */}
+      {selectedTeacher && (
+        <Dialog open={selectedTeacher !== null} onClose={handleClose}>
+          <DialogTitle>Edit Subject</DialogTitle>
+          <DialogContent>
+            <Box mb={2}>
               <FormControl fullWidth>
                 <InputLabel>Board</InputLabel>
                 <Select
-                  value={selectedTeacher?.boardID || ''}
-                  onChange={(e) => setSelectedTeacher({ ...selectedTeacher, boardID: e.target.value })}
+                  value={selectedTeacher.boardID}
+                  onChange={(e) =>
+                    setSelectedTeacher({
+                      ...selectedTeacher,
+                      boardID: e.target.value,
+                    })
+                  }
                 >
-                  {categories.categories.map(category => (
-                    <MenuItem key={category._id} value={category._id}>
-                      {category.board_prog_name}
+                  {categories.categories.map((board) => (
+                    <MenuItem key={board._id} value={board._id}>
+                      {board.board_prog_name}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-            <TextField
-                  label="Subject"
-                  id="subejctName"
-                  fullWidth
-                  required
-                  variant="outlined"
-                  margin="normal"
-                  value={subjectName}
-                  onChange={(e) => setSubjectName(e.target.value)}
-                  InputProps={{
-                    style: { height: 'auto' },
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  size="small"
-                />
-            </Grid>
-          </Grid>
-          <Box mt={2} className="flex flex-row justify-between">
-            <Button
-              variant="outlined"
-              onClick={handleClose}
-              sx={{
-                color: "white",
-                background:
-                  "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
-              }}
-            >
-              Close
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleSaveEdit}
-              sx={{
-                color: "white",
-                marginLeft: 2,
-                background:
-                  "linear-gradient(139.62deg, #002B4F 0.57%, #12b6e9 100%, #002B4F) !important",
-              }}
-            >
+            </Box>
+            <Box mb={2}>
+              <TextField
+                label="Subject Name"
+                fullWidth
+                value={subjectName}
+                onChange={(e) => setSubjectName(e.target.value)}
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleSaveEdit} color="primary">
               Save
             </Button>
-          
-          </Box>
-        </Box>
-      </Modal>
-    {/* )} */}
-    <SuccessMsg
-        open={successMessageOpen}
-        onClose={handleCloseSuccessMessage}
-        message="Data Edited  successfully"
-      />
+          </DialogActions>
+        </Dialog>
+      )}
+
+      {/* Success Message Dialog */}
+      <Dialog open={successMessageOpen} onClose={handleCloseSuccessMessage}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          <Typography>Subject updated successfully!</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSuccessMessage} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Success Message Dialog */}
+      <Dialog
+        open={deleteSuccessDialogOpen}
+        onClose={handleDeleteSuccessDialogClose}
+      >
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          <Typography>Subject deleted successfully!</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteSuccessDialogClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Fragment>
   );
 };
 
 export default Subject;
-

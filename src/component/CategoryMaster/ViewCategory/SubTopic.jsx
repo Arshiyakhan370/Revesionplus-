@@ -77,6 +77,42 @@ fetchData();
   const handleCloseViewPageModal = () => {
     setViewPageModalOpen(false);
   };
+ 
+  
+
+  const handleDeleteDialogOpen = (teacherId) => {
+    setDeleteTeacherId(teacherId);
+    setOpenDeleteDialog(true);
+  };
+  
+  const handleDeleteDialogClose = () => {
+    setDeleteTeacherId(null);
+    setOpenDeleteDialog(false);
+  };
+  
+  const handleDeleteClick = async () => {
+    try {
+      await axios.delete(`/api/v1/categorys/subtopic/${deleteTeacherId}`);
+      setTeacherData((prevData) => prevData.filter((teacher) => teacher._id !== deleteTeacherId));
+      setOpenDeleteDialog(false);
+      setDeleteSuccessDialogOpen(true);
+    } catch (error) {
+      console.error("Error deleting subtopic:", error);
+      
+    }
+  };
+  
+ 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const startIndex = (page - 1) * teachersPerPage;
+  const endIndex = startIndex + teachersPerPage;
+
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessageOpen(false);
+  };
   const handleEdit = (teacher) => {
     setSelectedTeacher({
       ...teacher,
@@ -88,50 +124,13 @@ fetchData();
       topicID: teacher.topic_info?._id,
       subtopicID: teacher.subtopic_info?._id,
     });
-    setSubTopicName1(teacher.subtopic_name);
+    setSubTopicName1(teacher.subtopic_name); 
   };
-
   
-
-  
-  const handleDeleteDialogOpen = (teacherId) => {
-    setDeleteTeacherId(teacherId);
-    setOpenDeleteDialog(true);
-  };
-
-  const handleDeleteDialogClose = () => {
-    setDeleteTeacherId(null);
-    setOpenDeleteDialog(false);
-  };
-
-  const handleDeleteClick = async() => {
-    try {
-      await axios.post(
-       ` /api/v1/categorys/subtopic/${deleteTeacherId}`
-      );
-      
-    } catch (error) {
-      console.error("Error deleting teacher:", error);
-  };
-     setTeacherData((prevData) => prevData.filter((teacher) => teacher.subtopic_id !== deleteTeacherId));
-    setOpenDeleteDialog(false);
-    setDeleteSuccessDialogOpen(true);
-    handleCloseMore();
-  };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const startIndex = (page - 1) * teachersPerPage;
-  const endIndex = startIndex + teachersPerPage;
-
-  const handleCloseSuccessMessage = () => {
-    setSuccessMessageOpen(false);
-  };
   const handleSaveEdit = async () => {
     try {
       const response = await axios.patch(
-       ` /api/v1/categorys/subtopic/${selectedTeacher._id}`,
+        `/api/v1/categorys/subtopic/${selectedTeacher._id}`,
         {
           subtopic_id: selectedTeacher.subtopic_id,
           boardID: selectedTeacher.boardID,
@@ -140,53 +139,34 @@ fetchData();
           sourceID: selectedTeacher.sourceID,
           paperID: selectedTeacher.paperID,
           topicID: selectedTeacher.topicID,
-          subtopicName: subTopicName1
+          subtopicName: subTopicName1 ,
         }
       );
   
       if (response.data && response.data.message === "Subtopic updated successfully") {
-    
-        setTeacherData(prevData =>
-          prevData.map(teacher =>
-            teacher.subtopic_id === selectedTeacher.subtopic_id ? { ...teacher, ...selectedTeacher, subtopicName: subTopicName1 } : teacher
+        setTeacherData((prevData) =>
+          prevData.map((teacher) =>
+            teacher.subtopic_id === selectedTeacher.subtopic_id ? { ...teacher, subtopic_name: subTopicName1 } : teacher
           )
         );
   
-    
         setSelectedTeacher(null);
-        setSubTopicName1("");
-     
         setSuccessMessageOpen(true);
       } else {
         console.error("Edit API failed:", response.data?.message || "Unknown error");
+        
       }
     } catch (error) {
       console.error("Error updating subtopic:", error);
+      
     }
   };
+  
   
 const handleClose=()=>{
     setSelectedTeacher(null);
 }
-const getFilteredSubjects = (boardID) => {
-  return categories?.categories.find(category => category._id === boardID)?.subjects || [];
-};
 
-const getFilteredSubjectLevels = (boardID, subjectID) => {
-  return getFilteredSubjects(boardID).find(subject => subject._id === subjectID)?.subjectlevels || [];
-};
-
-const getFilteredSources = (boardID, subjectID, subjectlevelID) => {
-  return getFilteredSubjectLevels(boardID, subjectID).find(level => level._id === subjectlevelID)?.sources || [];
-};
-
-const getFilteredPapers = (boardID, subjectID, subjectlevelID, sourceID) => {
-  return getFilteredSources(boardID, subjectID, subjectlevelID).find(source => source._id === sourceID)?.papers || [];
-};
-
-const getFilteredTopics = (boardID, subjectID, subjectlevelID, sourceID, paperID) => {
-  return getFilteredPapers(boardID, subjectID, subjectlevelID, sourceID).find(paper => paper._id === paperID)?.topics || [];
-};
 
   return (
     <Fragment>
@@ -347,113 +327,143 @@ const getFilteredTopics = (boardID, subjectID, subjectlevelID, sourceID, paperID
           Edit Teacher
         </Typography>
         <Grid container spacing={2} mt={2}>
-        
-    
-        <Grid item xs={12} sm={6}>
+      
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel>Board</InputLabel>
                   <Select
-                    label="Board"
                     value={selectedTeacher?.boardID || ''}
-                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, boardID: e.target.value }))}
+                    onChange={(e) =>
+                      setSelectedTeacher((prev) => ({
+                        ...prev,
+                        boardID: e.target.value,
+                      }))
+                    }
                   >
-                    {categories?.categories.map((category) => (
-                      <MenuItem key={category._id} value={category._id}>
-                        {category.board_prog_name}
-                      </MenuItem>
-                    ))}
+                   {categories.categories.map(category => (
+                    <MenuItem key={category._id} value={category._id}>
+                      {category.board_prog_name}
+                    </MenuItem>
+                  ))}
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel>Subject</InputLabel>
                   <Select
-                    label="Subject"
                     value={selectedTeacher?.subjectID || ''}
-                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, subjectID: e.target.value }))}
+                    onChange={(e) =>
+                      setSelectedTeacher((prev) => ({
+                        ...prev,
+                        subjectID: e.target.value,
+                      }))
+                    }
                   >
-                    {getFilteredSubjects(selectedTeacher?.boardID).map((subject) => (
-                      <MenuItem key={subject._id} value={subject._id}>
-                        {subject.subject_name}
-                      </MenuItem>
-                    ))}
+                   {(categories.categories.find(cat => cat._id === selectedTeacher?.boardID)?.subjects || []).map(subject => (
+                    <MenuItem key={subject._id} value={subject._id}>
+                      {subject.subject_name}
+                    </MenuItem>
+                  ))}
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel>Subject Level</InputLabel>
                   <Select
-                    label="Subject Level"
                     value={selectedTeacher?.subjectlevelID || ''}
-                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, subjectlevelID: e.target.value }))}
+                    onChange={(e) =>
+                      setSelectedTeacher((prev) => ({
+                        ...prev,
+                        subjectlevelID: e.target.value,
+                      }))
+                    }
                   >
-                    {getFilteredSubjectLevels(selectedTeacher?.boardID, selectedTeacher?.subjectID).map((level) => (
-                      <MenuItem key={level._id} value={level._id}>
-                        {level.subject_level_name}
-                      </MenuItem>
-                    ))}
+                    {(categories.categories.find(category => category._id === selectedTeacher?.boardID)?.subjects.find(subject => subject._id === selectedTeacher?.subjectID)?.subjectlevels || []).map(level => (
+                        <MenuItem key={level._id} value={level._id}>
+                          {level.subject_level_name}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel>Source</InputLabel>
                   <Select
-                    label="Source"
                     value={selectedTeacher?.sourceID || ''}
-                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, sourceID: e.target.value }))}
+                    onChange={(e) =>
+                      setSelectedTeacher((prev) => ({
+                        ...prev,
+                        sourceID: e.target.value,
+                      }))
+                    }
                   >
-                    {getFilteredSources(selectedTeacher?.boardID, selectedTeacher?.subjectID, selectedTeacher?.subjectlevelID).map((source) => (
-                      <MenuItem key={source._id} value={source._id}>
-                        {source.source_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Paper</InputLabel>
-                  <Select
-                    label="Paper"
-                    value={selectedTeacher?.paperID || ''}
-                    onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, paperID: e.target.value }))}
-                  >
-                    {getFilteredPapers(selectedTeacher?.boardID, selectedTeacher?.subjectID, selectedTeacher?.subjectlevelID, selectedTeacher?.sourceID).map((paper) => (
-                      <MenuItem key={paper._id} value={paper._id}>
-                        {paper.paper_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Topic</InputLabel>
-                  <Select
-  label="Paper"
-  value={selectedTeacher?.topicID ?? ''}
-  onChange={(e) => setSelectedTeacher((prevTopic) => ({ ...prevTopic, topicID: e.target.value }))}
->
-  {getFilteredTopics(
-    selectedTeacher?.boardID, 
-    selectedTeacher?.subjectID, 
-    selectedTeacher?.subjectlevelID, 
-    selectedTeacher?.sourceID,
-    selectedTeacher?.paperID
-  ).map((topic) => (
-    <MenuItem key={topic._id} value={topic._id}>
-      {topic.topic_name}
+                   {categories.categories.find(category => category._id === selectedTeacher?.boardID)?.subjects
+  .find(subject => subject._id === selectedTeacher?.subjectID)?.subjectlevels
+  .find(level => level._id === selectedTeacher?.subjectlevelID)?.sources.map(source => (
+    <MenuItem key={source._id} value={source._id}>
+      {source.source_name}
     </MenuItem>
-  ))}
-</Select>
-
+))}
+                  </Select>
                 </FormControl>
               </Grid>
+              <Grid item xs={12}>
+  <FormControl fullWidth>
+    <InputLabel>Paper</InputLabel>
+    <Select
+      value={selectedTeacher?.paperID || ''}
+      onChange={(e) =>
+        setSelectedTeacher((prev) => ({
+          ...prev,
+          paperID: e.target.value,
+        }))
+      }
+    >
+      {categories.categories
+        .find(category => category._id === selectedTeacher?.boardID)
+        ?.subjects.find(subject => subject._id === selectedTeacher?.subjectID)
+        ?.subjectlevels.find(level => level._id === selectedTeacher?.subjectlevelID)
+        ?.sources.find(source => source._id === selectedTeacher?.sourceID)
+        ?.papers.map(paper => (
+          <MenuItem key={paper._id} value={paper._id}>
+            {paper.paper_name}
+          </MenuItem>
+        ))}
+    </Select>
+  </FormControl>
 
-        <Grid item xs={12} sm={4}>
+        </Grid>
+        <Grid item xs={12}>
+  <FormControl fullWidth>
+    <InputLabel>Topic</InputLabel>
+    <Select
+      value={selectedTeacher?.topicID || ''}
+      onChange={(e) =>
+        setSelectedTeacher((prev) => ({
+          ...prev,
+          topicID: e.target.value,
+        }))
+      }
+    >
+      {categories?.categories
+        .find(category => category._id === selectedTeacher?.boardID)
+        ?.subjects.find(subject => subject._id === selectedTeacher?.subjectID)
+        ?.subjectlevels.find(level => level._id === selectedTeacher?.subjectlevelID)
+        ?.sources.find(source => source._id === selectedTeacher?.sourceID)
+        ?.papers.find(paper => paper._id === selectedTeacher?.paperID)
+        ?.topics.map(topic => (
+          <MenuItem key={topic._id} value={topic._id}>
+            {topic.topic_name}
+          </MenuItem>
+        ))}
+    </Select>
+  </FormControl>
+</Grid>
+
+        <Grid item xs={12} >
         <TextField
                     label="Subject Level"
                     id="subtopicName"
@@ -473,7 +483,7 @@ const getFilteredTopics = (boardID, subjectID, subjectlevelID, sourceID, paperID
                   />
      
         </Grid>
-        </Grid>
+       
        
         <Box mt={2} className='flex flex-row justify-between'>
         <Button variant="outlined" onClick={handleClose}   sx={{
@@ -492,6 +502,7 @@ const getFilteredTopics = (boardID, subjectID, subjectlevelID, sourceID, paperID
       </Button>
      
     </Box>
+      </Grid>
       </Box>
     </Modal>
     <Modal open={viewPageModalOpen} onClose={handleCloseViewPageModal}>

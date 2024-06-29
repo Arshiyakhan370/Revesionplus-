@@ -59,6 +59,7 @@ const TopicLevel = () => {
     };
     fetchData();
   }, []);
+  
 
   const handleDeleteSuccessDialogClose = () => {
     setDeleteSuccessDialogOpen(false);
@@ -108,7 +109,6 @@ const TopicLevel = () => {
   const handleCloseSuccessMessage = () => {
     setSuccessMessageOpen(false);
   };
-
   const handleSaveEdit = async () => {
     try {
       const response = await axios.patch(
@@ -122,17 +122,17 @@ const TopicLevel = () => {
           topic_name: topicName,
         }
       );
-   
+  
       if (response.data && response.data.message === 'Topic updated successfully') {
         setTopicData((prevData) =>
           prevData.map((topic) =>
             topic._id === selectedTopic._id ? { ...topic, ...selectedTopic, topic_name: topicName } : topic
           )
         );
-   
+  
         setTopicName('');
-        setSuccessMessageOpen(true);
-        setSelectedTopic(null);
+        setSelectedTopic(null); 
+        setSuccessMessageOpen(true); 
       } else {
         console.error('Edit API failed:', response.data?.message || 'Unknown error');
       }
@@ -140,25 +140,9 @@ const TopicLevel = () => {
       console.error('Error updating topic:', error);
     }
   };
-
+  
   const handleClose = () => {
     setSelectedTopic(null);
-  };
-
-  const getFilteredSubjects = (boardID) => {
-    return categories?.categories.find(category => category._id === boardID)?.subjects || [];
-  };
-
-  const getFilteredSubjectLevels = (boardID, subjectID) => {
-    return getFilteredSubjects(boardID).find(subject => subject._id === subjectID)?.subjectlevels || [];
-  };
-
-  const getFilteredSources = (boardID, subjectID, subjectlevelID) => {
-    return getFilteredSubjectLevels(boardID, subjectID).find(level => level._id === subjectlevelID)?.sources || [];
-  };
-
-  const getFilteredPapers = (boardID, subjectID, subjectlevelID, sourceID) => {
-    return getFilteredSources(boardID, subjectID, subjectlevelID).find(source => source._id === sourceID)?.papers || [];
   };
 
   return (
@@ -221,9 +205,8 @@ const TopicLevel = () => {
                         background: 'rgb(244 237 201)',
                       }}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-edit-2">
-                        <path d="M17 3a2.83 2.83 0 0 1 4 4L7 21l-4 1 1-4z"></path>
-                      </svg>
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+
                     </Link>
                   </TableCell>
                 </TableRow>
@@ -231,157 +214,179 @@ const TopicLevel = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Stack spacing={2} mt={2} alignItems="center">
-          <Pagination
-            count={Math.ceil(topicData.length / topicsPerPage)}
-            page={page}
-            onChange={handleChangePage}
-            color="primary"
-          />
+        <Stack spacing={2} mt={2}>
+          <Pagination count={Math.ceil(topicData.length / topicsPerPage)} page={page} onChange={handleChangePage} />
         </Stack>
       </Container>
-
-      <Dialog open={selectedTopic !== null} onClose={handleClose} fullWidth>
-        <DialogTitle>Edit Topic</DialogTitle>
-        <DialogContent>
-          <Box component="form">
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+      <Modal open={selectedTopic !== null} onClose={handleClose}>
+      
+        <Box p={3} sx={{ ...modalStyle }}>
+          <Typography variant="h6">Edit Topic</Typography>
+          <Grid container spacing={2}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel>Board</InputLabel>
                   <Select
-                    label="Board"
                     value={selectedTopic?.boardID || ''}
-                    onChange={(e) => setSelectedTopic((prevTopic) => ({ ...prevTopic, boardID: e.target.value }))}
+                    onChange={(e) =>
+                      setSelectedTopic((prev) => ({
+                        ...prev,
+                        boardID: e.target.value,
+                      }))
+                    }
                   >
-                    {categories?.categories.map((category) => (
-                      <MenuItem key={category._id} value={category._id}>
-                        {category.board_prog_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Subject</InputLabel>
-                  <Select
-                    label="Subject"
-                    value={selectedTopic?.subjectID || ''}
-                    onChange={(e) => setSelectedTopic((prevTopic) => ({ ...prevTopic, subjectID: e.target.value }))}
-                  >
-                    {getFilteredSubjects(selectedTopic?.boardID).map((subject) => (
-                      <MenuItem key={subject._id} value={subject._id}>
-                        {subject.subject_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Subject Level</InputLabel>
-                  <Select
-                    label="Subject Level"
-                    value={selectedTopic?.subjectlevelID || ''}
-                    onChange={(e) => setSelectedTopic((prevTopic) => ({ ...prevTopic, subjectlevelID: e.target.value }))}
-                  >
-                    {getFilteredSubjectLevels(selectedTopic?.boardID, selectedTopic?.subjectID).map((level) => (
-                      <MenuItem key={level._id} value={level._id}>
-                        {level.subject_level_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Source</InputLabel>
-                  <Select
-                    label="Source"
-                    value={selectedTopic?.sourceID || ''}
-                    onChange={(e) => setSelectedTopic((prevTopic) => ({ ...prevTopic, sourceID: e.target.value }))}
-                  >
-                    {getFilteredSources(selectedTopic?.boardID, selectedTopic?.subjectID, selectedTopic?.subjectlevelID).map((source) => (
-                      <MenuItem key={source._id} value={source._id}>
-                        {source.source_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Paper</InputLabel>
-                  <Select
-                    label="Paper"
-                    value={selectedTopic?.paperID || ''}
-                    onChange={(e) => setSelectedTopic((prevTopic) => ({ ...prevTopic, paperID: e.target.value }))}
-                  >
-                    {getFilteredPapers(selectedTopic?.boardID, selectedTopic?.subjectID, selectedTopic?.subjectlevelID, selectedTopic?.sourceID).map((paper) => (
-                      <MenuItem key={paper._id} value={paper._id}>
-                        {paper.paper_name}
-                      </MenuItem>
-                    ))}
+                   {categories.categories.map(category => (
+                    <MenuItem key={category._id} value={category._id}>
+                      {category.board_prog_name}
+                    </MenuItem>
+                  ))}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Topic Name"
-                  value={topicName}
-                  onChange={(e) => setTopicName(e.target.value)}
-                />
+                <FormControl fullWidth>
+                  <InputLabel>Subject</InputLabel>
+                  <Select
+                    value={selectedTopic?.subjectID || ''}
+                    onChange={(e) =>
+                      setSelectedTopic((prev) => ({
+                        ...prev,
+                        subjectID: e.target.value,
+                      }))
+                    }
+                  >
+                   {(categories.categories.find(cat => cat._id === selectedTopic?.boardID)?.subjects || []).map(subject => (
+                    <MenuItem key={subject._id} value={subject._id}>
+                      {subject.subject_name}
+                    </MenuItem>
+                  ))}
+                  </Select>
+                </FormControl>
               </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel>Subject Level</InputLabel>
+                  <Select
+                    value={selectedTopic?.subjectlevelID || ''}
+                    onChange={(e) =>
+                      setSelectedTopic((prev) => ({
+                        ...prev,
+                        subjectlevelID: e.target.value,
+                      }))
+                    }
+                  >
+                    {(categories.categories.find(category => category._id === selectedTopic?.boardID)?.subjects.find(subject => subject._id === selectedTopic?.subjectID)?.subjectlevels || []).map(level => (
+                        <MenuItem key={level._id} value={level._id}>
+                          {level.subject_level_name}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel>Source</InputLabel>
+                  <Select
+                    value={selectedTopic?.sourceID || ''}
+                    onChange={(e) =>
+                      setSelectedTopic((prev) => ({
+                        ...prev,
+                        sourceID: e.target.value,
+                      }))
+                    }
+                  >
+                   {categories.categories.find(category => category._id === selectedTopic?.boardID)?.subjects
+  .find(subject => subject._id === selectedTopic?.subjectID)?.subjectlevels
+  .find(level => level._id === selectedTopic?.subjectlevelID)?.sources.map(source => (
+    <MenuItem key={source._id} value={source._id}>
+      {source.source_name}
+    </MenuItem>
+))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+  <FormControl fullWidth>
+    <InputLabel>Paper</InputLabel>
+    <Select
+      value={selectedTopic?.paperID || ''}
+      onChange={(e) =>
+        setSelectedTopic((prev) => ({
+          ...prev,
+          paperID: e.target.value,
+        }))
+      }
+    >
+      {categories.categories
+        .find(category => category._id === selectedTopic?.boardID)
+        ?.subjects.find(subject => subject._id === selectedTopic?.subjectID)
+        ?.subjectlevels.find(level => level._id === selectedTopic?.subjectlevelID)
+        ?.sources.find(source => source._id === selectedTopic?.sourceID)
+        ?.papers.map(paper => (
+          <MenuItem key={paper._id} value={paper._id}>
+            {paper.paper_name}
+          </MenuItem>
+        ))}
+    </Select>
+  </FormControl>
+</Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Topic Name"
+                value={topicName}
+                onChange={(e) => setTopicName(e.target.value)}
+                fullWidth
+              />
             </Grid>
+          </Grid>
+          <Box mt={2} display="flex" justifyContent="flex-end">
+            <Button variant="contained" color="primary" onClick={handleSaveEdit}>
+              Save
+            </Button>
+            <Button variant="outlined" color="secondary" onClick={handleClose} sx={{ ml: 1 }}>
+              Cancel
+            </Button>
           </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleSaveEdit} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose} fullWidth>
-        <DialogTitle>Delete Confirmation</DialogTitle>
+        </Box>
+      </Modal>
+      <Dialog open={openDeleteDialog} onClose={handleDeleteDialogClose}>
+        <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
           <Typography>Are you sure you want to delete this topic?</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteDialogClose} color="secondary">
+          <Button onClick={handleDeleteDialogClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleDeleteClick} color="primary">
+          <Button onClick={handleDeleteClick} color="secondary">
             Delete
           </Button>
         </DialogActions>
       </Dialog>
-
       <SuccessMsg
         open={successMessageOpen}
         handleClose={handleCloseSuccessMessage}
-        title="Success"
-        message="Topic updated successfully!"
+        message="Topic updated successfully"
       />
-
-      <Dialog open={deleteSuccessDialogOpen} onClose={handleDeleteSuccessDialogClose} fullWidth>
-        <DialogTitle>Success</DialogTitle>
-        <DialogContent>
-          <Typography>Topic deleted successfully!</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteSuccessDialogClose} color="primary">
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <SuccessMsg
+        open={deleteSuccessDialogOpen}
+        handleClose={handleDeleteSuccessDialogClose}
+        message="Topic deleted successfully"
+      />
     </Fragment>
   );
+};
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
 };
 
 export default TopicLevel;

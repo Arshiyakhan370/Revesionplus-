@@ -37,10 +37,10 @@ const SourceAdd = () => {
     event.preventDefault();
     try {
       const response = await axios.post('/api/v1/categorys/source/create', {
-        "board_id": selectedBoard,
-       " subject_id": selectedSubject,
-        "subject_level_id": selectedSubjectLevel,
-       'source_name': selectedSource,
+        board_id: selectedBoard,
+        subject_id: selectedSubject,
+        subject_level_id: selectedSubjectLevel,
+        source_name: selectedSource,
       });
       console.log('Source added:', response.data);
       setSubmitted(true);
@@ -52,7 +52,6 @@ const SourceAdd = () => {
       console.error('Error adding source:', error);
     }
   };
-
   return (
     <div>
       {isLoading ? (

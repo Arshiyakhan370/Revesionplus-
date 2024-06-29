@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   FormControl,
@@ -13,13 +13,19 @@ import {
 } from '@mui/material';
 import SuccessMsg from '../SuccessMsg';
 import { useGetCategoryListQuery } from '../../../../Services/CategoryApi';
+import BoardCustom from '../../CustomComponent/BoardCustom';
 
-const SubjectLevelAdd = () => {
+const SubjectLevelAdd = ({selectedBoard, handleBoardChange}) => {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [subjectLevelName, setSubjectLevelName] = useState('');
-  const [selectedBoard, setSelectedBoard] = useState('');
+  // const [selectedBoard, setSelectedBoard] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const { data: { data: categories } = {}, error, isLoading } = useGetCategoryListQuery();
+
+  useEffect(() => {
+    setSelectedSubject('');
+    setSubjectLevelName('');
+  }, [selectedBoard]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,10 +43,24 @@ const SubjectLevelAdd = () => {
       console.error('Error adding subject level:', error);
     }
   };
-console.log(selectedBoard,selectedSubject,subjectLevelName,);
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  const getInputLabel = (label) => {
+    if (selectedBoard === '665fffe9e02ec586b271fba2') { 
+      switch (label) {
+        case "Subject":
+          return "Grade";
+        case "Subject Level":
+          return "Subject";
+        default:
+          return label;
+      }
+    }
+    return label;
+  };
+ 
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -48,25 +68,11 @@ console.log(selectedBoard,selectedSubject,subjectLevelName,);
           <CardContent>
             <Grid container spacing={2}>
               <Grid item xs={12} md={4} sx={{ marginTop: '16px' }}>
-                <FormControl fullWidth size="small">
-                  <InputLabel htmlFor="board">Board</InputLabel>
-                  <Select
-                    label="Board"
-                    id="board_id"
-                    value={selectedBoard}
-                    onChange={(e) => setSelectedBoard(e.target.value)}
-                  >
-                    {categories.categories.map(category => (
-                      <MenuItem key={category._id} value={category._id}>
-                        {category.board_prog_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <BoardCustom selectedBoard={selectedBoard} setSelectedBoard={handleBoardChange} />
               </Grid>
               <Grid item xs={12} md={4} sx={{ marginTop: '16px' }}>
                 <FormControl fullWidth size="small">
-                  <InputLabel htmlFor="subject">Subject</InputLabel>
+                  <InputLabel htmlFor="subject">{getInputLabel("Subject")}</InputLabel>
                   <Select
                     label="Subject"
                     id="subject_id"
@@ -83,7 +89,7 @@ console.log(selectedBoard,selectedSubject,subjectLevelName,);
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
-                  label="Subject Level"
+                  label={getInputLabel("Subject Level")}
                   id="subjectLevel"
                   fullWidth
                   required
