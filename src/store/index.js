@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./UseListSlice";
-import { CategoryApi } from "../Services/CategoryApi";
 import { UserTeacherDataListApi } from "../Services/UserTeacherDataListApi";
+import { CategoryApi } from "../Services/CategoryMasterApi/CategoryApi";
 
 const store = configureStore({
   reducer: {

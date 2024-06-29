@@ -28,7 +28,7 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Container } from "@mui/system";
-import { useDeleteSubjectMutation, useGetCategoryListQuery, useGetViewSubjectListQuery, useUpdateSubjectMutation } from "../../../Services/CategoryApi";
+import { useDeleteSubjectMutation, useGetCategoryListQuery, useGetViewSubjectListQuery, useUpdateSubjectMutation } from "../../../Services/CategoryMasterApi/CategoryApi";
 import SuccessMsg from "../AddCategory/SuccessMsg";
 
 const Subject = () => {

@@ -13,7 +13,7 @@ import { Container } from '@mui/system';
 import { boardOptions ,subjectOptions, teacherOptions}  from '../../TeacherMap/SweetAlert';
 import axios from 'axios';
 import SuccessMsg from '../AddCategory/SuccessMsg';
-import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import { useGetCategoryListQuery } from '../../../Services/CategoryMasterApi/CategoryApi';
 
 const SubTopic = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });

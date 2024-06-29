@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Box, Button, Grid, FormControl, InputLabel, Select, MenuItem, TextField } from "@mui/material";
-import { useGetCategoryListQuery } from "../../../Services/CategoryApi";
+import { useGetCategoryListQuery } from "../../../Services/CategoryMasterApi/CategoryApi";
 
 const SubjectEdit= ({ open, onClose, categories, selectedSubject, selectedBoard,setSelectedBoard,onSave }) => {
   const [subjectName, setSubjectName] = useState('');

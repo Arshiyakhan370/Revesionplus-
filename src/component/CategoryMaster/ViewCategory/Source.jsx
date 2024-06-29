@@ -28,7 +28,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Container } from '@mui/system';
 import SuccessMsg from '../AddCategory/SuccessMsg';
-import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import { useGetCategoryListQuery } from '../../../Services/CategoryMasterApi/CategoryApi';
 
 const Source = () => {
   const [teacherData, setTeacherData] = useState([]);

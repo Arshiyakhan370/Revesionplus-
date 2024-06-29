@@ -12,7 +12,7 @@ import {
   CardContent,
 } from '@mui/material';
 import SuccessMsg from './SuccessMsg';
-import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import { useGetCategoryListQuery } from '../../../Services/CategoryMasterApi/CategoryApi';
 
 const TopicAdd = () => {
   const initialFormData = {

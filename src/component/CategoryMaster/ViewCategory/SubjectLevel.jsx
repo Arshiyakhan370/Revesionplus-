@@ -28,7 +28,7 @@ import Stack from '@mui/material/Stack';
 import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
 import axios from 'axios';
-import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import { useGetCategoryListQuery } from '../../../Services/CategoryMasterApi/CategoryApi';
 import SuccessMsg from '../AddCategory/SuccessMsg';
 
 const SubjectLevel = () => {

@@ -29,7 +29,7 @@ import {
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import SuccessMsg from '../AddCategory/SuccessMsg';
-import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import { useGetCategoryListQuery } from '../../../Services/CategoryMasterApi/CategoryApi';
 import { useMediaQuery } from 'react-responsive';
 
 const TopicLevel = () => {

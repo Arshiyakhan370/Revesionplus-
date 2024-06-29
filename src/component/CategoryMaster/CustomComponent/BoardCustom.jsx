@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import { useGetCategoryListQuery } from '../../../Services/CategoryMasterApi/CategoryApi';
 
 const BoardCustom = ({ selectedBoard, setSelectedBoard }) => {
   const { data:{data:categories}={},  error, isLoading ,} = useGetCategoryListQuery();

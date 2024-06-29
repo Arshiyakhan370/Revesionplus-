@@ -11,8 +11,8 @@ import {
   Grid,
   CardContent,
 } from '@mui/material';
-import SuccessMsg from './SuccessMsg';
-import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import SuccessMsg from '../AddCategory/SuccessMsg';
+import { useGetCategoryListQuery } from '../../../Services/CategoryMasterApi/CategoryApi';
 
 const SourceAdd = () => {
   const [selectedBoard, setSelectedBoard] = useState('');

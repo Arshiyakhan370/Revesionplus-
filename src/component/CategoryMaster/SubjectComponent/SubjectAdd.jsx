@@ -4,13 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Card, Grid, CardContent, Snackbar } from '@mui/material';
 import SuccessMsg from '../AddCategory/SuccessMsg';
 import BoardCustom from '../CustomComponent/BoardCustom';
-import { useSaveSubjectMutation } from '../../../Services/CategoryApi';
+import { useSaveSubjectMutation } from '../../../Services/CategoryMasterApi/CategoryApi';
 import CustomSaveButton from '../CustomComponent/CustomSaveButton';
 
 const SubjectAdd = ({ selectedBoard, handleBoardChange }) => {
   const [subjectName, setSubjectName] = useState('');
   const [successMessageOpen, setSuccessMessageOpen] = useState(false);
-  const [duplicateErrorOpen, setDuplicateErrorOpen] = useState(false);
   const [saveSubject, { isSuccess, isError, error }] = useSaveSubjectMutation();
 
   const handleSubmit = async (event) => {
@@ -20,14 +19,10 @@ const SubjectAdd = ({ selectedBoard, handleBoardChange }) => {
       setSubjectName('');
       setSuccessMessageOpen(true);
     } catch (error) {
-      if (error.code === 11000) {
-        setDuplicateErrorOpen(true);
-      } else {
         console.error('Error adding subject:', error);
-      }
     }
   };
-console.log(error,"checkstatus");
+
   const getLabel = () => {
     if (selectedBoard === '665fffe9e02ec586b271fba1') return "Subject Name";
     if (selectedBoard === '665fffe9e02ec586b271fba2') return "Grade";

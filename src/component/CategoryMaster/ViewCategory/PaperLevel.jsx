@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 import { Container } from '@mui/system';
 import axios from 'axios';
 import SuccessMsg from '../AddCategory/SuccessMsg';
-import { useGetCategoryListQuery } from '../../../Services/CategoryApi';
+import { useGetCategoryListQuery } from '../../../Services/CategoryMasterApi/CategoryApi';
 
 const PaperLevel = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1024 });
